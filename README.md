@@ -2,6 +2,12 @@
 
 My [blog](https://huijzer.xyz).
 
+Run locally with
+```
+julia -e 'using Pkg; Pkg.activate("."); using Franklin; Franklin.serve()'
+```
+when located in the root directory of this repository.
+
 ## Licenses
 
 ### Core:

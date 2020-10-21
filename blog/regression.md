@@ -3,7 +3,7 @@
 @def tags = ["simulating data", "statistics"]
 # Set this to true
 <!-- Set this to true after restarting Julia. -->
-@def reeval = true 
+@def reeval = true
 
 # Regression
 
@@ -130,20 +130,14 @@ with respect to the choice of $p_0$ and $p_1$ (Rice, [2006](#rice2006mathematica
 The simplest estimator for the points is the mean.
 
 ```julia:./w-h-mean.jl 
-# hideall
-
 m = mean(H) 
 sum_sq = r2(sum((H .- m).^2))
-
-function plot_lsq()
-  p = plot(df, x = :W, y = :H,
-    Geom.point,
-    yintercept = [m], Geom.hline(style = :dot)
-  ) 
-  p |> SVG(joinpath(@OUTPUT, "w-h-mean.svg")) # hide 
-end
-
-plot_lsq()
+p = plot(df, x = :W, y = :H,
+  Geom.point,
+  yintercept = [m], Geom.hline(style = :dot),
+  xs = [1, 2], ys = [2, 3], Shape.vline()
+)
+p |> SVG(joinpath(@OUTPUT, "w-h-mean.svg")) # hide
 ```
 
 \output{./w-h-mean.jl}
