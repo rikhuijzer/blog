@@ -27,11 +27,11 @@ function hfun_blogposts()
     curmonth = month(today)
     curday = day(today)
 
-    list = readdir("blog")
+    list = readdir("posts")
     filter!(f -> endswith(f, ".md"), list)
     sorter(p) = begin
         ps  = splitext(p)[1]
-        url = "/blog/$ps/"
+        url = "/posts/$ps/"
         surl = strip(url, '/')
         pubdate = pagevar(surl, :published)
         if isnothing(pubdate)
@@ -49,7 +49,7 @@ function hfun_blogposts()
         end
         ps  = splitext(post)[1]
         write(io, "<li><span><i>")
-        url = "/blog/$ps/"
+        url = "/posts/$ps/"
         surl = strip(url, '/')
         title = pagevar(surl, :title)
         pubdate = pagevar(surl, :published)

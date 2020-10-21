@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-    <loc>https://huijzer.xyz/blog/first/index.html</loc>
+    <loc>https://huijzer.xyz/posts/blog-benefits/index.html</loc>
     <lastmod>2020-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -38,19 +38,13 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://huijzer.xyz/blog/blog-benefits/index.html</loc>
+    <loc>https://huijzer.xyz/posts/index.html</loc>
     <lastmod>2020-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://huijzer.xyz/blog/index.html</loc>
-    <lastmod>2020-10-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://huijzer.xyz/blog/regression/index.html</loc>
+    <loc>https://huijzer.xyz/posts/regression/index.html</loc>
     <lastmod>2020-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
