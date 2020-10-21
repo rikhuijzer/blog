@@ -1,7 +1,6 @@
 @def title = "Simple and binary regression"
 @def published = "5 March 2020"
 @def tags = ["simulating data", "statistics"]
-# Set this to true
 <!-- Set this to true after restarting Julia. -->
 @def reeval = true
 
