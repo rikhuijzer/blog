@@ -39,9 +39,9 @@ jobs:
             using Franklin;
             Pkg.activate("."); Pkg.instantiate();
             optimize()'
-    - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+    - name: Deploy to secondary branch
+      uses: peaceiris/actions-gh-pages@v3
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: __site
+        publish_dir: ./__site
+        cname: huijzer.xyz
