@@ -1,3 +1,0 @@
-ArgumentError: Package Gadfly not found in current path:
-- Run `import Pkg; Pkg.add("Gadfly")` to install the Gadfly package.
-

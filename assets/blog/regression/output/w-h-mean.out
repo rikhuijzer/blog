@@ -1,1 +1,3 @@
-UndefVarError: mean not defined
+MethodError: no method matching vline()
+Closest candidates are:
+  vline(!Matched::AbstractArray, !Matched::AbstractArray, !Matched::AbstractArray) at /home/runner/.julia/packages/Gadfly/Xnkmc/src/shapes.jl:268
