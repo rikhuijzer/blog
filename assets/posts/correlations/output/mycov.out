@@ -1,0 +1,4 @@
+mycov(A, A) = 4.0
+mycov(A, B) = 2.0
+mycov(A, C) = 0.0
+mycov(A, D) = -4.0
