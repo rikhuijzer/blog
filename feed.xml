@@ -22,7 +22,15 @@
     <pubDate>Wed, 1 May 2019 00:00:00 UT</pubDate>
   </item>
   <item>
-    <title>Principle of maximum entropy</title>
+    <title>Simple and binary regression</title>
+    <link>https://huijzer.xyz/posts/regression/index.html</link>
+    <description><![CDATA[Applying a simple and binary &#40;logistic&#41; regression to simulated data.
+<br><a href="https://huijzer.xyz/posts/regression/index.html">Read more</a>]]></description>
+    <guid>https://huijzer.xyz/posts/regression/index.html</guid>
+    <pubDate>Thu, 22 Oct 2020 00:00:00 UT</pubDate>
+  </item>
+  <item>
+    <title>The principle of maximum entropy</title>
     <link>https://huijzer.xyz/posts/maximum-entropy/index.html</link>
     <description><![CDATA[Obtaining the least informative distribution.
 <br><a href="https://huijzer.xyz/posts/maximum-entropy/index.html">Read more</a>]]></description>
