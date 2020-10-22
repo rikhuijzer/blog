@@ -4,8 +4,6 @@
 <!-- Set this to true after restarting Julia. -->
 @def reeval = false
 
-# Regression
-
 One of the most famous scientific discoveries was Newton's laws of motion.
 The laws allowed people to make predictions.
 For example, the acceleration for an object can be predicted given the applied force and the mass of the object.

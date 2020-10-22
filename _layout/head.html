@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {{if hasmath}} {{insert head_katex.html }}     {{end}}
-  {{if hascode}} {{insert head_highlight.html }}   {{end}}
+  {{if hasmath}} {{insert head_katex.html }} {{end}}
+  {{if hascode}} {{insert head_highlight.html }} {{end}}
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/basic.css">
   <link rel="icon" href="/assets/favicon.png">
-  {{isdef title}} <title>{{fill title}}</title>  {{end}}
+  {{isdef title}} <title> {{fill title}}" </title> {{end}}
+
+  {{isdef title}} <meta property="og:title" content="{{fill title}}" /> {{end}}
+  {{isdef published}} <meta property="og:type" content="article" /> {{end}}
+  {{isdef rss}} <meta property="og:description" content="{{fill rss}}" /> {{end}}
+  {{isdef published}} <meta property="article:modified_time" content={{timestamp_now}} /> {{end}}
+
+  {{isdef rss}} <meta name="twitter:card" content="summary" /> {{end}}
+  {{isdef title}} <meta name="twitter:title" content="{{fill title}}" /> {{end}}
+  {{isdef rss}} <meta name="twitter:description" content="{{fill rss}}" /> {{end}}
 </head>
 <body>
   {{insert header.html}}
 
-<!-- Content appended here -->
+<div class="franklin-content">
+  {{isdef title}} <h1>{{fill title}}</h1> {{end}}
+</div>

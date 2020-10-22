@@ -1,14 +1,17 @@
-@def title = "Principle of maximum entropy"
-@def published = "26 September 2020"
-@def tags = ["simulating data", "statistics"]
-@def reeval = true
++++
+title = "Principle of maximum entropy"
+published = "26 September 2020"
+tags = ["simulating data", "statistics"]
+rss = "Obtaining the least informative distribution."
++++
+@def reeval = false
 
 Say that you are a statistician and are asked to come up with a probability distribution for the current state of knowledge on some particular topic you know little about.
 (This, in Bayesian statistics, is known as choosing a suitable prior.)
 To do this, the safest bet is coming up with the least informative distribution via the *principle of maximum entropy*.
 
-The principle is clearly explained by Jaynes (1968):
-Consider a die which has been tossed a very large number of times $N$.
+This principle is clearly explained by Jaynes (1968):
+consider a die which has been tossed a very large number of times $N$.
 We expect the average to be $3.5$, that is, we expect the following distribution where $P_n = \frac{1}{6}$ for each $n$.
 
 ```julia:./unbiased.jl
