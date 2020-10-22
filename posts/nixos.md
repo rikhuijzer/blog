@@ -1,6 +1,9 @@
-@def title = "Highlights of my NixOS configuration"
-@def published = "1 December 2019"
-@def tags = ["libsecret", "fish"]
++++
+title = "Highlights of my NixOS configuration"
+published = "1 December 2019"
+tags = ["libsecret", "fish"]
+rss = "Also, promoting NixOS a bit."
++++
 
 I have recently started paying attention to the time spent on fine-tuning my Linux installation.
 My conclusion is that it is a lot.

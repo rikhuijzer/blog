@@ -285,3 +285,9 @@ ul.blog-posts li a:visited {
 .rss {
   margin-top: 4px;
 }
+
+.avatar-image {
+  width: 8rem !important;
+  heigth: auto;
+  border-radius: 50%; 
+}

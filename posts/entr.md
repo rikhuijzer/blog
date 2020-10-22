@@ -2,6 +2,7 @@
 title = "Entr"
 published = "29 October 2019"
 tags = ["shortcut", "compile", "run"]
+rss = "A tool for executing commands automatically upon file changes."
 +++
 
 Having a compile and run shortcut seems like the most basic requirement for a developer.
