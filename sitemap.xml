@@ -20,6 +20,24 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://huijzer.xyz/posts/writing-checklist/index.html</loc>
+    <lastmod>2020-10-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://huijzer.xyz/posts/combinations-permuations/index.html</loc>
+    <lastmod>2020-10-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://huijzer.xyz/posts/writing-effectively/index.html</loc>
+    <lastmod>2020-10-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://huijzer.xyz/posts/entr/index.html</loc>
     <lastmod>2020-10-22</lastmod>
     <changefreq>monthly</changefreq>
@@ -39,6 +57,18 @@
 </url>
 <url>
     <loc>https://huijzer.xyz/about/index.html</loc>
+    <lastmod>2020-10-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://huijzer.xyz/posts/tomato/index.html</loc>
+    <lastmod>2020-10-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://huijzer.xyz/posts/predicates/index.html</loc>
     <lastmod>2020-10-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

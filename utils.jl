@@ -65,7 +65,6 @@ function hfun_blogposts()
         end
         write(io, """$date</i></span><b><a href="$url">$title</a></b>""")
         write(io, """<li><i class="rss">$rss</i></li>""")
-        write(io, "<br>")
     end
     write(io, "</ul>")
     return String(take!(io))
