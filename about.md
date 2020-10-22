@@ -9,7 +9,7 @@
 This website is built with [Franklin.jl](https://github.com/tlienart/Franklin.jl) and the [Julia programming language](https://julialang.org/).
 Most posts on this site contain math, plots and the code to reproduce the results.
 Adding the code makes reading the posts more difficult.
-However, I think it is a necessity when doing statistics since statistical calculations usually take ages to do manualy.
+However, I think it is a necessity when doing statistics because statistical calculations usually take ages to do manualy.
 For example, fitting a simple linear model requires minimizing the sum of squares.
 
 The source of this website is available on [GitHub](https://github.com/rikhuijzer/franklin-blog).
@@ -17,6 +17,12 @@ The source of this website is available on [GitHub](https://github.com/rikhuijze
 ## Myself
 
 I'm a PhD student at the Faculty of Behavioural and Social Sciences, University of Groningen.
+
+email: 
+~~~
+<a href="mailto:t.h.huijzer@rug.nl">t.h.huijzer@rug.nl</a>
+~~~
+
 My background is computer science and engineering; specifically:
 
 ~~~
