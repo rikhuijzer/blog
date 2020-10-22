@@ -15,10 +15,14 @@ function lx_baz(com, _)
   return uppercase(brace_content)
 end
 
+function hfun_timestamp_now()
+    return string(Dates.now()) * "+00:00"
+end
 
 """
     {{blogposts}}
-Plug in the list of blog posts contained in the `/blog/` folder.
+
+Plug in the list of blog posts contained in the `/posts` folder.
 Souce: <https://github.com/abhishalya/abhishalya.github.io>.
 """
 function hfun_blogposts()
@@ -28,8 +32,8 @@ function hfun_blogposts()
     curday = day(today)
 
     list = readdir("posts")
-    filter!(f -> endswith(f, ".md"), list)
-    sorter(p) = begin
+    filter!(endswith(".md"), list)
+    function sorter(p)
         ps  = splitext(p)[1]
         url = "/posts/$ps/"
         surl = strip(url, '/')
