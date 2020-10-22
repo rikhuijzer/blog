@@ -1,5 +1,5 @@
 +++
-title = "Principle of maximum entropy"
+title = "The principle of maximum entropy"
 published = "26 September 2020"
 tags = ["simulating data", "statistics"]
 rss = "Obtaining the least informative distribution."

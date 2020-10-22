@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/basic.css">
   <link rel="icon" href="/assets/favicon.png">
-  {{isdef title}} <title> {{fill title}}" </title> {{end}}
+  {{isdef title}} <title> {{fill title}} </title> {{end}}
 
   {{isdef title}} <meta property="og:title" content="{{fill title}}" /> {{end}}
   {{isdef published}} <meta property="og:type" content="article" /> {{end}}
@@ -23,5 +23,5 @@
   {{insert header.html}}
 
 <div class="franklin-content">
-  {{isdef title}} <h1>{{fill title}}</h1> {{end}}
+  {{isdef published}} <h1>{{fill title}}</h1> {{end}}
 </div>

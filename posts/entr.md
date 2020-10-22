@@ -1,6 +1,8 @@
-@def title = "Entr"
-@def published = "29 October 2019"
-@def tags = ["shortcut", "compile", "run"]
++++
+title = "Entr"
+published = "29 October 2019"
+tags = ["shortcut", "compile", "run"]
++++
 
 Having a compile and run shortcut seems like the most basic requirement for a developer.
 Most fully fledged IDE's therefore include it.

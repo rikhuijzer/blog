@@ -1,6 +1,9 @@
-@def title = "Simple and binary regression"
-@def published = "5 March 2020"
-@def tags = ["simulating data", "statistics"]
++++
+title = "Simple and binary regression"
+published = "5 March 2020"
+tags = ["simulating data", "statistics"]
+rss = "Applying a simple and binary (logistic) regression to simulated data."
++++
 <!-- Set this to true after restarting Julia. -->
 @def reeval = false
 
@@ -13,6 +16,8 @@ This post explains the simplest way to predict an outcome for a new value, given
 To explain the concepts, data on apples and pears is generated.
 Underlying relations for the generated data are known.
 The known relations can be compared to the results from the regression.
+
+\toc
 
 ## Generating data
 The goal is to predict whether a fruit is an apple or a pear.
