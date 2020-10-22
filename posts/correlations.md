@@ -2,7 +2,7 @@
 title = "Correlations"
 published = "24 January 2020"
 tags = ["statistics", "independence", "covariance"]
-rss = "Nothing"
+rss = "The equations and some examples for the Pearson correlation coefficient."
 +++
 
 Correlations are ubiquitous.
@@ -222,7 +222,7 @@ and after stacking, it has changed to
 ```julia:./mycov.jl
 using Statistics
 
-# Note that unlike the Julia built-in function this function does not apply Bessel's correction.
+# Note that this function does not apply Bessel's correction.
 function mycov(X, Y)
     min_mean_x(x)::Float64 = x - mean(X)
     min_mean_y(y)::Float64 = y - mean(Y)
