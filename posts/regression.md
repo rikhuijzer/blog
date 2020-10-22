@@ -2,7 +2,7 @@
 @def published = "5 March 2020"
 @def tags = ["simulating data", "statistics"]
 <!-- Set this to true after restarting Julia. -->
-@def reeval = true
+@def reeval = false
 
 # Regression
 

@@ -48,11 +48,6 @@ header .blog-name a {
     color: #a6a2a0;
     text-decoration: none; }
 
-header li a:hover {
-    color: black;
-    border-bottom: 2px solid black; }
-
-
 #menu-icon {
     display: none; }
 
