@@ -1,0 +1,132 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>Highlights of my NixOS configuration</title> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><p>I have recently started paying attention to the time spent on fine-tuning my Linux installation. My conclusion is that it is a lot. Compared to Windows I save lots of time by using package managers to install software. Still, I&#39;m pretty sure that most readers spend &#40;too&#41; much time with the package managers as well. This can be observed from the fact that most people know the basic <code>apt-get</code> commands by heart.</p> <p>At the time of writing I&#39;m happily running and tweaking NixOS for a few months. NixOS allows me to define my operating system state in one configuration file <code>configuration.nix</code>. I have been pedantic and will try to avoid configuring my system outside the configuration. This way multiple computers are in the same state and I can set-up new computers in no time. The only manual steps have been NixOS installation, Firefox configuration, user password configuration and applying a system specific configuration. &#40;The latter involves creating two symlinks.&#41;</p> <p>In general there are the following things which are great.</p> <ul> <li><p>Deterministic package system.</p> </ul> <p>Packages are immutable and NixOS will basically create symlinks to the packages. This has some great implications.</p> <ul> <li><p>Easy rollbacks. NixOS will just symlink to the &quot;old&quot; version again.</p> <li><p>System usable during upgrade. For example, a Firefox upgrade is basically getting a new immutable Firefox binary and symlinking to the new binary. The old binary remains available until it is garbage collected. So, in practise you use the old binary until you restart the program.</p> <li><p>Ease of contribution to package system.</p> </ul> <p>It is relatively easy to contribute to the <a href="https://github.com/NixOS/nixpkgs">Nix Packages collection</a>. This results in a large number of available and well-maintained packages. Compared to the Debian packages it is a major improvement. I&#39;m often surprised by the fact that some obscure tool is actually available in NixOS.</p> <ul> <li><p>Nix expression language.</p> </ul> <p>The Nix expression language is declarative. It will basically read all the code and collect it in a data structure. Only when this is complete the system state will be changed. This means that the language does not care about order or duplication. In effect this eases refactoring, and avoids checking &quot;preconditions&quot;. To explain the latter consider writing a script which assumes <code>ripgrep</code> to be installed. The language allows for defining such requirements multiple times. So, even when removing the <code>ripgrep</code> requirement at other places, it will still be available for my script.</p> <p>Below are some of what I consider highlights of the configuration.</p> <p><div class=franklin-toc ><ol><li><a href="#font_installation">Font installation</a><li><a href="#shell_functions">Shell functions</a><li><a href="#home_manager">Home Manager</a><li><a href="#git_credentials">Git credentials</a><li><a href="#r">R</a></ol></div> </p> <h2 id=font_installation ><a href="#font_installation">Font installation</a></h2> <p>Most Linux distributions lack pretty fonts. You&#39;ll notice this when, for example, browsing the web. I found installing fonts to be difficult at times, even in Ubuntu. For NixOS it could not be easier:</p> <pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/configuration.nix</span>
+
+fonts.<span class=hljs-attr >fonts</span> = <span class=hljs-keyword >with</span> pkgs; [
+  hermit
+  source-code-pro
+];</code></pre> <h2 id=shell_functions ><a href="#shell_functions">Shell functions</a></h2> <p>At one point using abbreviations or aliases is not going to be enough and functions are needed. This should be possible by defining Fish functions directly. I have not yet been successful in doing that declaratively. A workaround is as follows.</p> <pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/configuration.nix</span>
+
+<span class=hljs-attr >import</span> = [
+  ./scripts.nix
+];</code></pre> <pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/scripts.nix</span>
+
+<span class=hljs-keyword >let</span>
+  <span class=hljs-attr >fish-shebang</span> = <span class=hljs-string >&quot;#!<span class=hljs-subst >${pkgs.fish}</span>/bin/fish&quot;</span>;
+  <span class=hljs-attr >define-script</span> = name: script: pkgs.writeScriptBin name script;
+  <span class=hljs-attr >define-fish-script</span> = name: script: define-script name (fish-shebang + <span class=hljs-string >&quot;\n\n&quot;</span> + script);
+<span class=hljs-keyword >in</span> {
+  environment.<span class=hljs-attr >systemPackages</span> = [
+    (define-fish-script <span class=hljs-string >&quot;decrypt-folder&quot;</span> <span class=hljs-string >&#x27;&#x27;
+      if test (count $argv) -eq 0
+        echo &quot;usage: decrypt-folder &lt;folder&gt;&quot;
+        exit
+      end
+
+      set name (string replace -r &quot;\.tar\.gz\.gpg&quot; &quot;&quot; $argv[1])
+
+      gpg $name.tar.gz.gpg
+      tar -xzf $name.tar.gz
+      rm $name.tar.gz
+    &#x27;&#x27;</span>)
+
+    (define-fish-script <span class=hljs-string >&quot;git-add-commit-push&quot;</span> <span class=hljs-string >&#x27;&#x27;
+      git add .
+      git commit -m &quot;$argv[1]&quot;
+      git push
+    &#x27;&#x27;</span>)
+  ];
+}</code></pre> <p>For the latter it is convenient to add the abbreviation</p> <pre><code class="nix hljs">abbr gacp &#x27;git-add-commit-push&#x27;</code></pre>
+<p>to the Fish shell configuration.</p>
+<p>Another great thing about this setup is the ease of looking up commands. Often I find myself in need of some bash code which I have used in one of the scripts. To see the code from the terminal in Fish, use <code>cat &#40;which &lt;script&gt;&#41;</code>. For example, <code>cat &#40;which git-add-commit-push&#41;</code> gives</p>
+<pre><code class="julia hljs">$ cat (which git-add-commit-push)
+<span class=hljs-comment >#!/nix/store/ajwff4bi6mp2n7517ps890rnk4xgzj4r-fish-3.0.2/bin/fish</span>
+
+git add .
+git commit -m <span class=hljs-string >&quot;$1&quot;</span>
+git push</code></pre>
+<h2 id=home_manager ><a href="#home_manager">Home Manager</a></h2>
+<p>Actually, <a href="https://github.com/rycee/home-manager">Home Manager</a> is not the prettiest part of NixOS. It seems to be an extension of the configuration provided by the vanilla operating system. The installation instructions on Github advise to do all kind of mutation operations. To avoid this we import the folder <code>home-manager</code> somewhere in our configuration.</p>
+<pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/configuration.nix</span>
+
+<span class=hljs-attr >imports</span> = [
+  ./home-manager
+];</code></pre>
+<p>This works only if our folder contains a <code>default.nix</code> file. So, lets create that and import home-manager. Here the version &#40;ref&#41; is fixed to <code>19.09</code>. &#40;You can decide to not fix the version. However, it might cause your system to suddenly break one day.&#41; The imports below the <code>fetchGit</code> line define specific home-manager configurations.</p>
+<pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/home-manager/default.nix</span>
+
+<span class=hljs-attr >imports</span> = [
+  <span class=hljs-string >&quot;<span class=hljs-subst >${<span class=hljs-built_in >builtins</span>.fetchGit {
+    <span class=hljs-attr >url</span> = <span class=hljs-string >&quot;https://github.com/rycee/home-manager&quot;</span>;
+    <span class=hljs-attr >ref</span> = <span class=hljs-string >&quot;f856c78a4a220f44b64ce5045f228cbb9d4d9f31&quot;</span>;
+  }</span>}/nixos&quot;</span>
+
+  ./git.nix
+];</code></pre>
+<h2 id=git_credentials ><a href="#git_credentials">Git credentials</a></h2>
+<p>Storing Git credentials took me way too long to figure out. So, here it is. To use the Git credential helper libsecret &#40;gnome-keyring&#41; write</p>
+<pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/home-manager/git.nix</span>
+
+environment.<span class=hljs-attr >systemPackages</span> = [
+  pkgs.gitAndTools.gitFull <span class=hljs-comment ># gitFull contains libsecret.</span>
+]
+
+home-manager.users.rik.programs.<span class=hljs-attr >git</span> = {
+  <span class=hljs-attr >enable</span> = <span class=hljs-literal >true</span>;
+
+  <span class=hljs-comment ># Some omitted settings.</span>
+
+  <span class=hljs-attr >extraConfig</span> = {
+    credential.<span class=hljs-attr >helper</span> = <span class=hljs-string >&quot;libsecret&quot;</span>;
+  };
+};</code></pre>
+<h2 id=r ><a href="#r">R</a></h2>
+<p>The R programming language is a language with built-in support for package installations. R is immutable in NixOS. To install packages two wrappers are provided. One for R and one for RStudio. Next an example is given to configure R and RStudio with various packages from CRAN, and one package built from GitHub source. Specifying the package from GitHub in the NixOS configuration avoids having to run <code>devtools::install_github&#40;&quot;&lt;repository&gt;&quot;&#41;</code> on each computer.</p>
+<pre><code class="nix hljs"><span class=hljs-comment ># /etc/nixos/r.nix</span>
+{ pkgs, ... }:
+<span class=hljs-keyword >with</span> pkgs;
+<span class=hljs-keyword >let</span>
+  <span class=hljs-attr >papajaBuildInputs</span> = <span class=hljs-keyword >with</span> rPackages; [
+    afex
+    base64enc
+    beeswarm
+    bookdown
+    broom
+    knitr
+    rlang
+    rmarkdown
+    rmdfiltr
+    yaml
+  ];
+  <span class=hljs-attr >papaja</span> = <span class=hljs-keyword >with</span> rPackages; buildRPackage {
+  <span class=hljs-attr >name</span> = <span class=hljs-string >&quot;papaja&quot;</span>;
+  <span class=hljs-attr >src</span> = pkgs.fetchFromGitHub {
+    <span class=hljs-attr >owner</span> = <span class=hljs-string >&quot;crsh&quot;</span>;
+    <span class=hljs-attr >repo</span> = <span class=hljs-string >&quot;papaja&quot;</span>;
+    <span class=hljs-attr >rev</span> = <span class=hljs-string >&quot;b0a224a5e67e1afff084c46c2854ac6f82b12179&quot;</span>;
+    <span class=hljs-attr >sha256</span> = <span class=hljs-string >&quot;14pxnlgg7pzazpyx0hbv9mlvqdylylpb7p4yhh4w2wlcw6sn3rwj&quot;</span>;
+    };
+    <span class=hljs-attr >propagatedBuildInputs</span> = papajaBuildInputs;
+    <span class=hljs-attr >nativeBuildInputs</span> = papajaBuildInputs;
+  };
+  <span class=hljs-attr >my-r-packages</span> = <span class=hljs-keyword >with</span> rPackages; [
+    bookdown
+    dplyr
+    papaja
+  ];
+  <span class=hljs-attr >R-with-my-packages</span> = pkgs.rWrapper.override{
+    <span class=hljs-attr >packages</span> = my-r-packages;
+  };
+  <span class=hljs-attr >RStudio-with-my-packages</span> = rstudioWrapper.override{
+    <span class=hljs-attr >packages</span> = my-r-packages;
+  };
+<span class=hljs-keyword >in</span> {
+  environment.<span class=hljs-attr >systemPackages</span> = <span class=hljs-keyword >with</span> pkgs; [
+    R-<span class=hljs-keyword >with</span>-my-packages
+    RStudio-<span class=hljs-keyword >with</span>-my-packages
+  ];
+}</code></pre>
+<div class=page-foot >
+  <div class=copyright >
+    <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> Rik Huijzer. Last updated: October 22, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
