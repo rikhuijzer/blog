@@ -14,6 +14,30 @@
     <pubDate>Fri, 22 Mar 2019 00:00:00 UT</pubDate>
   </item>
   <item>
+    <title>Entr</title>
+    <link>https://huijzer.xyz/posts/entr/index.html</link>
+    <description><![CDATA[A tool for executing commands automatically upon file changes.
+<br><a href="https://huijzer.xyz/posts/entr/index.html">Read more</a>]]></description>
+    <guid>https://huijzer.xyz/posts/entr/index.html</guid>
+    <pubDate>Thu, 22 Oct 2020 00:00:00 UT</pubDate>
+  </item>
+  <item>
+    <title>Benefits of writing blog posts</title>
+    <link>https://huijzer.xyz/posts/blog-benefits/index.html</link>
+    <description><![CDATA[Convincing myself of why writing is a good habit to have.
+<br><a href="https://huijzer.xyz/posts/blog-benefits/index.html">Read more</a>]]></description>
+    <guid>https://huijzer.xyz/posts/blog-benefits/index.html</guid>
+    <pubDate>Thu, 22 Oct 2020 00:00:00 UT</pubDate>
+  </item>
+  <item>
+    <title>Highlights of my NixOS configuration</title>
+    <link>https://huijzer.xyz/posts/nixos/index.html</link>
+    <description><![CDATA[Also, promoting NixOS a bit.
+<br><a href="https://huijzer.xyz/posts/nixos/index.html">Read more</a>]]></description>
+    <guid>https://huijzer.xyz/posts/nixos/index.html</guid>
+    <pubDate>Thu, 22 Oct 2020 00:00:00 UT</pubDate>
+  </item>
+  <item>
     <title>More goodies</title>
     <link>https://huijzer.xyz/menu2/index.html</link>
     <description><![CDATA[A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg" alt="" />
