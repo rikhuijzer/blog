@@ -2,18 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-    <loc>https://huijzer.xyz/menu3/index.html</loc>
-    <lastmod>2020-10-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://huijzer.xyz/menu1/index.html</loc>
-    <lastmod>2020-10-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://huijzer.xyz/index.html</loc>
     <lastmod>2020-10-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -87,12 +75,6 @@
 </url>
 <url>
     <loc>https://huijzer.xyz/posts/nixos/index.html</loc>
-    <lastmod>2020-10-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://huijzer.xyz/menu2/index.html</loc>
     <lastmod>2020-10-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
