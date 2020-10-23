@@ -1,0 +1,489 @@
+---
+title: "Statistical power"
+author: "Rik Huijzer"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+header-includes:
+  - \usepackage{amsmath}
+output:   
+  bookdown::html_document2:
+    css: style.css
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 2
+    fig_caption: true
+    number_sections: true
+    theme: cosmo        
+    highlight: kate
+    df_print: kable
+    code_folding: show
+  pdf_document:
+    toc: yes
+csl: ../style/apa-old-doi-prefix.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, message=FALSE}
+library(tidyverse)
+library(gridExtra)
+```
+
+# Simulations
+## Helper functions
+```{r}
+# Convert array of numbers to dataframe with single column.
+numbers2df <- function(X) {
+  X <- as.numeric(X) # I don't know why, but plotting libraries need this.
+  X <- tibble(X = X) # # ggplot needs a dataframe.
+  return(X)
+}
+
+# Transparant theme for ggplot which looks better on website.
+transparent_theme <- theme(
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.key = element_rect(fill = "transparent", colour = NA), # get rid of key legend fill, and of the surrounding
+    axis.line = element_line(colour = "black") # adding a black line for x and y axis
+)
+
+image.path <- function(filename) sprintf("../images/power/%s.svg", filename)
+```
+
+```{r}
+# Remove all images to avoid unused images to be kept.
+unlink(image.path("*"))
+```
+
+## Number of accidents
+```{r, message=FALSE, warning=FALSE}
+set.seed(2020-02-10)
+
+P_with = 0.0012
+
+run_trial <- function(n_samples, P) {
+  X <- runif(1:n_samples, 0, 1)
+  # Number of accidents after taking n samples.
+  return(sum(X < P))
+}
+
+run_trials <- function(n_samples, P, n_trials) {
+  results <- 1:n_trials %>% map(function(x) run_trial(n_samples, P))
+  return(numbers2df(results))
+}
+
+my_round <- function(x) format(round(x, 1), nsmall = 1)
+variance <- function() TeX('$\\mu^2')
+mean_var <- function(X) sprintf("mean = %s, and variance = %s", my_round(mean(X)), my_round(var(X)))
+
+n_samples = 100000 # sample size per trial.
+
+ggplot_hist <- function(n_samples, name, P, n_trials) {
+  df <- run_trials(n_samples, P, n_trials)
+  print(mean_var(df$X))
+  p <- ggplot(df, aes(X)) + 
+    geom_histogram(binwidth = 1) +
+    xlab("number of accidents per 100 000 right turns") +
+    ylab("frequency") +
+    scale_x_continuous(limits = c(0, 200)) + 
+    transparent_theme
+  ggsave(file=image.path(name), plot=p, width=7, height=4, bg="transparent")
+  return(p)
+}
+
+ggplot_dens <- function(n_samples, name, P, n_trials) {
+  df <- run_trials(n_samples, P, n_trials)
+  print(mean_var(df$X))
+  p <- ggplot(df, aes(X)) + 
+    geom_density() +
+    xlab("number of accidents per 100 000 right turns") +
+    scale_x_continuous(limits = c(0, 200)) + 
+    transparent_theme +
+    stat_function(fun=dbinom, args = list(size = 100000, prob = P_with), linetype="dashed") +
+    annotate("text", 155, 0.038, label = "Number of accidents") +
+    annotate("text", 90, 0.034, label = "B(100 000, 0.0012)")
+  ggsave(file=image.path(name), plot=p, width=7, height=4, bg="transparent")
+  return(p)
+}
+
+ggplot_hist(n_samples, "multiple-years", P_with, 20)
+ggplot_dens(n_samples, "many-years", P_with, 100)
+ggplot_dens(n_samples, "many-many-years", P_with, 1000)
+```
+
+## Comparing binomial and normal distributions
+```{r, message=FALSE}
+mu.n <- 120
+
+p <- ggplot(data.frame(x = c(0,200)), aes(x)) +
+  stat_function(fun=dbinom, args = list(size = 100000, prob = 0.0012), show.legend = TRUE, aes(colour = "B(100 000, 0.0012)")) +
+  stat_function(fun=dbinom, args = list(size = 1000, prob = 0.12), show.legend = TRUE, aes(colour = "B(1000, 0.12)")) +
+  stat_function(fun=dnorm, args = list(mean = mu.n, sd = sqrt(mu.n)), show.legend = TRUE, aes(colour = "N(120, sqrt(120))")) +
+  transparent_theme +
+  scale_colour_manual("Distributions", values = c("blue", "black", "green"))
+ggsave(file=image.path("binomial-and-normal-distributions"), plot=p, width=7, height=4, bg="transparent")
+p
+```
+
+## Uniform to normal distribution
+```{r}
+# Make more generic than above. 
+# For the plot take a function.
+
+# Returns a combined plot for a histogram function and distribution function.
+plot_hist_and_fn <- function(n, hist_fn, name, dist_fn) {
+  df <- numbers2df(1:n %>% map(hist_fn))
+  print(mean_var(df$X))
+  p = ggplot(df, aes(X)) + 
+    geom_histogram(binwidth=1) +
+    xlab("number of accidents per 100 000 right turns") +
+    ylab("frequency") +
+    scale_x_continuous(limits = c(0, 200)) + 
+    transparent_theme + 
+    stat_function(fun=dist_fn, colour="blue")
+  # ggsave(file=image.path(name), plot=p, bg="transparent")
+  return(p)
+}
+```
+
+## Deriving the sample distribution
+```{r}
+set.seed(2020-02-09) # To allow reproducing this section separately.
+```
+
+If we take only a few samples from a normal distribution these will have a higher variance than the normal distribution.
+
+```{r, message=FALSE, warning=FALSE}
+sd <- sqrt(mu.n)
+generate_sample <- function(n) mean(rnorm(n, mean = mu.n, sd = sd))
+
+generate_samples <- function(n_samples, n_trials) {
+  results <- 1:n_trials %>% map(function(x) generate_sample(n_samples))
+  return(results)
+}
+
+ggplot_dens <- function(n_samples, n_trials, name) {
+  df <- numbers2df(generate_samples(n_samples, n_trials))
+  print(mean_var(df$X))
+  p <- ggplot(df, aes(X)) + 
+    geom_histogram(binwidth=1) +
+    xlab("number of accidents") +
+    scale_x_continuous(limits = c(0, 200)) + 
+    transparent_theme
+  ggsave(file=image.path(name), plot=p, width=7, height=4, bg="transparent")
+  return(p)
+}
+
+n_trials <- 10000
+ggplot_dens(1, n_trials, "one-sample-distribution")
+ggplot_dens(2, n_trials, "two-sample-distribution")
+
+dnorm(mu.n, mean=mu.n, sd=sd)
+dnorm(120, mean=mu.n, sd=sd)
+
+# Remove population mean
+generate_Si <- function(n) rnorm(n, mean=mu.n, sd=sd)
+df <- tibble(Samples = 1:1e5 %>% map(function(x) generate_Si(2)))
+df$Mean <- as.numeric(df$Samples %>% map(mean))
+df$Sd <- as.numeric(df$Samples %>% map(function(x) sd(x, na.rm=TRUE)))
+df$X <- as.numeric(df$Mean - mu.n)
+
+p <- ggplot(df, aes(X)) + 
+  geom_histogram(binwidth = 0.1) +
+  xlab("number of accidents") +
+  transparent_theme
+ggsave(file=image.path("two-sample-without-mean"), plot=p, width=7, height=4, bg="transparent")
+p
+
+# Remove distribution's standard deviation
+df$W <- df$X / (sqrt(65) / sqrt(2))
+p <- ggplot(df, aes(W)) + 
+  geom_histogram(binwidth = 0.1) +
+  scale_x_continuous(limits = c(-4, 4)) + 
+  xlab("number of accidents") +
+  transparent_theme
+ggsave(file=image.path("two-sample-without-sd"), plot=p, bg="transparent")
+p
+
+# Add t distribution
+p <- ggplot(df, aes(W)) + 
+  geom_density() +
+  xlab("number of accidents") +
+  transparent_theme + 
+  scale_y_continuous(limits = c(0, 0.42)) + 
+  scale_x_continuous(limits = c(-4, 4)) + 
+  stat_function(fun=dt, args=list(df = 1), show.legend = TRUE, aes(colour = "T(1)"))
+ggsave(file=image.path("two-sample-with-t-1"), plot=p, width=7, height=4, bg="transparent")
+p
+```
+**Still incorrect, don't know why**
+
+## Comparing normal and t-distributions
+```{r, message=FALSE}
+p <- ggplot(data.frame(x = c(-4,4)), aes(x)) +
+  stat_function(fun=dnorm, args = list(mean = 0, sd = 1)) +
+  stat_function(fun=dt, args = list(df = 5), linetype="dotted") +
+  stat_function(fun=dt, args = list(df = 1), linetype="dashed") +
+  transparent_theme +
+  annotate("text", 0, 0.42, label = "N(0, 1)") +
+  annotate("text", 0, 0.35, label = "T(5)") +
+  annotate("text", 0, 0.28, label = "T(1)") +
+  scale_colour_manual("Distributions", values = c("blue", "black", "green", "red"))
+ggsave(file=image.path("normal-and-t-distributions"), width=7, height=4, plot=p, bg="transparent")
+p
+```
+
+## Some samples
+```{r}
+set.seed(2020-02-13)
+n_samples <- 12
+samples <- tibble(
+  index = 1:n_samples,
+  without = as.numeric(map(rnorm(n_samples, mean = 100, sd = sqrt(mu.n)), my_round)),
+  with = as.numeric(map(rnorm(n_samples, mean = mu.n, sd = sqrt(mu.n)), my_round))
+)
+head(samples, 10)
+```
+
+## Single calculation example
+```{r}
+n = 2
+x = samples$with[1:n]
+t = (mean(x) - 100) /(sd(x) / sqrt(n))
+t
+s <- sd(x)
+sprintf("s: %s", s)
+
+# Two-sided 95% CI
+qt(0.975, df=n-1)
+
+t.test(x, mu = 100, alternative="two.sided", var.equal = TRUE)
+```
+## t-distribution one versus two sided
+```{r}
+n = 2
+right.one.sided <- qt(0.80, df=n-1)
+right.one.sided
+
+p <- ggplot(data.frame(x = c(-4,4)), aes(x)) +
+  stat_function(fun=dt, args = list(df = n-1), colour="black") +
+  stat_function(fun=dt, args = list(df = n-1), xlim=c(-4,right.one.sided), geom="area", alpha=0.4, fill="blue", show.legend = FALSE) +
+  stat_function(fun=dt, args = list(df = n-1), xlim=c(-right.one.sided,right.one.sided), geom="area", alpha=0.2, fill="blue", show.legend = TRUE) +
+  transparent_theme +
+  annotate("text", -2.8, 0.38, label = "20%") +
+  annotate("text", -right.one.sided - 0.25, 0.35, label = "-a") +
+  geom_vline(aes(xintercept=-right.one.sided), colour="blue", alpha=0.2, linetype="dashed") +
+  annotate("text", 0, 0.38, label = "60%") +
+  geom_vline(aes(xintercept=right.one.sided), colour="blue", alpha=0.2, linetype="dashed") +
+  annotate("text", 2.8, 0.38, label = "20%") +
+  ylab("probability") +
+  annotate("text", right.one.sided - 0.25, 0.35, label = "a") +
+  theme(legend.position = "none")
+ggsave(file=image.path("t-one-versus-two-sided"), width=8, height=4, plot=p, bg="transparent")
+p
+```
+
+## Output for two samples plotted
+```{r, message=FALSE}
+one.sided.95 <- qt(0.95, df=1)
+two.sided.95 <- qt(0.975, df=1)
+round.3 <- function(x) format(round(x, 3), nsmall=3)
+
+p <- ggplot(data.frame(x = c(-0.5,5)), aes(x)) +
+  stat_function(fun=dt, args = list(df = 1), show.legend = FALSE, aes(colour = "T(n-1) = T(1)")) +
+  transparent_theme +
+  geom_vline(aes(xintercept=one.sided.95, colour = sprintf("x = %s (one-sided 95%% critical value)", round.3(one.sided.95))), linetype="dashed") +
+  geom_vline(aes(xintercept=two.sided.95, colour = sprintf("x = %s (two-sided 95%% critical value)", round.3(two.sided.95))), linetype="dashed") +
+  geom_vline(aes(xintercept=t, colour = sprintf("x = %s (calculated t-value)", round.3(t))), linetype="dashed") +
+  ylab("probability") + 
+  theme(legend.title = element_blank())
+ggsave(file=image.path("t-and-critical-values"), width=7, height=3, plot=p, bg="transparent")
+p
+```
+
+## Doing multiple t-tests
+```{r}
+get.p <- function(n, alternative, use.population=FALSE) {
+  X <- samples$without[1:n]
+  Y <- samples$with[1:n]
+  if (use.population) {
+    return(t.test(Y, mu = 100, alternative = alternative, var.equal = TRUE)$p.value)
+  } else {
+    return(t.test(Y, X, alternative = alternative, var.equal = TRUE)$p.value)
+  }
+}
+
+plot.power <- function(name, use.population=FALSE) {
+  df <- tibble(x = 2:n_samples)
+  df$p.greater <- as.numeric(df$x %>% map(function(x) get.p(x, "greater", use.population = use.population)))
+  df$p.two.sided <- as.numeric(df$x %>% map(function(x) get.p(x, "two.sided", use.population = use.population)))
+  
+  df1 <- tibble(x = 2:n_samples)
+  df1$p <- as.numeric(df$x %>% map(function(x) get.p(x, "two.sided", use.population = use.population)))
+  df1$alternative = "two.sided"
+  
+  df2 <- tibble(x = 2:n_samples)
+  df2$p <- as.numeric(df$x %>% map(function(x) get.p(x, "greater", use.population = use.population)))
+  df2$alternative = "greater"
+  
+  df3 <- tibble(x = 2:n_samples)
+  df3$p <- as.numeric(df$x %>% map(function(x) get.p(x, "less", use.population = use.population)))
+  df3$alternative = "less"
+  
+  df <- rbind(df1, df2, df3)
+  
+  # To compare manual calculations to.
+  head(df2, 3)
+  head(df1, 3)
+  
+  p <- ggplot(df, aes(x, p)) +
+    geom_point(aes(colour = alternative)) +
+    scale_x_continuous(breaks = 1:n_samples) +
+    geom_hline(yintercept = 0.05) + 
+    geom_line(aes(colour = alternative)) +
+    annotate("text", n_samples - 1, 0.05, vjust = -1, label = "p = 0.05") +
+    xlab("sample size") +
+    ylab("p-value") + 
+    transparent_theme 
+  ggsave(file=image.path(name), plot=p, bg="transparent")
+  return(p)
+}
+
+plot.power("power-one-sample", use.population = TRUE)
+plot.power("power-two-sample", use.population = FALSE)
+```
+
+## Manual cohen's d calculation
+```{r, message=FALSE}
+library(pwr)
+# Checkout the generated html to see variable name and output.
+samples_a <- samples$with[1:2]
+samples_a
+samples_b <- samples$without[1:2]
+samples_b
+s_a <- sd(samples_a)
+s_a
+s_b <- sd(samples_b)
+s_b
+m_a <- mean(samples_a)
+m_a
+m_b <- mean(samples_b)
+m_b
+
+s_p <- sqrt((s_a^2 + s_b^2) / 2)
+s_p
+d <- (m_a - m_b) / s_p
+d
+pwr.t.test(n=2, d=d, sig.level=0.05, alternative="two.sided")
+  
+```
+
+## Plotting the value for d over multiple samples
+```{r}
+plot.d <- function(n, name) {
+  
+  get.d <- function(n) {
+    S_a <- samples$with[1:n]
+    S_b <- samples$without[1:n]
+    
+    s_p <- function(S_a, S_b) sqrt((sd(S_a)^2 + sd(S_b)^2) / 2)
+    d <- function(S_a, S_b) (mean(S_a) - mean(S_b)) / s_p(S_a, S_b)
+    
+    print(sprintf("n: %s, s_p: %s, d: %s", n, s_p(S_a, S_b), d(S_a, S_b)))
+    return(d(S_a, S_b))
+  }
+  
+  get.d(2)
+  df <- tibble(x = 2:n)
+  df$d <- as.numeric(df$x %>% map(get.d))
+  
+  print(head(df, 4))
+  
+  p <- ggplot(df, aes(x, d)) +
+    geom_point() +
+    geom_line() +
+    scale_x_continuous(breaks = 1:n_samples) +
+    xlab("sample size") +
+    expand_limits(y=0) + 
+    ylab("Cohen's d") + 
+    transparent_theme 
+  ggsave(file=image.path(name), width=7, height=3, plot=p, bg="transparent")
+  return(p)
+}
+
+plot.d(12, "d")
+```
+
+## Power analysis (as simple and straightforward as possible)
+```{r}
+# Estimating effect size as a function of n, d, and alpha
+# This assumes that our effect size is 1.
+# Combine plot with one for effect size is 0.5.
+pwr.t.test(n=2, d=1, sig.level=0.05, alternative="two.sided")
+
+partial.test.8 <- function(n) pwr.t.test(n=n, d=0.8, sig.level=0.05, alternative="two.sided")$power
+partial.test.5 <- function(n) pwr.t.test(n=n, d=0.5, sig.level=0.05, alternative="two.sided")$power
+partial.test.2 <- function(n) pwr.t.test(n=n, d=0.2, sig.level=0.05, alternative="two.sided")$power
+
+p <- ggplot(data.frame(x = c(2, 200)), aes(x)) +
+  stat_function(fun=partial.test.8) +
+  stat_function(fun=partial.test.5) +
+  stat_function(fun=partial.test.2) +
+  ylab("power") +
+  xlab("sample size") +
+  transparent_theme +
+  annotate("text", 25, 0.95, label="d = 0.80") +
+  annotate("text", 60, 0.65, label="d = 0.50") + 
+  annotate("text", 120, 0.4, label="d = 0.20")
+ggsave(file=image.path("varying-d"), width=7, height=4, plot=p, bg="transparent")
+p
+```
+
+```{r}
+# For example in text
+pwr.t.test(d=0.5, power=0.6, sig.level=0.05, alternative="two.sided")
+pwr.t.test(n=2, d=0.5, sig.level=0.05, alternative="two.sided")
+```
+
+```{r}
+# Type I error versus type II error
+partial.test.n2 <- function(a) pwr.t.test(n=2, d=0.5, sig.level=a, alternative="two.sided")$power
+partial.test.n20 <- function(a) pwr.t.test(n=20, d=0.5, sig.level=a, alternative="two.sided")$power
+partial.test.n80 <- function(a) pwr.t.test(n=80, d=0.5, sig.level=a, alternative="two.sided")$power
+
+p <- ggplot(data.frame(x = c(0,1)), aes(x)) +
+  stat_function(fun=partial.test.n2) +
+  stat_function(fun=partial.test.n20) +
+  stat_function(fun=partial.test.n80) +
+  ylab("power") +
+  xlab("significance level") +
+  scale_x_continuous(trans = "reverse") +
+  transparent_theme +
+  annotate("text", 0.50, 0.45, label="n = 2") +
+  annotate("text", 0.32, 0.65, label="n = 20") +
+  annotate("text", 0.12, 0.85, label="n = 80") +
+  geom_vline(aes(xintercept=0.05), linetype="dashed") +
+  annotate("text", 0.13, 0.02, label="p = 0.05")
+ggsave(file=image.path("varying-n"), width=7, height=4, plot=p, bg="transparent")
+p
+
+```
+
+```{r}
+pwr.t.test(n=2, d=0.5, sig.level=0.05, alternative="two.sided")$power
+pwr.t.test(n=20, d=0.5, sig.level=0.05, alternative="two.sided")$power
+pwr.t.test(n=80, d=0.5, sig.level=0.05, alternative="two.sided")$power
+```
+
+# Appendix
+
+## R version
+```{r version}
+sessionInfo()
+```
