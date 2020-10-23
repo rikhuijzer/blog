@@ -1,0 +1,155 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Niceties in the Julia programming language - Huijzer.xyz </title> <meta property="og:title" content="Niceties in the Julia programming language" /> <meta property="og:type" content=article  /> <meta property="og:description" content="A quick walk through some Julia syntax and interesting features." /> <meta property="article:modified_time" content=2020-10-23T19:27:12.465+00:00 /> <meta name="twitter:card" content=summary  /> <meta name="twitter:title" content="Niceties in the Julia programming language" /> <meta name="twitter:description" content="A quick walk through some Julia syntax and interesting features." /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content > <h1>Niceties in the Julia programming language</h1> </div> <div class=franklin-content > <p>In general I&#39;m quite amazed by the Julia programming language. This blog post aims to be a demonstration of its niceties. The post targets readers who have programming experience. To aid in the rest of the examples we define a struct and its instantiation in a variable.</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> MyStruct
+  a::<span class=hljs-built_in >Number</span>
+  b::<span class=hljs-built_in >Number</span>
+<span class=hljs-keyword >end</span>
+
+structs = [MyStruct(<span class=hljs-number >1</span>, <span class=hljs-number >2</span>), MyStruct(<span class=hljs-number >3</span>, <span class=hljs-number >4</span>)]</code></pre> <div class=franklin-toc ><ol><li><a href="#functions_and_methods">Functions and methods</a><li><a href="#higher-order_functions">Higher-order functions</a><li><a href="#unpacking">Unpacking</a><li><a href="#metaprogramming">Metaprogramming</a></ol></div> <h2 id=functions_and_methods ><a href="#functions_and_methods">Functions and methods</a></h2> <p>For object-oriented programmers the distinction between a function and a method is simple. If it is inside a class it is a method, otherwise it is a function. In Julia we can use <em>function overloading</em>. This means that the types of the input parameters, or <em>signatures</em>, are used to determine what &lt;thing&gt; should be called. In Julia these &lt;things&gt; are called <em>methods</em>. For example we can define the following methods for the function <code>f</code>.</p> <pre><code class="julia hljs">julia&gt; f(a, b) = a * b
+f (generic <span class=hljs-keyword >function</span> with <span class=hljs-number >1</span> method)
+
+julia&gt; f(<span class=hljs-number >2</span>, <span class=hljs-number >3</span>)
+<span class=hljs-number >6</span>
+
+julia&gt; f(a::<span class=hljs-built_in >Int64</span>, b::<span class=hljs-built_in >String</span>) = string(a) * b
+f (generic <span class=hljs-keyword >function</span> with <span class=hljs-number >2</span> methods)
+
+julia&gt; f(<span class=hljs-number >2</span>, <span class=hljs-string >&quot;3&quot;</span>)
+<span class=hljs-string >&quot;23&quot;</span></code></pre> <p>One of the distinguishing features of Julia is the <em>multiple dispatch</em>. Basically, multiple dispatch creates an unique function in the LLVM assembly language for each signature.</p> <pre><code class="julia hljs">julia&gt; <span class=hljs-meta >@code_llvm</span> f(<span class=hljs-number >2</span>, <span class=hljs-number >3</span>)
+define i64 <span class=hljs-meta >@julia_f_35436</span>(i64, i64) {
+top:
+  %<span class=hljs-number >2</span> = mul i64 %<span class=hljs-number >1</span>, %<span class=hljs-number >0</span>
+  ret i64 %<span class=hljs-number >2</span>
+}
+
+julia&gt; <span class=hljs-meta >@code_llvm</span> f(<span class=hljs-number >2</span>, <span class=hljs-number >3.0</span>)
+define double <span class=hljs-meta >@julia_f_35477</span>(i64, double) {
+top:
+  %<span class=hljs-number >2</span> = sitofp i64 %<span class=hljs-number >0</span> to double
+  %<span class=hljs-number >3</span> = fmul double %<span class=hljs-number >2</span>, %<span class=hljs-number >1</span>
+  ret double %<span class=hljs-number >3</span>
+}</code></pre> <p>Since Julia is dynamically compiled these LLVM functions are compiled only when called for the first time. Pretty neat I would say. However, for most of my use cases I&#39;m spending most of my time on typing code and not waiting for the program to finish. The next section goes into more high-level capabilities.</p> <h2 id=higher-order_functions ><a href="#higher-order_functions">Higher-order functions</a></h2> <p>Higher-order functions either take one or more functions as arguments or return a function. Lets start by defining some functions on the <code>MyStruct</code> struct defined at the start of this post. In the REPL or in Jupyter &#40;IJulia&#41; we can inspect the struct by using the built-in help.</p> <pre><code class="julia hljs">julia&gt; ?
+help?&gt; MyStruct
+search: MyStruct
+
+  No documentation found.
+
+  Summary
+  ≡≡≡≡≡≡≡≡≡
+
+  <span class=hljs-keyword >struct</span> MyStruct &lt;: <span class=hljs-built_in >Any</span>
+
+  Fields
+  ≡≡≡≡≡≡≡≡≡
+
+  a :: <span class=hljs-built_in >Number</span>
+  b :: <span class=hljs-built_in >Number</span></code></pre> <p>We define the following methods.</p> <pre><code class="julia hljs">julia&gt; increase_a(ms::MyStruct) = MyStruct(ms.a + <span class=hljs-number >1</span>, ms.b)
+julia&gt; decrease_a(ms::MyStruct) = MyStruct(ms.a - <span class=hljs-number >1</span>, ms.b)</code></pre> <p>In object-oriented languages &#40;OOP&#41; we would have defined these methods in some class. When using an IDE you find these methods by typing <code>MyStruct.</code> and wait for the autocomplete to show suggestions. In Julia you can use <code>methodswith</code>.</p> <pre><code class="julia hljs">julia&gt; methodswith(MyStruct)
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Method</span>,<span class=hljs-number >1</span>}:
+  • increase_a(data::MyStruct) <span class=hljs-keyword >in</span> Main at REPL[<span class=hljs-number >3</span>]:<span class=hljs-number >1</span>
+  • decrease_a(data::MyStruct) <span class=hljs-keyword >in</span> Main at REPL[<span class=hljs-number >4</span>]:<span class=hljs-number >1</span></code></pre> <p>Well-known higher-order functions are <code>map</code>, <code>filter</code>, and <code>reduce</code>. These are all available. Next we demonstrate only <code>filter</code>, <code>map</code> and some syntactic sugar for <code>map</code>.</p> <pre><code class="julia hljs">julia&gt; structs
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{MyStruct,<span class=hljs-number >1</span>}:
+ MyStruct(<span class=hljs-number >1</span>, <span class=hljs-number >2</span>)
+ MyStruct(<span class=hljs-number >3</span>, <span class=hljs-number >4</span>)
+
+julia&gt; filter(s -&gt; s.a == <span class=hljs-number >1</span>, structs)
+<span class=hljs-number >1</span>-element <span class=hljs-built_in >Array</span>{MyStruct,<span class=hljs-number >1</span>}:
+ MyStruct(<span class=hljs-number >1</span>, <span class=hljs-number >2</span>)
+
+julia&gt; map(increase_a, structs)
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{MyStruct,<span class=hljs-number >1</span>}:
+ MyStruct(<span class=hljs-number >2</span>, <span class=hljs-number >2</span>)
+ MyStruct(<span class=hljs-number >4</span>, <span class=hljs-number >4</span>)
+
+julia&gt; increase_a.(structs)
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{MyStruct,<span class=hljs-number >1</span>}:
+ MyStruct(<span class=hljs-number >2</span>, <span class=hljs-number >2</span>)
+ MyStruct(<span class=hljs-number >4</span>, <span class=hljs-number >4</span>)
+
+julia&gt; increase_a.(increase_a.(structs))
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{MyStruct,<span class=hljs-number >1</span>}:
+ MyStruct(<span class=hljs-number >3</span>, <span class=hljs-number >2</span>)
+ MyStruct(<span class=hljs-number >5</span>, <span class=hljs-number >4</span>)</code></pre> <p>Another use of applying functions is when you want to define conversions on a dataset. Suppose we want to be able to specify one or more conversions and apply this to the complete dataset. For example, lets define two simple functions and put them in an array:</p> <pre><code class="julia hljs">julia&gt; double(x) = <span class=hljs-number >2</span>x
+double (generic <span class=hljs-keyword >function</span> with <span class=hljs-number >1</span> method)
+
+julia&gt; add(x) = x + <span class=hljs-number >1</span>
+add (generic <span class=hljs-keyword >function</span> with <span class=hljs-number >1</span> method)
+
+julia&gt; conversions = [double, add]
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Function</span>,<span class=hljs-number >1</span>}:
+  double
+  add</code></pre> <p>We want to be able to apply such an array of type <code>Array&#123;Function,1&#125;</code> to a dataset element. Using <code>map</code> over the function elements is not a solution, since we want the input to be an array:</p> <pre><code class="julia hljs">julia&gt; input = [<span class=hljs-number >3</span>, <span class=hljs-number >4</span>]
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Int64</span>,<span class=hljs-number >1</span>}:
+  <span class=hljs-number >3</span>
+  <span class=hljs-number >4</span></code></pre> <p>We could use a <code>for</code> loop, which would look something like</p> <pre><code class="julia hljs">julia&gt; <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> input
+    result = i
+    <span class=hljs-keyword >for</span> func <span class=hljs-keyword >in</span> conversions
+      result = func(result)
+    <span class=hljs-keyword >end</span>
+    println(result)
+  <span class=hljs-keyword >end</span></code></pre> <p>&#40;and prints the correct answers only in a Notebook and not on the REPL&#41;. This is way too long, especially if we would include the code to put the elements in an output array.</p> <p>A much cleaner way is to apply the function composition operator &#40;<code>∘</code>&#41; to chain the functions in one new function. Since the function composition is a binary operator we can use reduce to call it on more than one pair.</p> <pre><code class="julia hljs">julia&gt; map(x -&gt; reduce(∘, conversions)(x), input)
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Int64</span>,<span class=hljs-number >1</span>}:
+  <span class=hljs-number >8</span>
+  <span class=hljs-number >10</span></code></pre> <p>&#40;again, works only in a Notebook.&#41; Note that the functions are applied in reverse order.</p> <h2 id=unpacking ><a href="#unpacking">Unpacking</a></h2> <p>Just like in Python, there is syntax to unpack collections. For example, lets consider a tuple:</p> <pre><code class="julia hljs">julia&gt; c = (<span class=hljs-number >1</span>, <span class=hljs-number >2</span>)
+(<span class=hljs-number >1</span>, <span class=hljs-number >2</span>)
+
+julia&gt; l = [c...]
+<span class=hljs-number >2</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Int64</span>,<span class=hljs-number >1</span>}:
+ <span class=hljs-number >1</span>
+ <span class=hljs-number >2</span></code></pre> <p>This list can also be unpacked:</p> <pre><code class="julia hljs">julia&gt; [<span class=hljs-number >9</span>, l...]
+<span class=hljs-number >3</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Int64</span>,<span class=hljs-number >1</span>}:
+ <span class=hljs-number >9</span>
+ <span class=hljs-number >1</span>
+ <span class=hljs-number >2</span></code></pre> <p>The most useful applications are usually when passing parameters to functions.</p> <pre><code class="julia hljs">julia&gt; z(a, b, c) = <span class=hljs-string >&quot;<span class=hljs-variable >$a</span> | <span class=hljs-variable >$b</span> | <span class=hljs-variable >$c</span>&quot;</span>
+z (generic <span class=hljs-keyword >function</span> with <span class=hljs-number >1</span> method)
+
+julia&gt; z(c..., <span class=hljs-number >4</span>)
+<span class=hljs-string >&quot;1 | 2 | 4&quot;</span></code></pre> <p>For named tuples, the names are ignored.</p> <pre><code class="julia hljs">julia&gt; z((b = <span class=hljs-number >1</span>, d = <span class=hljs-number >2</span>)..., <span class=hljs-number >3</span>)
+<span class=hljs-string >&quot;1 | 2 | 3&quot;</span></code></pre> <h2 id=metaprogramming ><a href="#metaprogramming">Metaprogramming</a></h2> <p>A simple example of metaprogramming in Julia are macros. For example, we can use <code>show</code> to print a variable name and its value:</p> <pre><code class="julia hljs">julia&gt; x = <span class=hljs-number >1</span>
+x = <span class=hljs-number >1</span>
+
+julia&gt; <span class=hljs-meta >@show</span> x
+x = <span class=hljs-number >1</span>
+<span class=hljs-number >1</span></code></pre> <p>Usually source code is written in one file and tests in another. Suppose you want to write your tests right below the functions. Ideally we only run the tests on request and not each time we import the code. This can be realised by using macros and apply some tinkering. A new <code>DTest</code> module could look as follows. <code>DTest</code> here can be read as delayed test.</p> <pre><code class="julia hljs"><span class=hljs-keyword >module</span> DTest
+
+all_dtests = <span class=hljs-built_in >Expr</span>[]
+<span class=hljs-keyword >export</span> all_dtests
+
+<span class=hljs-keyword >macro</span> dtests(ex)
+  push!(all_dtests, ex)
+  esc(:(dtest() = foreach(eval, all_dtests)))
+<span class=hljs-keyword >end</span>
+<span class=hljs-keyword >export</span> <span class=hljs-meta >@dtests</span>
+
+<span class=hljs-keyword >end</span> <span class=hljs-comment ># module</span></code></pre> <p>This module basically adds an <code>@dtest</code> macro which can be used from some client. When the client code looks like</p> <pre><code class="julia hljs"><span class=hljs-meta >@dtest</span>
+  <span class=hljs-meta >@test</span> <span class=hljs-number >1</span> == <span class=hljs-number >2</span>
+<span class=hljs-keyword >end</span></code></pre> <p>then the expression <code>@test 1 &#61;&#61; 2</code> is put in the <code>all_dtests</code> array and the function <code>dtest&#40;&#41; &#61; foreach&#40;eval, all_dtests&#41;</code> is defined. We use <code>esc</code> to ensure that the function is evaluated in the context of <code>Client</code> and not in the context of <code>DTest</code> &#40;so that <code>f</code> and <code>g</code> are available&#41;.</p> <p>To demonstrate a full example lets define a new client module.</p> <pre><code class="julia hljs"><span class=hljs-keyword >module</span> Client
+
+include(<span class=hljs-string >&quot;DTest.jl&quot;</span>)
+<span class=hljs-keyword >using</span> .DTest
+
+g(x) = <span class=hljs-number >3</span>x
+<span class=hljs-meta >@dtests</span> <span class=hljs-keyword >begin</span>
+  <span class=hljs-meta >@testset</span> <span class=hljs-string >&quot;g&quot;</span> <span class=hljs-keyword >begin</span>
+    <span class=hljs-meta >@test</span> g(<span class=hljs-number >2</span>) == <span class=hljs-number >6</span>
+  <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+f(x) = <span class=hljs-number >2</span>x
+<span class=hljs-keyword >export</span> f
+<span class=hljs-meta >@dtests</span> <span class=hljs-keyword >begin</span>
+  <span class=hljs-meta >@testset</span> <span class=hljs-string >&quot;f&quot;</span> <span class=hljs-keyword >begin</span>
+    <span class=hljs-meta >@test</span> f(<span class=hljs-number >3</span>) == <span class=hljs-number >6</span>
+  <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >end</span> <span class=hljs-comment ># module</span></code></pre> <p>We can use and test the module as follows.</p> <pre><code class="julia hljs">julia&gt; include(<span class=hljs-string >&quot;Client.jl&quot;</span>)
+
+julia&gt; <span class=hljs-keyword >using</span> .Client
+
+julia&gt; f(<span class=hljs-number >3</span>)
+<span class=hljs-number >6</span>
+
+julia&gt; Client.dtest()
+Test Summary: | Pass  Total
+g             |    <span class=hljs-number >1</span>      <span class=hljs-number >1</span>
+Test Summary: | Pass  Total
+f             |    <span class=hljs-number >1</span>      <span class=hljs-number >1</span></code></pre> <div class=page-foot > <div class=copyright > <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div>
