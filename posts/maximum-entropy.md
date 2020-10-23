@@ -10,7 +10,7 @@ Say that you are a statistician and are asked to come up with a probability dist
 (This, in Bayesian statistics, is known as choosing a suitable prior.)
 To do this, the safest bet is coming up with the least informative distribution via the *principle of maximum entropy*.
 
-This principle is clearly explained by Jaynes (1968):
+This principle is clearly explained by \citet{jaynes1968}:
 consider a die which has been tossed a very large number of times $N$.
 We expect the average to be $3.5$, that is, we expect the following distribution where $P_n = \frac{1}{6}$ for each $n$.
 
@@ -69,7 +69,7 @@ p |> store_svg("straight") # hide
 ```
 \fig{./straight.svg}
 This solution would also fail if the mean would have been higher, because then $P_0 = 0$ would occur again.
-The correct measure is the following information measure (Shannon, 1948), which is also known as information entropy,
+The correct measure is the following information measure \citep{shannon1948}, which is also known as information entropy,
 
 $$ S_I = - \sum_i p_i \log p_i. $$
 
@@ -77,9 +77,9 @@ We can find $p_i$ for $p_i = 1, 2, \ldots, 6$ by maximizing $S_I$ for given cons
 This problem, known as *MaxEnt*, is hard to solve manually since there are $6$ unknowns and various constraints.
 The solution can be approximated by rewriting it to a linear program.
 
-Alternatively, analytic solutions exist for some subsets of this Shanon entropy maximization problem (Zabarankin and Uryasev, 2014).
+Alternatively, analytic solutions exist for some subsets of this Shanon entropy maximization problem \citep{zabarankin2014}.
 Here, we have that the mean is known (and nothing else), so the number of moments $m$ is $1$.
-Then, the maximum entropy distribution takes the form (Zabarankin and Uryasev, 2014; Eq. 5.1.7)
+Then, the maximum entropy distribution takes the form (\citet{zabarankin2014}; Eq. 5.1.7)
 
 $$ P_n = \frac{e^{\rho n}}{\sum_{n=1}^6 e^{\rho n}}, \: \text{ for } n = 1, 2, ..., 6. $$
 
@@ -94,16 +94,20 @@ p |> store_svg("entropy") # hide
 \fig{./entropy.svg}
 This is the least informative distribution which satisfies the constraints.
 In other words, this is the distribution which can be obtained in the largest number of ways, given the constraints.
-For another example of maximum entropy distributions, see Chapter 10.1 of McElreath (2020).
+For another example of maximum entropy distributions, see Chapter 10.1 of the book by \citet{mcelreath2020}.
 
 ### References
+\biblabel{jaynes1968}{Jaynes (1968)} 
 Jaynes, E. T. (1968). Prior Probabilities. IEEE Transactions on Systems Science and Cybernetics. 4 (3): 227–241. 
 <https://doi.org/10.1109/TSSC.1968.300117>
 
+\biblabel{mcelreath2020}{McElreath (2020)}
 McElreath, R. (2020). Statistical Rethinking: A Bayesian course with examples in R and Stan. CRC press.
 
+\biblabel{shannon1948}{Shannon (1948)}
 Shannon, C. E. (1948). A mathematical theory of communication. The Bell System Technical Journal (Volume: 27 , Issue: 3 , July 1948). <https://doi.org/10.1002/j.1538-7305.1948.tb01338.x>
 
+\biblabel{zabarankin2014}{Zabarankin & Uryasev (2014)}
 Zabarankin M., Uryasev S. (2014) Entropy Maximization. In: Statistical Decision Problems. Springer Optimization and Its Applications, vol 85. Springer, New York, NY. <https://doi.org/10.1007/978-1-4614-8471-4_5>
 
 ## Trial and error

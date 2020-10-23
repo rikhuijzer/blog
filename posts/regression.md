@@ -128,7 +128,7 @@ The method of least squares minimizes
 
 $$ S(p_0, p_1) = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - p_0 - p_1 x_i)^2 $$
 
-with respect to the choice of $p_0$ and $p_1$ (Rice, [2006](#rice2006mathematical)).
+with respect to the choice of $p_0$ and $p_1$ \citep{rice2006}.
 The simplest estimator for the points is the mean.
 
 ```julia:./w-h-mean.jl 
@@ -206,6 +206,7 @@ Logistic regression | 2.02 | 0.89
 So, both metrics improve when switching to the logistic function.
 
 ## References
+\biblabel{rice2006}{Rice (2006)} 
 Rice, J. A. (2006).
 Mathematical statistics and data analysis.
 Cengage Learning.
