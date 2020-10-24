@@ -1,4 +1,7 @@
-@def title = "Home"
++++
+title = "Home"
+rss = "Rik Huijzer - PhD student; writing technical blog posts about statistics and related topics."
++++
 
 ~~~
 <center>

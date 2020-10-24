@@ -2,7 +2,7 @@
 title = "Correlations"
 published = "24 January 2020"
 tags = ["statistics", "independence", "covariance"]
-rss = "The equations and some examples for the Pearson correlation coefficient."
+description = "The equations and some examples for the Pearson correlation coefficient."
 +++
 
 Correlations are ubiquitous.

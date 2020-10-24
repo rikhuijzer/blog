@@ -1,6 +1,6 @@
 name = "Blog"
 uuid = "d958ca09-399e-4f2e-814c-197a134883df"
-authors = ["rikhuijzer <rikhuijzer@pm.me>"]
+authors = ["Rik Huijzer <t.h.huijzer@rug.nl>"]
 version = "0.1.0"
 
 [deps]

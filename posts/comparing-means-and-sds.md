@@ -2,7 +2,7 @@
 title = "Comparing means and SDs"
 published = "27 June 2020"
 tags = ["statistics", "rescaling", "variance", "transformation"]
-rss = "Transforming means and SDs from different psychological scales to the same scale."
+description = "Transforming means and SDs from different psychological scales to the same scale."
 +++
 
 Many different questionnaires exists measuring the same constructs.

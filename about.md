@@ -1,4 +1,7 @@
-@def title = "About"
++++
+title = "About"
+image = joinpath(@OUTPUT, "basic-plot.svg")
++++
 
 # About
 
@@ -9,21 +12,32 @@
 This website is built with [Franklin.jl](https://github.com/tlienart/Franklin.jl) and the [Julia programming language](https://julialang.org/).
 Most posts on this site contain math, plots and the code to reproduce the results.
 Adding the code makes reading the posts more difficult.
-However, I think it is a necessity when doing statistics because statistical calculations usually take ages to do manualy.
+However, most statistical calculations cannot be done by hand.
 For example, fitting a simple linear model requires minimizing the sum of squares.
+By adding the code, this blog aims to show that statistical results are not created by some magical procedure.
 
-The source of this website is available on [GitHub](https://github.com/rikhuijzer/franklin-blog).
+For example, a basic plot can be as simple as
+
+```julia:./basic-plot.jl
+using Gadfly
+
+range = 1:30
+p = plot(x = range, y = [x^2 for x in range]) 
+p |> SVG(joinpath(@OUTPUT, "basic-plot.svg")) # hide
+```
+\output{./basic-plot.jl}
+\fig{./basic-plot.svg}
+
+The source code of this website is available on [GitHub](https://github.com/rikhuijzer/franklin-blog).
 
 ## Myself
 
 I'm a PhD student at the Faculty of Behavioural and Social Sciences, University of Groningen.
-
-email: 
 ~~~
 <a href="mailto:t.h.huijzer@rug.nl">t.h.huijzer@rug.nl</a>
 ~~~
 
-My background is computer science and engineering; specifically:
+My education is computer science and engineering; specifically:
 
 ~~~
   <b>Eindhoven University of Technology</b><br>

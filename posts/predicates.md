@@ -2,7 +2,7 @@
 title = "Predicates and reproducibility"
 published = "11 May 2020"
 tags = ["reproducibility", "statistics"]
-rss = "Thinking about the layers above statistics."
+description = "Thinking about the layers above statistics."
 +++
 
 While reading texts on statistics and meta-science I kept noticing vagueness.
