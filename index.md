@@ -1,6 +1,7 @@
 +++
 title = "Home"
-rss = "Rik Huijzer - PhD student; writing technical blog posts about statistics and related topics."
+description = "Rik Huijzer - PhD student; writing technical blog posts about statistics and related topics."
+image = "/assets/self.jpg"
 +++
 
 ~~~
