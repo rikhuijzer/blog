@@ -6,116 +6,12 @@
   <link>https://huijzer.xyz/</link>
   <atom:link href="https://huijzer.xyz/feed.xml" rel="self" type="application/rss+xml" />
   <item>
-    <title>Niceties in the Julia programming language</title>
-    <link>https://huijzer.xyz/posts/julia-niceties/index.html</link>
-    <description><![CDATA[A quick walk through some Julia syntax and interesting features.
-<br><a href="https://huijzer.xyz/posts/julia-niceties/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/julia-niceties/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Writing checklist</title>
-    <link>https://huijzer.xyz/posts/writing-checklist/index.html</link>
-    <description><![CDATA[A list to quickly check for common mistakes in writing.
-<br><a href="https://huijzer.xyz/posts/writing-checklist/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/writing-checklist/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Comparing means and SDs</title>
-    <link>https://huijzer.xyz/posts/comparing-means-and-sds/index.html</link>
-    <description><![CDATA[Transforming means and SDs from different psychological scales to the same scale.
-<br><a href="https://huijzer.xyz/posts/comparing-means-and-sds/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/comparing-means-and-sds/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Combinations and permutations</title>
-    <link>https://huijzer.xyz/posts/combinations-permuations/index.html</link>
-    <description><![CDATA[Deriving the equations for combinations and permutations.
-<br><a href="https://huijzer.xyz/posts/combinations-permuations/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/combinations-permuations/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Writing effectively</title>
-    <link>https://huijzer.xyz/posts/writing-effectively/index.html</link>
-    <description><![CDATA[Why writing should be valuable to the reader.
-<br><a href="https://huijzer.xyz/posts/writing-effectively/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/writing-effectively/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Entr</title>
-    <link>https://huijzer.xyz/posts/entr/index.html</link>
-    <description><![CDATA[A tool for executing commands automatically upon file changes.
-<br><a href="https://huijzer.xyz/posts/entr/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/entr/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Benefits of writing blog posts</title>
-    <link>https://huijzer.xyz/posts/blog-benefits/index.html</link>
-    <description><![CDATA[Convincing myself of why writing is a good habit to have.
-<br><a href="https://huijzer.xyz/posts/blog-benefits/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/blog-benefits/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Statistical power from scratch</title>
-    <link>https://huijzer.xyz/posts/power/index.html</link>
-    <description><![CDATA[Explaining statistical power by first finding the binomial and normal distributions.
-<br><a href="https://huijzer.xyz/posts/power/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/power/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>QoS setup using Tomato in combination with an Experiabox</title>
-    <link>https://huijzer.xyz/posts/tomato/index.html</link>
-    <description><![CDATA[My first blog post.
-<br><a href="https://huijzer.xyz/posts/tomato/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/tomato/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Predicates and reproducibility</title>
-    <link>https://huijzer.xyz/posts/predicates/index.html</link>
-    <description><![CDATA[Thinking about the layers above statistics.
-<br><a href="https://huijzer.xyz/posts/predicates/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/predicates/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Highlights of my NixOS configuration</title>
-    <link>https://huijzer.xyz/posts/nixos/index.html</link>
-    <description><![CDATA[Also, promoting NixOS a bit.
-<br><a href="https://huijzer.xyz/posts/nixos/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/nixos/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Correlations</title>
-    <link>https://huijzer.xyz/posts/correlations/index.html</link>
-    <description><![CDATA[The equations and some examples for the Pearson correlation coefficient.
-<br><a href="https://huijzer.xyz/posts/correlations/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/correlations/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Simple and binary regression</title>
-    <link>https://huijzer.xyz/posts/regression/index.html</link>
-    <description><![CDATA[Applying a simple and binary &#40;logistic&#41; regression to simulated data.
-<br><a href="https://huijzer.xyz/posts/regression/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/regression/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>The principle of maximum entropy</title>
-    <link>https://huijzer.xyz/posts/maximum-entropy/index.html</link>
-    <description><![CDATA[Obtaining the least informative distribution.
-<br><a href="https://huijzer.xyz/posts/maximum-entropy/index.html">Read more</a>]]></description>
-    <guid>https://huijzer.xyz/posts/maximum-entropy/index.html</guid>
-    <pubDate>Fri, 23 Oct 2020 00:00:00 UT</pubDate>
+    <title>Home</title>
+    <link>https://huijzer.xyz/index.html</link>
+    <description><![CDATA[Rik Huijzer - PhD student; writing technical blog posts about statistics and related topics.
+<br><a href="https://huijzer.xyz/index.html">Read more</a>]]></description>
+    <guid>https://huijzer.xyz/index.html</guid>
+    <pubDate>Sat, 24 Oct 2020 00:00:00 UT</pubDate>
   </item>
 </channel>
 </rss>

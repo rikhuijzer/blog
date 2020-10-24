@@ -57,14 +57,14 @@ function hfun_blogposts()
         surl = strip(url, '/')
         title = pagevar(surl, :title)
         pubdate = pagevar(surl, :published)
-        rss = pagevar(surl, :rss)
+        description = pagevar(surl, :description)
         if isnothing(pubdate)
             date = "$curyear-$curmonth-$curday"
         else
             date = Date(pubdate, dateformat"d U Y")
         end
         write(io, """$date</i></span><b><a href="$url">$title</a></b>""")
-        write(io, """<li><i class="rss">$rss</i></li>""")
+        write(io, """<li><i class="description">$description</i></li>""")
     end
     write(io, "</ul>")
     return String(take!(io))
