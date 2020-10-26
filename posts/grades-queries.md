@@ -38,6 +38,7 @@ using DataFrames
 person = DataFrame(name=["Bob", "Sally", "Bob 2", "Alice", "Hank"], age=[17, 18, 17, 20, 19])
 write_csv("person", person) # hide
 ```
+\output{./person.jl}
 \tableinput{}{./person.csv}
 ```julia:./grades_2019.jl
 grades_2019 = DataFrame(name=["Sally", "Bob", "Alice", "Hank"], grade_2019=[1, 5, 8.5, 4])
