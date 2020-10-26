@@ -1,6 +1,7 @@
 +++
 title = "About"
-image = joinpath(@OUTPUT, "basic-plot.svg")
+description = "About this website"
+image = "/assets/about/output/basic-plot.svg"
 +++
 
 # About
