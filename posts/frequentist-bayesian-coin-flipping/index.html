@@ -1,0 +1,53 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Frequentist and Bayesian coin flipping - Huijzer.xyz </title> <meta property="og:title" content="Frequentist and Bayesian coin flipping" /> <meta property="og:type" content=article  /> <meta property="og:description" content="Comparing both statistical paradigms on a coin flipping example." /> <meta property="article:modified_time" content="24 October 2020" /> <meta name="twitter:title" content="Frequentist and Bayesian coin flipping" /> <meta name="twitter:card" content=summary  /> <meta name="twitter:description" content="Comparing both statistical paradigms on a coin flipping example." /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content > <h1>Frequentist and Bayesian coin flipping</h1> </div> <div class=franklin-content > <p>To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics. Most explanations involve terms such as &quot;likelihood&quot;, &quot;uncertainty&quot; and &quot;prior probabilities&quot;. Here, I&#39;m going to show the difference between both statistical paradigms by using a coin flipping example. In the examples, the effect of showing more data to both paradigms will be visualised.</p> <p><div class=franklin-toc ><ol><li><a href="#references">References </a></ol></div> </p> <p>Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.</p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> Distributions
+<span class=hljs-keyword >using</span> Random
+
+n = <span class=hljs-number >80</span>
+Random.seed!(<span class=hljs-number >102</span>)
+p_true = <span class=hljs-number >0.5</span>
+is_heads = rand(Bernoulli(p_true), n)</code></pre> <p>To give some intuition about the sample, the first six elements of <code>is_heads</code> are</p> <pre><code class="plaintext hljs">ArgumentError: Package Revise not found in current path:
+- Run `import Pkg; Pkg.add(&quot;Revise&quot;)` to install the Revise package.
+
+</code></pre> <p>The Frequentist estimate for a one sample t-test after seeing <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> samples can be calculated with</p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> HypothesisTests
+
+<span class=hljs-keyword >function</span> frequentist_estimate(n)
+  t_result = OneSampleTTest(float.(df[<span class=hljs-number >1</span>:n, :is_heads]))
+  t_lower, t_upper = confint(t_result)
+  (lower = t_lower, middle = t_result.xbar, upper = t_upper)
+<span class=hljs-keyword >end</span></code></pre> <p>For the Bayesian estimate, we can use the closed-form solution as shown by <span class=bibref ><a href="#turing2020closed">The Turing Language (2020)</a></span>. This closed-form solution is not available for many real-world problems, but quite nice for this example.</p> <pre><code class="julia hljs"><span class=hljs-comment ># source: https://turing.ml</span>
+closed_form_prior = Beta(<span class=hljs-number >1</span>, <span class=hljs-number >1</span>)
+<span class=hljs-keyword >function</span> update_belief(k)
+  heads = sum(df[<span class=hljs-number >1</span>:k-<span class=hljs-number >1</span>, :is_heads])
+  tails = k - heads
+  updated_belief = Beta(closed_form_prior.α + tails, closed_form_prior.β + heads)
+<span class=hljs-keyword >end</span>
+beliefs = [closed_form_prior; update_belief.(<span class=hljs-number >1</span>:n)]</code></pre> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> bayesian_estimate(n)
+  distribution = beliefs[n]
+  q(x) = x -&gt; quantile(distribution, x)
+  (lower = q(<span class=hljs-number >0.025</span>), middle = mean(distribution), upper = q(<span class=hljs-number >0.975</span>))
+<span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> StatsPlots
+
+<span class=hljs-keyword >function</span> plot_estimates(estimate_function)
+  draws = <span class=hljs-number >2</span>:<span class=hljs-number >3</span>:<span class=hljs-number >80</span>
+  estimates = estimate_function.(draws)
+  middles = [t.middle <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates]
+  errors = [(t.middle - abs(t.lower), abs(t.middle - abs(t.upper))) <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates]
+  plot(middles, draws, xerr=errors, xlims=(<span class=hljs-number >0</span>,<span class=hljs-number >1</span>),
+    xlabel = <span class=hljs-string >&quot;Probability of heads&quot;</span>, ylabel = <span class=hljs-string >&quot;Observed number of draws&quot;</span>
+  )
+  scatter!(middles, draws, label=<span class=hljs-string >&quot;estimated mean&quot;</span>, color = Blog.blue)
+  vline!([p_true], line = (<span class=hljs-number >1.5</span>, :dash), color = Blog.blue, label = <span class=hljs-string >&quot;true mean&quot;</span>)
+<span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs">p = plot_estimates(frequentist_estimate)</code></pre>
+<p><pre><code class="plaintext hljs">UndefVarError: df not defined
+</code></pre> <p><span style="color:red;">// Image matching '/assets/posts/frequentist-bayesian-coin-flipping/frequentist-estimates.svg' not found. //</span></p></p>
+<pre><code class="julia hljs">p = plot_estimates(bayesian_estimate)</code></pre>
+<p><pre><code class="plaintext hljs">UndefVarError: beliefs not defined
+</code></pre> <p><span style="color:red;">// Image matching '/assets/posts/frequentist-bayesian-coin-flipping/bayesian-estimates.svg' not found. //</span></p></p>
+<p>If you don&#39;t have much programming experience, then you might be wondering how I came up with this pretty code which can neatly work for the Frequentist <strong>and</strong> Bayesian estimates. The answer is: lots of trial and error, and moving text around. Anyway, ...</p>
+<h2 id=references ><a href="#references">References </a></h2>
+<p><a id=turing2020closed  class=anchor ></a> The Turing Language &#40;2020&#41;.  Introduction to Turing. <a href="https://turing.ml/dev/tutorials/0-introduction/">https://turing.ml/dev/tutorials/0-introduction/</a>.</p>
+<div class=page-foot >
+  <div class=copyright >
+    <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
