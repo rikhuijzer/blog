@@ -1,0 +1,3 @@
+ArgumentError: Package Query not found in current path:
+- Run `import Pkg; Pkg.add("Query")` to install the Query package.
+
