@@ -1,7 +1,7 @@
 +++
 title = "Grades queries"
 published = "26 October 2020"
-description = "Using SQL like query syntax in Julia"
+description = "Using SQL like query syntax in Julia."
 +++
 
 Most data in the real-world is relational, that is, there are relationships in the data.
