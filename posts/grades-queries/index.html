@@ -1,9 +1,11 @@
 <!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Grades queries - Huijzer.xyz </title> <meta property="og:title" content="Grades queries" /> <meta property="og:type" content=article  /> <meta property="og:description" content="Using SQL like query syntax in Julia." /> <meta property="article:modified_time" content="26 October 2020" /> <meta name="twitter:title" content="Grades queries" /> <meta name="twitter:card" content=summary  /> <meta name="twitter:description" content="Using SQL like query syntax in Julia." /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content > <h1>Grades queries</h1> </div> <div class=franklin-content > <p>Most data in the real-world is relational, that is, there are relationships in the data. For example, a relation could be between a table containing person names and ages and another table containing person names and grades. If both tables are about the same persons, then there is a relationship on name between the tables. On these kinds of data, we want to do <em>queries</em>: a request for information from the data. An interesting request could be &quot;give all the names, ages and grades for all the persons&quot;.</p> <p>This problem of combining tables should not be solved by simply putting all the data into one big table, since you will get empty cells. According to my former databases professor, <a href="http://wwwis.win.tue.nl/~debra/">Paul De Bra</a>, you should try to avoid empty cells. This makes sense when you imagine what happens if you are going to combine many tables. For example, when combining two tables <code>A</code> and <code>B</code> on name where <code>B</code> is missing the names of 10 persons, then the combination will have empty cells for each missing person multiplied by every column in <code>B</code>. If <code>B</code> contains 3 columns &#40;for example, <code>:weight</code>, <code>:length</code> and <code>:age</code>&#41;, then this basic comination will already contain <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>∗</mo><mn>3</mn><mo>=</mo><mn>30</mn></mrow><annotation encoding="application/x-tex">10 * 3 = 30</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >1</span><span class=mord >0</span><span class=mspace  style="margin-right:0.2222222222222222em;"></span><span class=mbin >∗</span><span class=mspace  style="margin-right:0.2222222222222222em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >3</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >3</span><span class=mord >0</span></span></span></span> empty cells. These cells are a waste of storage and are difficult to query.</p> <p>So, it is important to be able to effectively query multiple tables. In the rest of this post, I show ways to do this in Julia with the help of the Query package.</p> <div class=franklin-toc ><ol><li><a href="#example_data">Example data</a><li><a href="#naive_approach">Naive approach</a><li><a href="#join">Join</a><li><a href="#debugging_tips">Debugging tips</a><li><a href="#grouping">Grouping</a><li><a href="#filtering_and_sorting">Filtering and sorting</a></ol></div> <h2 id=example_data ><a href="#example_data">Example data</a></h2> <p>Lets create some relational data for some fictional students who could do an exam in 2019 and 2020.</p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> DataFrames
 
-person = DataFrame(name=[<span class=hljs-string >&quot;Bob&quot;</span>, <span class=hljs-string >&quot;Sally&quot;</span>, <span class=hljs-string >&quot;Bob 2&quot;</span>, <span class=hljs-string >&quot;Alice&quot;</span>, <span class=hljs-string >&quot;Hank&quot;</span>], age=[<span class=hljs-number >17</span>, <span class=hljs-number >18</span>, <span class=hljs-number >17</span>, <span class=hljs-number >20</span>, <span class=hljs-number >19</span>])</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/grades-queries/person.csv' not found. //</span></p> <pre><code class="julia hljs">grades_2019 = DataFrame(name=[<span class=hljs-string >&quot;Sally&quot;</span>, <span class=hljs-string >&quot;Bob&quot;</span>, <span class=hljs-string >&quot;Alice&quot;</span>, <span class=hljs-string >&quot;Hank&quot;</span>], grade_2019=[<span class=hljs-number >1</span>, <span class=hljs-number >5</span>, <span class=hljs-number >8.5</span>, <span class=hljs-number >4</span>])</code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/grades_2019.csv' not found. //</span></p>
+person = DataFrame(name=[<span class=hljs-string >&quot;Bob&quot;</span>, <span class=hljs-string >&quot;Sally&quot;</span>, <span class=hljs-string >&quot;Bob 2&quot;</span>, <span class=hljs-string >&quot;Alice&quot;</span>, <span class=hljs-string >&quot;Hank&quot;</span>], age=[<span class=hljs-number >17</span>, <span class=hljs-number >18</span>, <span class=hljs-number >17</span>, <span class=hljs-number >20</span>, <span class=hljs-number >19</span>])</code></pre> <p> <table><tr><th align=right >name<th align=right >age<tr><td align=right >Bob<td align=right >17<tr><td align=right >Sally<td align=right >18<tr><td align=right >Bob 2<td align=right >17<tr><td align=right >Alice<td align=right >20<tr><td align=right >Hank<td align=right >19</table> </p> <pre><code class="julia hljs">grades_2019 = DataFrame(name=[<span class=hljs-string >&quot;Sally&quot;</span>, <span class=hljs-string >&quot;Bob&quot;</span>, <span class=hljs-string >&quot;Alice&quot;</span>, <span class=hljs-string >&quot;Hank&quot;</span>], grade_2019=[<span class=hljs-number >1</span>, <span class=hljs-number >5</span>, <span class=hljs-number >8.5</span>, <span class=hljs-number >4</span>])</code></pre>
+<table><tr><th align=right >name<th align=right >grade_2019<tr><td align=right >Sally<td align=right >1.0<tr><td align=right >Bob<td align=right >5.0<tr><td align=right >Alice<td align=right >8.5<tr><td align=right >Hank<td align=right >4.0</table>
+
 <pre><code class="julia hljs">grades_2020 = DataFrame(name=[<span class=hljs-string >&quot;Bob 2&quot;</span>, <span class=hljs-string >&quot;Sally&quot;</span>, <span class=hljs-string >&quot;Hank&quot;</span>], grade_2020=[<span class=hljs-number >9.5</span>, <span class=hljs-number >9.5</span>, <span class=hljs-number >5</span>])</code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/grades_2020.csv' not found. //</span></p>
+<table><tr><th align=right >name<th align=right >grade_2020<tr><td align=right >Bob 2<td align=right >9.5<tr><td align=right >Sally<td align=right >9.5<tr><td align=right >Hank<td align=right >5.0</table>
+
 <h2 id=naive_approach ><a href="#naive_approach">Naive approach</a></h2>
 <p>Say, we would like to obtain a table combining the names and ages with the grades of 2019. A naive approach would be to write</p>
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> combine(row)
@@ -15,7 +17,8 @@ person = DataFrame(name=[<span class=hljs-string >&quot;Bob&quot;</span>, <span 
 <span class=hljs-keyword >end</span>
 rows = combine.(eachrow(person))
 vcat(rows...)</code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/naive.csv' not found. //</span></p>
+<table><tr><th align=right >name<th align=right >age<th align=right >grade_2019<tr><td align=right >Bob<td align=right >17<td align=right >5.0<tr><td align=right >Sally<td align=right >18<td align=right >1.0<tr><td align=right >Bob 2<td align=right >17<td align=right ><tr><td align=right >Alice<td align=right >20<td align=right >8.5<tr><td align=right >Hank<td align=right >19<td align=right >4.0</table>
+
 <p>Now imagine having to combine multiple tables. The code will quickly become tedious.</p>
 <h2 id=join ><a href="#join">Join</a></h2>
 <p>Instead, we can obtain the same output by using <a href="https://github.com/queryverse/Query.jl">Query.jl</a>. The Query package has two styles. One style is very similar to <a href="https://dplyr.tidyverse.org/">dplyr</a> from Tidyverse. The other style is Language Integrated Query &#40;LINQ&#41; style &#40;documentation <a href="https://www.queryverse.org/Query.jl/stable/linqquerycommands/">here</a>&#41;. LINQ style is the style I&#39;m using, since I find it the most intuitive of the two. So, to obtain the previous table again, we can write</p>
@@ -26,14 +29,16 @@ vcat(rows...)</code></pre>
   <span class=hljs-meta >@select</span> {i.name, i.age, j.grade_2019}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/simple_join.csv' not found. //</span></p>
+<table><tr><th align=right >name<th align=right >age<th align=right >grade_2019<tr><td align=right >Bob<td align=right >17<td align=right >5.0<tr><td align=right >Sally<td align=right >18<td align=right >1.0<tr><td align=right >Bob 2<td align=right >17<td align=right ><tr><td align=right >Alice<td align=right >20<td align=right >8.5<tr><td align=right >Hank<td align=right >19<td align=right >4.0</table>
+
 <p>Here, the <code>@left_outer_join</code> ensures that all the persons in <code>person</code> have one row in the final output.  A normal <code>@join</code> would omit the row for Bob 2, because Bob 2 is not in the <code>grades_2019</code> table.</p>
 <pre><code class="julia hljs"><span class=hljs-meta >@from</span> i <span class=hljs-keyword >in</span> person <span class=hljs-keyword >begin</span>
   <span class=hljs-meta >@join</span> j <span class=hljs-keyword >in</span> grades_2019 on i.name equals j.name
   <span class=hljs-meta >@select</span> {i.name, i.age, j.grade_2019}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/normal_join.csv' not found. //</span></p>
+<table><tr><th align=right >name<th align=right >age<th align=right >grade_2019<tr><td align=right >Bob<td align=right >17<td align=right >5.0<tr><td align=right >Sally<td align=right >18<td align=right >1.0<tr><td align=right >Alice<td align=right >20<td align=right >8.5<tr><td align=right >Hank<td align=right >19<td align=right >4.0</table>
+
 <p>The joins can be combined to see who did the exam twice and by how much the grade is increased on the second try.</p>
 <pre><code class="julia hljs"><span class=hljs-meta >@from</span> i <span class=hljs-keyword >in</span> person <span class=hljs-keyword >begin</span>
   <span class=hljs-meta >@left_outer_join</span> j <span class=hljs-keyword >in</span> grades_2019 on i.name equals j.name
@@ -42,7 +47,8 @@ vcat(rows...)</code></pre>
     increase=k.grade_2020 - j.grade_2019}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/increase.csv' not found. //</span></p>
+<table><tr><th align=right >name<th align=right >grade_2019<th align=right >grade_2020<th align=right >increase<tr><td align=right >Bob<td align=right >5.0<td align=right ><td align=right ><tr><td align=right >Sally<td align=right >1.0<td align=right >9.5<td align=right >8.5<tr><td align=right >Bob 2<td align=right ><td align=right >9.5<td align=right ><tr><td align=right >Alice<td align=right >8.5<td align=right ><td align=right ><tr><td align=right >Hank<td align=right >4.0<td align=right >5.0<td align=right >1.0</table>
+
 <p>or who passed the course</p>
 <pre><code class="julia hljs"><span class=hljs-meta >@from</span> i <span class=hljs-keyword >in</span> person <span class=hljs-keyword >begin</span>
 	<span class=hljs-meta >@left_outer_join</span> j <span class=hljs-keyword >in</span> grades_2019 on i.name equals j.name
@@ -50,7 +56,8 @@ vcat(rows...)</code></pre>
 	<span class=hljs-meta >@select</span> {i.name, passed=j.grade_2019 &gt; <span class=hljs-number >6</span> || k.grade_2020 &gt; <span class=hljs-number >6</span>}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/passed.csv' not found. //</span></p>
+<table><tr><th align=right >name<th align=right >passed<tr><td align=right >Bob<td align=right >false<tr><td align=right >Sally<td align=right >true<tr><td align=right >Bob 2<td align=right >true<tr><td align=right >Alice<td align=right >true<tr><td align=right >Hank<td align=right >false</table>
+
 <h2 id=debugging_tips ><a href="#debugging_tips">Debugging tips</a></h2>
 <p>Before going to more difficult examples, it is helpful to look what is happening inside the join. Printing all the rows can aid in solving errors.</p>
 <pre><code class="julia hljs"><span class=hljs-meta >@from</span> i <span class=hljs-keyword >in</span> person <span class=hljs-keyword >begin</span>
@@ -58,7 +65,8 @@ vcat(rows...)</code></pre>
   <span class=hljs-meta >@select</span> {i, j}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/debug.csv' not found. //</span></p>
+<table><tr><th align=right >i<th align=right >j<tr><td align=right >&#40;name &#61; &quot;Bob&quot;, age &#61; 17&#41;<td align=right >&#40;name &#61; &quot;Bob&quot;, grade_2019 &#61; 5.0&#41;<tr><td align=right >&#40;name &#61; &quot;Sally&quot;, age &#61; 18&#41;<td align=right >&#40;name &#61; &quot;Sally&quot;, grade_2019 &#61; 1.0&#41;<tr><td align=right >&#40;name &#61; &quot;Alice&quot;, age &#61; 20&#41;<td align=right >&#40;name &#61; &quot;Alice&quot;, grade_2019 &#61; 8.5&#41;<tr><td align=right >&#40;name &#61; &quot;Hank&quot;, age &#61; 19&#41;<td align=right >&#40;name &#61; &quot;Hank&quot;, grade_2019 &#61; 4.0&#41;</table>
+
 <p>So, basically the join puts the two tables next to each other and inside the select we just get the name if we type <code>i.name</code>.  Also note that the result of <code>i.name</code> would be the same as <code>j.name</code>, as expected.</p>
 <h2 id=grouping ><a href="#grouping">Grouping</a></h2>
 <p>Like in most real-world datasets, this dataset contains a mistake. Bob complained that he had, in fact, passed the course. His second grade is listed for the name Bob 2. This, in LINQ, is called grouping.  Basically, grouping can <em>group</em> multiple rows into one. This example is, unfortunately, quite involved, but I was unable to come up with a simpler example for which the output makes sense too.</p>
@@ -74,8 +82,8 @@ vcat(rows...)</code></pre>
   <span class=hljs-meta >@select</span> {name = first(g.name), pass}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><pre><code class="plaintext hljs">UndefVarError: write_csv not defined
-</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/grades-queries/real_name.csv' not found. //</span></p></p>
+<p> <table><tr><th align=right >name<th align=right >pass<tr><td align=right >Bob<td align=right >true<tr><td align=right >Sally<td align=right >true<tr><td align=right >Alice<td align=right >true<tr><td align=right >Hank<td align=right >false</table>
+</p>
 <h2 id=filtering_and_sorting ><a href="#filtering_and_sorting">Filtering and sorting</a></h2>
 <p>Of course, the most interesting part of this example is to obtain all the names for the people who passed the course and it would be nice to have this in alphabetical order. Specifically, we want to filter such that we obtain only the people <em>where</em> <code>pass &#61;&#61; true</code>.</p>
 <pre><code class="julia hljs"><span class=hljs-meta >@from</span> i <span class=hljs-keyword >in</span> results <span class=hljs-keyword >begin</span>
@@ -84,8 +92,8 @@ vcat(rows...)</code></pre>
   <span class=hljs-meta >@select</span> {i.name}
   <span class=hljs-meta >@collect</span> DataFrame
 <span class=hljs-keyword >end</span></code></pre>
-<p><pre><code class="plaintext hljs">UndefVarError: write_csv not defined
-</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/grades-queries/graduates.csv' not found. //</span></p></p>
+<p> <table><tr><th align=right >name<tr><td align=right >Alice<tr><td align=right >Bob<tr><td align=right >Sally</table>
+</p>
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.

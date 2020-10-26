@@ -1,1 +1,1 @@
-nothing
+"/home/runner/work/franklin-blog/franklin-blog/__site/assets/posts/grades-queries/output/normal_join.csv"

@@ -1,3 +1,0 @@
-ArgumentError: Package CSV not found in current path:
-- Run `import Pkg; Pkg.add("CSV")` to install the CSV package.
-
