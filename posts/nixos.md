@@ -178,6 +178,18 @@ home-manager.users.rik.programs.git = {
 };
 ```
 
+## Bash
+The default shebang for Bash is 
+```
+#!/bin/bash
+```
+this won't work in NixOS since it is a ["form of global system state"](https://discourse.nixos.org/t/add-bin-bash-to-avoid-unnecessary-pain/5673).
+Instead use
+```
+#!/usr/bin/env bash
+```
+which will also work in GitHub CI jobs.
+
 ## R
 The R programming language is a language with built-in support for package installations.
 R is immutable in NixOS.
