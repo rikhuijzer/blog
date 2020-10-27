@@ -3,8 +3,8 @@ using DataFrames
 using Gadfly
 
 function plot_distribution(probabilities::Array)::Plot
-	df = DataFrame(n = 1:6, Pₙ = probabilities)
-	plot(df, x = :n, y = :Pₙ,
+	df = DataFrame(n = 1:6, P_n = probabilities)
+	plot(df, x = :n, y = :P_n,
 		Geom.bar(position = :dodge),
 		Theme(bar_spacing=2mm, default_color = "gray"),
 		Guide.xticks(ticks = collect(1:6)),

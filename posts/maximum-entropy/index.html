@@ -2,8 +2,8 @@
 <span class=hljs-keyword >using</span> Gadfly
 
 <span class=hljs-keyword >function</span> plot_distribution(probabilities::<span class=hljs-built_in >Array</span>)::Plot
-	df = DataFrame(n = <span class=hljs-number >1</span>:<span class=hljs-number >6</span>, Pₙ = probabilities)
-	plot(df, x = :n, y = :Pₙ,
+	df = DataFrame(n = <span class=hljs-number >1</span>:<span class=hljs-number >6</span>, P_n = probabilities)
+	plot(df, x = :n, y = :P_n,
 		Geom.bar(position = :dodge),
 		Theme(bar_spacing=<span class=hljs-number >2</span>mm, default_color = <span class=hljs-string >&quot;gray&quot;</span>),
 		Guide.xticks(ticks = collect(<span class=hljs-number >1</span>:<span class=hljs-number >6</span>)),
