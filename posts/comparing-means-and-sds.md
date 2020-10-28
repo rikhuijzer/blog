@@ -1,15 +1,16 @@
 +++
 title = "Comparing means and SDs"
 published = "27 June 2020"
-tags = ["statistics", "rescaling", "variance", "transformation"]
-description = "Transforming means and SDs from different psychological scales to the same scale."
+tags = ["statistics", "rescaling", "variance", "feature scaling"]
+description = "Transforming means and SDs from numbers in different ranges to the same range."
 +++
 
-Many different questionnaires exists measuring the same constructs.
-For example, the NEO-PI and the BFI both measure the Big Five personality traits.
+When comparing different papers it might be that the papers have numbers about the same thing, but that the numbers are on different scales.
+Forr example, many different questionnaires exists measuring the same constructs such as the NEO-PI and the BFI both measure the Big Five personality traits.
 Say, we want to compare reported means and standard deviations (SDs) for these questionnaires, which both use a Likert scale.
-This requires transforming the means and SDs to similar scales.
-The formulas for these transformations are derived below.
+
+In this post, the equations to rescale reported means and standard deviations (SDs) to another scale are derived.
+Before that, an example is worked trough to get an intuition of the problem.
 
 \toc
 
@@ -43,7 +44,7 @@ This seems to be the default way to calculate the standard deviation.
 
 ## An example with numbers
 
-Lets consider one study consisting on only one question and three participants.
+Lets consider one study consisting of only one question and three participants.
 Each response $u \in U$ is an integer ($\mathbb{Z}$) in the range [1, 3], that is, $\forall_u[u \in U : u \in \mathbb{Z} \land 1 \leq u \leq 3]$.
 So, the lower and upper bound of $u$ are respectively $u_l = 1$ and $u_u = 3$.
 
@@ -88,7 +89,7 @@ $V$ | $\frac{1}{2}$ | $\frac{1}{2}$
 $W$ | $2 \frac{1}{2}$ | $2 \frac{1}{2}$
 
 Now, suppose that $U$ was part of a study reported in a paper and the scale of $V$ was the scale we have for our own study.
-Of course, we don't know all responses $u \in U$. 
+Of course, a typical study doesn't give us all responses $u \in U$.
 Instead, we only have $mean(U)$ and $sd(U)$ and want to know $mean(W)$ and $sd(W)$.
 This can be done by using the equations derived below.
 We could first normalize the result, by Eq. \eqref{normalize mean},
@@ -120,7 +121,6 @@ $$ sd(W) = (w_u - w_l) \cdot \frac{sd(U)}{u_u - u_l} = (5 - 0) \cdot \frac{1}{3 
 ## Linear transformations
 
 Consider a random variable $X$ with a finite mean and variance, and some constants $a$ and $b$.
-
 Before we can derive the transformations, we need some equations to be able to move $a$ and $b$ out of $mean(aX + b)$ and $sd(aX + b)$.
 
 For the mean, the transformation is quite straightforward,
