@@ -27,11 +27,10 @@ jobs:
 
     - name: Install LaTeX for Tikz
       run: |
-        - sudo apt-get -qq update
-        - sudo apt-get install -y pdf2svg
-        - sudo apt-get install -y texlive-latex-base
-        - sudo apt-get install -y texlive-binaries # Requires dvisvgm.
-        - sudo apt-get install -y texlive-pictures # Tikz.
+        - apt-get install -y pdf2svg
+        - apt-get install -y texlive-latex-base
+        - apt-get install -y texlive-binaries # Requires dvisvgm.
+        - apt-get install -y texlive-pictures # Tikz.
 
     # NOTE
     #   The steps below ensure that NodeJS and Franklin are loaded then it
