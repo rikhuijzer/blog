@@ -183,7 +183,7 @@ html {
 ================================================================== */
 
 .franklin-content img {
-    width: 95%;
+    width: 95%; 
     align: left;
     text-align: center;
     /* padding-right: 0%; */ }
@@ -291,4 +291,10 @@ ul.blog-posts li a:visited {
   width: 8rem !important;
   heigth: auto;
   border-radius: 50%; 
+}
+
+.tikz img {
+  /* centering */
+  display: block;
+  margin: auto;
 }

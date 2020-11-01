@@ -13,15 +13,26 @@ jobs:
       uses: actions/checkout@v2
       with:
         persist-credentials: false
+
     # NOTE: Python is necessary for the pre-rendering (minification) step
     - name: Install python
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
+
     - name: Install Julia
       uses: julia-actions/setup-julia@v1
       with:
         version: 1.5
+
+    - name: Install LaTeX for Tikz
+      run: |
+        - sudo apt-get -qq update
+        - sudo apt-get install -y pdf2svg
+        - sudo apt-get install -y texlive-latex-base
+        - sudo apt-get install -y texlive-binaries # Requires dvisvgm.
+        - sudo apt-get install -y texlive-pictures # Tikz.
+
     # NOTE
     #   The steps below ensure that NodeJS and Franklin are loaded then it
     #   installs highlight.js which is needed for the prerendering step
@@ -36,6 +47,7 @@ jobs:
             using Franklin;
             Pkg.activate("."); Pkg.instantiate();
             optimize()'
+
     - name: Deploy to secondary branch
       uses: peaceiris/actions-gh-pages@v3
       with:
