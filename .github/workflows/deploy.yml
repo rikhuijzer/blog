@@ -20,13 +20,9 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Install Julia
-      uses: julia-actions/setup-julia@v1
-      with:
-        version: 1.5
-
     - name: Install LaTeX for Tikz
       run: |
+        sudo apt-get -qq update 
         sudo apt-get install -y \
           pdf2svg \
           texlive-latex-base \
@@ -34,6 +30,11 @@ jobs:
           texlive-binaries \
           # Includes Tikz.
           texlive-pictures 
+
+    - name: Install Julia
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: 1.5
 
     # NOTE
     #   The steps below ensure that NodeJS and Franklin are loaded then it
