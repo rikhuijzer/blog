@@ -24,6 +24,8 @@ jobs:
         # Includes Tikz.
         sudo apt-get install -y texlive-pictures
         sudo apt-get install -y texlive-latex-extra
+        # In response to error luatex85.sty not found.
+        sudo apt-get install -y texlive-luatex
 
     # NOTE: Python is necessary for the pre-rendering (minification) step
     - name: Install python
