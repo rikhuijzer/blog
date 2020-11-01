@@ -14,14 +14,15 @@ jobs:
       with:
         persist-credentials: false
 
-    - name: Install LaTeX for Tikz
+    - name: Install LaTeX (for Tikz)
       run: |
         sudo apt-get -qq update
-        sudo apt-get install -y \
-          pdf2svg \
-          texlive-latex-base \
-          texlive-binaries \ `# These binaries should include dvisvgm.`
-          texlive-pictures `# Includes Tikz.`
+        # Don't make this a fancy multiline thing which is hard to debug on the runner.
+        sudo apt-get install -y pdf2svg
+        sudo apt-get install -y texlive-latex-base
+        sudo apt-get install -y texlive-binaries
+        # Includes Tikz.
+        sudo apt-get install -y texlive-pictures
 
     # NOTE: Python is necessary for the pre-rendering (minification) step
     - name: Install python
