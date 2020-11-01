@@ -14,19 +14,20 @@ jobs:
       with:
         persist-credentials: false
 
+    - name: Install LaTeX for Tikz
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y \
+          pdf2svg \
+          texlive-latex-base \
+          texlive-binaries \ `# These binaries should include dvisvgm.`
+          texlive-pictures `# Includes Tikz.`
+
     # NOTE: Python is necessary for the pre-rendering (minification) step
     - name: Install python
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-
-    - name: Install LaTeX for Tikz
-      run: |
-        sudo apt-get install -y \
-          pdf2svg \
-          texlive-latex-base \
-          texlive-binaries \ `# This one should add dvisvgm.`
-          texlive-pictures `# Includes Tikz.`
 
     - name: Install Julia
       uses: julia-actions/setup-julia@v1
