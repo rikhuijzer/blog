@@ -1,6 +1,8 @@
 # This file is required for Julia packages.
 module Blog
 
+using TikzPictures
+
 # Don't export methods to avoid confusing readers of the code.
 # export
 
@@ -10,10 +12,6 @@ module Blog
 Blue from ColorBrewer's "Blues".
 """
 blue = "#3182bd"
-
-function foo()
-    println("this is foo")
-end
 
 """
     causal_preamble
@@ -32,5 +30,38 @@ causal_preamble = raw"""
     el/.style = {inner sep=2pt, align=left, sloped}
 }
 """
+
+"""
+  print_graph(name::String, width::String, tex::String, out_path::String)
+
+Print a causal graph with a name without extension `name`, width `width` (usually in `px`) and
+the Tikz code `text`.
+The `out_path` is expected to be the output of `@OUTPUT`; use `print_graph_partial` as a 
+convinience helper.
+"""
+function print_graph(name::String, width::String, text::String, out_path::String)
+  tp = TikzPicture(text, options="scale=1.0", preamble=causal_preamble)
+  save(SVG(joinpath(out_path, "$name.svg")), tp)
+  println("""
+  ~~~
+  </div> 
+  <div class=\"tikz\">
+    <img src=\"/assets/posts/data-fusion-examples/code/output/$name.svg\" style=\"width:$width\" />
+  </div>
+  <div class=\"franklin-content\">
+  ~~~
+  """)
+end
+
+"""
+    print_graph_partial(out_path)
+
+Partial function application on `print_graph` to fix `out_path`.
+"""
+function print_graph_partial(out_path) 
+    return function(name::String, width::String, tex::String)
+        print_graph(name, width, tex, out_path)
+    end
+end
 
 end # module
