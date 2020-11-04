@@ -4,13 +4,13 @@ published = "5 March 2020"
 tags = ["simulating data", "statistics"]
 description = "Applying a simple and binary (logistic) regression to simulated data."
 +++
-@def reeval = true
 
 ```julia:./preliminaries.jl
 # hideall
 import CSV
-write_csv(name, data) = CSV.write(joinpath(@OUTPUT, "$name.csv"), data)
-write_svg(name, p) = draw(SVG(joinpath(@OUTPUT, "$name.svg")), p)
+output_dir = @OUTPUT
+write_csv(name, data) = CSV.write(joinpath(output_dir, "$name.csv"), data)
+write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)
 ```
 
 One of the most famous scientific discoveries was Newton's laws of motion.
@@ -166,8 +166,9 @@ S(U, V) = sum((U .- V).^2)
 ```
 Then, the squared sum of the errors for this simplest estimator is
 ```julia:error-for-mean
-s = r_2(S(H, repeat([mean(H)], length(H))))
-@show error_simplest # hide
+println( # hide
+r_2(S(H, repeat([mean(H)], length(H))))
+) # hide
 ```
 \output{error-for-mean}
 
