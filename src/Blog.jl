@@ -23,9 +23,10 @@ causal_preamble = raw"""
 \usepackage{tikz}
 \usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
 \tikzset{
-    -Latex,auto,node distance =1 cm and 1 cm,semithick,
+    -Latex,auto,node distance =2 cm and 2 cm,semithick,
     state/.style ={ellipse, draw, minimum width = 0.7 cm},
-    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    point/.style = {circle, draw, fill, inner sep=0.04cm, node contents={}},
+    box/.style ={rectangle, draw, fill, node contents={}},
     bidirected/.style={Latex-Latex,dashed},
     el/.style = {inner sep=2pt, align=left, sloped}
 }

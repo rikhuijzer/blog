@@ -205,7 +205,7 @@ and
 $$ 
 \begin{aligned}
 sd(T'') &= (g_u - g_l) \cdot sd(T') \\
- &= (g_u - g_l) \cdot \frac{sd(T)}{k_u - k_l}
+ &= (g_u - g_l) \cdot \frac{sd(T')}{k_u - k_l}
 \end{aligned}
 \label{rescale sd}
 $$

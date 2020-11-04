@@ -4,8 +4,14 @@ published = "5 March 2020"
 tags = ["simulating data", "statistics"]
 description = "Applying a simple and binary (logistic) regression to simulated data."
 +++
-<!-- Set this to true after restarting Julia. -->
-@def reeval = false
+@def reeval = true
+
+```julia:./preliminaries.jl
+# hideall
+import CSV
+write_csv(name, data) = CSV.write(joinpath(@OUTPUT, "$name.csv"), data)
+write_svg(name, p) = draw(SVG(joinpath(@OUTPUT, "$name.svg")), p)
+```
 
 One of the most famous scientific discoveries was Newton's laws of motion.
 The laws allowed people to make predictions.
@@ -69,27 +75,25 @@ $$ w_i = 0.6 H_i. $$
 
 In Julia, this can be defined as
 
-```julia:./generating_functions.jl
+```julia:generating_functions
 using DataFrames
 using Distributions
 using Random
 using Statistics
 
-r2(x) = round(x; digits=2)
-Random.seed!(123)
-n = 18
+r_2(x) = round(x; digits=2)
+Random.seed!(18)
+n = 12
 I = 1:n
 Y = [i % 2 != 0 for i in I]
-H = r2.([y == "apple" ? rand(Normal(10, 1)) : rand(Normal(12, 1)) for y in Y])
-W = r2.([0.6h for h in H])
+H = r_2.([y == "apple" ? rand(Normal(10, 1)) : rand(Normal(12, 1)) for y in Y])
+W = r_2.([0.6h for h in H])
 
 df = DataFrame(I = I, H = H, W = W, Y = Y)
-@show df
+write_csv("df", df) # hide
 ```
-
-The output is
-
-\output{./generating_functions.jl}
+\output{generating_functions}
+\tableinput{}{./df.csv}
 
 ## Simple linear regression
 A *simple linear regression* fits a line through points in two dimensions.
@@ -98,16 +102,20 @@ It should be able to infer the relation between $H$ and $W$.
 ```julia:./w-h.jl
 using Gadfly
 
-p = plot(df, x = :W, y = :H)
-p |> SVG(joinpath(@OUTPUT, "w-h.svg")) # hide
-```
+# These two are useful for plotting.
+wmin = minimum(W) - 0.2
+wmax = maximum(W) + 0.2
 
+write_svg("w-h", # hide
+plot(df, x = :W, y = :H)
+) # hide
+```
 \output{./w-h.jl}
 \fig{./w-h.svg}
 
 The algorithmic way to fit a line is via the *method of least squares*.
 Any straight line can be described by a linear equation of the form $y = p_1 x + p_0$, where the first parameter $p_0$ is the intercept with $y$ and the second parameter $p_1$ is the slope.
-Adding an error $e$, and rewriting yields
+Adding an error $e$, and rewriting gives
 
 $$
 \begin{aligned}
@@ -118,92 +126,166 @@ $$
 
 An algorithm could now be defined to naively minimize the sum of all the errors
 
-$$ S'(p_0, p_1) = \sum_{i=1}^n e_i $$
+$$ S'(p_0, p_1) = \sum_{i=1}^n e_i, $$
 
 with respect to the choice of $p_0$ and $p_1$.
-This would not always result in a well fitted line, since errors might cancel each other out.
+This would not always result in a well fitted line because errors might cancel each other out.
 For example, when $e_1 = 10$ and $e_2 = -10$, then $e_1 + e_2 = 0$.
 This is solved by squaring the errors.
 The method of least squares minimizes
 
-$$ S(p_0, p_1) = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - p_0 - p_1 x_i)^2 $$
+$$ S_l(p_0, p_1) = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - p_0 - p_1 x_i)^2 $$
 
 with respect to the choice of $p_0$ and $p_1$ \citep{rice2006}.
 The simplest estimator for the points is the mean.
+We can plot this and show horizontal lines for the errors.
 
-```julia:./w-h-mean.jl 
+```julia:w-h-mean
+# Linear and generalized linear models (GLMs).
+using GLM
+
 m = mean(H) 
-sum_sq = r2(sum((H .- m).^2))
-p = plot(df, x = :W, y = :H,
+write_svg("w-h-mean", # hide
+plot(df, x = :W, y = :H,
   Geom.point,
-  yintercept = [m], Geom.hline(style = :dot),
-  xs = [1, 2], ys = [2, 3], Shape.vline()
+  yintercept = [m], Geom.hline(),
+  layer(xend = :W, yend = [m], Geom.segment())
 )
-p |> SVG(joinpath(@OUTPUT, "w-h-mean.svg")) # hide
+) # hide
 ```
-
-\output{./w-h-mean.jl}
+\output{w-h-mean}
 \fig{./w-h-mean.svg}
 
-Let $\overline{h}$ be the mean of $H$.
-The squared sum of the errors for $p_0 = \overline{h}$ and $p_1 = 0$ is
+We can generalize the sum of squares error calculation to
 
-$$ S(\overline{h}, 0) = \sum_{i=1}^n e_i^2 \approx 33.2. $$
+$$ S(U, V) = \sum_{i=1}^n (u_i - v_i)^2, $$
+
+for arrays $U$ and $V$.
+```julia:define-s
+S(U, V) = sum((U .- V).^2)
+```
+Then, the squared sum of the errors for this simplest estimator is
+```julia:error-for-mean
+s = r_2(S(H, repeat([mean(H)], length(H))))
+@show error_simplest # hide
+```
+\output{error-for-mean}
 
 This error cannot be compared to other errors, since it is not standardized.
-A standardized metric is the Pearson correlation coefficient $r$.
-(See the blog post on [correlations](/posts/correlations) for more information.)
-The fit according to the correlation coefficient is undefined, since the variance of $H$ is zero.
+A standardized metric would be the Pearson correlation coefficient $r$.
+See the blog post on [correlations](/posts/correlations) for more information.
 
-Minimizing the least squares error with R finds $p_0 \approx 0.01$ and $p_1 \approx 1.66$.
-The difference with our definition for $W$ and the fitted model is likely due to rounding errors.
+```julia:w-h-fit
+m1 = lm(@formula(H ~ W), df)
 
-*Fitted line*
-![](/images/regression/w-h-fit.svg)
+# This is just a convenience function around `GLM.predict`.
+predict_value(model, x) = 
+  first(skipmissing(predict(model, DataFrame(W = [x]))))
 
-For the fitted line, $S(p_0, p_1) \approx 0.02$ and $r \approx 1.00$.
+write_svg("w-h-fit", # hide
+plot(df, x = :W, y = :H, 
+	# xviewmin = [wmin], xviewmax = [wmax], # hide
+  Geom.point,
+  layer(x -> predict_value(m1, x), wmin, wmax)
+)
+) # hide
+```
+\output{w-h-fit}
+\fig{./w-h-fit.svg}
+
+The intercept and slope for the fitted line are
+```julia:slope-intercept
+intercept(linear_model) = coef(linear_model)[1]
+slope(linear_model) = coef(linear_model)[2]
+
+@show r_2(intercept(m1)) # hide
+@show r_2(slope(m1)) # hide 
+```
+\output{slope-intercept}
 
 ## Binary logistic regression
-Next up is inference on the relation between $Y$ and $W$.
+Next, lets try to estimate the relation between $Y$ and $W$.
 The method of least squares is unable to calculate an error for "apple" and "pear".
 A work-around is to encode "apple" as 0 and "pear" as 1.
 A line can now be fitted.
 
-*Fitted line through fruit type and width*
-![](/images/regression/w-y-fit.svg)
+```julia:m2
+digits = [i % 2 != 0 ? 0 : 1 for i in I]
+df[:Y_digit] = digits
+m2 = lm(@formula(Y_digit ~ W), df)
 
-As can be observed from the image for the binary regression, the model does not take into account that $Y$ is a binary variable.
+write_svg("m2", # hide
+plot(df, x = :W, y = :Y_digit,
+  xmin = [wmin], xmax = [wmax],
+  Geom.point,
+  layer(x -> predict_value(m2, x), wmin, wmax),
+  layer(y = predict(m2), Geom.point)
+)
+) # hide
+```
+\output{m2}
+\fig{./m2.svg}
+
+As can be observed, the model does not take into account that $Y$ is a binary variable.
 The model even predicts values outside the expected range, that is, values outside the range 0 to 1.
 A better fit is the logistic function.
 
-Fitted logistic model through fruit type and width
-![](/images/regression/w-y-logit-fit.svg)
+```julia:m3
+m3 = glm(@formula(Y_digit ~ W), df, Binomial(), LogitLink())
 
-The correlation coefficient $r$ should not be used to compare the models, since $Y$ is not linear.
+write_svg("m3", # hide
+plot(df, x = :W, y = :Y_digit, 
+  Geom.point,
+  layer(x -> predict_value(m3, x), wmin, wmax),
+  layer(y = predict(m3), Geom.point)
+)
+) # hide
+```
+\fig{./m3.svg}
+
+The correlation coefficient $r$ should not be used to compare the models, since the logistic model only predicts the class. 
+In other words, the logistic model is a classificatier.
 Classification *accuracy* is a better metric:
 
 $$ \text{accuracy} = \frac{\text{number of correct predictions}}{\text{total number of predictions}} . $$
 
+```julia:accuracy
+accuracy(trues, pred) = count(trues .== pred) / length(pred)
+```
+
 The threshold is set to 0.5 to get a binary prediction from both models.
-More precisely: let $m(d)$ denote the prediction for $y_i$, and $y_i'$ denote the binary prediction for $y_i$.
+More precisely: let $\text{pred}(x_i)$ denote the prediction for $y_i$, and $y_i'$ denote the binary prediction for $y_i$.
 For each prediction
 
 $$
 y_i' =
 \begin{cases}
-0 & \text{if $m(y_i) \leq 0.5$}, \: \text{and} \\
-1 & \text{if $0.5 < m(y_i).$}
+1 & \text{if $0.5 < \text{pred}(x_i)$}, \: \text{and} \\
+0 & \text{if $\text{pred}(x_i) \leq 0.5$}. \\
 \end{cases}
 $$
 
+```julia:binary_values
+binary_values(model) = [0.5 < x ? 1 : 0 for x in predict(model)]
+```
 The least squares error and accuracy for both models are as follows.
 
-model | $\boldsymbol{S(p_0, p_1)}$ | accuracy
---- | --- | ---
-Linear regression | 2.39 | 0.83
-Logistic regression | 2.02 | 0.89
+```julia:comparison
+write_csv("comparison", # hide
+DataFrame(
+	model = ["Linear regression", "Logistic regression"],
+	S = r_2.([S(digits, predict(m2)), S(digits, predict(m3))]),
+	accuracy = r_2.([accuracy(digits, binary_values(m2)), accuracy(digits, binary_values(m3))])
+)
+) # hide
+```
+\output{comparison}
+\tableinput{}{./comparison.csv}
 
-So, both metrics improve when switching to the logistic function.
+As can be seen, the error is lower for the logistic regression.
+However, for the accuracy both models score the same in this case.
+This is due to the fact that there is only a very small area where the linear and logistic model make different predictions.
+When this area becomes bigger (for example, when doing regression in multiple dimensions) or when more points lie in this area, then the accuracy for the logistic regression will be better compared to the linear regression.
 
 ## References
 \biblabel{rice2006}{Rice (2006)} 
