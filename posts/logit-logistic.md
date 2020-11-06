@@ -4,7 +4,6 @@ published = "4 November 2020"
 tags = ["statistics"]
 description = "Providing the definitions, some plots and useful values to remember."
 +++
-@def reeval = true
 
 ```julia:preliminaries
 # hideall
