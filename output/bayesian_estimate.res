@@ -1,0 +1,1 @@
+bayesian_estimate (generic function with 1 method)
