@@ -24,7 +24,6 @@ write_svg(name::String, p) = savefig(joinpath(@OUTPUT, "$name.svg"))
 \output{preliminaries}
 
 ```julia:./data-generation.jl
-using Revise # hide
 using Distributions
 using Blog # hide
 using Random
