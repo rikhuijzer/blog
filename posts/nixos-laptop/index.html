@@ -77,7 +77,7 @@ sudo mount /dev/nvme0n1p1 /mnt/boot
 sudo swapon /dev/vg/swap
 sudo wpa_supplicant -B -i wlp1s0 -c /mnt/etc/wpa_supplicant.conf</code></pre>
 <h2 id=appendix_i ><a href="#appendix_i">Appendix I </a></h2>
-<p>For me, Wi-Fi wasn&#39;t working until I read about the <code>modprobe.blacklist</code> listed above, nor did I have an ethernet port. So, for tethering an iPhone add <code>pkgs.usbmuxd</code> to <code>nixos/modules/profiles/base.nix</code> in a cloned <code>nixpkgs</code>. Then,</p>
+<p>For me, Wi-Fi wasn&#39;t working until I read about the <code>modprobe.blacklist</code> listed above, nor did I have an ethernet port. So, for tethering an iPhone add <code>pkgs.usbmuxd</code> to <code>nixos/modules/profiles/base.nix</code> in a cloned version of <code>nixpkgs</code>. Note that its a good idea to clone from a release tag such as 20.03. Then,</p>
 <pre><code class="text hljs">nix-build -A config.system.build.isoImage -I nixos-config=modules/installer/cd-dvd/installation-cd-minimal.nix
 dd if=result/iso/nixos-&lt;...&gt;.iso of=/dev/sda</code></pre>
 <p>From there, iPhone tethering worked after starting the <code>usbmuxd</code> tool as a background job.</p>
