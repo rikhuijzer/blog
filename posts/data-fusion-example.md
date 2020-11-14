@@ -1,8 +1,9 @@
 +++
-title = "Data-fusion examples"
-published = "1 December 2020"
+title = "A data-fusion example"
+published = "1 November 2020"
 tags = ["causality"]
-description = "Some examples in causal data-fusion."
+description = "An example in causal data-fusion."
+reeval = true
 +++
 
 ```julia:preliminaries
@@ -42,7 +43,7 @@ We can depict this in a causal graph as
 graph_fn("confounder", "150px", raw"
 \node (X) [label = left:X, point];
 \node (Y) [label = right:Y, point, right = of X];
-\node (Z) [label = above:Z, xshift=-0.5cm, point, above right = of X];
+\node (Z) [label = above:Z, xshift=-1cm, point, above right = of X];
 
 \path (X) edge (Y);
 \path (Z) edge (X);
@@ -51,6 +52,7 @@ graph_fn("confounder", "150px", raw"
 ```
 \textoutput{confounder}
 
+(Thanks to \citet{kumor2020} for code examples of these graphs.)
 If the randomization is representative of the whole population and executed correctly, then we can say that the graph changed to
 
 ```julia:controlled
@@ -75,19 +77,80 @@ For a longer discussion about the lack of effectiveness of meta-analyses, see \c
 
 In this blog post, my aim is to look at some examples of combining observational and randomized controlled trail data in an attempt to figure out how and when it can be applied.
 
-*Work in progress.*
+## Do-Calculus
+Thanks to the *do*-calculus presented by \citep{pearl2009}, we can rewrite our graph without thinking. 
+(By that, I mean that the calculus allows you to easily verify equivalences like $a + b = b + a$ for any $a$ and $b$.)
+For arbitrary disjoint sets of nodes $X, Y, Z$ and $W$ in a causal DAG $G$, with $G_{\overline{X}}$  and $G_{\underline{X}}$ denoting the graph obtained by, respectively, deleting all arrows pointing to and emerging from nodes in $G$, we have \citep{bareinboim2016}
+
+*Rule 1* (insertion/deletion of observations):
+$$ P(y|do(x),z,w) = P(y|do(x),w) \: \text{if} \: (Y \perp Z|X, W)_{G_{\overline{X}}}. $$
+
+*Rule 2* (action/observation exchange):
+$$ P(y|do(x), do(z), w) = P(y|do(x), z, w) \: \text{if} \: (Y \perp Z|X, W)_{G_{\overline{X} \underline{Z}}}. $$
+
+*Rule 3* (insertion/deletion of actions):
+$$ P(y|do(x), do(z), w) = P(y|do(x), w) \: \text{if} \: (Y \perp Z|X, W)_{G_{\overline{X} \overline{Z^*}}}. $$
+
+## Transportability
+Scientific results are meant to be used across different populations.
+This, according to \citet{pearl2014external}, is called *transportability*.
+Specifically, it is about transfering causal effects from experimental studies to observational studies.
+Here, I will mostly copy the example of \citep{bareinboim2016} and add some clarifications at the steps which I find unclear.
+Consider an experimental source $\pi$ and an observational target $\pi^*$ population.
+The variables are treatment $X$, outcome $Y$, age $Z$ and a set of unaccounted factors $S$.
+
+```julia:first
+# hideall
+graph_fn("first", "150px", raw"
+\node (X) [label = left:X, point];
+\node (Y) [label = right:Y, point, right =of X];
+\node (Z) [label = right:Z, xshift=-1cm, point, above right =of X];
+\node (S) [label = above:S, yshift=-1.5cm, box, above =of Z];
+
+\path (X) edge (Y);
+\path (Z) edge (X);
+\path (Z) edge (Y);
+\path (S) edge (Z);
+
+\path[bidirected] (X) edge[bend left=35] (Z);
+\path[bidirected] (X) edge[bend left=35] (Y);
+
+")
+```
+\textoutput{first}
+
+The unaccounted factors create differences in age between $\pi$ and $\pi^*$.
+These unaccounted factors are unknown, but it is known that they cause the differences in age between $\pi$ and $\pi^*$; that is why $S$ is denoted with a black box in the graph.
+Note that this means that the graph is an overlapping of the graph of the source and target population.
+Now, the query can be rewritten to \citep{bareinboim2016}
+
+$$
+\begin{aligned}
+& Q \\
+= \hspace{3mm} & \hspace{5mm} \{ \: \text{ By definition of $Q$. \: } \} \\
+ & \sum_z P(y|do(x), S=s^*,z)P(z|S=s^*,do(x)) \\
+= \hspace{3mm} & \hspace{5mm} \{ \: \text{By \textit{S}-admissibility. \: } \} \\
+ & \sum_z P(y|do(x), z)P(z|S=s^*,do(x)) \\
+= \hspace{3mm} & \hspace{5mm} \{ \: \text{By the 3rd rule of the \textit{do}-calculus.} \: \} \\
+& \sum_z P(y|do(x), z) P(z|S = s^*) \\
+= \hspace{3mm} & \hspace{5mm} \{ \: \text{By definition of the \textit{S}-node.} \: \} \\
+& \sum_z P(y|do(x), z) P^*(z). 
+\end{aligned}
+$$
+
+This is called a *transport formula*, because it explains "how experimental findings in $\pi$ are transported over to $\pi*$; the first factor is estimable from $\pi$ and the second one from $\pi^*$" \citep{bareinboim2016}.
 
 ## References
 
 \biblabel{bareinboim2016}{Bareinboim & Pearl (2016)}
 Bareinboim & Pearl. (2016).
 Causal inference and the data-fusion problem.
-<https://doi.org/10.1073/pnas.1510507113>
+<https://doi.org/10.1073/pnas.1510507113>.
 
 \biblabel{bollen2013}{Bollen & Pearl (2013)}
 Bollen & Pearl. (2013).
 Eight Myths About Causality and Structural Equation Models.
-<https://doi.org/10.1007/978-94-007-6094-3_15>
+<https://doi.org/10.1007/978-94-007-6094-3_15>.
 
 \biblabel{kumor2020}{Kumor (2018)}
 Kumor, D. (2018).
@@ -96,8 +159,13 @@ Causal Graphs in LaTeX.
 
 \biblabel{pearl2009}{Pearl (2009)} 
 Pearl, J. (2009). Causality. Cambridge university press.
-<https://doi.org/10.1017/CBO9780511803161>
+<https://doi.org/10.1017/CBO9780511803161>.
 
+\biblabel{pearl2014external}{Pearl & Bareinboim (2014)}
+Pearl & Bareinboim. (2014).
+External Validity: From Do-Calculus to Transportability Across Populations.
+Statistical Science.
+<https://doi.org/10.1214/14-STS486>.
 \biblabel{pearl2018why}{Pearl & Mackenzie (2006)} 
 Pearl, J., & Mackenzie, D. (2018). 
 The book of why: the new science of cause and effect. 
