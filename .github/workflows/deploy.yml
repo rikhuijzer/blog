@@ -47,11 +47,20 @@ jobs:
     #   The last line should be `optimize()` though you may want to give it
     #   specific arguments, see the documentation or ?optimize in the REPL.
     - run: julia -e '
-            using Pkg; Pkg.add(["NodeJS", "Franklin"]);
-            using NodeJS; run(`$(npm_cmd()) install highlight.js`);
-            using Franklin;
-            Pkg.activate("."); Pkg.instantiate();
-            optimize()'
+        using Pkg; Pkg.add(["NodeJS", "Franklin"]);
+        using NodeJS; run(`$(npm_cmd()) install highlight.js`);
+        using Franklin;
+        Pkg.activate("."); Pkg.instantiate();
+        optimize()' > build.log
+
+    - name: Validate output
+      run: |
+        if grep -1 "Franklin Warning" build.log; then
+          echo "Franklin reported a warning"
+          exit 1
+        else
+          echo "Franklin did not report a warning"
+        fi
 
     - name: Deploy to secondary branch
       uses: peaceiris/actions-gh-pages@v3

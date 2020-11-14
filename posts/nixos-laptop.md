@@ -132,7 +132,8 @@ sudo wpa_supplicant -B -i wlp1s0 -c /mnt/etc/wpa_supplicant.conf
 
 ## Appendix I 
 For me, Wi-Fi wasn't working until I read about the `modprobe.blacklist` listed above, nor did I have an ethernet port.
-So, for tethering an iPhone add `pkgs.usbmuxd` to `nixos/modules/profiles/base.nix` in a cloned `nixpkgs`.
+So, for tethering an iPhone add `pkgs.usbmuxd` to `nixos/modules/profiles/base.nix` in a cloned version of `nixpkgs`.
+Note that its a good idea to clone from a release tag such as 20.03.
 Then,
 ```text
 nix-build -A config.system.build.isoImage -I nixos-config=modules/installer/cd-dvd/installation-cd-minimal.nix
