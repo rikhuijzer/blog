@@ -47,7 +47,7 @@ function print_graph(name::String, width::String, text::String, out_path::String
   ~~~
   </div> 
   <div class=\"tikz\">
-    <img src=\"/assets/posts/data-fusion-examples/code/output/$name.svg\" style=\"width:$width\" />
+    <img src=\"/assets/posts/data-fusion-example/code/output/$name.svg\" style=\"width:$width\" />
   </div>
   <div class=\"franklin-content\">
   ~~~
