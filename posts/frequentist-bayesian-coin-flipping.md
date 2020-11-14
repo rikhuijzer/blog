@@ -1,8 +1,8 @@
 +++
 title = "Frequentist and Bayesian coin flipping"
-published = "24 October 2020"
+published = "14 November 2020"
 description = "Comparing both statistical paradigms on a coin flipping example."
-reeval = false
+reeval = true
 +++
 
 To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics.
@@ -13,6 +13,15 @@ In the examples, the effect of showing more data to both paradigms will be visua
 \toc 
 
 Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.
+
+```julia:preliminaries
+# hideall
+using CSV
+output_dir = @OUTPUT
+write_csv(name, data) = CSV.write(joinpath(output_dir, "$name.csv"), data)
+write_svg(name::String, p) = savefig(joinpath(@OUTPUT, "$name.svg"))
+```
+\output{preliminaries}
 
 ```julia:./data-generation.jl
 using Revise # hide
@@ -37,30 +46,30 @@ The Frequentist estimate for a one sample t-test after seeing $n$ samples can be
 using HypothesisTests
 
 function frequentist_estimate(n)
-  t_result = OneSampleTTest(float.(df[1:n, :is_heads]))
+  t_result = OneSampleTTest(is_heads[1:n])
   t_lower, t_upper = confint(t_result)
   (lower = t_lower, middle = t_result.xbar, upper = t_upper)
 end
 ```
 
 For the Bayesian estimate, we can use the closed-form solution as shown by \citet{turing2020closed}.
-This closed-form solution is not available for many real-world problems, but quite nice for this example.
+A closed-form solution is not available for many real-world problems, but quite useful for this example.
 
-```julia:/bayesian_beliefs.jl
-# source: https://turing.ml
+```julia:bayesian_beliefs
 closed_form_prior = Beta(1, 1)
 function update_belief(k)
-  heads = sum(df[1:k-1, :is_heads])
+  heads = sum(is_heads[1:k-1])
   tails = k - heads
-  updated_belief = Beta(closed_form_prior.α + tails, closed_form_prior.β + heads)
+  updated_belief = Beta(closed_form_prior.α + heads, closed_form_prior.β + tails)
 end
 beliefs = [closed_form_prior; update_belief.(1:n)]
 ```
+\output{bayesian_beliefs}
 
 ```julia:/bayesian_estimate.jl
 function bayesian_estimate(n)
   distribution = beliefs[n]
-  q(x) = x -> quantile(distribution, x)
+  q(x) = quantile(distribution, x)
   (lower = q(0.025), middle = mean(distribution), upper = q(0.975))
 end
 ```
@@ -68,12 +77,13 @@ end
 ```julia:./plot_estimates.jl
 using StatsPlots
 
-function plot_estimates(estimate_function)
+function plot_estimates(estimate_function; title="")
   draws = 2:3:80
   estimates = estimate_function.(draws)
   middles = [t.middle for t in estimates]
   errors = [(t.middle - abs(t.lower), abs(t.middle - abs(t.upper))) for t in estimates]
   plot(middles, draws, xerr=errors, xlims=(0,1),
+    title = title, 
     linecolor = :white,label="", # hide
     xlabel = "Probability of heads", ylabel = "Observed number of draws"
   )
@@ -82,24 +92,32 @@ function plot_estimates(estimate_function)
 end
 ```
 
-```julia:./plot_frequentist_estimates.jl
-p = plot_estimates(frequentist_estimate)
-store_image(p, name::String) = savefig(joinpath(@OUTPUT, "$name.svg")) # hide 
-store_image(p, "frequentist-estimates") # hide
+```julia:plot_frequentist_estimates
+write_svg("frequentist-estimates", # hide
+plot_estimates(frequentist_estimate, title = "Frequentist estimates")
+) # hide 
 ```
-\output{./plot_frequentist_estimates.jl}
-\fig{./frequentist-estimates.svg}
+\output{plot_frequentist_estimates}
+\fig{frequentist-estimates.svg}
 
-```julia:./plot_bayesian_estimates.jl
-p = plot_estimates(bayesian_estimate)
-store_image(p, "bayesian-estimates") # hide
+```julia:plot_bayesian_estimates
+write_svg("bayesian-estimates", # hide
+plot_estimates(bayesian_estimate, title = "Bayesian estimates")
+) # hide
 ```
-\output{./plot_bayesian_estimates.jl}
-\fig{./bayesian-estimates.svg}
+\output{plot_bayesian_estimates}
+\fig{bayesian-estimates.svg}
 
 If you don't have much programming experience, then you might be wondering how I came up with this pretty code which can neatly work for the Frequentist **and** Bayesian estimates.
 The answer is: lots of trial and error, and moving text around.
-Anyway, ...
+
+Based on these plots, we can conclude two things.
+Firstly, the Bayesian approach provides better estimates for small sample sizes.
+The Bayesian approach successfully uses the fact that a probability should be between 0 and 1, which was given to the model via the `Beta(1, 1)` prior.
+For increasingly larger sample sizes, the difference between both statistical paradigms vanish in this situation.
+Secondly, collecting more and more samples until the result is significant is dangerous.
+This approach is called *optional stopping*.
+Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false.
 
 ## References 
 \biblabel{turing2020closed}{The Turing Language (2020)}
