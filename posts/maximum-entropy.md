@@ -3,8 +3,8 @@ title = "The principle of maximum entropy"
 published = "26 September 2020"
 tags = ["simulating data", "statistics"]
 description = "Obtaining the least informative distribution."
+reeval = true
 +++
-@def reeval = false
 
 Say that you are a statistician and are asked to come up with a probability distribution for the current state of knowledge on some particular topic you know little about.
 (This, in Bayesian statistics, is known as choosing a suitable prior.)
@@ -14,26 +14,32 @@ This principle is clearly explained by \citet{jaynes1968}:
 consider a die which has been tossed a very large number of times $N$.
 We expect the average to be $3.5$, that is, we expect the following distribution where $P_n = \frac{1}{6}$ for each $n$.
 
-```julia:./unbiased.jl
+```julia:preliminaries
 using DataFrames
 using Gadfly
+
+output_dir = @OUTPUT
+write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg"), 6inch, 2inch), p)
 
 function plot_distribution(probabilities::Array)::Plot
 	df = DataFrame(n = 1:6, P_n = probabilities)
 	plot(df, x = :n, y = :P_n,
-		Geom.bar(position = :dodge),
+    Geom.bar(position = :dodge),
 		Theme(bar_spacing=2mm, default_color = "gray"),
-		Guide.xticks(ticks = collect(1:6)),
-		Guide.yticks(ticks = collect(0.2:0.2:1))
+		Guide.xticks(ticks = 1:6),
+		Guide.yticks(ticks = 0.2:0.2:1)
 	)
 end
-
-p = plot_distribution([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
-store_svg(name::String) = SVG(joinpath(@OUTPUT, "$name.svg"), 6inch, 2inch) # hide
-p |> store_svg("unbiased") # hide
 ```
-\output{./unbiased}
-\fig{./unbiased.svg}
+\output{preliminaries}
+
+```julia:unbiased
+write_svg("unbiased", # hide
+plot_distribution([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
+) # hide
+```
+\output{unbiased}
+\fig{unbiased.svg}
 Instead, we are told that the average is $4.5$.
 How likely is it for each number $n = 1,2, \ldots, 6$ to come up for the next toss?
 
@@ -47,27 +53,30 @@ $$ \sum_{n=1}^6 n \cdot P_n = 4.5. $$
 
 We could satisfy these constraints by choosing $P_4 = P_5 = \frac{1}{2}$.
 
-```julia:./naive.jl
-p = plot_distribution([0, 0, 0, 0.5, 0.5, 0])
-p |> store_svg("naive") # hide
+```julia:naive
+write_svg("naive", # hide
+plot_distribution([0, 0, 0, 0.5, 0.5, 0])
+) # hide 
 ```
-\fig{./naive.svg}
+\fig{naive.svg}
 This is unlikely to be the distribution for our data since it can be derived in relatively few ways, namely: by throwing only $4$ and $5$, and in such a way that the throws average to $4.5$.
 A more likely distribution would be 
 
-```julia:./quarters.jl
-p = plot_distribution([0, 0, 1/4, 1/4, 1/4, 1/4])
-p |> store_svg("quarters") # hide 
+```julia:quarters
+write_svg("quarters", # hide
+plot_distribution([0, 0, 1/4, 1/4, 1/4, 1/4])
+) # hide
 ```
-\fig{./quarters.svg}
+\fig{quarters.svg}
 This is still not the least informative distribution since it assumes $n = 1$ and $n = 2$ to be impossible events.
 Jaynes presents the straight line solution $P_n = (12n - 7)/210$,
 
-```julia:./straight.jl
-p = plot_distribution([(12n - 7)/210 for n in 1:6])
-p |> store_svg("straight") # hide 
+```julia:straight
+write_svg("straight", # hide
+plot_distribution([(12n - 7)/210 for n in 1:6])
+) # hide
 ```
-\fig{./straight.svg}
+\fig{straight.svg}
 This solution would also fail if the mean would have been higher, because then $P_0 = 0$ would occur again.
 The correct measure is the following information measure \citep{shannon1948}, which is also known as information entropy,
 
@@ -87,11 +96,12 @@ This function satisfies $\sum_{n=1}^6 P_n = 1$ for any $\rho$.
 Now, we only have to find the $\rho$ for which the average is $4.5$.
 After some [trial and error](#trial-and-error), you'll find that $\rho = 0.3715$ gives $\sum_{n=1}^6 n \cdot P_n \approx 4.501$.
 
-```julia:./entropy.jl
-p = plot_distribution([0.0543, 0.0787, 0.114, 0.165, 0.240, 0.348])
-p |> store_svg("entropy") # hide 
+```julia:entropy
+write_svg("entropy", # hide
+plot_distribution([0.0543, 0.0787, 0.114, 0.165, 0.240, 0.348])
+) # hide
 ```
-\fig{./entropy.svg}
+\fig{entropy.svg}
 This is the least informative distribution which satisfies the constraints.
 In other words, this is the distribution which can be obtained in the largest number of ways, given the constraints.
 For another example of maximum entropy distributions, see Chapter 10.1 of the book by \citet{mcelreath2020}.
@@ -104,10 +114,10 @@ Jaynes, E. T. (1968). Prior Probabilities. IEEE Transactions on Systems Science 
 \biblabel{mcelreath2020}{McElreath (2020)}
 McElreath, R. (2020). Statistical Rethinking: A Bayesian course with examples in R and Stan. CRC press.
 
-\biblabel{shannon1948}{Shannon (1948)}
+\biblabel{shannon1948}{Shannon, 1948}
 Shannon, C. E. (1948). A mathematical theory of communication. The Bell System Technical Journal (Volume: 27 , Issue: 3 , July 1948). <https://doi.org/10.1002/j.1538-7305.1948.tb01338.x>
 
-\biblabel{zabarankin2014}{Zabarankin & Uryasev (2014)}
+\biblabel{zabarankin2014}{Zabarankin & Uryasev, 2014}
 Zabarankin M., Uryasev S. (2014) Entropy Maximization. In: Statistical Decision Problems. Springer Optimization and Its Applications, vol 85. Springer, New York, NY. <https://doi.org/10.1007/978-1-4614-8471-4_5>
 
 ## Trial and error
