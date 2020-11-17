@@ -51,7 +51,7 @@ r_2(slope(m1)) = 1.67
 <h2 id=binary_logistic_regression ><a href="#binary_logistic_regression">Binary logistic regression</a></h2>
 <p>Next, lets try to estimate the relation between <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span></span></span></span> and <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>. The method of least squares is unable to calculate an error for &quot;apple&quot; and &quot;pear&quot;. A work-around is to encode &quot;apple&quot; as 0 and &quot;pear&quot; as 1. A line can now be fitted.</p>
 <pre><code class="julia hljs">digits = [i % <span class=hljs-number >2</span> != <span class=hljs-number >0</span> ? <span class=hljs-number >0</span> : <span class=hljs-number >1</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-literal >I</span>]
-df[:Y_digit] = digits
+df[:, :Y_digit] = digits
 m2 = lm(<span class=hljs-meta >@formula</span>(Y_digit ~ W), df)
 
 plot(df, x = :W, y = :Y_digit,

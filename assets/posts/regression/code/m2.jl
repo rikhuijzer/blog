@@ -1,6 +1,6 @@
 # This file was generated, do not modify it. # hide
 digits = [i % 2 != 0 ? 0 : 1 for i in I]
-df[:Y_digit] = digits
+df[:, :Y_digit] = digits
 m2 = lm(@formula(Y_digit ~ W), df)
 
 write_svg("m2", # hide
