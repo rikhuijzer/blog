@@ -19,7 +19,7 @@ Lets start by generating some data from a fair coin flip, that is, the probabili
 using CSV
 output_dir = @OUTPUT
 write_csv(name, data) = CSV.write(joinpath(output_dir, "$name.csv"), data)
-write_svg(name::String, p) = savefig(joinpath(@OUTPUT, "$name.svg"))
+write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)
 ```
 \output{preliminaries}
 
@@ -74,20 +74,22 @@ end
 ```
 
 ```julia:./plot_estimates.jl
-using StatsPlots
+using Gadfly
 
 function plot_estimates(estimate_function; title="")
-  draws = 2:3:80
+  draws = 2:4:80
   estimates = estimate_function.(draws)
   middles = [t.middle for t in estimates]
-  errors = [(t.middle - abs(t.lower), abs(t.middle - abs(t.upper))) for t in estimates]
-  plot(middles, draws, xerr=errors, xlims=(0,1),
-    title = title, 
-    linecolor = :white,label="", # hide
-    xlabel = "Probability of heads", ylabel = "Observed number of draws"
+  plot(y = draws, 
+    x = [t.middle for t in estimates],
+    xmin = [t.lower for t in estimates],
+    xmax = [t.upper for t in estimates],
+    Geom.point, Geom.errorbar,
+    Coord.cartesian(xmin = 0.0, xmax = 1.0),
+    Guide.xlabel("Probability of heads"), Guide.ylabel("Observed number of draws"),
+    Guide.title(title),
+    layer(xintercept = [0.5], Geom.vline(color = "gray"))
   )
-  scatter!(middles, draws, label="estimated mean", color = Blog.blue)
-  vline!([p_true], line = (1.5, :dash), color = Blog.blue, label = "true mean")
 end
 ```
 
@@ -107,7 +109,7 @@ plot_estimates(bayesian_estimate, title = "Bayesian estimates")
 \output{plot_bayesian_estimates}
 \fig{bayesian-estimates.svg}
 
-If you don't have much programming experience, then you might be wondering how I came up with this pretty code which can neatly work for the Frequentist **and** Bayesian estimates.
+If you don't have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist **and** Bayesian estimates.
 The answer is: lots of trial and error, and moving text around.
 
 Based on these plots, we can conclude two things.

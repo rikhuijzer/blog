@@ -3,7 +3,6 @@ title = "A data-fusion example"
 published = "1 November 2020"
 tags = ["causality"]
 description = "An example in causal data-fusion."
-reeval = true
 +++
 
 ```julia:preliminaries
