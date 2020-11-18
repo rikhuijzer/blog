@@ -1,16 +1,18 @@
 # This file was generated, do not modify it. # hide
-using StatsPlots
+using Gadfly
 
 function plot_estimates(estimate_function; title="")
-  draws = 2:3:80
+  draws = 2:4:80
   estimates = estimate_function.(draws)
   middles = [t.middle for t in estimates]
-  errors = [(t.middle - abs(t.lower), abs(t.middle - abs(t.upper))) for t in estimates]
-  plot(middles, draws, xerr=errors, xlims=(0,1),
-    title = title, 
-    linecolor = :white,label="", # hide
-    xlabel = "Probability of heads", ylabel = "Observed number of draws"
+  plot(y = draws, 
+    x = [t.middle for t in estimates],
+    xmin = [t.lower for t in estimates],
+    xmax = [t.upper for t in estimates],
+    Geom.point, Geom.errorbar,
+    Coord.cartesian(xmin = 0.0, xmax = 1.0),
+    Guide.xlabel("Probability of heads"), Guide.ylabel("Observed number of draws"),
+    Guide.title(title),
+    layer(xintercept = [0.5], Geom.vline(color = "gray"))
   )
-  scatter!(middles, draws, label="estimated mean", color = Blog.blue)
-  vline!([p_true], line = (1.5, :dash), color = Blog.blue, label = "true mean")
 end

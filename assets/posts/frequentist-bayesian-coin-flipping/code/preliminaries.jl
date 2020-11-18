@@ -3,4 +3,4 @@
 using CSV
 output_dir = @OUTPUT
 write_csv(name, data) = CSV.write(joinpath(output_dir, "$name.csv"), data)
-write_svg(name::String, p) = savefig(joinpath(@OUTPUT, "$name.svg"))
+write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)

@@ -21,24 +21,27 @@ beliefs = [closed_form_prior; update_belief.(<span class=hljs-number >1</span>:n
   distribution = beliefs[n]
   q(x) = quantile(distribution, x)
   (lower = q(<span class=hljs-number >0.025</span>), middle = mean(distribution), upper = q(<span class=hljs-number >0.975</span>))
-<span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> StatsPlots
+<span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> Gadfly
 
 <span class=hljs-keyword >function</span> plot_estimates(estimate_function; title=<span class=hljs-string >&quot;&quot;</span>)
-  draws = <span class=hljs-number >2</span>:<span class=hljs-number >3</span>:<span class=hljs-number >80</span>
+  draws = <span class=hljs-number >2</span>:<span class=hljs-number >4</span>:<span class=hljs-number >80</span>
   estimates = estimate_function.(draws)
   middles = [t.middle <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates]
-  errors = [(t.middle - abs(t.lower), abs(t.middle - abs(t.upper))) <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates]
-  plot(middles, draws, xerr=errors, xlims=(<span class=hljs-number >0</span>,<span class=hljs-number >1</span>),
-    title = title, 
-    xlabel = <span class=hljs-string >&quot;Probability of heads&quot;</span>, ylabel = <span class=hljs-string >&quot;Observed number of draws&quot;</span>
+  plot(y = draws, 
+    x = [t.middle <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates],
+    xmin = [t.lower <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates],
+    xmax = [t.upper <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates],
+    Geom.point, Geom.errorbar,
+    Coord.cartesian(xmin = <span class=hljs-number >0.0</span>, xmax = <span class=hljs-number >1.0</span>),
+    Guide.xlabel(<span class=hljs-string >&quot;Probability of heads&quot;</span>), Guide.ylabel(<span class=hljs-string >&quot;Observed number of draws&quot;</span>),
+    Guide.title(title),
+    layer(xintercept = [<span class=hljs-number >0.5</span>], Geom.vline(color = <span class=hljs-string >&quot;gray&quot;</span>))
   )
-  scatter!(middles, draws, label=<span class=hljs-string >&quot;estimated mean&quot;</span>, color = Blog.blue)
-  vline!([p_true], line = (<span class=hljs-number >1.5</span>, :dash), color = Blog.blue, label = <span class=hljs-string >&quot;true mean&quot;</span>)
 <span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs">plot_estimates(frequentist_estimate, title = <span class=hljs-string >&quot;Frequentist estimates&quot;</span>)</code></pre>
 <p> <img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/frequentist-estimates.svg" alt=""></p>
 <pre><code class="julia hljs">plot_estimates(bayesian_estimate, title = <span class=hljs-string >&quot;Bayesian estimates&quot;</span>)</code></pre>
 <p> <img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/bayesian-estimates.svg" alt=""></p>
-<p>If you don&#39;t have much programming experience, then you might be wondering how I came up with this pretty code which can neatly work for the Frequentist <strong>and</strong> Bayesian estimates. The answer is: lots of trial and error, and moving text around.</p>
+<p>If you don&#39;t have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist <strong>and</strong> Bayesian estimates. The answer is: lots of trial and error, and moving text around.</p>
 <p>Based on these plots, we can conclude two things. Firstly, the Bayesian approach provides better estimates for small sample sizes. The Bayesian approach successfully uses the fact that a probability should be between 0 and 1, which was given to the model via the <code>Beta&#40;1, 1&#41;</code> prior. For increasingly larger sample sizes, the difference between both statistical paradigms vanish in this situation. Secondly, collecting more and more samples until the result is significant is dangerous. This approach is called <em>optional stopping</em>. Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false.</p>
 <h2 id=references ><a href="#references">References </a></h2>
 <p><a id=turing2020closed  class=anchor ></a> The Turing Language &#40;2020&#41;.  Introduction to Turing. <a href="https://turing.ml/dev/tutorials/0-introduction/">https://turing.ml/dev/tutorials/0-introduction/</a>.</p>
