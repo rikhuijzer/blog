@@ -52,7 +52,8 @@ jobs:
         using NodeJS; run(`$(npm_cmd()) install highlight.js`);
         using Franklin;
         Pkg.activate("."); Pkg.instantiate();
-        optimize()' > build.log
+        optimize();
+        verify_links()' > build.log
 
     - name: Validate output
       run: |
