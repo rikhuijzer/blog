@@ -12,6 +12,8 @@ In the examples, the effect of showing more data to both paradigms will be visua
 
 \toc 
 
+## Generating data 
+
 Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.
 
 ```julia:preliminaries
@@ -38,6 +40,8 @@ is_heads = rand(Bernoulli(p_true), n)
 To give some intuition about the sample, the first six elements of `is_heads` are
 
 \output{./data-generation.jl}
+
+## Calculate probability estimates
 
 The Frequentist estimate for a one sample t-test after seeing $n$ samples can be calculated with
 
@@ -111,6 +115,8 @@ plot_estimates(bayesian_estimate, title = "Bayesian estimates")
 
 If you don't have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist **and** Bayesian estimates.
 The answer is: lots of trial and error, and moving text around.
+
+## Conclusion
 
 Based on these plots, we can conclude two things.
 Firstly, the Bayesian approach provides better estimates for small sample sizes.
