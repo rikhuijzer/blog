@@ -12,7 +12,7 @@ person = DataFrame(name=[<span class=hljs-string >&quot;Bob&quot;</span>, <span 
   name = row.name
   age = row.age
   matches = filter(x -&gt; x.name == name, grades_2019)
-  grade_2019 = nrow(matches) != <span class=hljs-number >0</span> ? first(matches).grade_2019 : missing
+  grade_2019 = nrow(matches) != <span class=hljs-number >0</span> ? first(matches).grade_2019 : <span class=hljs-literal >missing</span>
   DataFrame(name = name, age = age, grade_2019 = grade_2019)
 <span class=hljs-keyword >end</span>
 rows = combine.(eachrow(person))
