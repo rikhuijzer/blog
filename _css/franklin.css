@@ -223,14 +223,8 @@ code {
     background-color: rgba(27,31,35,0.05);
     padding: 0.1em 0.2em;
     border-radius: 2px;
-    font-size: 95%;
+    font-size: 90%;
 }
-
-/* .franklin-content code { */
-    /* background-color: rgba(27,31,35,0.05); */
-    /* padding: 0.1em 0.2em; */
-    /* border-radius: 2px; */
-    /* font-size: 90%; } */
 
 .hljs {
     font-size: 95%;
