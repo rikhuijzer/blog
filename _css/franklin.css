@@ -4,7 +4,7 @@
 
 html {
     font-family: Helvetica, Arial, sans-serif;
-    font-size  : 17px;
+    font-size  : 20px;
     color: #1c1c1c;
 }
 
@@ -60,7 +60,7 @@ html {
     position: relative;
     padding-left: 12.5%;
     padding-right: 12.5%;
-    line-height: 1.35em; }
+    line-height: 1.4em; }
 
 /* on wide screens, fix content width to a max value */
 @media (min-width: 940px) {
@@ -219,7 +219,7 @@ code {
     background-color: rgba(27,31,35,0.05);
     padding: 0.1em 0.2em;
     border-radius: 2px;
-    font-size: 90%;
+    font-size: 95%;
 }
 
 /* .franklin-content code { */
@@ -229,7 +229,7 @@ code {
     /* font-size: 90%; } */
 
 .hljs {
-    font-size: 90%;
+    font-size: 95%;
     line-height: 1.35em;
     border-radius: 10px; }
 
