@@ -60,7 +60,7 @@ html {
     position: relative;
     padding-left: 12.5%;
     padding-right: 12.5%;
-    line-height: 1.4em; }
+    line-height: 1.45em; }
 
 /* on wide screens, fix content width to a max value */
 @media (min-width: 940px) {
@@ -132,13 +132,17 @@ html {
 .franklin-content blockquote p {
     display: inline; }
 
+.franklin-toc li {
+    margin: 0.3rem 0; } 
+
 /* ==================================================================
     GENERAL FORMATTING
 ================================================================== */
 
 /* spacing between bullet points */
 .franklin-content li p {
-        margin: 10px 0; }
+    margin-top: 0.3em;
+    margin: 0.3rem 0; }
 
 .franklin-content a {
     color: #004de6;
@@ -230,7 +234,7 @@ code {
 
 .hljs {
     font-size: 95%;
-    line-height: 1.35em;
+    line-height: 1.42em;
     border-radius: 10px; }
 
 .hljs-meta, .hljs-metas, .hljs-metap { font-weight: bold; }
