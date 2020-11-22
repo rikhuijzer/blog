@@ -143,8 +143,8 @@ tr:first-of-type>th {
 tr,
 th,
 td {
- padding:10px;
- border:1px solid lightgray
+ padding: 8px;
+ border: 1px solid lightgray;
 }
 table tbody tr td {
  border:1px solid lightgray
