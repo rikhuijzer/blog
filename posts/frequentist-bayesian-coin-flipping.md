@@ -54,7 +54,7 @@ function frequentist_estimate(n)
 end
 ```
 
-For the Bayesian estimate, we can use the closed-form solution as shown by \citet{turing2020closed}.
+For the Bayesian estimate, we can use the closed-form solution \citep{turing2020closed}.
 A closed-form solution is not available for many real-world problems, but quite useful for this example.
 
 ```julia:bayesian_beliefs
@@ -126,7 +126,7 @@ This approach is called *optional stopping*.
 Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false.
 
 ## References 
-\biblabel{turing2020closed}{The Turing Language (2020)}
+\biblabel{turing2020closed}{The Turing Language, 2020}
 The Turing Language (2020). 
 Introduction to Turing.
 <https://turing.ml/dev/tutorials/0-introduction/>.

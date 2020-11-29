@@ -2,12 +2,20 @@
     DEFAULT FONT AND LAYOUT
 ================================================================== */
 
-html {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size  : 19px;
-    color: #1c1c1c;
+/* Source: ianstormtaylor.com. */
+:root {
+  --accent: #3D93F6;
+  --black: hsl(207, 80%, 18%);
+  --background: hsl(0, 0%, 100%);
+  --block-background: hsl(0, 0%, 97%);
 }
 
+html {
+  background: var(--background);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size  : 19px;
+    color: var(--black);
+}
 
 /* ==================================================================
     BASIC GRID FOR PROFILE PIC
@@ -40,7 +48,7 @@ html {
 
 .franklin-content .page-foot a {
     text-decoration: none;
-    color: #a6a2a0;
+    color: var(--accent);
     text-decoration: underline; }
 
 .page-foot {
@@ -61,7 +69,7 @@ html {
     position: relative;
     padding-left: 12.5%;
     padding-right: 12.5%;
-    line-height: 1.45em; }
+    line-height: 1.5em; }
 
 /* on wide screens, fix content width to a max value */
 @media (min-width: 940px) {
@@ -87,7 +95,9 @@ html {
 .franklin-content h3 { font-size: 20px; }
 
 .franklin-content h1, h2, h3, h4, h5, h6 {
-    text-align: left; }
+    color: var(--black);
+    text-align: left; 
+}
 
 .franklin-content h1 {
     padding-bottom: 0.5em;
@@ -115,24 +125,36 @@ html {
 .franklin-content h6 a:hover {text-decoration: none;}
 
 .franklin-content table {
-    margin-left: auto;
-    margin-right: auto;
-    border-collapse: collapse;
-    text-align: center;}
-.franklin-content th, td{
+  margin-top: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.franklin-content th, td {
     font-size: 14px;
     padding: 10px;
-    border: 1px solid black;}
+}
+
+.franklin-content th, td, tr {
+  border-left: none !important;
+  border-right: none !important;
+}
 
 .franklin-content blockquote {
-    background: #eeeeee;
-    border-left: 7px solid #a8a8a8;
-    margin: 1.5em 10px;
+    background: var(--background);
+    border-left: 2px solid #a8a8a8;
+    margin: 1em 10px;
     padding: 0.5em 10px;
     font-style: italic;}
 
 .franklin-content blockquote p {
     display: inline; }
+
+.franklin-content blockquote ul {
+  margin: 0;
+}
 
 .franklin-toc li {
     margin: 0.6rem 0; } 
@@ -147,7 +169,7 @@ html {
     margin: 0.3rem 0; }
 
 .franklin-content a {
-    color: #004de6;
+    color: var(--accent);
     text-decoration: none; }
 
 .franklin-content a:hover {
@@ -157,8 +179,12 @@ html {
     HYPERREFS AND FOOTNOTES
 ================================================================== */
 
-.franklin-content .eqref a  { color: green; }
-.franklin-content .bibref a { color: green; }
+.franklin-content .eqref a  { 
+  color: var(--accent);
+}
+.franklin-content .bibref a { 
+  color: var(--accent);
+}
 
 .franklin-content sup {
     font-size: 70%;
@@ -166,8 +192,8 @@ html {
     line-height: 0; }
 
 .franklin-content table.fndef  {
-    margin: 0;
-    margin-bottom: 10px;}
+  margin: 0;
+  margin-bottom: 10px;}
 .franklin-content .fndef tr, td {
     padding: 0;
     border: 0;
@@ -236,8 +262,6 @@ code {
     border-radius: 10px; }
 
 .hljs-meta, .hljs-metas, .hljs-metap { font-weight: bold; }
-
-.hljs-meta { color: rgb(25, 179, 51); }
 
 .hljs-metas { color: red; }
 

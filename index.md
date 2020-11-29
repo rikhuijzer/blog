@@ -10,10 +10,25 @@ image = "/assets/self.jpg"
 </center>
 ~~~
 
-I'm a PhD student.
-This site contains blog posts, since writing has [many benefits](/posts/blog-benefits).
-This site is generated with the Julia programming language and the code is [open source](https://github.com/rikhuijzer/franklin-blog).
-For more information about this site or me, see [about](/about).
+Most posts on this site are about statistics.
+The posts contain math, plots and the code to reproduce the results.
+Adding the code makes reading the posts more difficult.
+However, most statistical calculations cannot be done by hand.
+For example, fitting a simple linear model requires minimizing the sum of squares.
+By adding the code, this blog aims to show that statistical results are not created by some magical procedure.
+
+For example, creating a plot can be as simple as writing
+
+```julia:./basic-plot.jl
+using Gadfly
+
+range = 1:30
+p = plot(x = range, y = [x^2 for x in range]) 
+p |> SVG(joinpath(@OUTPUT, "basic-plot.svg")) # hide
+```
+\output{./basic-plot.jl}
+\fig{./basic-plot.svg}
+The source code of this website is available on [GitHub](https://github.com/rikhuijzer/franklin-blog).
 
 ## Posts
 

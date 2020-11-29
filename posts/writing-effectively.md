@@ -5,7 +5,7 @@ tags = ["valuable", "academia", "writing"]
 description = "Why writing should be valuable to the reader."
 +++
 
-According to McEnerney (2015), academics are trained to be poor writers.
+According to \citet{tMcEnerney}, academics are trained to be poor writers.
 Eventually, they end up in his office and tell, while crying, that their careers might end soon.
 One reason why academics are poor writers is that they are *expert writers*.
 Expert writers are not experts in writing but are experts who write.
@@ -33,7 +33,7 @@ Creating excitement sounds inappropriate for the nobel art of science.
 Actually, it is how things work; excitement has been selling newspapers for years.
 
 Excitement can be achieved by arguing against existing work, pointing out contradictions and solving problems.
-Do beware that you argue against existing work according to the rules, so don't write a paper "proclaiming the superiority of your work and the pathetic inadequacy of the contributions of A, B, C, ..." (Wadge, 2020).
+Do beware that you argue against existing work according to the rules, so don't write a paper "proclaiming the superiority of your work and the pathetic inadequacy of the contributions of A, B, C, ..." \citep{pWadge}.
 Instead, check out previous work and see how they did it.
 Daring to go against existing work is truly important since only adding new knowledge is boring.
 There are an infinite number of new pieces of knowledge to be found.
@@ -47,7 +47,7 @@ Either point out that the science is currently unstable or, with your work, solv
 Next, let's discuss the group of readers.
 How you write depends on who is going to read it.
 In science, your work is read by experts in some field who, basically, behave like a community.
-Others go even further and call it a village (Fernandes, 2017).
+Others go even further and call it a village \citep{pFernandes}.
 McEnerney is very frank about typical academic communities.
 Like him, these communities are usually too male, too pale and too stale.
 It's not how it should be, but it is how it works.
@@ -61,14 +61,18 @@ In other words, you write to change current ideas.
 
 ## References
 
+\biblabel{pFernandes}{Fernandes, 2017}
 Fernandes, F. C. (2017, October 18). How to succeed in academia according to a Nobel Prize Laureate.
-https://phdlife.warwick.ac.uk/2017/10/18/how-to-succeed-in-academia-according-to-a-nobel-prize-laureate/
+<https://phdlife.warwick.ac.uk/2017/10/18/how-to-succeed-in-academia-according-to-a-nobel-prize-laureate>
 
-UChicago Social Sciences. (2014, June 26).
-LEADERSHIP LAB: The Craft of Writing Effectively [Video].
-YouTube. https://youtu.be/vtIzMaLkCaM
+\biblabel{tMcEnerney}{McEnerney (2014)}
+McEnerney (2014)
+Leadership LAB: The Craft of Writing Effectively [Video].
+YouTube. <https://youtu.be/vtIzMaLkCaM>
 
+\biblabel{pWadge}{Wadge, 2020}
 Wadge, B. (2020).
 The Secret of Academic Success - or fun filled failure if you prefer.
 Bill Wadge’s Blog.
-Retrieved July 29, 2020, from https://billwadge.wordpress.com/2020/02/06/the-secret-of-academic-success-or-fun-filled-failure-if-you-prefer/
+Retrieved July 29, 2020, from 
+<https://billwadge.wordpress.com/2020/02/06/the-secret-of-academic-success-or-fun-filled-failure-if-you-prefer>

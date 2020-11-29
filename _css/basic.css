@@ -3,8 +3,10 @@
 ================================================================== */
 
 nav {
-    width: 64%;
-    display: inline-block; }
+  color: var(--black);
+  width: 64%;
+  display: inline-block; 
+}
 
 nav ul {
     padding-left: 0;
@@ -15,7 +17,7 @@ nav li {
     display: inline-block; }
 
 nav li a {
-    color: #212121;
+    color: var(--black);
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
@@ -73,16 +75,24 @@ header .blog-name a {
     }
 
 table {
- line-height:1em;
- margin-left:auto;
- margin-right:auto;
- border-collapse:collapse;
- text-align:center;
- margin-bottom:1.5em
+  line-height:1em;
+  margin-left:auto;
+  margin-right:auto;
+  border-collapse:collapse;
+  text-align:center;
+  margin-bottom:1.5em
 }
+
 tr:first-of-type {
- background:#eae9f4
+  /* background: #eae9f4; */
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  border-right: none;
 }
+
+tr:last-of-type {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
 tr:first-of-type>th {
  text-align:center
 }
