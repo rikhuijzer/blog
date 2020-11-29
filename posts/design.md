@@ -17,7 +17,7 @@ The cheatsheet below can be used to quickly fix design mistakes.
 
 Suprisingly, you should [Never Use Black](https://ianstormtaylor.com/design-tip-never-use-black/).
 Instead you can use a colors which are near black.
-For example,
+For example:
 
 Tint | HTML color code | Example text
 --- | --- | ---
@@ -87,3 +87,5 @@ I would advise against optimizing your site to particular devices, because it co
 For more arguments against media queries, see [Media Queries are a Hack](https://ianstormtaylor.com/media-queries-are-a-hack/).
 
 At the same time, decrease the font size for items which cannot wrap around and/or are not as important as the main text such as tables and code blocks.
+Users should see the most important stuff first.
+To see what users will see first, use the [squint test](https://learnui.design/blog/squint-test-ui-design-case-study.html).
