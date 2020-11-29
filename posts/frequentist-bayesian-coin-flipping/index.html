@@ -11,7 +11,7 @@ is_heads = rand(Bernoulli(p_true), n)</code></pre> <p>To give some intuition abo
   t_result = OneSampleTTest(is_heads[<span class=hljs-number >1</span>:n])
   t_lower, t_upper = confint(t_result)
   (lower = t_lower, middle = t_result.xbar, upper = t_upper)
-<span class=hljs-keyword >end</span></code></pre> <p>For the Bayesian estimate, we can use the closed-form solution as shown by <span class=bibref ><a href="#turing2020closed">The Turing Language (2020)</a></span>. A closed-form solution is not available for many real-world problems, but quite useful for this example.</p> <pre><code class="julia hljs">closed_form_prior = Beta(<span class=hljs-number >1</span>, <span class=hljs-number >1</span>)
+<span class=hljs-keyword >end</span></code></pre> <p>For the Bayesian estimate, we can use the closed-form solution <span class=bibref >(<a href="#turing2020closed">The Turing Language, 2020</a>)</span>. A closed-form solution is not available for many real-world problems, but quite useful for this example.</p> <pre><code class="julia hljs">closed_form_prior = Beta(<span class=hljs-number >1</span>, <span class=hljs-number >1</span>)
 <span class=hljs-keyword >function</span> update_belief(k)
   heads = sum(is_heads[<span class=hljs-number >1</span>:k-<span class=hljs-number >1</span>])
   tails = k - heads
