@@ -256,12 +256,6 @@ If you prefer the normal Docker backend, then remove the line containing `backen
 virtualisation.oci-containers = {
   backend = "podman";
   containers = {
-    "hound" = {
-      image = "etsy/hound";
-      ports = [ "6080:6080" ];
-      volumes = [ "/etc/nixos/configurations/hound/:/data" ];
-    };
-
     "redis" = {
       image = "redis:6-alpine";
       cmd = [ "redis-server" "--port" "6379" "--user" "username" ];
@@ -272,5 +266,5 @@ virtualisation.oci-containers = {
 ```
 
 To inspect the state of the service, use `systemctl status podman<TAB>`, where pressing `<TAB>` should allow you to see and autocomplete the running podman services.
-For example, `systemctl status podman-hound.service`.
+For example, `systemctl status podman-redis.service`.
 To see how to build your own container to be used as a service, see [Running Isso on NixOS in a Docker container](https://vincent.bernat.ch/en/blog/2020-docker-nixos-isso).
