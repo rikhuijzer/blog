@@ -135,12 +135,6 @@ home-manager.users.rik.programs.<span class=hljs-attr >git</span> = {
 <pre><code class="julia hljs">virtualisation.oci-containers = {
   backend = <span class=hljs-string >&quot;podman&quot;</span>;
   containers = {
-    <span class=hljs-string >&quot;hound&quot;</span> = {
-      image = <span class=hljs-string >&quot;etsy/hound&quot;</span>;
-      ports = [ <span class=hljs-string >&quot;6080:6080&quot;</span> ];
-      volumes = [ <span class=hljs-string >&quot;/etc/nixos/configurations/hound/:/data&quot;</span> ];
-    };
-
     <span class=hljs-string >&quot;redis&quot;</span> = {
       image = <span class=hljs-string >&quot;redis:6-alpine&quot;</span>;
       cmd = [ <span class=hljs-string >&quot;redis-server&quot;</span> <span class=hljs-string >&quot;--port&quot;</span> <span class=hljs-string >&quot;6379&quot;</span> <span class=hljs-string >&quot;--user&quot;</span> <span class=hljs-string >&quot;username&quot;</span> ];
@@ -148,7 +142,7 @@ home-manager.users.rik.programs.<span class=hljs-attr >git</span> = {
     };
   };
 };</code></pre>
-<p>To inspect the state of the service, use <code>systemctl status podman&lt;TAB&gt;</code>, where pressing <code>&lt;TAB&gt;</code> should allow you to see and autocomplete the running podman services. For example, <code>systemctl status podman-hound.service</code>. To see how to build your own container to be used as a service, see <a href="https://vincent.bernat.ch/en/blog/2020-docker-nixos-isso">Running Isso on NixOS in a Docker container</a>.</p>
+<p>To inspect the state of the service, use <code>systemctl status podman&lt;TAB&gt;</code>, where pressing <code>&lt;TAB&gt;</code> should allow you to see and autocomplete the running podman services. For example, <code>systemctl status podman-redis.service</code>. To see how to build your own container to be used as a service, see <a href="https://vincent.bernat.ch/en/blog/2020-docker-nixos-isso">Running Isso on NixOS in a Docker container</a>.</p>
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
