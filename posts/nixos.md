@@ -1,13 +1,13 @@
 +++
-title = "Highlights of my NixOS configuration"
+title = "NixOS configuration highlights"
 published = "1 December 2019"
 tags = ["libsecret", "fish"]
-description = "Also, promoting NixOS a bit."
+description = "Particularily neat parts of using NixOS."
 +++
 
 I have recently started paying attention to the time spent on fine-tuning my Linux installation.
 My conclusion is that it is a lot.
-Compared to Windows I save lots of time by using package managers to install software.
+Compared to Windows, I save lots of time by using package managers to install software.
 Still, I'm pretty sure that most readers spend (too) much time with the package managers as well.
 This can be observed from the fact that most people know the basic `apt-get` commands by heart.
 
@@ -45,6 +45,7 @@ The language allows for defining such requirements multiple times.
 So, even when removing the `ripgrep` requirement at other places, it will still be available for my script.
 
 Below are some of what I consider highlights of the configuration.
+To see more information about the options, checkout <https://search.nixos.org>.
 
 \toc 
 
@@ -244,3 +245,31 @@ in {
   ];
 }
 ```
+
+## Containerized services
+
+Creating background services couldn't be more easy.
+Here, I use the Podman backend.
+If you prefer the normal Docker backend, then remove the line containing `backend = "podman"`.
+
+```
+virtualisation.oci-containers = {
+  backend = "podman";
+  containers = {
+    "hound" = {
+      image = "etsy/hound";
+      ports = [ "6080:6080" ];
+      volumes = [ "/etc/nixos/configurations/hound/:/data" ];
+    };
+
+    "redis" = {
+      image = "redis:6-alpine";
+      cmd = [ "redis-server" "--port" "6379" "--user" "username" ];
+      ports = [ "6379:6379" ];
+    };
+  };
+};
+```
+
+To inspect the state of the service, use `systemctl status podman<TAB>`, where pressing `<TAB>` should allow you to see and autocomplete the running podman services.
+For example, `systemctl status podman-hound.service`.
