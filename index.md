@@ -21,7 +21,8 @@ For example, creating a plot can be as simple as writing
 
 ```julia:./basic-plot.jl
 using Gadfly
-write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)
+output_dir = @OUTPUT # hide 
+write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p) # hide
 
 range = 1:30
 write_svg("basic-plot", # hide
