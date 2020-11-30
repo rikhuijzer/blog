@@ -273,3 +273,4 @@ virtualisation.oci-containers = {
 
 To inspect the state of the service, use `systemctl status podman<TAB>`, where pressing `<TAB>` should allow you to see and autocomplete the running podman services.
 For example, `systemctl status podman-hound.service`.
+To see how to build your own container to be used as a service, see [Running Isso on NixOS in a Docker container](https://vincent.bernat.ch/en/blog/2020-docker-nixos-isso).
