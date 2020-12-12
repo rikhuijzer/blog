@@ -38,10 +38,8 @@ jobs:
       with:
         version: 1
 
-    - run: julia -e '@show Threads.nthreads()'
-
     - name: Build site
-      run: julia --threads 2 -e '
+      run: julia -e '
         using Pkg; Pkg.add(["NodeJS", "Franklin"]);
         using NodeJS; run(`$(npm_cmd()) install highlight.js`);
         using Franklin;
