@@ -17,7 +17,8 @@ This document is a cheatsheet for issue closing commands; I plan to add more of 
 
 ## Close an issue via a pull request title or commit message
 
-On **GitHub** use
+### GitHub
+On GitHub use
 ([docs](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)):
 
 - close
@@ -30,7 +31,7 @@ On **GitHub** use
 - resolves
 - resolved
 
-Examples
+**Examples**
 
 ```c
 Fix #2334
@@ -38,7 +39,9 @@ Fix octo-org/octo-repo#2334
 Fix #2334, fix octo-org/octo-repo#2334
 ```
 
-On **GitLab** use 
+\
+### GitLab
+On GitLab use 
 ([docs](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues)):
 
 - Close, Closes, Closed, Closing, close, closes, closed, closing 
@@ -46,7 +49,7 @@ On **GitLab** use
 - Resolve, Resolves, Resolved, Resolving, resolve, resolves, resolved, resolving 
 - Implement, Implements, Implemented, Implementing, implement, implements, implemented, implementing 
 
-Examples
+**Examples**
 
 ```c
 Fixes #2334
