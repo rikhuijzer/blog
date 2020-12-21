@@ -11,7 +11,7 @@ For instance, using `Fixes #2334` in a commit message will close issue #2334 aut
 However, the layers on top of Git differ between the two, and therefore the commands will differ as well.
 This document is a cheatsheet for issue closing commands; I plan to add more of these commands over time.
 
-*If this page contains outdated information, suggest a fix via [GitHub](https://github.com/rikhuijzer/franklin-blog).*
+*If this page contains outdated information, suggest a fix via [GitHub](https://github.com/rikhuijzer/huijzer.xyz).*
 
 \toc 
 

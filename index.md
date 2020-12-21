@@ -10,9 +10,9 @@ image = "/assets/self.jpg"
 </center>
 ~~~
 
-Most posts on this site are about statistics.
+Most posts on this site are about statistics and programming.
 The posts contain math, plots and the code to reproduce the results.
-Adding the code makes reading the posts more difficult.
+The code makes reading the posts more difficult.
 However, most statistical calculations cannot be done by hand.
 For example, fitting a simple linear model requires minimizing the sum of squares.
 By adding the code, this blog aims to show that statistical results are not created by some magical procedure.
@@ -31,7 +31,7 @@ plot(x = range, y = [x^2 for x in range])
 ```
 \output{./basic-plot.jl}
 \fig{./basic-plot.svg}
-The source code of this website is available on [GitHub](https://github.com/rikhuijzer/franklin-blog).
+The source code of this website is available on [GitHub](https://github.com/rikhuijzer/huijzer.xyz).
 
 ## Posts
 
