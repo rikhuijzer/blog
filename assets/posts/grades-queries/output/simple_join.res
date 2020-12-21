@@ -1,1 +1,1 @@
-"/home/runner/work/franklin-blog/franklin-blog/__site/assets/posts/grades-queries/output/simple_join.csv"
+"/home/runner/work/huijzer.xyz/huijzer.xyz/__site/assets/posts/grades-queries/output/simple_join.csv"

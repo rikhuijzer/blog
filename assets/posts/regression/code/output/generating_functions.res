@@ -1,1 +1,1 @@
-"/home/runner/work/franklin-blog/franklin-blog/__site/assets/posts/regression/output/df.csv"
+"/home/runner/work/huijzer.xyz/huijzer.xyz/__site/assets/posts/regression/output/df.csv"
