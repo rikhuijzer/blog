@@ -124,8 +124,14 @@ For increasingly larger sample sizes, the difference between both statistical pa
 Secondly, collecting more and more samples until the result is significant is dangerous.
 This approach is called *optional stopping*.
 Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false.
+\citet{tCumming2011} calls this the "dance of the $p$-values".
 
 ## References 
+\biblabel{tCumming2011}{Cumming (2011)}
+Cumming, G. (2011). 
+Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis. 
+Routledge.
+
 \biblabel{turing2020closed}{The Turing Language, 2020}
 The Turing Language (2020). 
 Introduction to Turing.
