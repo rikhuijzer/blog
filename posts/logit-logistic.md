@@ -47,8 +47,8 @@ Some people advise to remember the following numbers by heart.
 $$
 \begin{aligned}
 \text{logistic}(-3) &\approx 0.05, \\
-\text{logistic}(-1) &\approx \frac{1}{4}, \\
-\text{logisitc}(1) &\approx \frac{3}{4}, \: \text{and} \\
+\text{logistic}(-1) &\approx \tfrac{1}{4}, \\
+\text{logistic}(1) &\approx \tfrac{3}{4}, \: \text{and} \\
 \text{logistic}(3) &\approx 0.95.
 \end{aligned}
 $$

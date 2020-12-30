@@ -4,6 +4,10 @@ published = "26 October 2020"
 description = "Using SQL like query syntax in Julia."
 +++
 
+**EDIT:** 
+*This query syntax is nice but can be very slow for many columns, which is quite annoying when using it in a project.
+Instead, checkout Tom Kwong's DataFrames [cheat sheet](https://ahsmart.com/pub/data-wrangling-with-data-frames-jl-cheat-sheet/).*
+
 Most data in the real-world is relational, that is, there are relationships in the data.
 For example, a relation could be between a table containing person names and ages and another table containing person names and grades.
 If both tables are about the same persons, then there is a relationship on name between the tables.
