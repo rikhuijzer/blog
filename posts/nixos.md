@@ -11,14 +11,14 @@ Compared to Windows, I save lots of time by using package managers to install so
 Still, I'm pretty sure that most readers spend (too) much time with the package managers as well.
 This can be observed from the fact that most people know the basic `apt-get` commands by heart.
 
-At the time of writing I'm happily running and tweaking NixOS for a few months.
+At the time of writing, I'm happily running and tweaking NixOS for a few months.
 NixOS allows me to define my operating system state in one configuration file `configuration.nix`.
 I have been pedantic and will try to avoid configuring my system outside the configuration.
-This way multiple computers are in the same state and I can set-up new computers in no time.
+This way, multiple computers are in the same state and I can set-up new computers in no time.
 The only manual steps have been NixOS installation, Firefox configuration, user password configuration and applying a system specific configuration.
 (The latter involves creating two symlinks.)
 
-In general there are the following things which are great.
+In general, there are the following things which are great.
 
 - Deterministic package system.
 Packages are immutable and NixOS will basically create symlinks to the packages.
@@ -36,11 +36,11 @@ Compared to the Debian packages it is a major improvement.
 I'm often surprised by the fact that some obscure tool is actually available in NixOS.
 - Nix expression language.
 The Nix expression language is declarative.
-It will basically read all the code and collect it in a data structure.
+Basically, it will read all the code and collect it in a data structure.
 Only when this is complete the system state will be changed.
 This means that the language does not care about order or duplication.
-In effect this eases refactoring, and avoids checking "preconditions".
-To explain the latter consider writing a script which assumes `ripgrep` to be installed.
+In effect, this eases refactoring and avoids checking "preconditions".
+To explain the latter, consider writing a script which assumes `ripgrep` to be installed.
 The language allows for defining such requirements multiple times.
 So, even when removing the `ripgrep` requirement at other places, it will still be available for my script.
 
@@ -113,7 +113,7 @@ abbr gacp 'git-add-commit-push'
 to the Fish shell configuration.
 
 Another great thing about this setup is the ease of looking up commands.
-Often I find myself in need of some bash code which I have used in one of the scripts.
+Often, I find myself in need of some bash code which I have used in one of the scripts.
 To see the code from the terminal in Fish, use `cat (which <script>)`.
 For example, `cat (which git-add-commit-push)` gives
 
@@ -130,7 +130,7 @@ git push
 Actually, [Home Manager](https://github.com/rycee/home-manager) is not the prettiest part of NixOS.
 It seems to be an extension of the configuration provided by the vanilla operating system.
 The installation instructions on Github advise to do all kind of mutation operations.
-To avoid this we import the folder `home-manager` somewhere in our configuration.
+To avoid this, we import the folder `home-manager` somewhere in our configuration.
 ```nix
 # /etc/nixos/configuration.nix
 
@@ -140,7 +140,7 @@ imports = [
 ```
 This works only if our folder contains a `default.nix` file.
 So, lets create that and import home-manager.
-Here the version (ref) is fixed to `19.09`.
+Here, the version (ref) is fixed to `19.09`.
 (You can decide to not fix the version.
 However, it might cause your system to suddenly break one day.)
 The imports below the `fetchGit` line define specific home-manager configurations.
@@ -196,7 +196,7 @@ The R programming language is a language with built-in support for package insta
 R is immutable in NixOS.
 To install packages two wrappers are provided.
 One for R and one for RStudio.
-Next an example is given to configure R and RStudio with various packages from CRAN, and one package built from GitHub source.
+Next, an example is given to configure R and RStudio with various packages from CRAN, and one package built from GitHub source.
 Specifying the package from GitHub in the NixOS configuration avoids having to run `devtools::install_github("<repository>")` on each computer.
 
 ```nix
