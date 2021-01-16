@@ -9,7 +9,28 @@ I'm a PhD student at the Faculty of Behavioural and Social Sciences, University 
 <a href="mailto:t.h.huijzer@rug.nl">t.h.huijzer@rug.nl</a>
 ~~~
 
-My education is computer science and engineering; specifically:
+#### Publications
+
+Nothing yet.
+
+#### Projects
+
+- [TuringModels.jl](https://github.com/StatisticalRethinkingJulia/TuringModels.jl)
+
+#### Presentations
+
+- _Bayesian statistics with Julia: visualizing uncertainty_ (Oct 2020)
+- _Deep learning and natural language processing_ at [PyGrunn](https://pygrunn.org/) (Jun 2019)
+
+#### MSc thesis co-advisor
+
+- Calum Guthrie, 2020. _What are the Characteristics of Successful Commando Candidates?_
+
+#### Teaching
+
+- Research practicum, Okt 2019 - Feb 2020.
+
+#### Education
 
 ~~~
   <b>Eindhoven University of Technology</b><br>
