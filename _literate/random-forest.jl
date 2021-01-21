@@ -6,9 +6,8 @@ using CategoricalArrays
 using DataFrames
 using Distributions
 using Gadfly
-using Random
 using MLJ
-using StableRNGs
+using Random
 
 n = 100
 μ1 = 10
@@ -42,30 +41,34 @@ nothing # hide
 
 # ## Train and test split
 
-rng = StableRNG(123)
-train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
+# using StableRNGs
 
-train[1:10]
-length(train)
-length(test)
+# rng = StableRNG(123)
+# train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
 
-## fprs, tprs, ts = roc_curve(ŷ, y) = roc(ŷ, y)
-## plot(fprs, tprs)
+# @show train[1:10] # hide
+# @show length(train) # hide
+# @show length(test) # hide
 
-# ## Model
+# ## Model fitting
 
-forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
+## forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
 
-forest = machine(forest_model, (U = df.U, V = df.V), df.class)
+## forest = machine(forest_model, (U = df.U, V = df.V), df.class)
 
-fit!(forest; rows=train)
+## fit!(forest; rows=train)
 
-class_pred = predict_mode(forest, rows=test)
+# ## Accuracy
 
-r3(x) = round(x; sigdigits=3)
+## predictions = predict_mode(forest, rows=test)
 
-@show accuracy(class_pred, classes[test]) |> r3
+## r3(x) = round(x; sigdigits=3)
+
+## @show accuracy(predictions, classes[test]) |> r3 # hide
 
 # ## K-fold cross-validation
 
-# folds = MLDataUtils.kfolds(df, k = 5);
+## folds = MLDataUtils.kfolds(df, k = 5);
+
+## fprs, tprs, ts = roc_curve(ŷ, y) = roc(ŷ, y)
+## plot(fprs, tprs)
