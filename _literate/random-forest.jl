@@ -41,34 +41,53 @@ nothing # hide
 
 # ## Train and test split
 
-# using StableRNGs
+using StableRNGs
 
-# rng = StableRNG(123)
-# train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
+rng = StableRNG(123)
+train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
 
-# @show train[1:10] # hide
-# @show length(train) # hide
-# @show length(test) # hide
+@show train[1:10] # hide
+@show length(train) # hide
+@show length(test) # hide
 
 # ## Model fitting
 
-## forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
+forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10)
+nothing # hide
 
-## forest = machine(forest_model, (U = df.U, V = df.V), df.class)
+# 
 
-## fit!(forest; rows=train)
+forest = machine(forest_model, (U = df.U, V = df.V), df.class)
+fit!(forest; rows=train)
+nothing # hide
 
 # ## Accuracy
 
-## predictions = predict_mode(forest, rows=test)
+predictions = predict_mode(forest, rows=test)
 
-## r3(x) = round(x; sigdigits=3)
+r3(x) = round(x; sigdigits=3)
 
-## @show accuracy(predictions, classes[test]) |> r3 # hide
+@show accuracy(predictions, classes[test]) |> r3 # hide
 
 # ## K-fold cross-validation
 
-## folds = MLDataUtils.kfolds(df, k = 5);
+folds = MLDataUtils.kfolds(eachindex(classes), k = 5)
 
-## fprs, tprs, ts = roc_curve(ŷ, y) = roc(ŷ, y)
-## plot(fprs, tprs)
+#
+
+function forest_accuracy(train, test)
+    forest = machine(forest_model, (U = df.U, V = df.V), df.class)
+    fit!(forest; rows=train)
+    predictions = predict_mode(forest, rows=test)
+    accuracy(predictions, classes[test]) |> r3 # hide
+end
+
+accuracies = [forest_accuracy(train, test) for (train, test) in folds]
+
+# 
+
+mean(accuracies)
+
+# 
+
+# TODO: Add roc(ypred, y)
