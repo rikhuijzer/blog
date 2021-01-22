@@ -7,6 +7,7 @@ using DataFrames
 using Distributions
 using Gadfly
 using MLJ
+using Suppressor # hide
 using Random
 
 n = 100
@@ -64,29 +65,42 @@ nothing # hide
 # ## Accuracy
 
 predictions = predict_mode(forest, rows=test)
+truths = classes[test]
 
 r3(x) = round(x; sigdigits=3)
 
-@show accuracy(predictions, classes[test]) |> r3 # hide
+accuracy(predictions, classes[test]) |> r3
 
-# ## K-fold cross-validation
+# 
 
-folds = MLDataUtils.kfolds(eachindex(classes), k = 5)
+using MLJBase
+
+predictions = MLJ.predict(forest, rows=test)
+fprs, tprs, ts = roc(predictions, truths)
 
 #
 
+string.(truths)
+
+# ## K-fold cross-validation
+
+rng = MersenneTwister(123)
+
+indexes = shuffle(rng, eachindex(classes))
+folds = MLDataUtils.kfolds(indexes, k = 5)
+
 function forest_accuracy(train, test)
+    @suppress begin # hide
     forest = machine(forest_model, (U = df.U, V = df.V), df.class)
     fit!(forest; rows=train)
     predictions = predict_mode(forest, rows=test)
-    accuracy(predictions, classes[test]) |> r3 # hide
+    return accuracy(predictions, classes[test]) |> r3 # hide
+    end # hide
 end
 
 accuracies = [forest_accuracy(train, test) for (train, test) in folds]
 
-# 
-
-mean(accuracies)
+mean(accuracies) |> r3
 
 # 
 
