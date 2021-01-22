@@ -21,7 +21,17 @@ $$
 where $\mu_1 = 10$, $\mu_2 = 12$ and $\sigma = 2$.
 The random variable $V$ is just noise meant to fool the classifier.
 
+This data isn't meant to show that random forests are good classifiers.
+One way to do that would be to have more variables than observations \citep{pBiau2016}.
+
 \toc 
 
 \literate{random-forest.jl}
 
+## References
+
+\biblabel{pBiau2016}{Biau & Scornet, 2016}
+Biau, G., Scornet, E. 
+A Random Forest Guided Tour. 
+TEST 25, 197–227 (2016). 
+<https://doi.org/10.1007/s11749-016-0481-7>
