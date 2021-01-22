@@ -10,7 +10,7 @@ using MLJ
 using Suppressor # hide
 using Random
 
-n = 100
+n = 80
 μ1 = 10
 μ2 = 12
 σ = 2
@@ -42,50 +42,82 @@ nothing # hide
 
 # ## Train and test split
 
+# Training and evaluating (testing) on the same data is not particulary useful because we want to know how well our model generalizes.
+# For more information, see topics such as [overfitting](https://en.wikipedia.org/wiki/Overfitting).
+# Instead, we split the data up in a *train* and *test* set.
+
 using StableRNGs
 
 rng = StableRNG(123)
 train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
 
-@show train[1:10] # hide
 @show length(train) # hide
 @show length(test) # hide
 
 # ## Model fitting
 
-forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10)
-nothing # hide
+@load LinearBinaryClassifier pkg=GLM
+
+logistic_model = LinearBinaryClassifier()
+forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
 
 # 
 
+logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
+fit!(logistic; rows=train);
+
 forest = machine(forest_model, (U = df.U, V = df.V), df.class)
-fit!(forest; rows=train)
-nothing # hide
+fit!(forest; rows=train);
 
 # ## Accuracy
 
-predictions = predict_mode(forest, rows=test)
+logistic_predictions = predict_mode(logistic, rows=test)
+forest_predictions = predict_mode(forest, rows=test)
 truths = classes[test]
 
 r3(x) = round(x; sigdigits=3)
 
-accuracy(predictions, classes[test]) |> r3
+accuracy(logistic_predictions, classes[test]) |> r3
+
+# 
+
+accuracy(forest_predictions, classes[test]) |> r3
 
 # 
 
 using MLJBase
 
-predictions = MLJ.predict(forest, rows=test)
-fprs, tprs, ts = roc(predictions, truths)
+logistic_predictions = MLJ.predict(logistic, rows=test)
+logistic_fprs, logistic_tprs, _ = roc_curve(logistic_predictions, truths)
+logistic_aoc = auc(logistic_predictions, truths) |> r3
 
-#
+# 
 
-string.(truths)
+forest_predictions = MLJ.predict(forest, rows=test)
+forest_fprs, forest_tprs, _ = roc_curve(forest_predictions, truths)
+forest_aoc = auc(forest_predictions, truths) |> r3
+
+# 
+
+write_svg("roc", # hide
+plot(x = logistic_fprs, y = logistic_tprs, color = ["logistic"],
+    Coord.cartesian(ymin = 0, ymax = 1), # hide
+    Guide.yticks(ticks = 0:0.1:1), # hide
+    Guide.xlabel("False positive rate"),
+    Guide.ylabel("True positive rate estimate"),
+    Geom.smooth(method = :loess, smoothing = 0.99),
+    layer(
+        x = forest_fprs, y = forest_tprs, color = ["forest"],
+        Geom.smooth(method = :loess, smoothing = 0.99),
+    )
+)
+); # hide
+
+nothing # hide
 
 # ## K-fold cross-validation
 
 rng = MersenneTwister(123)
-
 indexes = shuffle(rng, eachindex(classes))
 folds = MLDataUtils.kfolds(indexes, k = 5)
 
@@ -101,7 +133,3 @@ end
 accuracies = [forest_accuracy(train, test) for (train, test) in folds]
 
 mean(accuracies) |> r3
-
-# 
-
-# TODO: Add roc(ypred, y)

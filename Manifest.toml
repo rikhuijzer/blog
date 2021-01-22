@@ -516,6 +516,12 @@ git-tree-sha1 = "13ba83716e00c7f858b93517322d076483cfe75c"
 uuid = "c6f25543-311c-4c74-83dc-3ea6d1015661"
 version = "0.1.0"
 
+[[MLJGLMInterface]]
+deps = ["Distributions", "GLM", "MLJModelInterface", "Parameters", "Tables"]
+git-tree-sha1 = "4b8b5a5d9bcb27699b847557b97c6a2f88ff10c0"
+uuid = "caf8df21-4939-456d-ac9c-5fefbfb04c0c"
+version = "0.1.2"
+
 [[MLJModelInterface]]
 deps = ["Random", "ScientificTypes"]
 git-tree-sha1 = "dc9af7178bdbe2619623be56fc127fe8b0d30c78"
