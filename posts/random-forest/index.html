@@ -50,9 +50,13 @@ length(test) = 24
 <h2 id=model_fitting ><a href="#model_fitting">Model fitting</a></h2>
 <pre><code class="julia hljs"><span class=hljs-meta >@load</span> LinearBinaryClassifier pkg=GLM
 
-logistic_model = LinearBinaryClassifier();</code></pre><pre><code class="plaintext hljs">(MLJGLMInterface.LinearBinaryClassifier)() ✔
+logistic_model = LinearBinaryClassifier();</code></pre><pre><code class="plaintext hljs">import MLJGLMInterface ✔
+const LinearBinaryClassifier = MLJGLMInterface.LinearBinaryClassifier ✔
+LinearBinaryClassifier() ✔
 </code></pre>
-<pre><code class="julia hljs">forest_model = EnsembleModel(atom=(<span class=hljs-meta >@load</span> DecisionTreeClassifier), n=<span class=hljs-number >10</span>);</code></pre><pre><code class="plaintext hljs">(MLJDecisionTreeInterface.DecisionTreeClassifier)() ✔
+<pre><code class="julia hljs">forest_model = EnsembleModel(atom=(<span class=hljs-meta >@load</span> DecisionTreeClassifier), n=<span class=hljs-number >10</span>);</code></pre><pre><code class="plaintext hljs">import MLJDecisionTreeInterface ✔
+const DecisionTreeClassifier = MLJDecisionTreeInterface.DecisionTreeClassifier ✔
+DecisionTreeClassifier() ✔
 </code></pre>
 <pre><code class="julia hljs">logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 fit!(logistic; rows=train)
@@ -111,7 +115,7 @@ accuracies, mean(accuracies) |&gt; r3</code></pre><pre><code class="plaintext hl
 accuracies, mean(accuracies) |&gt; r3</code></pre><pre><code class="plaintext hljs">([0.9, 0.8, 0.5, 0.6, 0.6, 0.9, 0.7, 0.7], 0.713)</code></pre>
 
 <h2 id=references ><a href="#references">References</a></h2>
-<p><a id=pbiau2016  class=anchor ></a> Biau, G., Scornet, E.  A Random Forest Guided Tour.  TEST 25, 197–227 &#40;2016&#41;.  <a href="https://doi.org/10.1007/s11749-016-0481-7">https://doi.org/10.1007/s11749-016-0481-7</a></p>
+<p><a id=pbiau2016  class=anchor ></a> Biau, G., Scornet, E. &#40;2016&#41;. A Random Forest Guided Tour.  TEST 25, 197–227 &#40;2016&#41;.  <a href="https://doi.org/10.1007/s11749-016-0481-7">https://doi.org/10.1007/s11749-016-0481-7</a></p>
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.

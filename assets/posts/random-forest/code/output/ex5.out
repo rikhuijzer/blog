@@ -1,1 +1,3 @@
-(MLJDecisionTreeInterface.DecisionTreeClassifier)() ✔
+import MLJDecisionTreeInterface ✔
+const DecisionTreeClassifier = MLJDecisionTreeInterface.DecisionTreeClassifier ✔
+DecisionTreeClassifier() ✔

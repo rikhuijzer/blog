@@ -1,1 +1,3 @@
-(MLJGLMInterface.LinearBinaryClassifier)() ✔
+import MLJGLMInterface ✔
+const LinearBinaryClassifier = MLJGLMInterface.LinearBinaryClassifier ✔
+LinearBinaryClassifier() ✔
