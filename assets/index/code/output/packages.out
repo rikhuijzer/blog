@@ -1,0 +1,19 @@
+CSV v0.8.2
+CategoricalArrays v0.8.3
+DataFrames v0.21.8
+Distributions v0.23.12
+Franklin v0.10.26
+GLM v1.3.11
+Gadfly v1.3.1
+HypothesisTests v0.10.2
+MLDataUtils v0.5.2
+MLJ v0.15.2
+MLJBase v0.16.3
+MLJDecisionTreeInterface v0.1.1
+MLJGLMInterface v0.1.2
+Query v1.0.0
+StableRNGs v1.0.0
+Suppressor v0.2.0
+TikzPictures v3.3.2
+Random
+Statistics
