@@ -36,3 +36,26 @@ The source code of this website is available on [GitHub](https://github.com/rikh
 ## Posts
 
 {{blogposts}}
+
+## Versions
+
+```julia:version
+# hideall
+println(VERSION)
+```
+
+This website is built with Julia \textoutput{version} and
+
+```julia:packages
+# hideall
+using Pkg
+
+io = IOBuffer()
+Pkg.status(; io)
+text = String(take!(io))
+lines = split(text, '\n')[3:end-1]
+lines_without_id = [l[14:end] for l in lines]
+list = join(lines_without_id, '\n')
+println(list)
+```
+\output{packages}
