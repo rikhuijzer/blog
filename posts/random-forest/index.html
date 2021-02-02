@@ -61,8 +61,8 @@ DecisionTreeClassifier() ✔
 <pre><code class="julia hljs">logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 fit!(logistic; rows=train)
 fitted_params(logistic).coef</code></pre><pre><code class="plaintext hljs">2-element Array{Float64,1}:
- 0.6561932051716937
- 0.0030447886130107273</code></pre>
+ 0.6561932051716933
+ 0.0030447886130107447</code></pre>
 <p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is random noise.</p>
 <pre><code class="julia hljs">forest = machine(forest_model, (U = df.U, V = df.V), df.class)
 fit!(forest; rows=train);</code></pre><pre><code class="plaintext hljs">
