@@ -30,14 +30,14 @@ Next, show that this change in the world is affecting their world:
 Transition from the big picture to the thing you're selling.
 Don't move to fast, or you lose the audience.
 
-- *Customers expect that individuals see the results of automated analyses.*
+- *Customers see the results of automated analyses this helps them in their daily life.*
 
 ## 4. Introduce features as "magic gifts" for overcoming obstacles to the promised land
 
 The big solution has been presented, but now the listener wants to know how to do that difficult thing.
 Luckily, you are there with the solution already:
 
-- *With language Y, software developers are more productive than ever and language Y is very capable of doing data analysis.*
+- *With language Y, software developers are more productive than ever and language Y is very suitable for doing analyses.*
 
 ## 5. Present evidence that you can make the story come true
 
