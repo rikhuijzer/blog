@@ -2,7 +2,7 @@
 title = "Benefits of writing blog posts"
 published = "16 January 2020"
 tags = ["writing"]
-description = "Convincing myself of why writing is a good habit to have."
+rss = "Convincing myself of why writing is a good habit to have."
 +++
 
 The first step into creating good habits is figuring out why exactly you want the habit.

@@ -2,7 +2,7 @@
 title = "Installing NixOS with encryption on a Lenovo laptop"
 published = "7 November 2020"
 tags = ["nixos"]
-description = "Specifically, installing NixOS on the Lenovo Yoga 7."
+rss = "Specifically, installing NixOS on the Lenovo Yoga 7."
 +++
 
 In this post, I walk through the steps to install NixOS on a Lenovo Yoga 7 with an encrypted root disk.

@@ -2,7 +2,7 @@
 title = "Comparing means and SDs"
 published = "27 June 2020"
 tags = ["statistics", "rescaling", "variance", "feature scaling"]
-description = "Transforming means and SDs from numbers in different ranges to the same range."
+rss = "Transforming means and SDs from numbers in different ranges to the same range."
 +++
 
 When comparing different papers it might be that the papers have numbers about the same thing, but that the numbers are on different scales.

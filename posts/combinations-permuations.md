@@ -2,7 +2,7 @@
 title = "Combinations and permutations"
 published = "28 June 2020"
 tags = ["order", "statistics"]
-description = "Deriving the equations for combinations and permutations."
+rss = "Deriving the equations for combinations and permutations."
 +++
 
 Counting is simple except when there is a lot to be counted.

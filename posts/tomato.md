@@ -1,7 +1,7 @@
 +++
 title = "QoS setup using Tomato in combination with an Experiabox"
 published = "25 August 2015"
-description = "My first blog post."
+rss = "My first blog post."
 image = "/assets/tomato.png"
 +++
 

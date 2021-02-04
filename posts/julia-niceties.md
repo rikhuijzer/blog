@@ -2,7 +2,7 @@
 title = "Niceties in the Julia programming language"
 published = "3 December 2019"
 tags = ["map", "programming"]
-description = "A quick walk through some Julia syntax and interesting features."
+rss = "A quick walk through some Julia syntax and interesting features."
 +++
 
 In general I'm quite amazed by the Julia programming language.

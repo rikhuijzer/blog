@@ -2,7 +2,7 @@
 title = "Writing checklist"
 published = "29 July 2020"
 tags = ["checklist", "writing"]
-description = "A list to quickly check for common mistakes in writing."
+rss = "A list to quickly check for common mistakes in writing."
 +++
 
 I keep forgetting lessons about writing.

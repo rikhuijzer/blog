@@ -2,7 +2,7 @@
 title = "Writing effectively"
 published = "12 August 2020"
 tags = ["valuable", "academia", "writing"]
-description = "Why writing should be valuable to the reader."
+rss = "Why writing should be valuable to the reader."
 +++
 
 According to \citet{tMcEnerney}, academics are trained to be poor writers.

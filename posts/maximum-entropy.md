@@ -2,7 +2,7 @@
 title = "The principle of maximum entropy"
 published = "26 September 2020"
 tags = ["simulating data", "statistics"]
-description = "Obtaining the least informative distribution."
+rss = "Obtaining the least informative distribution."
 +++
 
 Say that you are a statistician and are asked to come up with a probability distribution for the current state of knowledge on some particular topic you know little about.

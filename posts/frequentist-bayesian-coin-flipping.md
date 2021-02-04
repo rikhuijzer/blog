@@ -1,7 +1,7 @@
 +++
 title = "Frequentist and Bayesian coin flipping"
 published = "14 November 2020"
-description = "Comparing both statistical paradigms on a coin flipping example."
+rss = "Comparing both statistical paradigms on a coin flipping example."
 +++
 
 To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics.

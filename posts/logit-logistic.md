@@ -2,7 +2,7 @@
 title = "The logit and logistic functions"
 published = "4 November 2020"
 tags = ["statistics"]
-description = "Providing the definitions, some plots and useful values to remember."
+rss = "Providing the definitions, some plots and useful values to remember."
 +++
 
 ```julia:preliminaries

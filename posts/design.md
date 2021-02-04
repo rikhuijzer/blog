@@ -2,7 +2,7 @@
 title = "Design cheatsheet"
 published = "29 November 2020"
 tags = ["design"]
-description = "A summary of design tips and tricks."
+rss = "A summary of design tips and tricks."
 reeval = true
 +++
 
