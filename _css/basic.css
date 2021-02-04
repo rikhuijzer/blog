@@ -50,8 +50,10 @@ header .blog-name a {
     color: #a6a2a0;
     text-decoration: none; }
 
-#menu-icon {
-    display: none; }
+.rss-icon {
+  margin: 0;
+  height: 0.7rem;
+}
 
 @media (max-width: 480px) {
     header {
