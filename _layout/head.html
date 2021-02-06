@@ -25,5 +25,6 @@
   {{insert header.html}}
 
 <div class="franklin-content">
-  {{isdef published}} <h1>{{fill title}}</h1> {{end}}
+  {{isdef published}} <h1 class="page-title"> {{fill title}} </h1> {{end}}
+  {{isdef published}} <span class="page-date"> {{fill published}} </span> {{end}}
 </div>

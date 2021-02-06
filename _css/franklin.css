@@ -325,3 +325,13 @@ ul.blog-posts li a:visited {
   display: block;
   margin: auto;
 }
+
+.page-title {
+  margin-bottom: 0.4rem !important;
+}
+
+.page-date {
+  display: block;
+  font-style: italic;
+  margin-bottom: 40px;
+}
