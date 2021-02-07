@@ -1,6 +1,6 @@
 +++
 title = "Entr"
-published = "29 October 2019"
+published = "2019-10-29"
 tags = ["shortcut", "compile", "run"]
 rss = "A tool for executing commands automatically upon file changes."
 +++

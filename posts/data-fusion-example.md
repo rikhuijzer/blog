@@ -1,6 +1,6 @@
 +++
 title = "A data-fusion example"
-published = "1 November 2020"
+published = "2020-11-02"
 tags = ["causality"]
 rss = "An example in causal data-fusion."
 +++

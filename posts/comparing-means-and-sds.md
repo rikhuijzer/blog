@@ -1,6 +1,6 @@
 +++
 title = "Comparing means and SDs"
-published = "27 June 2020"
+published = "2020-06-27"
 tags = ["statistics", "rescaling", "variance", "feature scaling"]
 rss = "Transforming means and SDs from numbers in different ranges to the same range."
 +++

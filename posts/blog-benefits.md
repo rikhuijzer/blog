@@ -1,6 +1,6 @@
 +++
 title = "Benefits of writing blog posts"
-published = "16 January 2020"
+published = "2020-01-16"
 tags = ["writing"]
 rss = "Convincing myself of why writing is a good habit to have."
 +++

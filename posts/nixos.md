@@ -1,6 +1,6 @@
 +++
 title = "NixOS configuration highlights"
-published = "1 December 2019"
+published = "2019-12-01"
 tags = ["libsecret", "fish"]
 rss = "Particularily neat parts of using NixOS."
 +++

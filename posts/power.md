@@ -1,6 +1,6 @@
 +++
 title = "Statistical power from scratch"
-published = "29 October 2019"
+published = "2019-12-29"
 tags = ["statistics", "normal distribution", "t-test"]
 rss = "Explaining statistical power by first finding the binomial and normal distributions."
 +++

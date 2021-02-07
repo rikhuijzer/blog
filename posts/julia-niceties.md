@@ -1,6 +1,6 @@
 +++
 title = "Niceties in the Julia programming language"
-published = "3 December 2019"
+published = "2019-12-03"
 tags = ["map", "programming"]
 rss = "A quick walk through some Julia syntax and interesting features."
 +++

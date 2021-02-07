@@ -1,6 +1,6 @@
 +++
 title = "Predicates and reproducibility"
-published = "11 May 2020"
+published = "2020-05-11"
 tags = ["reproducibility", "statistics"]
 rss = "Thinking about the layers above statistics."
 +++

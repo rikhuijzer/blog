@@ -41,7 +41,7 @@ function hfun_blogposts()
         if isnothing(pubdate)
             return Date(Dates.unix2datetime(stat(surl * ".md").ctime))
         end
-        return Date(pubdate, dateformat"d U Y")
+        return Date(pubdate, dateformat"yyyy-mm-dd")
     end
     sort!(list, by=sorter, rev=true)
 
@@ -61,7 +61,7 @@ function hfun_blogposts()
         if isnothing(pubdate)
             date = "$curyear-$curmonth-$curday"
         else
-            date = Date(pubdate, dateformat"d U Y")
+            date = Date(pubdate, dateformat"yyyy-mm-dd")
         end
         write(io, """$date</i></span><b><a href="$url">$title</a></b>""")
         write(io, """<li><i class="description">$description</i></li>""")

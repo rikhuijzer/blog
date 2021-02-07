@@ -1,6 +1,6 @@
 +++
 title = "Simple and binary regression"
-published = "5 March 2020"
+published = "2020-03-05"
 tags = ["simulating data", "statistics"]
 rss = "Applying a simple and binary (logistic) regression to simulated data."
 +++
