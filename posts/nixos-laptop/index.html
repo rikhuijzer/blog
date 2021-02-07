@@ -62,7 +62,10 @@ boot.initrd.luks.devices = {
     preLVM = true;
     allowDiscards = true;
   };
-};</code></pre>
+};
+
+# Without this, the graphics won&#x27;t work (at the time of writing) on this relatively new laptop.
+boot.kernelPackages = pkgs.linuxPackages_latest;</code></pre>
 <h2 id=installing ><a href="#installing">Installing</a></h2>
 <p>Finally, install NixOS with</p>
 <pre><code class="julia hljs">sudo nixos-install
