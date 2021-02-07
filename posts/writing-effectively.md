@@ -1,6 +1,6 @@
 +++
 title = "Writing effectively"
-published = "12 August 2020"
+published = "2020-08-12"
 tags = ["valuable", "academia", "writing"]
 rss = "Why writing should be valuable to the reader."
 +++

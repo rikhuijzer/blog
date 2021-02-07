@@ -1,6 +1,6 @@
 +++
 title = "The principle of maximum entropy"
-published = "26 September 2020"
+published = "2020-09-26"
 tags = ["simulating data", "statistics"]
 rss = "Obtaining the least informative distribution."
 +++

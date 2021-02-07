@@ -1,6 +1,6 @@
 +++
 title = "The greatest sales deck someone else has ever seen"
-published = "02 February 2021"
+published = "2020-02-02"
 tags = ["sales"]
 rss = "It's Zuora's deck"
 +++

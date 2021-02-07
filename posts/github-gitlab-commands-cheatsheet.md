@@ -1,6 +1,6 @@
 +++
 title = "GitHub and GitLab commands cheatsheet"
-published = "16 December 2020"
+published = "2020-12-16"
 tags = ["shortcut", "git"]
 rss = "A cheatsheet for commands like 'Fix #2334'."
 +++

@@ -1,6 +1,6 @@
 +++
 title = "Random forest classification in Julia"
-published = "21 January 2021"
+published = "2021-01-21"
 tags = ["simulating data", "machine learning"]
 rss = "Fitting a random forest classifier and reporting accuracy metrics"
 showall = true

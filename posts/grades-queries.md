@@ -1,6 +1,6 @@
 +++
 title = "Grades queries"
-published = "26 October 2020"
+published = "2020-11-26"
 rss = "Using SQL like query syntax in Julia."
 +++
 

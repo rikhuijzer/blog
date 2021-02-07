@@ -1,6 +1,6 @@
 +++
 title = "Installing NixOS with encryption on a Lenovo laptop"
-published = "7 November 2020"
+published = "2020-11-7"
 tags = ["nixos"]
 rss = "Specifically, installing NixOS on the Lenovo Yoga 7."
 +++

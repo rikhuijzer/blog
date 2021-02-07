@@ -1,6 +1,6 @@
 +++
 title = "Writing checklist"
-published = "29 July 2020"
+published = "2020-07-29"
 tags = ["checklist", "writing"]
 rss = "A list to quickly check for common mistakes in writing."
 +++
