@@ -37,6 +37,8 @@ but we can also
 - generate a [book](https://github.com/hadley/r4ds), or
 - run a backup.
 
+**TODO:** Add Compose.jl image here.
+
 In essence, CI/CD and Workflows are about **linking computations to text**.
 
 
