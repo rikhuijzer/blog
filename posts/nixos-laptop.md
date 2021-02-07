@@ -106,6 +106,9 @@ boot.initrd.luks.devices = {
     allowDiscards = true;
   };
 };
+
+# Without this, the graphics won't work (at the time of writing) on this relatively new laptop.
+boot.kernelPackages = pkgs.linuxPackages_latest;
 ```
 
 ## Installing
