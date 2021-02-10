@@ -1,45 +1,45 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Frequentist and Bayesian coin flipping - Huijzer.xyz </title> <meta property="og:title" content="Frequentist and Bayesian coin flipping" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Frequentist and Bayesian coin flipping" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Frequentist and Bayesian coin flipping </h1> <span class=page-date > 2020-11-14 </span> </div> <div class=franklin-content > <p>To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics. Most explanations involve terms such as &quot;likelihood&quot;, &quot;uncertainty&quot; and &quot;prior probabilities&quot;. Here, I&#39;m going to show the difference between both statistical paradigms by using a coin flipping example. In the examples, the effect of showing more data to both paradigms will be visualised.</p> <p><div class=franklin-toc ><ol><li><a href="#generating_data">Generating data </a><li><a href="#calculate_probability_estimates">Calculate probability estimates</a><li><a href="#conclusion">Conclusion</a><li><a href="#references">References </a></ol></div> </p> <h2 id=generating_data ><a href="#generating_data">Generating data </a></h2> <p>Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.</p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> Distributions
-<span class=hljs-keyword >using</span> Random
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Frequentist and Bayesian coin flipping - Huijzer.xyz </title> <meta property="og:title" content="Frequentist and Bayesian coin flipping" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Frequentist and Bayesian coin flipping" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Frequentist and Bayesian coin flipping </h1> <span class=page-date > 2020-11-14 </span> </div> <div class=franklin-content > <p>To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics. Most explanations involve terms such as &quot;likelihood&quot;, &quot;uncertainty&quot; and &quot;prior probabilities&quot;. Here, I&#39;m going to show the difference between both statistical paradigms by using a coin flipping example. In the examples, the effect of showing more data to both paradigms will be visualised.</p> <p><div class=franklin-toc ><ol><li><a href="#generating_data">Generating data </a><li><a href="#calculate_probability_estimates">Calculate probability estimates</a><li><a href="#conclusion">Conclusion</a><li><a href="#references">References </a></ol></div> </p> <h2 id=generating_data ><a href="#generating_data">Generating data </a></h2> <p>Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.</p> <pre><code class=language-julia >using Distributions
+using Random
 
-n = <span class=hljs-number >80</span>
-Random.seed!(<span class=hljs-number >102</span>)
-p_true = <span class=hljs-number >0.5</span>
-is_heads = rand(Bernoulli(p_true), n)</code></pre> <p>To give some intuition about the sample, the first six elements of <code>is_heads</code> are</p> <pre><code class="plaintext hljs">is_heads[1:6] = Bool[1, 0, 0, 1, 1, 1]
-</code></pre> <h2 id=calculate_probability_estimates ><a href="#calculate_probability_estimates">Calculate probability estimates</a></h2> <p>The Frequentist estimate for a one sample t-test after seeing <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> samples can be calculated with</p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> HypothesisTests
+n &#61; 80
+Random.seed&#33;&#40;102&#41;
+p_true &#61; 0.5
+is_heads &#61; rand&#40;Bernoulli&#40;p_true&#41;, n&#41;</code></pre> <p>To give some intuition about the sample, the first six elements of <code>is_heads</code> are</p> <pre><code class=plaintext >is_heads[1:6] = Bool[1, 0, 0, 1, 1, 1]
+</code></pre> <h2 id=calculate_probability_estimates ><a href="#calculate_probability_estimates">Calculate probability estimates</a></h2> <p>The Frequentist estimate for a one sample t-test after seeing <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> samples can be calculated with</p> <pre><code class=language-julia >using HypothesisTests
 
-<span class=hljs-keyword >function</span> frequentist_estimate(n)
-  t_result = OneSampleTTest(is_heads[<span class=hljs-number >1</span>:n])
-  t_lower, t_upper = confint(t_result)
-  (lower = t_lower, middle = t_result.xbar, upper = t_upper)
-<span class=hljs-keyword >end</span></code></pre> <p>For the Bayesian estimate, we can use the closed-form solution <span class=bibref >(<a href="#turing2020closed">The Turing Language, 2020</a>)</span>. A closed-form solution is not available for many real-world problems, but quite useful for this example.</p> <pre><code class="julia hljs">closed_form_prior = Beta(<span class=hljs-number >1</span>, <span class=hljs-number >1</span>)
-<span class=hljs-keyword >function</span> update_belief(k)
-  heads = sum(is_heads[<span class=hljs-number >1</span>:k-<span class=hljs-number >1</span>])
-  tails = k - heads
-  updated_belief = Beta(closed_form_prior.α + heads, closed_form_prior.β + tails)
-<span class=hljs-keyword >end</span>
-beliefs = [closed_form_prior; update_belief.(<span class=hljs-number >1</span>:n)]</code></pre> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> bayesian_estimate(n)
-  distribution = beliefs[n]
-  q(x) = quantile(distribution, x)
-  (lower = q(<span class=hljs-number >0.025</span>), middle = mean(distribution), upper = q(<span class=hljs-number >0.975</span>))
-<span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> Gadfly
+function frequentist_estimate&#40;n&#41;
+  t_result &#61; OneSampleTTest&#40;is_heads&#91;1:n&#93;&#41;
+  t_lower, t_upper &#61; confint&#40;t_result&#41;
+  &#40;lower &#61; t_lower, middle &#61; t_result.xbar, upper &#61; t_upper&#41;
+end</code></pre> <p>For the Bayesian estimate, we can use the closed-form solution <span class=bibref >(<a href="#turing2020closed">The Turing Language, 2020</a>)</span>. A closed-form solution is not available for many real-world problems, but quite useful for this example.</p> <pre><code class=language-julia >closed_form_prior &#61; Beta&#40;1, 1&#41;
+function update_belief&#40;k&#41;
+  heads &#61; sum&#40;is_heads&#91;1:k-1&#93;&#41;
+  tails &#61; k - heads
+  updated_belief &#61; Beta&#40;closed_form_prior.α &#43; heads, closed_form_prior.β &#43; tails&#41;
+end
+beliefs &#61; &#91;closed_form_prior; update_belief.&#40;1:n&#41;&#93;</code></pre> <pre><code class=language-julia >function bayesian_estimate&#40;n&#41;
+  distribution &#61; beliefs&#91;n&#93;
+  q&#40;x&#41; &#61; quantile&#40;distribution, x&#41;
+  &#40;lower &#61; q&#40;0.025&#41;, middle &#61; mean&#40;distribution&#41;, upper &#61; q&#40;0.975&#41;&#41;
+end</code></pre> <pre><code class=language-julia >using Gadfly
 
-<span class=hljs-keyword >function</span> plot_estimates(estimate_function; title=<span class=hljs-string >&quot;&quot;</span>)
-  draws = <span class=hljs-number >2</span>:<span class=hljs-number >4</span>:<span class=hljs-number >80</span>
-  estimates = estimate_function.(draws)
-  middles = [t.middle <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates]
-  plot(y = draws, 
-    x = [t.middle <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates],
-    xmin = [t.lower <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates],
-    xmax = [t.upper <span class=hljs-keyword >for</span> t <span class=hljs-keyword >in</span> estimates],
+function plot_estimates&#40;estimate_function; title&#61;&quot;&quot;&#41;
+  draws &#61; 2:4:80
+  estimates &#61; estimate_function.&#40;draws&#41;
+  middles &#61; &#91;t.middle for t in estimates&#93;
+  plot&#40;y &#61; draws, 
+    x &#61; &#91;t.middle for t in estimates&#93;,
+    xmin &#61; &#91;t.lower for t in estimates&#93;,
+    xmax &#61; &#91;t.upper for t in estimates&#93;,
     Geom.point, Geom.errorbar,
-    Coord.cartesian(xmin = <span class=hljs-number >0.0</span>, xmax = <span class=hljs-number >1.0</span>),
-    Guide.xlabel(<span class=hljs-string >&quot;Probability of heads&quot;</span>), Guide.ylabel(<span class=hljs-string >&quot;Observed number of draws&quot;</span>),
-    Guide.title(title),
-    layer(xintercept = [<span class=hljs-number >0.5</span>], Geom.vline(color = <span class=hljs-string >&quot;gray&quot;</span>))
-  )
-<span class=hljs-keyword >end</span></code></pre> <pre><code class="julia hljs">plot_estimates(frequentist_estimate, title = <span class=hljs-string >&quot;Frequentist estimates&quot;</span>)</code></pre>
+    Coord.cartesian&#40;xmin &#61; 0.0, xmax &#61; 1.0&#41;,
+    Guide.xlabel&#40;&quot;Probability of heads&quot;&#41;, Guide.ylabel&#40;&quot;Observed number of draws&quot;&#41;,
+    Guide.title&#40;title&#41;,
+    layer&#40;xintercept &#61; &#91;0.5&#93;, Geom.vline&#40;color &#61; &quot;gray&quot;&#41;&#41;
+  &#41;
+end</code></pre> <pre><code class=language-julia >plot_estimates&#40;frequentist_estimate, title &#61; &quot;Frequentist estimates&quot;&#41;</code></pre>
 <p> <img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/frequentist-estimates.svg" alt=""></p>
-<pre><code class="julia hljs">plot_estimates(bayesian_estimate, title = <span class=hljs-string >&quot;Bayesian estimates&quot;</span>)</code></pre>
+<pre><code class=language-julia >plot_estimates&#40;bayesian_estimate, title &#61; &quot;Bayesian estimates&quot;&#41;</code></pre>
 <p> <img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/bayesian-estimates.svg" alt=""></p>
 <p>If you don&#39;t have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist <strong>and</strong> Bayesian estimates. The answer is: lots of trial and error, and moving text around.</p>
 <h2 id=conclusion ><a href="#conclusion">Conclusion</a></h2>
@@ -53,3 +53,12 @@ beliefs = [closed_form_prior; update_belief.(<span class=hljs-number >1</span>:n
   </div>
 </div>
 </div>
+    
+        
+
+
+
+    
+    
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>

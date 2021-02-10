@@ -1,118 +1,118 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Random forest classification in Julia - Huijzer.xyz </title> <meta property="og:title" content="Random forest classification in Julia" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Random forest classification in Julia" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Random forest classification in Julia </h1> <span class=page-date > 2021-01-21 </span> </div> <div class=franklin-content > <p>Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia. I&#39;ve used both models to have a baseline for the random forest. The model is evaluated on a mock variable <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> generated from two distributions, namely</p> <span class=katex-display ><span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML" display=block ><semantics><mtable rowspacing=0.24999999999999992em  columnalign="right left" columnspacing=0em ><mtr><mtd><mstyle scriptlevel=0  displaystyle=true ><msub><mi>d</mi><mn>1</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel=0  displaystyle=true ><mrow><mrow></mrow><mo>=</mo><mtext>Normal</mtext><mo stretchy=false >(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo separator=true >,</mo><mi>σ</mi><mo stretchy=false >)</mo><mtext> </mtext><mtext> </mtext><mtext>and</mtext></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel=0  displaystyle=true ><msub><mi>d</mi><mn>2</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel=0  displaystyle=true ><mrow><mrow></mrow><mo>=</mo><mtext>Normal</mtext><mo stretchy=false >(</mo><msub><mi>μ</mi><mn>2</mn></msub><mo separator=true >,</mo><mi>σ</mi><mo stretchy=false >)</mo><mo separator=true >,</mo></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex"> \begin{aligned} d_1 &amp;= \text{Normal}(\mu_1, \sigma) \: \: \text{and} \\ d_2 &amp;= \text{Normal}(\mu_2, \sigma), \end{aligned} </annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:3.0000000000000004em;vertical-align:-1.2500000000000002em;"></span><span class=mord ><span class=mtable ><span class=col-align-r ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:1.7500000000000002em;"><span style="top:-3.91em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ><span class="mord mathnormal">d</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ><span class="mord mathnormal">d</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:1.2500000000000002em;"><span></span></span></span></span></span><span class=col-align-l ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:1.7500000000000002em;"><span style="top:-3.91em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class=mord >Normal</span></span><span class=mopen >(</span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class=mclose >)</span><span class=mspace  style="margin-right:0.2222222222222222em;"></span><span class=mspace  style="margin-right:0.2222222222222222em;"></span><span class="mord text"><span class=mord >and</span></span></span></span><span style="top:-2.41em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class=mord >Normal</span></span><span class=mopen >(</span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class=mclose >)</span><span class=mpunct >,</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:1.2500000000000002em;"><span></span></span></span></span></span></span></span></span></span></span></span> <p>where <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\mu_1 = 10</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.625em;vertical-align:-0.19444em;"></span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >1</span><span class=mord >0</span></span></span></span>, <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">\mu_2 = 12</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.625em;vertical-align:-0.19444em;"></span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >1</span><span class=mord >2</span></span></span></span> and <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\sigma = 2</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >2</span></span></span></span>. The random variable <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is just noise meant to fool the classifier.</p> <p>This data isn&#39;t meant to show that random forests are good classifiers. One way to do that would be to have more variables than observations <span class=bibref >(<a href="#pbiau2016">Biau & Scornet, 2016</a>)</span>.</p> <p><div class=franklin-toc ><ol><li><a href="#data_generation">Data generation</a><li><a href="#train_and_test_split">Train and test split</a><li><a href="#model_fitting">Model fitting</a><li><a href="#accuracy">Accuracy</a><li><a href="#k-fold_cross-validation">K-fold cross-validation</a><li><a href="#references">References</a></ol></div> </p> <h2 id=data_generation ><a href="#data_generation">Data generation</a></h2> <pre><code class="julia hljs"><span class=hljs-keyword >import</span> MLDataUtils
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Random forest classification in Julia - Huijzer.xyz </title> <meta property="og:title" content="Random forest classification in Julia" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Random forest classification in Julia" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Random forest classification in Julia </h1> <span class=page-date > 2021-01-21 </span> </div> <div class=franklin-content > <p>Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia. I&#39;ve used both models to have a baseline for the random forest. The model is evaluated on a mock variable <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> generated from two distributions, namely</p> <span class=katex-display ><span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML" display=block ><semantics><mtable rowspacing=0.24999999999999992em  columnalign="right left" columnspacing=0em ><mtr><mtd><mstyle scriptlevel=0  displaystyle=true ><msub><mi>d</mi><mn>1</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel=0  displaystyle=true ><mrow><mrow></mrow><mo>=</mo><mtext>Normal</mtext><mo stretchy=false >(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo separator=true >,</mo><mi>σ</mi><mo stretchy=false >)</mo><mtext> </mtext><mtext> </mtext><mtext>and</mtext></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel=0  displaystyle=true ><msub><mi>d</mi><mn>2</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel=0  displaystyle=true ><mrow><mrow></mrow><mo>=</mo><mtext>Normal</mtext><mo stretchy=false >(</mo><msub><mi>μ</mi><mn>2</mn></msub><mo separator=true >,</mo><mi>σ</mi><mo stretchy=false >)</mo><mo separator=true >,</mo></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex"> \begin{aligned} d_1 &amp;= \text{Normal}(\mu_1, \sigma) \: \: \text{and} \\ d_2 &amp;= \text{Normal}(\mu_2, \sigma), \end{aligned} </annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:3.0000000000000004em;vertical-align:-1.2500000000000002em;"></span><span class=mord ><span class=mtable ><span class=col-align-r ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:1.7500000000000002em;"><span style="top:-3.91em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ><span class="mord mathnormal">d</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ><span class="mord mathnormal">d</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:1.2500000000000002em;"><span></span></span></span></span></span><span class=col-align-l ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:1.7500000000000002em;"><span style="top:-3.91em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class=mord >Normal</span></span><span class=mopen >(</span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class=mclose >)</span><span class=mspace  style="margin-right:0.2222222222222222em;"></span><span class=mspace  style="margin-right:0.2222222222222222em;"></span><span class="mord text"><span class=mord >and</span></span></span></span><span style="top:-2.41em;"><span class=pstrut  style="height:3em;"></span><span class=mord ><span class=mord ></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class="mord text"><span class=mord >Normal</span></span><span class=mopen >(</span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class=mclose >)</span><span class=mpunct >,</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:1.2500000000000002em;"><span></span></span></span></span></span></span></span></span></span></span></span> <p>where <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\mu_1 = 10</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.625em;vertical-align:-0.19444em;"></span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >1</span><span class=mord >0</span></span></span></span>, <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">\mu_2 = 12</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.625em;vertical-align:-0.19444em;"></span><span class=mord ><span class="mord mathnormal">μ</span><span class=msupsub ><span class="vlist-t vlist-t2"><span class=vlist-r ><span class=vlist  style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class=pstrut  style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class=vlist-s >​</span></span><span class=vlist-r ><span class=vlist  style="height:0.15em;"><span></span></span></span></span></span></span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >1</span><span class=mord >2</span></span></span></span> and <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\sigma = 2</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >2</span></span></span></span>. The random variable <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is just noise meant to fool the classifier.</p> <p>This data isn&#39;t meant to show that random forests are good classifiers. One way to do that would be to have more variables than observations <span class=bibref >(<a href="#pbiau2016">Biau & Scornet, 2016</a>)</span>.</p> <p><div class=franklin-toc ><ol><li><a href="#data_generation">Data generation</a><li><a href="#train_and_test_split">Train and test split</a><li><a href="#model_fitting">Model fitting</a><li><a href="#accuracy">Accuracy</a><li><a href="#k-fold_cross-validation">K-fold cross-validation</a><li><a href="#references">References</a></ol></div> </p> <h2 id=data_generation ><a href="#data_generation">Data generation</a></h2> <pre><code class=language-julia >import MLDataUtils
 
-<span class=hljs-keyword >using</span> CategoricalArrays
-<span class=hljs-keyword >using</span> DataFrames
-<span class=hljs-keyword >using</span> Distributions
-<span class=hljs-keyword >using</span> Gadfly
-<span class=hljs-keyword >using</span> MLJ
-<span class=hljs-keyword >using</span> Random
+using CategoricalArrays
+using DataFrames
+using Distributions
+using Gadfly
+using MLJ
+using Random
 
-n = <span class=hljs-number >80</span>
-μ<span class=hljs-number >1</span> = <span class=hljs-number >10</span>
-μ<span class=hljs-number >2</span> = <span class=hljs-number >12</span>
-σ = <span class=hljs-number >2</span>
+n &#61; 80
+μ1 &#61; 10
+μ2 &#61; 12
+σ &#61; 2
 
-d1 = Normal(μ<span class=hljs-number >1</span>, σ)
-d2 = Normal(μ<span class=hljs-number >2</span>, σ)
+d1 &#61; Normal&#40;μ1, σ&#41;
+d2 &#61; Normal&#40;μ2, σ&#41;
 
-Random.seed!(<span class=hljs-number >123</span>)
-classes = CategoricalArray(rand([<span class=hljs-string >&quot;A&quot;</span>, <span class=hljs-string >&quot;B&quot;</span>], n))
+Random.seed&#33;&#40;123&#41;
+classes &#61; CategoricalArray&#40;rand&#40;&#91;&quot;A&quot;, &quot;B&quot;&#93;, n&#41;&#41;
 
-df = DataFrame(
-    class = CategoricalArray(classes),
-    U = [class == <span class=hljs-string >&quot;A&quot;</span> ? rand(d1) : rand(d2) <span class=hljs-keyword >for</span> class <span class=hljs-keyword >in</span> classes],
-    V = rand(Normal(<span class=hljs-number >100</span>, <span class=hljs-number >10</span>), n)
-)
+df &#61; DataFrame&#40;
+    class &#61; CategoricalArray&#40;classes&#41;,
+    U &#61; &#91;class &#61;&#61; &quot;A&quot; ? rand&#40;d1&#41; : rand&#40;d2&#41; for class in classes&#93;,
+    V &#61; rand&#40;Normal&#40;100, 10&#41;, n&#41;
+&#41;
 
-first(df, <span class=hljs-number >10</span>)</code></pre><pre><code class="plaintext hljs">10×3 DataFrame
+first&#40;df, 10&#41;</code></pre><pre><code class=plaintext >10×3 DataFrame
 │ Row │ class │ U       │ V       │
 │     │ Cat…  │ Float64 │ Float64 │
 ├─────┼───────┼─────────┼─────────┤
 │ 1   │ B     │ 11.5802 │ 111.588 │
-│ 2   │ B     │ 12.0062 │ 99.9623 │
+│ 2   │ A     │ 10.0062 │ 99.9623 │
 │ 3   │ A     │ 12.719  │ 93.8876 │
-│ 4   │ B     │ 12.6082 │ 110.054 │
-│ 5   │ A     │ 6.8399  │ 108.481 │
+│ 4   │ A     │ 10.6082 │ 110.054 │
+│ 5   │ B     │ 8.8399  │ 108.481 │
 │ 6   │ B     │ 13.2351 │ 99.2827 │
-│ 7   │ B     │ 11.9717 │ 90.8848 │
+│ 7   │ A     │ 9.97171 │ 90.8848 │
 │ 8   │ B     │ 8.75458 │ 113.906 │
 │ 9   │ A     │ 8.96639 │ 89.2201 │
-│ 10  │ A     │ 8.32874 │ 113.208 │</code></pre> <pre><code class="julia hljs">plot(df, x = :U, y = :V, color = :class)</code></pre>
+│ 10  │ B     │ 10.3287 │ 113.208 │</code></pre> <pre><code class=language-julia >plot&#40;df, x &#61; :U, y &#61; :V, color &#61; :class&#41;</code></pre>
 <img src="/assets/posts/random-forest/code/output/u-class.svg" alt="">
 <h2 id=train_and_test_split ><a href="#train_and_test_split">Train and test split</a></h2>
 <p>Training and evaluating &#40;testing&#41; on the same data is not particulary useful because we want to know how well our model generalizes. For more information, see topics such as <a href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a>. Instead, we split the data up in a <em>train</em> and <em>test</em> set.</p>
-<pre><code class="julia hljs"><span class=hljs-keyword >using</span> StableRNGs
+<pre><code class=language-julia >using StableRNGs
 
-rng = StableRNG(<span class=hljs-number >123</span>)
-train, test = MLJ.partition(eachindex(classes), <span class=hljs-number >0.7</span>, shuffle=<span class=hljs-literal >true</span>; rng)</code></pre><pre><code class="plaintext hljs">length(train) = 56
+rng &#61; StableRNG&#40;123&#41;
+train, test &#61; MLJ.partition&#40;eachindex&#40;classes&#41;, 0.7, shuffle&#61;true; rng&#41;</code></pre><pre><code class=plaintext >length(train) = 56
 length(test) = 24
 </code></pre>
 <h2 id=model_fitting ><a href="#model_fitting">Model fitting</a></h2>
-<pre><code class="julia hljs"><span class=hljs-meta >@load</span> LinearBinaryClassifier pkg=GLM
+<pre><code class=language-julia >@load LinearBinaryClassifier pkg&#61;GLM
 
-logistic_model = LinearBinaryClassifier();</code></pre><pre><code class="plaintext hljs">import MLJGLMInterface ✔
+logistic_model &#61; LinearBinaryClassifier&#40;&#41;;</code></pre><pre><code class=plaintext >import MLJGLMInterface ✔
 const LinearBinaryClassifier = MLJGLMInterface.LinearBinaryClassifier ✔
 LinearBinaryClassifier() ✔
 </code></pre>
-<pre><code class="julia hljs">forest_model = EnsembleModel(atom=(<span class=hljs-meta >@load</span> DecisionTreeClassifier), n=<span class=hljs-number >10</span>);</code></pre><pre><code class="plaintext hljs">import MLJDecisionTreeInterface ✔
+<pre><code class=language-julia >forest_model &#61; EnsembleModel&#40;atom&#61;&#40;@load DecisionTreeClassifier&#41;, n&#61;10&#41;;</code></pre><pre><code class=plaintext >import MLJDecisionTreeInterface ✔
 const DecisionTreeClassifier = MLJDecisionTreeInterface.DecisionTreeClassifier ✔
 DecisionTreeClassifier() ✔
 </code></pre>
-<pre><code class="julia hljs">logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
-fit!(logistic; rows=train)
-fitted_params(logistic).coef</code></pre><pre><code class="plaintext hljs">2-element Array{Float64,1}:
- 0.6561932051716937
- 0.0030447886130107273</code></pre>
+<pre><code class=language-julia >logistic &#61; machine&#40;logistic_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
+fit&#33;&#40;logistic; rows&#61;train&#41;
+fitted_params&#40;logistic&#41;.coef</code></pre><pre><code class=plaintext >2-element Vector{Float64}:
+ 0.7170450596947772
+ 0.040936567194873125</code></pre>
 <p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is random noise.</p>
-<pre><code class="julia hljs">forest = machine(forest_model, (U = df.U, V = df.V), df.class)
-fit!(forest; rows=train);</code></pre><pre><code class="plaintext hljs">
+<pre><code class=language-julia >forest &#61; machine&#40;forest_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
+fit&#33;&#40;forest; rows&#61;train&#41;;</code></pre><pre><code class=plaintext >
 </code></pre>
 <h2 id=accuracy ><a href="#accuracy">Accuracy</a></h2>
 <p>Now that we have fitted the two models, we can compare the accuracies and plot the <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic</a>.</p>
-<pre><code class="julia hljs">logistic_predictions = predict_mode(logistic, rows=test)
-forest_predictions = predict_mode(forest, rows=test)
-truths = classes[test]
+<pre><code class=language-julia >logistic_predictions &#61; predict_mode&#40;logistic, rows&#61;test&#41;
+forest_predictions &#61; predict_mode&#40;forest, rows&#61;test&#41;
+truths &#61; classes&#91;test&#93;
 
-r3(x) = round(x; sigdigits=<span class=hljs-number >3</span>)
+r3&#40;x&#41; &#61; round&#40;x; sigdigits&#61;3&#41;
 
-accuracy(logistic_predictions, classes[test]) |&gt; r3</code></pre><pre><code class="plaintext hljs">0.708</code></pre>
-<pre><code class="julia hljs">accuracy(forest_predictions, classes[test]) |&gt; r3</code></pre><pre><code class="plaintext hljs">0.75</code></pre>
-<pre><code class="julia hljs"><span class=hljs-keyword >using</span> MLJBase
+accuracy&#40;logistic_predictions, classes&#91;test&#93;&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.625</code></pre>
+<pre><code class=language-julia >accuracy&#40;forest_predictions, classes&#91;test&#93;&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.5</code></pre>
+<pre><code class=language-julia >using MLJBase
 
-logistic_predictions = MLJ.predict(logistic, rows=test)
-logistic_fprs, logistic_tprs, _ = roc_curve(logistic_predictions, truths)
-logistic_aoc = auc(logistic_predictions, truths) |&gt; r3</code></pre><pre><code class="plaintext hljs">0.736</code></pre>
-<pre><code class="julia hljs">forest_predictions = MLJ.predict(forest, rows=test)
-forest_fprs, forest_tprs, _ = roc_curve(forest_predictions, truths)
-forest_aoc = auc(forest_predictions, truths) |&gt; r3</code></pre><pre><code class="plaintext hljs">0.764</code></pre>
-<pre><code class="julia hljs">plot(x = logistic_fprs, y = logistic_tprs, color = [<span class=hljs-string >&quot;logistic&quot;</span>],
-    Guide.xlabel(<span class=hljs-string >&quot;False positive rate&quot;</span>),
-    Guide.ylabel(<span class=hljs-string >&quot;True positive rate estimate&quot;</span>),
-    Geom.smooth(method = :loess, smoothing = <span class=hljs-number >0.99</span>),
-    layer(
-        x = forest_fprs, y = forest_tprs, color = [<span class=hljs-string >&quot;forest&quot;</span>],
-        Geom.smooth(method = :loess, smoothing = <span class=hljs-number >0.99</span>),
-    )
-)</code></pre>
+logistic_predictions &#61; MLJ.predict&#40;logistic, rows&#61;test&#41;
+logistic_fprs, logistic_tprs, _ &#61; roc_curve&#40;logistic_predictions, truths&#41;
+logistic_aoc &#61; auc&#40;logistic_predictions, truths&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.686</code></pre>
+<pre><code class=language-julia >forest_predictions &#61; MLJ.predict&#40;forest, rows&#61;test&#41;
+forest_fprs, forest_tprs, _ &#61; roc_curve&#40;forest_predictions, truths&#41;
+forest_aoc &#61; auc&#40;forest_predictions, truths&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.571</code></pre>
+<pre><code class=language-julia >plot&#40;x &#61; logistic_fprs, y &#61; logistic_tprs, color &#61; &#91;&quot;logistic&quot;&#93;,
+    Guide.xlabel&#40;&quot;False positive rate&quot;&#41;,
+    Guide.ylabel&#40;&quot;True positive rate estimate&quot;&#41;,
+    Geom.smooth&#40;method &#61; :loess, smoothing &#61; 0.99&#41;,
+    layer&#40;
+        x &#61; forest_fprs, y &#61; forest_tprs, color &#61; &#91;&quot;forest&quot;&#93;,
+        Geom.smooth&#40;method &#61; :loess, smoothing &#61; 0.99&#41;,
+    &#41;
+&#41;</code></pre>
 <img src="/assets/posts/random-forest/code/output/roc.svg" alt="">
 <h2 id=k-fold_cross-validation ><a href="#k-fold_cross-validation">K-fold cross-validation</a></h2>
 <p>By doing a train and test split, we basically threw a part of the data away. For small datasets, like the dataset in this example, that is not very efficient. Therefore, we also do a <a href="https://en.wikipedia.org/wiki/Cross-validation_&#40;statistics&#41;#k-fold_cross-validation">k-fold cross-validation</a>.</p>
-<pre><code class="julia hljs">Random.seed!(<span class=hljs-number >123</span>)
-rng = MersenneTwister(<span class=hljs-number >123</span>)
-indexes = shuffle(rng, eachindex(classes))
-folds = MLDataUtils.kfolds(indexes, k = <span class=hljs-number >8</span>)
+<pre><code class=language-julia >Random.seed&#33;&#40;123&#41;
+rng &#61; MersenneTwister&#40;123&#41;
+indexes &#61; shuffle&#40;rng, eachindex&#40;classes&#41;&#41;
+folds &#61; MLDataUtils.kfolds&#40;indexes, k &#61; 8&#41;
 
-<span class=hljs-keyword >function</span> fitted_accuracy(model, train, test)
-    forest = machine(model, (U = df.U, V = df.V), df.class)
-    fit!(forest; rows=train)
-    predictions = predict_mode(forest, rows=test)
-    <span class=hljs-keyword >return</span> accuracy(predictions, classes[test]) |&gt; r3
-<span class=hljs-keyword >end</span>
+function fitted_accuracy&#40;model, train, test&#41;
+    forest &#61; machine&#40;model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
+    fit&#33;&#40;forest; rows&#61;train&#41;
+    predictions &#61; predict_mode&#40;forest, rows&#61;test&#41;
+    return accuracy&#40;predictions, classes&#91;test&#93;&#41; |&gt; r3
+end
 
-accuracies = [fitted_accuracy(logistic_model, train, test) <span class=hljs-keyword >for</span> (train, test) <span class=hljs-keyword >in</span> folds]
-accuracies, mean(accuracies) |&gt; r3</code></pre><pre><code class="plaintext hljs">([0.8, 1.0, 0.3, 0.5, 0.5, 0.8, 0.8, 0.8], 0.688)</code></pre>
-<pre><code class="julia hljs">accuracies = [fitted_accuracy(forest_model, train, test) <span class=hljs-keyword >for</span> (train, test) <span class=hljs-keyword >in</span> folds]
-accuracies, mean(accuracies) |&gt; r3</code></pre><pre><code class="plaintext hljs">([0.9, 0.8, 0.5, 0.6, 0.6, 0.9, 0.7, 0.7], 0.713)</code></pre>
+accuracies &#61; &#91;fitted_accuracy&#40;logistic_model, train, test&#41; for &#40;train, test&#41; in folds&#93;
+accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class=plaintext >([0.7, 0.7, 0.4, 0.6, 0.7, 0.8, 0.7, 0.6], 0.65)</code></pre>
+<pre><code class=language-julia >accuracies &#61; &#91;fitted_accuracy&#40;forest_model, train, test&#41; for &#40;train, test&#41; in folds&#93;
+accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class=plaintext >([0.5, 0.6, 0.3, 0.5, 0.5, 0.7, 0.5, 0.4], 0.5)</code></pre>
 
 <h2 id=references ><a href="#references">References</a></h2>
 <p><a id=pbiau2016  class=anchor ></a> Biau, G., Scornet, E. &#40;2016&#41;. A Random Forest Guided Tour.  TEST 25, 197–227 &#40;2016&#41;.  <a href="https://doi.org/10.1007/s11749-016-0481-7">https://doi.org/10.1007/s11749-016-0481-7</a></p>
@@ -122,3 +122,12 @@ accuracies, mean(accuracies) |&gt; r3</code></pre><pre><code class="plaintext hl
   </div>
 </div>
 </div>
+    
+        
+
+
+
+    
+    
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>

@@ -1,4 +1,4 @@
-81-element Array{Distributions.Beta{Float64},1}:
+81-element Vector{Distributions.Beta{Float64}}:
  Distributions.Beta{Float64}(α=1.0, β=1.0)
  Distributions.Beta{Float64}(α=1.0, β=2.0)
  Distributions.Beta{Float64}(α=2.0, β=2.0)
