@@ -1,3 +1,1 @@
-import MLJGLMInterface ✔
-const LinearBinaryClassifier = MLJGLMInterface.LinearBinaryClassifier ✔
-LinearBinaryClassifier() ✔
+(MLJDecisionTreeInterface.DecisionTreeClassifier)() ✔

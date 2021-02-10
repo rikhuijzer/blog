@@ -1,8 +1,6 @@
 # This file was generated, do not modify it. # hide
-logistic_predictions = predict_mode(logistic, rows=test)
-forest_predictions = predict_mode(forest, rows=test)
-truths = classes[test]
+using MLJBase
 
-r3(x) = round(x; sigdigits=3)
-
-accuracy(logistic_predictions, classes[test]) |> r3
+logistic_predictions = MLJ.predict(logistic, rows=test)
+logistic_fprs, logistic_tprs, _ = roc_curve(logistic_predictions, truths)
+logistic_aoc = auc(logistic_predictions, truths) |> r3

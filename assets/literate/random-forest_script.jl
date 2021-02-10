@@ -44,10 +44,10 @@ train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
 @show length(train) # hide
 @show length(test) # hide
 
-@load LinearBinaryClassifier pkg=GLM
-
+@load LinearBinaryClassifier pkg=GLM verbosity=0
 logistic_model = LinearBinaryClassifier();
 
+DecisionTree = @load DecisionTreeClassifier verbosity=0
 forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
 
 logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)

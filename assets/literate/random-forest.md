@@ -62,16 +62,12 @@ train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
 ## Model fitting
 
 ```julia:ex4
-@load LinearBinaryClassifier pkg=GLM
-
+@load LinearBinaryClassifier pkg=GLM verbosity=0
 logistic_model = LinearBinaryClassifier();
-```
 
-```julia:ex5
+DecisionTree = @load DecisionTreeClassifier verbosity=0
 forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
-```
 
-```julia:ex6
 logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 fit!(logistic; rows=train)
 fitted_params(logistic).coef
@@ -80,7 +76,7 @@ fitted_params(logistic).coef
 The second coefficient in the linear model is close to zero.
 This is exactly what the model should do since $V$ is random noise.
 
-```julia:ex7
+```julia:ex5
 forest = machine(forest_model, (U = df.U, V = df.V), df.class)
 fit!(forest; rows=train);
 ```
@@ -89,7 +85,7 @@ fit!(forest; rows=train);
 
 Now that we have fitted the two models, we can compare the accuracies and plot the [receiver operating characteristic](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 
-```julia:ex8
+```julia:ex6
 logistic_predictions = predict_mode(logistic, rows=test)
 forest_predictions = predict_mode(forest, rows=test)
 truths = classes[test]
@@ -99,11 +95,11 @@ r3(x) = round(x; sigdigits=3)
 accuracy(logistic_predictions, classes[test]) |> r3
 ```
 
-```julia:ex9
+```julia:ex7
 accuracy(forest_predictions, classes[test]) |> r3
 ```
 
-```julia:ex10
+```julia:ex8
 using MLJBase
 
 logistic_predictions = MLJ.predict(logistic, rows=test)
@@ -111,13 +107,13 @@ logistic_fprs, logistic_tprs, _ = roc_curve(logistic_predictions, truths)
 logistic_aoc = auc(logistic_predictions, truths) |> r3
 ```
 
-```julia:ex11
+```julia:ex9
 forest_predictions = MLJ.predict(forest, rows=test)
 forest_fprs, forest_tprs, _ = roc_curve(forest_predictions, truths)
 forest_aoc = auc(forest_predictions, truths) |> r3
 ```
 
-```julia:ex12
+```julia:ex10
 write_svg("roc", # hide
 plot(x = logistic_fprs, y = logistic_tprs, color = ["logistic"],
     Coord.cartesian(ymin = 0, ymax = 1), # hide
@@ -143,7 +139,7 @@ By doing a train and test split, we basically threw a part of the data away.
 For small datasets, like the dataset in this example, that is not very efficient.
 Therefore, we also do a [k-fold cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)#k-fold_cross-validation).
 
-```julia:ex13
+```julia:ex11
 Random.seed!(123)
 rng = MersenneTwister(123)
 indexes = shuffle(rng, eachindex(classes))
@@ -162,7 +158,7 @@ accuracies = [fitted_accuracy(logistic_model, train, test) for (train, test) in 
 accuracies, mean(accuracies) |> r3
 ```
 
-```julia:ex14
+```julia:ex12
 accuracies = [fitted_accuracy(forest_model, train, test) for (train, test) in folds]
 accuracies, mean(accuracies) |> r3
 ```

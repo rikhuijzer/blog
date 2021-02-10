@@ -48,19 +48,16 @@ train, test &#61; MLJ.partition&#40;eachindex&#40;classes&#41;, 0.7, shuffle&#61
 length(test) = 24
 </code></pre>
 <h2 id=model_fitting ><a href="#model_fitting">Model fitting</a></h2>
-<pre><code class=language-julia >@load LinearBinaryClassifier pkg&#61;GLM
+<pre><code class=language-julia >@load LinearBinaryClassifier pkg&#61;GLM verbosity&#61;0
+logistic_model &#61; LinearBinaryClassifier&#40;&#41;;
 
-logistic_model &#61; LinearBinaryClassifier&#40;&#41;;</code></pre><pre><code class=plaintext >import MLJGLMInterface ✔
-const LinearBinaryClassifier = MLJGLMInterface.LinearBinaryClassifier ✔
-LinearBinaryClassifier() ✔
-</code></pre>
-<pre><code class=language-julia >forest_model &#61; EnsembleModel&#40;atom&#61;&#40;@load DecisionTreeClassifier&#41;, n&#61;10&#41;;</code></pre><pre><code class=plaintext >import MLJDecisionTreeInterface ✔
-const DecisionTreeClassifier = MLJDecisionTreeInterface.DecisionTreeClassifier ✔
-DecisionTreeClassifier() ✔
-</code></pre>
-<pre><code class=language-julia >logistic &#61; machine&#40;logistic_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
+DecisionTree &#61; @load DecisionTreeClassifier verbosity&#61;0
+forest_model &#61; EnsembleModel&#40;atom&#61;&#40;@load DecisionTreeClassifier&#41;, n&#61;10&#41;;
+
+logistic &#61; machine&#40;logistic_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
 fit&#33;&#40;logistic; rows&#61;train&#41;
-fitted_params&#40;logistic&#41;.coef</code></pre><pre><code class=plaintext >2-element Vector{Float64}:
+fitted_params&#40;logistic&#41;.coef</code></pre><pre><code class=plaintext >(MLJDecisionTreeInterface.DecisionTreeClassifier)() ✔
+2-element Vector{Float64}:
  0.7170450596947772
  0.040936567194873125</code></pre>
 <p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is random noise.</p>
