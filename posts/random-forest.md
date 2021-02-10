@@ -4,9 +4,11 @@ published = "2021-01-21"
 tags = ["simulating data", "machine learning"]
 rss = "Fitting a random forest classifier and reporting accuracy metrics"
 showall = true
+reeval = true
 +++
 
 Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia.
+If code in this post doesn't work for you, then check that you're using the right [versions](/#versions).
 I've used both models to have a baseline for the random forest.
 The model is evaluated on a mock variable $U$ generated from two distributions, namely
 

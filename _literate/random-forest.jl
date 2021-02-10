@@ -31,7 +31,7 @@ first(df, 10)
 
 #
 
-write_svg(name, p) = draw(SVG(joinpath(@OUTPUT, "$name.svg")), p) # hide
+write_svg(name, p) = draw(SVG(joinpath(tempdir(), "$name.svg")), p) # hide
 write_svg("u-class", # hide
 plot(df, x = :U, y = :V, color = :class)
 ); # hide
@@ -56,11 +56,12 @@ train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
 
 # ## Model fitting
 
-@load LinearBinaryClassifier pkg=GLM verbosity=0
-logistic_model = LinearBinaryClassifier();
+LinearBinary = @load LinearBinaryClassifier pkg=GLM verbosity=0
+logistic_model = LinearBinary();
 
 DecisionTree = @load DecisionTreeClassifier verbosity=0
-forest_model = EnsembleModel(atom=(@load DecisionTreeClassifier), n=10);
+tree = DecisionTree()
+forest_model = EnsembleModel(atom=tree, n=10);
 
 logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 fit!(logistic; rows=train)
