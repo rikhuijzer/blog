@@ -38,7 +38,7 @@ first&#40;df, 10&#41;</code></pre><pre><code class=plaintext >10×3 DataFrame
 │ 8   │ B     │ 8.75458 │ 113.906 │
 │ 9   │ A     │ 8.96639 │ 89.2201 │
 │ 10  │ B     │ 10.3287 │ 113.208 │</code></pre> <pre><code class=language-julia >plot&#40;df, x &#61; :U, y &#61; :V, color &#61; :class&#41;</code></pre>
-<p><span style="color:red;">// Image matching '/assets/posts/random-forest/code/u-class.svg' not found. //</span></p>
+<img src="/assets/posts/random-forest/code/output/u-class.svg" alt="">
 <h2 id=train_and_test_split ><a href="#train_and_test_split">Train and test split</a></h2>
 <p>Training and evaluating &#40;testing&#41; on the same data is not particulary useful because we want to know how well our model generalizes. For more information, see topics such as <a href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a>. Instead, we split the data up in a <em>train</em> and <em>test</em> set.</p>
 <pre><code class=language-julia >using StableRNGs
@@ -91,7 +91,7 @@ forest_aoc &#61; auc&#40;forest_predictions, truths&#41; |&gt; r3</code></pre><p
         Geom.smooth&#40;method &#61; :loess, smoothing &#61; 0.99&#41;,
     &#41;
 &#41;</code></pre>
-<p><span style="color:red;">// Image matching '/assets/posts/random-forest/code/roc.svg' not found. //</span></p>
+<img src="/assets/posts/random-forest/code/output/roc.svg" alt="">
 <h2 id=k-fold_cross-validation ><a href="#k-fold_cross-validation">K-fold cross-validation</a></h2>
 <p>By doing a train and test split, we basically threw a part of the data away. For small datasets, like the dataset in this example, that is not very efficient. Therefore, we also do a <a href="https://en.wikipedia.org/wiki/Cross-validation_&#40;statistics&#41;#k-fold_cross-validation">k-fold cross-validation</a>.</p>
 <pre><code class=language-julia >Random.seed&#33;&#40;123&#41;
