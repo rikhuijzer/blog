@@ -31,7 +31,7 @@ first(df, 10)
 
 #
 
-write_svg(name, p) = draw(SVG(joinpath(tempdir(), "$name.svg")), p) # hide
+write_svg(name, p) = draw(SVG(joinpath(@OUTPUT, "$name.svg")), p) # hide
 write_svg("u-class", # hide
 plot(df, x = :U, y = :V, color = :class)
 ); # hide
