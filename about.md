@@ -15,12 +15,14 @@ Nothing yet.
 
 #### Projects
 
-- [TuringModels.jl](https://github.com/StatisticalRethinkingJulia/TuringModels.jl)
+- [TuringPlots.jl](https://rikhuijzer.github.io/TuringPlots.jl/dev/).
+- [TuringModels.jl](https://github.com/StatisticalRethinkingJulia/TuringModels.jl).
+- [ShowLint](https://lint.huijzer.xyz/).
 
 #### Presentations
 
-- _Bayesian statistics with Julia: visualizing uncertainty_ (Oct 2020)
-- _Deep learning and natural language processing_ at [PyGrunn](https://pygrunn.org/) (Jun 2019)
+- _Bayesian statistics with Julia: visualizing uncertainty_ (Oct 2020).
+- _Deep learning and natural language processing_ at [PyGrunn](https://pygrunn.org/) (Jun 2019).
 
 #### MSc thesis co-advisor
 
