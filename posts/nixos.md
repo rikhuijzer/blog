@@ -55,7 +55,7 @@ You'll notice this when, for example, browsing the web.
 I found installing fonts to be difficult at times, even in Ubuntu.
 For NixOS it could not be easier:
 
-```nix
+```
 # /etc/nixos/configuration.nix
 
 fonts.fonts = with pkgs; [
@@ -69,14 +69,14 @@ At one point using abbreviations or aliases is not going to be enough and functi
 This should be possible by defining Fish functions directly.
 I have not yet been successful in doing that declaratively.
 A workaround is as follows.
-```nix
+```
 # /etc/nixos/configuration.nix
 
 import = [
   ./scripts.nix
 ];
 ```
-```nix
+```
 # /etc/nixos/scripts.nix
 
 let
@@ -107,7 +107,7 @@ in {
 }
 ```
 For the latter it is convenient to add the abbreviation
-```nix
+```
 abbr gacp 'git-add-commit-push'
 ```
 to the Fish shell configuration.
@@ -131,7 +131,7 @@ Actually, [Home Manager](https://github.com/rycee/home-manager) is not the prett
 It seems to be an extension of the configuration provided by the vanilla operating system.
 The installation instructions on Github advise to do all kind of mutation operations.
 To avoid this, we import the folder `home-manager` somewhere in our configuration.
-```nix
+```
 # /etc/nixos/configuration.nix
 
 imports = [
@@ -144,7 +144,7 @@ Here, the version (ref) is fixed to `19.09`.
 (You can decide to not fix the version.
 However, it might cause your system to suddenly break one day.)
 The imports below the `fetchGit` line define specific home-manager configurations.
-```nix
+```
 # /etc/nixos/home-manager/default.nix
 
 imports = [
@@ -161,7 +161,7 @@ imports = [
 Storing Git credentials took me way too long to figure out.
 So, here it is.
 To use the Git credential helper libsecret (gnome-keyring) write
-```nix
+```
 # /etc/nixos/home-manager/git.nix
 
 environment.systemPackages = [
@@ -199,7 +199,7 @@ One for R and one for RStudio.
 Next, an example is given to configure R and RStudio with various packages from CRAN, and one package built from GitHub source.
 Specifying the package from GitHub in the NixOS configuration avoids having to run `devtools::install_github("<repository>")` on each computer.
 
-```nix
+```
 # /etc/nixos/r.nix
 { pkgs, ... }:
 with pkgs;
