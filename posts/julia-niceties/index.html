@@ -3,7 +3,7 @@
   b::Number
 end
 
-structs &#61; &#91;MyStruct&#40;1, 2&#41;, MyStruct&#40;3, 4&#41;&#93;</code></pre> <div class=franklin-toc ><ol><li><a href="#functions_and_methods">Functions and methods</a><li><a href="#higher-order_functions">Higher-order functions</a><li><a href="#unpacking">Unpacking</a><li><a href="#metaprogramming">Metaprogramming</a></ol></div> <h2 id=functions_and_methods ><a href="#functions_and_methods">Functions and methods</a></h2> <p>For object-oriented programmers the distinction between a function and a method is simple. If it is inside a class it is a method, otherwise it is a function. In Julia we can use <em>function overloading</em>. This means that the types of the input parameters, or <em>signatures</em>, are used to determine what &lt;thing&gt; should be called. In Julia these &lt;things&gt; are called <em>methods</em>. For example we can define the following methods for the function <code>f</code>.</p> <pre><code class=language-julia >julia&gt; f&#40;a, b&#41; &#61; a * b
+structs &#61; &#91;MyStruct&#40;1, 2&#41;, MyStruct&#40;3, 4&#41;&#93;</code></pre> <div class=franklin-toc ><ol><li><a href="#functions_and_methods">Functions and methods</a><li><a href="#higher-order_functions">Higher-order functions</a><li><a href="#unpacking">Unpacking</a><li><a href="#metaprogramming">Metaprogramming</a></ol></div> <h2 id=functions_and_methods ><a href="#functions_and_methods" class=header-anchor >Functions and methods</a></h2> <p>For object-oriented programmers the distinction between a function and a method is simple. If it is inside a class it is a method, otherwise it is a function. In Julia we can use <em>function overloading</em>. This means that the types of the input parameters, or <em>signatures</em>, are used to determine what &lt;thing&gt; should be called. In Julia these &lt;things&gt; are called <em>methods</em>. For example we can define the following methods for the function <code>f</code>.</p> <pre><code class=language-julia >julia&gt; f&#40;a, b&#41; &#61; a * b
 f &#40;generic function with 1 method&#41;
 
 julia&gt; f&#40;2, 3&#41;
@@ -26,7 +26,7 @@ top:
   &#37;2 &#61; sitofp i64 &#37;0 to double
   &#37;3 &#61; fmul double &#37;2, &#37;1
   ret double &#37;3
-&#125;</code></pre> <p>Since Julia is dynamically compiled these LLVM functions are compiled only when called for the first time. Pretty neat I would say. However, for most of my use cases I&#39;m spending most of my time on typing code and not waiting for the program to finish. The next section goes into more high-level capabilities.</p> <h2 id=higher-order_functions ><a href="#higher-order_functions">Higher-order functions</a></h2> <p>Higher-order functions either take one or more functions as arguments or return a function. Lets start by defining some functions on the <code>MyStruct</code> struct defined at the start of this post. In the REPL or in Jupyter &#40;IJulia&#41; we can inspect the struct by using the built-in help.</p> <pre><code class=language-julia >julia&gt; ?
+&#125;</code></pre> <p>Since Julia is dynamically compiled these LLVM functions are compiled only when called for the first time. Pretty neat I would say. However, for most of my use cases I&#39;m spending most of my time on typing code and not waiting for the program to finish. The next section goes into more high-level capabilities.</p> <h2 id=higher-order_functions ><a href="#higher-order_functions" class=header-anchor >Higher-order functions</a></h2> <p>Higher-order functions either take one or more functions as arguments or return a function. Lets start by defining some functions on the <code>MyStruct</code> struct defined at the start of this post. In the REPL or in Jupyter &#40;IJulia&#41; we can inspect the struct by using the built-in help.</p> <pre><code class=language-julia >julia&gt; ?
 help?&gt; MyStruct
 search: MyStruct
 
@@ -88,7 +88,7 @@ julia&gt; conversions &#61; &#91;double, add&#93;
   end</code></pre> <p>&#40;and prints the correct answers only in a Notebook and not on the REPL&#41;. This is way too long, especially if we would include the code to put the elements in an output array.</p> <p>A much cleaner way is to apply the function composition operator &#40;<code>∘</code>&#41; to chain the functions in one new function. Since the function composition is a binary operator we can use reduce to call it on more than one pair.</p> <pre><code class=language-julia >julia&gt; map&#40;x -&gt; reduce&#40;∘, conversions&#41;&#40;x&#41;, input&#41;
 2-element Array&#123;Int64,1&#125;:
   8
-  10</code></pre> <p>&#40;again, works only in a Notebook.&#41; Note that the functions are applied in reverse order.</p> <h2 id=unpacking ><a href="#unpacking">Unpacking</a></h2> <p>Just like in Python, there is syntax to unpack collections. For example, lets consider a tuple:</p> <pre><code class=language-julia >julia&gt; c &#61; &#40;1, 2&#41;
+  10</code></pre> <p>&#40;again, works only in a Notebook.&#41; Note that the functions are applied in reverse order.</p> <h2 id=unpacking ><a href="#unpacking" class=header-anchor >Unpacking</a></h2> <p>Just like in Python, there is syntax to unpack collections. For example, lets consider a tuple:</p> <pre><code class=language-julia >julia&gt; c &#61; &#40;1, 2&#41;
 &#40;1, 2&#41;
 
 julia&gt; l &#61; &#91;c...&#93;
@@ -103,7 +103,7 @@ z &#40;generic function with 1 method&#41;
 
 julia&gt; z&#40;c..., 4&#41;
 &quot;1 | 2 | 4&quot;</code></pre> <p>For named tuples, the names are ignored.</p> <pre><code class=language-julia >julia&gt; z&#40;&#40;b &#61; 1, d &#61; 2&#41;..., 3&#41;
-&quot;1 | 2 | 3&quot;</code></pre> <h2 id=metaprogramming ><a href="#metaprogramming">Metaprogramming</a></h2> <p>A simple example of metaprogramming in Julia are macros. For example, we can use <code>show</code> to print a variable name and its value:</p> <pre><code class=language-julia >julia&gt; x &#61; 1
+&quot;1 | 2 | 3&quot;</code></pre> <h2 id=metaprogramming ><a href="#metaprogramming" class=header-anchor >Metaprogramming</a></h2> <p>A simple example of metaprogramming in Julia are macros. For example, we can use <code>show</code> to print a variable name and its value:</p> <pre><code class=language-julia >julia&gt; x &#61; 1
 x &#61; 1
 
 julia&gt; @show x

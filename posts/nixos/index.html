@@ -1,13 +1,13 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> NixOS configuration highlights - Huijzer.xyz </title> <meta property="og:title" content="NixOS configuration highlights" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="NixOS configuration highlights" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > NixOS configuration highlights </h1> <span class=page-date > 2019-12-01 </span> </div> <div class=franklin-content > <p>I have recently started paying attention to the time spent on fine-tuning my Linux installation. My conclusion is that it is a lot. Compared to Windows, I save lots of time by using package managers to install software. Still, I&#39;m pretty sure that most readers spend &#40;too&#41; much time with the package managers as well. This can be observed from the fact that most people know the basic <code>apt-get</code> commands by heart.</p> <p>At the time of writing, I&#39;m happily running and tweaking NixOS for a few months. NixOS allows me to define my operating system state in one configuration file <code>configuration.nix</code>. I have been pedantic and will try to avoid configuring my system outside the configuration. This way, multiple computers are in the same state and I can set-up new computers in no time. The only manual steps have been NixOS installation, Firefox configuration, user password configuration and applying a system specific configuration. &#40;The latter involves creating two symlinks.&#41;</p> <p>In general, there are the following things which are great.</p> <ul> <li><p>Deterministic package system.</p> </ul> <p>Packages are immutable and NixOS will basically create symlinks to the packages. This has some great implications.</p> <ul> <li><p>Easy rollbacks. NixOS will just symlink to the &quot;old&quot; version again.</p> <li><p>System usable during upgrade. For example, a Firefox upgrade is basically getting a new immutable Firefox binary and symlinking to the new binary. The old binary remains available until it is garbage collected. So, in practise you use the old binary until you restart the program.</p> <li><p>Ease of contribution to package system.</p> </ul> <p>It is relatively easy to contribute to the <a href="https://github.com/NixOS/nixpkgs">Nix Packages collection</a>. This results in a large number of available and well-maintained packages. Compared to the Debian packages it is a major improvement. I&#39;m often surprised by the fact that some obscure tool is actually available in NixOS.</p> <ul> <li><p>Nix expression language.</p> </ul> <p>The Nix expression language is declarative. Basically, it will read all the code and collect it in a data structure. Only when this is complete the system state will be changed. This means that the language does not care about order or duplication. In effect, this eases refactoring and avoids checking &quot;preconditions&quot;. To explain the latter, consider writing a script which assumes <code>ripgrep</code> to be installed. The language allows for defining such requirements multiple times. So, even when removing the <code>ripgrep</code> requirement at other places, it will still be available for my script.</p> <p>Below are some of what I consider highlights of the configuration. To see more information about the options, checkout <a href="https://search.nixos.org">https://search.nixos.org</a>.</p> <p><div class=franklin-toc ><ol><li><a href="#font_installation">Font installation</a><li><a href="#shell_functions">Shell functions</a><li><a href="#home_manager">Home Manager</a><li><a href="#git_credentials">Git credentials</a><li><a href="#bash">Bash</a><li><a href="#r">R</a><li><a href="#containerized_services">Containerized services</a></ol></div> </p> <h2 id=font_installation ><a href="#font_installation">Font installation</a></h2> <p>Most Linux distributions lack pretty fonts. You&#39;ll notice this when, for example, browsing the web. I found installing fonts to be difficult at times, even in Ubuntu. For NixOS it could not be easier:</p> <pre><code class=language-nix ># /etc/nixos/configuration.nix
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> NixOS configuration highlights - Huijzer.xyz </title> <meta property="og:title" content="NixOS configuration highlights" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="NixOS configuration highlights" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > NixOS configuration highlights </h1> <span class=page-date > 2019-12-01 </span> </div> <div class=franklin-content > <p>I have recently started paying attention to the time spent on fine-tuning my Linux installation. My conclusion is that it is a lot. Compared to Windows, I save lots of time by using package managers to install software. Still, I&#39;m pretty sure that most readers spend &#40;too&#41; much time with the package managers as well. This can be observed from the fact that most people know the basic <code>apt-get</code> commands by heart.</p> <p>At the time of writing, I&#39;m happily running and tweaking NixOS for a few months. NixOS allows me to define my operating system state in one configuration file <code>configuration.nix</code>. I have been pedantic and will try to avoid configuring my system outside the configuration. This way, multiple computers are in the same state and I can set-up new computers in no time. The only manual steps have been NixOS installation, Firefox configuration, user password configuration and applying a system specific configuration. &#40;The latter involves creating two symlinks.&#41;</p> <p>In general, there are the following things which are great.</p> <ul> <li><p>Deterministic package system.</p> </ul> <p>Packages are immutable and NixOS will basically create symlinks to the packages. This has some great implications.</p> <ul> <li><p>Easy rollbacks. NixOS will just symlink to the &quot;old&quot; version again.</p> <li><p>System usable during upgrade. For example, a Firefox upgrade is basically getting a new immutable Firefox binary and symlinking to the new binary. The old binary remains available until it is garbage collected. So, in practise you use the old binary until you restart the program.</p> <li><p>Ease of contribution to package system.</p> </ul> <p>It is relatively easy to contribute to the <a href="https://github.com/NixOS/nixpkgs">Nix Packages collection</a>. This results in a large number of available and well-maintained packages. Compared to the Debian packages it is a major improvement. I&#39;m often surprised by the fact that some obscure tool is actually available in NixOS.</p> <ul> <li><p>Nix expression language.</p> </ul> <p>The Nix expression language is declarative. Basically, it will read all the code and collect it in a data structure. Only when this is complete the system state will be changed. This means that the language does not care about order or duplication. In effect, this eases refactoring and avoids checking &quot;preconditions&quot;. To explain the latter, consider writing a script which assumes <code>ripgrep</code> to be installed. The language allows for defining such requirements multiple times. So, even when removing the <code>ripgrep</code> requirement at other places, it will still be available for my script.</p> <p>Below are some of what I consider highlights of the configuration. To see more information about the options, checkout <a href="https://search.nixos.org">https://search.nixos.org</a>.</p> <p><div class=franklin-toc ><ol><li><a href="#font_installation">Font installation</a><li><a href="#shell_functions">Shell functions</a><li><a href="#home_manager">Home Manager</a><li><a href="#git_credentials">Git credentials</a><li><a href="#bash">Bash</a><li><a href="#r">R</a><li><a href="#containerized_services">Containerized services</a></ol></div> </p> <h2 id=font_installation ><a href="#font_installation" class=header-anchor >Font installation</a></h2> <p>Most Linux distributions lack pretty fonts. You&#39;ll notice this when, for example, browsing the web. I found installing fonts to be difficult at times, even in Ubuntu. For NixOS it could not be easier:</p> <pre><code class=language-julia ># /etc/nixos/configuration.nix
 
 fonts.fonts &#61; with pkgs; &#91;
   hermit
   source-code-pro
-&#93;;</code></pre> <h2 id=shell_functions ><a href="#shell_functions">Shell functions</a></h2> <p>At one point using abbreviations or aliases is not going to be enough and functions are needed. This should be possible by defining Fish functions directly. I have not yet been successful in doing that declaratively. A workaround is as follows.</p> <pre><code class=language-nix ># /etc/nixos/configuration.nix
+&#93;;</code></pre> <h2 id=shell_functions ><a href="#shell_functions" class=header-anchor >Shell functions</a></h2> <p>At one point using abbreviations or aliases is not going to be enough and functions are needed. This should be possible by defining Fish functions directly. I have not yet been successful in doing that declaratively. A workaround is as follows.</p> <pre><code class=language-julia ># /etc/nixos/configuration.nix
 
 import &#61; &#91;
   ./scripts.nix
-&#93;;</code></pre> <pre><code class=language-nix ># /etc/nixos/scripts.nix
+&#93;;</code></pre> <pre><code class=language-julia ># /etc/nixos/scripts.nix
 
 let
   fish-shebang &#61; &quot;#&#33;&#36;&#123;pkgs.fish&#125;/bin/fish&quot;;
@@ -34,7 +34,7 @@ in &#123;
       git push
     &#39;&#39;&#41;
   &#93;;
-&#125;</code></pre> <p>For the latter it is convenient to add the abbreviation</p> <pre><code class=language-nix >abbr gacp &#39;git-add-commit-push&#39;</code></pre>
+&#125;</code></pre> <p>For the latter it is convenient to add the abbreviation</p> <pre><code class=language-julia >abbr gacp &#39;git-add-commit-push&#39;</code></pre>
 <p>to the Fish shell configuration.</p>
 <p>Another great thing about this setup is the ease of looking up commands. Often, I find myself in need of some bash code which I have used in one of the scripts. To see the code from the terminal in Fish, use <code>cat &#40;which &lt;script&gt;&#41;</code>. For example, <code>cat &#40;which git-add-commit-push&#41;</code> gives</p>
 <pre><code class=language-julia >&#36; cat &#40;which git-add-commit-push&#41;
@@ -43,15 +43,15 @@ in &#123;
 git add .
 git commit -m &quot;&#36;1&quot;
 git push</code></pre>
-<h2 id=home_manager ><a href="#home_manager">Home Manager</a></h2>
+<h2 id=home_manager ><a href="#home_manager" class=header-anchor >Home Manager</a></h2>
 <p>Actually, <a href="https://github.com/rycee/home-manager">Home Manager</a> is not the prettiest part of NixOS. It seems to be an extension of the configuration provided by the vanilla operating system. The installation instructions on Github advise to do all kind of mutation operations. To avoid this, we import the folder <code>home-manager</code> somewhere in our configuration.</p>
-<pre><code class=language-nix ># /etc/nixos/configuration.nix
+<pre><code class=language-julia ># /etc/nixos/configuration.nix
 
 imports &#61; &#91;
   ./home-manager
 &#93;;</code></pre>
 <p>This works only if our folder contains a <code>default.nix</code> file. So, lets create that and import home-manager. Here, the version &#40;ref&#41; is fixed to <code>19.09</code>. &#40;You can decide to not fix the version. However, it might cause your system to suddenly break one day.&#41; The imports below the <code>fetchGit</code> line define specific home-manager configurations.</p>
-<pre><code class=language-nix ># /etc/nixos/home-manager/default.nix
+<pre><code class=language-julia ># /etc/nixos/home-manager/default.nix
 
 imports &#61; &#91;
   &quot;&#36;&#123;builtins.fetchGit &#123;
@@ -61,9 +61,9 @@ imports &#61; &#91;
 
   ./git.nix
 &#93;;</code></pre>
-<h2 id=git_credentials ><a href="#git_credentials">Git credentials</a></h2>
+<h2 id=git_credentials ><a href="#git_credentials" class=header-anchor >Git credentials</a></h2>
 <p>Storing Git credentials took me way too long to figure out. So, here it is. To use the Git credential helper libsecret &#40;gnome-keyring&#41; write</p>
-<pre><code class=language-nix ># /etc/nixos/home-manager/git.nix
+<pre><code class=language-julia ># /etc/nixos/home-manager/git.nix
 
 environment.systemPackages &#61; &#91;
   pkgs.gitAndTools.gitFull # gitFull contains libsecret.
@@ -78,15 +78,15 @@ home-manager.users.rik.programs.git &#61; &#123;
     credential.helper &#61; &quot;libsecret&quot;;
   &#125;;
 &#125;;</code></pre>
-<h2 id=bash ><a href="#bash">Bash</a></h2>
+<h2 id=bash ><a href="#bash" class=header-anchor >Bash</a></h2>
 <p>The default shebang for Bash is </p>
 <pre><code class=language-julia >#&#33;/bin/bash</code></pre>
 <p>this won&#39;t work in NixOS since it is a <a href="https://discourse.nixos.org/t/add-bin-bash-to-avoid-unnecessary-pain/5673">&quot;form of global system state&quot;</a>. Instead use</p>
 <pre><code class=language-julia >#&#33;/usr/bin/env bash</code></pre>
 <p>which will also work in GitHub CI jobs.</p>
-<h2 id=r ><a href="#r">R</a></h2>
+<h2 id=r ><a href="#r" class=header-anchor >R</a></h2>
 <p>The R programming language is a language with built-in support for package installations. R is immutable in NixOS. To install packages two wrappers are provided. One for R and one for RStudio. Next, an example is given to configure R and RStudio with various packages from CRAN, and one package built from GitHub source. Specifying the package from GitHub in the NixOS configuration avoids having to run <code>devtools::install_github&#40;&quot;&lt;repository&gt;&quot;&#41;</code> on each computer.</p>
-<pre><code class=language-nix ># /etc/nixos/r.nix
+<pre><code class=language-julia ># /etc/nixos/r.nix
 &#123; pkgs, ... &#125;:
 with pkgs;
 let
@@ -130,7 +130,7 @@ in &#123;
     RStudio-with-my-packages
   &#93;;
 &#125;</code></pre>
-<h2 id=containerized_services ><a href="#containerized_services">Containerized services</a></h2>
+<h2 id=containerized_services ><a href="#containerized_services" class=header-anchor >Containerized services</a></h2>
 <p>Creating background services couldn&#39;t be more easy. Here, I use the Podman backend. If you prefer the normal Docker backend, then remove the line containing <code>backend &#61; &quot;podman&quot;</code>.</p>
 <pre><code class=language-julia >virtualisation.oci-containers &#61; &#123;
   backend &#61; &quot;podman&quot;;
