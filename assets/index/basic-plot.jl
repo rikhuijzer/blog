@@ -5,5 +5,5 @@ write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p) # hide
 
 X = 1:30
 write_svg("basic-plot", # hide
-plot(x = X, y = [x^2 for x in X]) 
+plot(x = X, y = X.^2) 
 ) # hide

@@ -11,7 +11,7 @@
     <description><![CDATA[Thinking about the layers above statistics.
 <br><a href="https://huijzer.xyz/posts/predicates/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/predicates/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Comparing means and SDs]]></title>
@@ -19,7 +19,7 @@
     <description><![CDATA[Transforming means and SDs from numbers in different ranges to the same range.
 <br><a href="https://huijzer.xyz/posts/comparing-means-and-sds/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/comparing-means-and-sds/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[The logit and logistic functions]]></title>
@@ -27,7 +27,7 @@
     <description><![CDATA[Providing the definitions, some plots and useful values to remember.
 <br><a href="https://huijzer.xyz/posts/logit-logistic/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/logit-logistic/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Correlations]]></title>
@@ -35,7 +35,7 @@
     <description><![CDATA[The equations and some examples for the Pearson correlation coefficient.
 <br><a href="https://huijzer.xyz/posts/correlations/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/correlations/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[The principle of maximum entropy]]></title>
@@ -43,7 +43,7 @@
     <description><![CDATA[Obtaining the least informative distribution.
 <br><a href="https://huijzer.xyz/posts/maximum-entropy/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/maximum-entropy/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Statistical power from scratch]]></title>
@@ -51,7 +51,7 @@
     <description><![CDATA[Explaining statistical power by first finding the binomial and normal distributions.
 <br><a href="https://huijzer.xyz/posts/power/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/power/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Combinations and permutations]]></title>
@@ -59,7 +59,7 @@
     <description><![CDATA[Deriving the equations for combinations and permutations.
 <br><a href="https://huijzer.xyz/posts/combinations-permuations/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/combinations-permuations/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Simple and binary regression]]></title>
@@ -67,7 +67,7 @@
     <description><![CDATA[Applying a simple and binary &#40;logistic&#41; regression to simulated data.
 <br><a href="https://huijzer.xyz/posts/regression/">Read more</a>]]></description>
     <guid>https://huijzer.xyz/posts/regression/</guid>
-    <pubDate>Sat, 20 Feb 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 2 Mar 2021 00:00:00 UT</pubDate>
   </item>
 </channel>
 </rss>
