@@ -53,7 +53,7 @@ Instead, we split the data up in a *train* and *test* set.
 using StableRNGs
 
 rng = StableRNG(123)
-train, test = MLJ.partition(eachindex(classes), 0.7, shuffle=true; rng)
+train, test = MLJ.partition(eachindex(classes), 0.7; shuffle=true, rng)
 
 @show length(train) # hide
 @show length(test) # hide

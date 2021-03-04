@@ -44,7 +44,7 @@ first&#40;df, 10&#41;</code></pre><pre><code class=plaintext >10×3 DataFrame
 <pre><code class=language-julia >using StableRNGs
 
 rng &#61; StableRNG&#40;123&#41;
-train, test &#61; MLJ.partition&#40;eachindex&#40;classes&#41;, 0.7, shuffle&#61;true; rng&#41;</code></pre><pre><code class=plaintext >length(train) = 56
+train, test &#61; MLJ.partition&#40;eachindex&#40;classes&#41;, 0.7; shuffle&#61;true, rng&#41;</code></pre><pre><code class=plaintext >length(train) = 56
 length(test) = 24
 </code></pre>
 <h2 id=model_fitting ><a href="#model_fitting" class=header-anchor >Model fitting</a></h2>
