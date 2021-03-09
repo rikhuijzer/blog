@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
   <title><![CDATA[Huijzer]]></title>
   <description><![CDATA[Blog
@@ -10,192 +10,216 @@
     <link>https://huijzer.xyz/posts/predicates/</link>
     <description><![CDATA[Thinking about the layers above statistics.
 <br><a href="https://huijzer.xyz/posts/predicates/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/predicates/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Entr]]></title>
     <link>https://huijzer.xyz/posts/entr/</link>
     <description><![CDATA[A tool for executing commands automatically upon file changes.
 <br><a href="https://huijzer.xyz/posts/entr/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/entr/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[QoS setup using Tomato in combination with an Experiabox]]></title>
     <link>https://huijzer.xyz/posts/tomato/</link>
     <description><![CDATA[My first blog post.
 <br><a href="https://huijzer.xyz/posts/tomato/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/tomato/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Comparing means and SDs]]></title>
     <link>https://huijzer.xyz/posts/comparing-means-and-sds/</link>
     <description><![CDATA[Transforming means and SDs from numbers in different ranges to the same range.
 <br><a href="https://huijzer.xyz/posts/comparing-means-and-sds/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/comparing-means-and-sds/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[The greatest sales deck someone else has ever seen]]></title>
     <link>https://huijzer.xyz/posts/sales-deck/</link>
     <description><![CDATA[It&#39;s Zuora&#39;s deck
 <br><a href="https://huijzer.xyz/posts/sales-deck/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/sales-deck/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Benefits of writing blog posts]]></title>
     <link>https://huijzer.xyz/posts/blog-benefits/</link>
     <description><![CDATA[Convincing myself of why writing is a good habit to have.
 <br><a href="https://huijzer.xyz/posts/blog-benefits/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/blog-benefits/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Frequentist and Bayesian coin flipping]]></title>
     <link>https://huijzer.xyz/posts/frequentist-bayesian-coin-flipping/</link>
     <description><![CDATA[Comparing both statistical paradigms on a coin flipping example.
 <br><a href="https://huijzer.xyz/posts/frequentist-bayesian-coin-flipping/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/frequentist-bayesian-coin-flipping/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[The logit and logistic functions]]></title>
     <link>https://huijzer.xyz/posts/logit-logistic/</link>
     <description><![CDATA[Providing the definitions, some plots and useful values to remember.
 <br><a href="https://huijzer.xyz/posts/logit-logistic/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/logit-logistic/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Niceties in the Julia programming language]]></title>
     <link>https://huijzer.xyz/posts/julia-niceties/</link>
     <description><![CDATA[A quick walk through some Julia syntax and interesting features.
 <br><a href="https://huijzer.xyz/posts/julia-niceties/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/julia-niceties/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Writing checklist]]></title>
     <link>https://huijzer.xyz/posts/writing-checklist/</link>
     <description><![CDATA[A list to quickly check for common mistakes in writing.
 <br><a href="https://huijzer.xyz/posts/writing-checklist/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/writing-checklist/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Correlations]]></title>
     <link>https://huijzer.xyz/posts/correlations/</link>
     <description><![CDATA[The equations and some examples for the Pearson correlation coefficient.
 <br><a href="https://huijzer.xyz/posts/correlations/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/correlations/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Random forest classification in Julia]]></title>
     <link>https://huijzer.xyz/posts/random-forest/</link>
     <description><![CDATA[Fitting a random forest classifier and reporting accuracy metrics
 <br><a href="https://huijzer.xyz/posts/random-forest/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/random-forest/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Writing effectively]]></title>
     <link>https://huijzer.xyz/posts/writing-effectively/</link>
     <description><![CDATA[Why writing should be valuable to the reader.
 <br><a href="https://huijzer.xyz/posts/writing-effectively/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/writing-effectively/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Home]]></title>
     <link>https://huijzer.xyz/</link>
     <description><![CDATA[Rik Huijzer - PhD student; writing blog posts about statistics and related topics.
 <br><a href="https://huijzer.xyz/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[A data-fusion example]]></title>
     <link>https://huijzer.xyz/posts/data-fusion-example/</link>
     <description><![CDATA[An example in causal data-fusion.
 <br><a href="https://huijzer.xyz/posts/data-fusion-example/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/data-fusion-example/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[The principle of maximum entropy]]></title>
     <link>https://huijzer.xyz/posts/maximum-entropy/</link>
     <description><![CDATA[Obtaining the least informative distribution.
 <br><a href="https://huijzer.xyz/posts/maximum-entropy/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/maximum-entropy/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[GitHub and GitLab commands cheatsheet]]></title>
     <link>https://huijzer.xyz/posts/github-gitlab-commands-cheatsheet/</link>
     <description><![CDATA[A cheatsheet for commands like &#39;Fix #2334&#39;.
 <br><a href="https://huijzer.xyz/posts/github-gitlab-commands-cheatsheet/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/github-gitlab-commands-cheatsheet/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Grades queries]]></title>
     <link>https://huijzer.xyz/posts/grades-queries/</link>
     <description><![CDATA[Using SQL like query syntax in Julia.
 <br><a href="https://huijzer.xyz/posts/grades-queries/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/grades-queries/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Statistical power from scratch]]></title>
     <link>https://huijzer.xyz/posts/power/</link>
     <description><![CDATA[Explaining statistical power by first finding the binomial and normal distributions.
 <br><a href="https://huijzer.xyz/posts/power/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/power/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Combinations and permutations]]></title>
     <link>https://huijzer.xyz/posts/combinations-permuations/</link>
     <description><![CDATA[Deriving the equations for combinations and permutations.
 <br><a href="https://huijzer.xyz/posts/combinations-permuations/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/combinations-permuations/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Installing NixOS with encryption on a Lenovo laptop]]></title>
     <link>https://huijzer.xyz/posts/nixos-laptop/</link>
     <description><![CDATA[Specifically, installing NixOS on the Lenovo Yoga 7.
 <br><a href="https://huijzer.xyz/posts/nixos-laptop/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/nixos-laptop/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Simple and binary regression]]></title>
     <link>https://huijzer.xyz/posts/regression/</link>
     <description><![CDATA[Applying a simple and binary &#40;logistic&#41; regression to simulated data.
 <br><a href="https://huijzer.xyz/posts/regression/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/regression/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[NixOS configuration highlights]]></title>
     <link>https://huijzer.xyz/posts/nixos/</link>
     <description><![CDATA[Particularily neat parts of using NixOS.
 <br><a href="https://huijzer.xyz/posts/nixos/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/nixos/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Design cheatsheet]]></title>
     <link>https://huijzer.xyz/posts/design/</link>
     <description><![CDATA[A summary of design tips and tricks.
 <br><a href="https://huijzer.xyz/posts/design/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/design/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
 </channel>
 </rss>

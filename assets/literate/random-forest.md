@@ -65,7 +65,7 @@ train, test = MLJ.partition(eachindex(classes), 0.7; shuffle=true, rng)
 LinearBinary = @load LinearBinaryClassifier pkg=GLM verbosity=0
 logistic_model = LinearBinary();
 
-DecisionTree = @load DecisionTreeClassifier verbosity=0
+DecisionTree = @load DecisionTreeClassifier pkg=DecisionTree verbosity=0
 tree = DecisionTree()
 forest_model = EnsembleModel(atom=tree, n=10);
 

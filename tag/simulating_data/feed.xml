@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
   <title><![CDATA[Huijzer]]></title>
   <description><![CDATA[Blog
@@ -10,24 +10,27 @@
     <link>https://huijzer.xyz/posts/random-forest/</link>
     <description><![CDATA[Fitting a random forest classifier and reporting accuracy metrics
 <br><a href="https://huijzer.xyz/posts/random-forest/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/random-forest/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[The principle of maximum entropy]]></title>
     <link>https://huijzer.xyz/posts/maximum-entropy/</link>
     <description><![CDATA[Obtaining the least informative distribution.
 <br><a href="https://huijzer.xyz/posts/maximum-entropy/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/maximum-entropy/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
   <item>
     <title><![CDATA[Simple and binary regression]]></title>
     <link>https://huijzer.xyz/posts/regression/</link>
     <description><![CDATA[Applying a simple and binary &#40;logistic&#41; regression to simulated data.
 <br><a href="https://huijzer.xyz/posts/regression/">Read more</a>]]></description>
+    
     <guid>https://huijzer.xyz/posts/regression/</guid>
-    <pubDate>Thu, 4 Mar 2021 00:00:00 UT</pubDate>
+    <pubDate>Tue, 9 Mar 2021 00:00:00 UT</pubDate>
   </item>
 </channel>
 </rss>

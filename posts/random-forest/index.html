@@ -51,7 +51,7 @@ length(test) = 24
 <pre><code class=language-julia >LinearBinary &#61; @load LinearBinaryClassifier pkg&#61;GLM verbosity&#61;0
 logistic_model &#61; LinearBinary&#40;&#41;;
 
-DecisionTree &#61; @load DecisionTreeClassifier verbosity&#61;0
+DecisionTree &#61; @load DecisionTreeClassifier pkg&#61;DecisionTree verbosity&#61;0
 tree &#61; DecisionTree&#40;&#41;
 forest_model &#61; EnsembleModel&#40;atom&#61;tree, n&#61;10&#41;;
 
