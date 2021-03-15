@@ -198,8 +198,7 @@ yᵢ(x, β₁, ϵ) = β₁*x + ϵ
 yᵢ(1, 2, 3)
 ```
 
-
-Whereas, in R, you have to resort to something like
+Whereas in R, you have to resort to something like
 
 ```
 y_i <- function(x, beta_1, epsilon) { beta_1 * x + epsilon }
@@ -212,7 +211,7 @@ $$
 \begin{aligned}
   S_i &\sim \text{Binomial}(N_i, p_i) \\
   \text{logit}(p_i) &= \alpha_\text{TANK[i]} \\
-  \alpha_\text{TANK[i]} &\sim \text{Normal}(1, 1.5) \text{ for } j = 1..48.
+  \alpha_\text{TANK[i]} &\sim \text{Normal}(1, 1.5).
 \end{aligned}
 $$
 
@@ -227,23 +226,78 @@ m13.1 <- ulam(
   ), ... )
 ```
 
-In Julia, we can stay much closer to the mathematical definition by writing
+The R model is confusing because,
+
+- it isn't clear that `tank` refers to the index of a tank and not a tank object _and_
+- unlike the mathematical definition, it isn't clear that `S` and `N` refer to an list of objects indexed by `i`.
+
+In Julia, we have to reverse the, arguably weird, order of the math
+
+$$
+\begin{aligned}
+  \alpha_\text{TANK[i]} &\sim \text{Normal}(1, 1.5) \text{ for } \\
+  \text{logit}(p_i) &= \alpha_\text{TANK[i]} \\
+  S_i &\sim \text{Binomial}(N_i, p_i).
+\end{aligned}
+$$
+
+and can, then, stay very close to this mathematical definition:
 
 ```
 @model function reedfrogs(Nᵢ, i, Sᵢ)
     αₜₐₙₖ ~ filldist(Normal(0, 1.5), length(i))
-    logit_pᵢ = αₜₐₙₖ[i]
-    Sᵢ .~ BinomialLogit.(Nᵢ, logit_pᵢ)
+    pᵢ = logistic.(αₜₐₙₖ[i])
+    Sᵢ .~ Binomial.(Nᵢ, pᵢ)
 end;
 ```
 
-which is a [valid model](https://statisticalrethinkingjulia.github.io/TuringModels.jl/models/varying-intercepts-reedfrogs/) for [Turing.jl](https://github.com/TuringLang/Turing.jl/).
-Here, the ordering of the lines is reversed for Julia which is arguably as good.
-In the Julia model, variables are defined before they are used.
+Note that in this model, we had to use some dots to _broadcasting_ the functions.
+Basically, broadcasting is a way to easily vectorize functions.
+In R, you manually have to implement the vectorization, whereas in Julia, the users can conveniently do this themselves and be sure of the output:
+
+**Single function call in Julia:**
+```!
+string(1)
+```
+
+**Applying the function to an array:**
+```!
+string.([1, 2])
+```
+
+**Single function call in R:**
+```
+toString(1)
+```
+```
+[1] "1"
+```
+
+**Applying the function to a list:**
+```
+toString(list(1, 2))
+```
+```
+[1] "1, 2"
+```
+
+This last result makes no sense to me, because I never asked the program to concat the strings with a comma.
+Because the output in Julia is an array of strings, you can easily use broadcasting to change the type of a DataFrame column:
+
+```!
+using DataFrames
+df = DataFrame(A = [1, 2])
+df[!, :A] = string.(df.A)
+df
+```
+whereas in R, you would need to remember
+```
+mtcars %>% mutate(across(mpg, toString))
+```
 
 ## Speed
 
-As stated in the introduction, Julia aims to be fast.
+As stated in the introduction, Julia is meant to be fast.
 This is true and false.
 Actually, Julia is terrible at starting quickly; also known as the time to first plot issue.
 Where R will spend a lot of time on compilation when installing packages, it will be quick to start after that.
@@ -252,8 +306,8 @@ You can quickly install packages, but they will take some time to (pre-)compile.
 Luckily, Julia has [Revise.jl](https://github.com/timholy/Revise.jl).
 With Revise, Julia will automatically update function definitions **while Julia is running**.
 So, instead of making a change and restarting the program, you can keep everything running.
-This makes the updating code - inspecting output cycle **ridicuolously fast**.
-Also, you don't have to manually manage state as you have to do in R, that is, if you update code block 3, you don't have to ensure that you have ran code block 3 before running code block 5.
+This makes the updating code - inspecting output cycle **ridiculously fast**.
+Also, you don't have to manually manage state as you have to do in R Studio, that is, if you update code block 3, you don't have to ensure that you have ran code block 3 before running code block 5.
 Revise will automatically track these changes for you.
 Also, for long-running computations, you can be sure that Julia will outperform R in most cases, but this is not something I worry about daily, so I cannot go into details about this.
 
@@ -264,8 +318,8 @@ Compare rikhuijzer/codex to rikhuijzer/Codex.jl.
 ## Conclusion
 
 I don't think that R is bad language per se.
-If Julia didn't exist, then I would, probably, be using R with great pleasure.
-However, Julia does exists and solves many of the problems which R has.
+If Julia, Python and MATLAB wouldn't have existed, then I would, probably, be using R with great pleasure.
+However, newer languages like Julia do exists and solve many of the problems which R has.
 
 ## References
 
