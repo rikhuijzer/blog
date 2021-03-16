@@ -112,7 +112,7 @@ ERROR: MethodError: no method matching *(::Int64, ::String)
 ```
 
 When your writing large programs, this isn't very clear.
-We could have warned the user (or ourselve) much earlier by specifying that the input **should be a number**:
+We could have warned the user (or ourselves) much earlier by specifying that the input **should be a number**:
 
 ```
 double(x::Number) = 2x
@@ -252,8 +252,8 @@ end;
 ```
 
 Note that in this model, we had to use some dots to _broadcasting_ the functions.
-Basically, broadcasting is a way to easily vectorize functions.
-In R, you manually have to implement the vectorization, whereas in Julia, the users can conveniently do this themselves and be sure of the output:
+Basically, broadcasting is a way to easily vectorize functions, see the blog post by \citet{tJohnson2017} for details.
+In R, you manually have to implement the vectorization and developers have to guess which functions need to be vectorized, whereas in Julia, the users can conveniently do this themselves, and be sure of the output:
 
 **Single function call in Julia:**
 ```!
@@ -281,7 +281,6 @@ toString(list(1, 2))
 [1] "1, 2"
 ```
 
-This last result makes no sense to me, because I never asked the program to concat the strings with a comma.
 Because the output in Julia is an array of strings, you can easily use broadcasting to change the type of a DataFrame column:
 
 ```!
@@ -315,6 +314,10 @@ Also, for long-running computations, you can be sure that Julia will outperform 
 
 Compare rikhuijzer/codex to rikhuijzer/Codex.jl.
 
+## Packages
+
+Argue against the idea that there are more packages in R.
+
 ## Conclusion
 
 I don't think that R is bad language per se.
@@ -326,6 +329,11 @@ However, newer languages like Julia do exists and solve many of the problems whi
 \biblabel{pGraham2003}{Graham, 2003}
 Graham, P. (2003). Beating the averages.
 <http://paulgraham.com/avg.html>.
+
+\biblabel{tJohnson2017}{Johnson (2017)}
+Johnson, Steven G. (2017).
+More Dots: Syntactic Loop Fusion in Julia.
+https://julialang.org/blog/2017/01/moredots/
 
 \biblabel{tMcElreath2020}{McElreath (2020)}
 McElreath, R. (2020). Statistical Rethinking: A Bayesian course with examples in R and Stan. CRC press.
