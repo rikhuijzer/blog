@@ -4,33 +4,59 @@ description = "About this website"
 image = "/assets/about/output/basic-plot.svg"
 +++
 
-I'm a PhD student at the Faculty of Behavioural and Social Sciences, University of Groningen.
+PhD student at the Faculty of Behavioural and Social Sciences, University of Groningen;
 ~~~
-<a href="mailto:t.h.huijzer@rug.nl">t.h.huijzer@rug.nl</a>
+<a href="mailto:t.h.huijzer@rug.nl">t.h.huijzer@rug.nl</a>.
 ~~~
+
+\toc
 
 #### Publications
 
 Nothing yet.
 
-#### Projects
+#### Open source
 
-- [TuringPlots.jl](https://rikhuijzer.github.io/TuringPlots.jl/dev/).
-- [TuringModels.jl](https://github.com/StatisticalRethinkingJulia/TuringModels.jl).
-- [ShowLint](https://lint.huijzer.xyz/).
+_Projects:_
 
-#### Presentations
+- [Books.jl](https://github.com/rikhuijzer/books.jl)
+- [TuringModels.jl](https://github.com/StatisticalRethinkingJulia/TuringModels.jl)
+- [ShowLint](https://lint.huijzer.xyz/)
 
-- _Bayesian statistics with Julia: visualizing uncertainty_ (Oct 2020).
-- _Deep learning and natural language processing_ at [PyGrunn](https://pygrunn.org/) (Jun 2019).
+_Contributions:_
 
-#### MSc thesis co-advisor
+- Add quantile bars statistic ([Gadfly.jl/#1521](https://github.com/GiovineItalia/Gadfly.jl/pull/1521))
+- Add Gadfly examples ([MCMCChains.jl/#275](https://github.com/TuringLang/MCMCChains.jl/pull/275))
+- Add Documenter.jl ([MCMCChains.jl/#265](https://github.com/TuringLang/MCMCChains.jl/pull/265))
+- Refactor ([StasticalRethinking.jl/#104](https://github.com/StatisticalRethinkingJulia/StatisticalRethinking.jl/pull/104))
+- Refactor ([Plots.jl/#3200](https://github.com/JuliaPlots/Plots.jl/pull/3200))
+- Switch to GitHub Actions ([Compose.jl/#408](https://github.com/GiovineItalia/Compose.jl/pull/408))
+- Refactor ([YAML.jl/#103](https://github.com/JuliaData/YAML.jl/pull/10))
+- Bugfix ([Pkg.jl/#2297](https://github.com/JuliaLang/Pkg.jl/pull/2297))
+- Add CompatHelper ([Pluto.jl/#766](https://github.com/fonsp/Pluto.jl/pull/766))
+- Document Response and Request constructors ([HTTP.jl/#644](https://github.com/JuliaWeb/HTTP.jl/pull/644))
+- Print stack trace ([Franklin.jl/#718](https://github.com/tlienart/Franklin.jl/pull/718))
+- Reduce number of CI jobs ([PkgTemplates.jl/#252](https://github.com/invenia/PkgTemplates.jl/pull/252))
+- Add clear_cache ([Memoize.jl/#60](https://github.com/JuliaCollections/Memoize.jl/pull/60))
+- Add flex to Jemdoc ([FranlinTemplates.jl](https://github.com/tlienart/FranklinTemplates.jl/pull/99))
+- Change to GitHub CI ([Gadfly.jl/#1495](https://github.com/GiovineItalia/Gadfly.jl/pull/1495))
+- Update MbedTLS version ([OAuth.jl/#29](https://github.com/randyzwitch/OAuth.jl/pull/29))
+
+#### Educational activities
+
+_Courses:_
+
+- Statistics III, teaching assistant, Feb 2021 - May 2021
+- Research practicum, teaching assistant, Okt 2019 - Feb 2020
+
+_MSc theses:_
 
 - Calum Guthrie, 2020. _What are the Characteristics of Successful Commando Candidates?_
 
-#### Teaching
+#### Presentations
 
-- Research practicum, Okt 2019 - Feb 2020.
+- _Bayesian statistics with Julia: visualizing uncertainty_ (Oct 2020)
+- _Deep learning and natural language processing_ at [PyGrunn](https://pygrunn.org/) (Jun 2019)
 
 #### Education
 
@@ -39,7 +65,7 @@ Nothing yet.
   <b>MSc</b>, Computer Science and Engineering, Software Science, Mar 2019.<br>
   &nbsp;&nbsp;&nbsp;&nbsp;Thesis: "<a href=](https://research.tue.nl/en/studentTheses/automatical  ly-responding-to-customers">Automatically responding to customers</a>".<br>
   &nbsp;&nbsp;&nbsp;&nbsp;Committee: dr. Nikolay <a href="http://www.yakovets.ca">Yakovets</a>, dr. George Fletcher, and dr. Joaquin Vanschoren.&nbsp;&nbsp;<br>
-  
+
   <br>
   <b>Eindhoven University of Technology</b><br>
   Premaster Computer Science and Engineering, Software Science, Feb 2017.<br>
