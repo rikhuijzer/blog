@@ -1,18 +1,42 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-<channel>
-  <title><![CDATA[Huijzer]]></title>
-  <description><![CDATA[Blog
-]]></description>
-  <link>https://huijzer.xyz/</link>
-  <atom:link href="https://huijzer.xyz/tag/design/feed.xml" rel="self" type="application/rss+xml" />
-  <item>
-    <title><![CDATA[Design cheatsheet]]></title>
-    <link>https://huijzer.xyz/posts/design/</link>
-    <description><![CDATA[A summary of design tips and tricks.
-<br><a href="https://huijzer.xyz/posts/design/">Read more</a>]]></description>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:georss="http://www.georss.org/georss">
+
+  <channel>
+    <title>
+      <![CDATA[  {{fd2rss website_title}}  ]]>
+    </title>
+    <link> {{website_url}} </link>
+    <description>
+      <![CDATA[  {{fd2rss website_description}}  ]]>
+    </description>
+    <atom:link
+      href="{{fd_rss_feed_url}}"
+      rel="self"
+      type="application/rss+xml" />
+
+
+<item>
+  <title>
+    <![CDATA[  Design cheatsheet  ]]>
+  </title>
+  <link> https://huijzer.xyz/posts/design/index.html </link>
+  <guid> https://huijzer.xyz/posts/design/index.html </guid>
+  <description>
+    <![CDATA[  A summary of design tips and tricks.  ]]>
+  </description>  
     
-    <guid>https://huijzer.xyz/posts/design/</guid>
-    <pubDate>Sat, 27 Mar 2021 00:00:00 UT</pubDate>
-  </item>
-</channel>
-</rss>
+  <pubDate>Sun, 11 Apr 2021 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Rik Huijzer</atom:name>
+  </atom:author>
+        
+</item>
+</channel></rss>
