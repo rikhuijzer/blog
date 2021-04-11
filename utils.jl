@@ -57,7 +57,7 @@ function hfun_blogposts()
         surl = strip(url, '/')
         title = pagevar(surl, :title)
         pubdate = pagevar(surl, :published)
-        description = pagevar(surl, :rss)
+        description = pagevar(surl, :rss_description)
         if isnothing(pubdate)
             date = "$curyear-$curmonth-$curday"
         else
@@ -68,4 +68,12 @@ function hfun_blogposts()
     end
     write(io, "</ul>")
     return String(take!(io))
+end
+
+# Based on https://github.com/tlienart/Franklin.jl/pull/799.
+function hfun_rss()
+    rss = locvar(:rss)::String
+    descr = fd2html(rss; internal=true, nop=true)
+    Franklin.set_var!(Franklin.LOCAL_VARS, "rss_description", descr)
+    return "<p>$descr</p>"
 end

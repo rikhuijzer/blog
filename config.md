@@ -1,11 +1,7 @@
-<!--
-Add here global page variables to use throughout your
-website.
-The website_* must be defined for the RSS to work
--->
+@def generate_rss = true
 @def website_title = "Huijzer"
-@def website_descr = "Blog"
-@def website_url   = "https://huijzer.xyz"
+@def website_descr = "My blog about statistics, programming and more"
+@def website_url = "https://huijzer.xyz"
 
 @def author = "Rik Huijzer"
 
