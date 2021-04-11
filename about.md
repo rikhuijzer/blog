@@ -48,6 +48,7 @@ _Courses:_
 
 - Statistics III, teaching assistant, Feb 2021 - May 2021
 - Research practicum, teaching assistant, Okt 2019 - Feb 2020
+- Logic and set theory, student assistant, Mar 2018 - Apr 2018
 
 _MSc theses:_
 
