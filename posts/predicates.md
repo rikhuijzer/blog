@@ -56,10 +56,12 @@ These definitions can also be stated as
 ## References
 
 \biblabel{goodman2016}{Goodman et al. (2016)}
-Goodman, S. N., Fanelli, D., & Ioannidis, J. P. A. (2016). What does research reproducibility mean? Science Translational Medicine, 8(341), 341ps12-341ps12. https://doi.org/10.1126/scitranslmed.aaf5027
+Goodman, S. N., Fanelli, D., & Ioannidis, J. P. A. (2016). What does research reproducibility mean? Science Translational Medicine, 8(341), 341ps12-341ps12.
+<https://doi.org/10.1126/scitranslmed.aaf5027>
 
 \biblabel{hoefer2003}{Hoefer (2003)}
-Hoefer, C. (2003). Causal Determinism. https://plato.stanford.edu/archives/spr2016/entries/determinism-causal/
+Hoefer, C. (2003). Causal Determinism.
+<https://plato.stanford.edu/archives/spr2016/entries/determinism-causal/>
 
-\biblabel{pearl2009}{Pearl (2009)} 
+\biblabel{pearl2009}{Pearl (2009)}
 Pearl, J. (2009). Causality. Cambridge university press.
