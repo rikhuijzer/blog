@@ -18,10 +18,10 @@ d1 = Normal(μ1, σ)
 d2 = Normal(μ2, σ)
 
 Random.seed!(123)
-classes = CategoricalArray(rand(["A", "B"], n))
+classes = categorical(rand(["A", "B"], n))
 
 df = DataFrame(
-    class = CategoricalArray(classes),
+    class = categorical(classes),
     U = [class == "A" ? rand(d1) : rand(d2) for class in classes],
     V = rand(Normal(100, 10), n)
 )

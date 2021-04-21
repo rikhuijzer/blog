@@ -16,10 +16,10 @@ d1 &#61; Normal&#40;μ1, σ&#41;
 d2 &#61; Normal&#40;μ2, σ&#41;
 
 Random.seed&#33;&#40;123&#41;
-classes &#61; CategoricalArray&#40;rand&#40;&#91;&quot;A&quot;, &quot;B&quot;&#93;, n&#41;&#41;
+classes &#61; categorical&#40;rand&#40;&#91;&quot;A&quot;, &quot;B&quot;&#93;, n&#41;&#41;
 
 df &#61; DataFrame&#40;
-    class &#61; CategoricalArray&#40;classes&#41;,
+    class &#61; categorical&#40;classes&#41;,
     U &#61; &#91;class &#61;&#61; &quot;A&quot; ? rand&#40;d1&#41; : rand&#40;d2&#41; for class in classes&#93;,
     V &#61; rand&#40;Normal&#40;100, 10&#41;, n&#41;
 &#41;
