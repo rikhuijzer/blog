@@ -1,7 +1,7 @@
 CSV 0.8.4
-CategoricalArrays 0.9.5
+CategoricalArrays 0.9.6
 DataFrames 0.22.7
-Distributions 0.24.17
+Distributions 0.24.18
 Franklin 0.10.36
 GLM 1.4.1
 Gadfly 1.3.2
