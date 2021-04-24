@@ -27,7 +27,7 @@ TikzPictures = "37f6aa50-8035-52d0-81c2-5a1d08754b2d"
 [compat]
 CSV = "0.8"
 CategoricalArrays = "0.9"
-DataFrames = "0.22"
+DataFrames = "0.22, 1.0"
 Distributions = "0.24"
 Franklin = "0.10"
 GLM = "1.3"
