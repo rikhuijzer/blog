@@ -1,11 +1,16 @@
-@def generate_rss = true
-@def website_title = "Huijzer"
-@def website_descr = "My blog about statistics, programming and more"
-@def website_url = "https://huijzer.xyz"
++++
+generate_rss = true
+website_title = "Huijzer"
+website_descr = "A blog about statistics, programming and more"
+website_url = "https://huijzer.xyz"
 
-@def author = "Rik Huijzer"
+author = "Rik Huijzer"
 
-@def mintoclevel = 2
+# Used in the footer.
+day = today()
+
+mintoclevel = 2
++++
 
 <!--
 Add here files or directories that should be ignored by Franklin, otherwise
