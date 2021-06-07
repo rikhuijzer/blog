@@ -1,4 +1,6 @@
+AlgebraOfGraphics 0.4.3
 CSV 0.8.5
+CairoMakie 0.5.7
 CategoricalArrays 0.10.0
 DataFrames 1.1.1
 Distributions 0.24.18
