@@ -2,6 +2,7 @@
 title = "Home"
 rss = "Rik Huijzer - PhD student; writing blog posts about statistics and related topics."
 image = "/assets/self.jpg"
+reeval = true
 +++
 
 ~~~
@@ -17,7 +18,7 @@ However, most statistical calculations cannot be done by hand.
 For example, fitting a linear model requires minimizing the sum of squares.
 By adding the code, this blog aims to show that statistical results are not created by some magical procedure.
 
-For example, creating a plot can be done in a few lines of code
+For example, creating a plot can be done in a few lines of code:
 
 ```julia:./basic-plot.jl
 using AlgebraOfGraphics, CairoMakie
