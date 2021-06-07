@@ -4,7 +4,9 @@ authors = ["Rik Huijzer <t.h.huijzer@rug.nl>"]
 version = "0.1.0"
 
 [deps]
+AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
@@ -25,7 +27,9 @@ Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
 TikzPictures = "37f6aa50-8035-52d0-81c2-5a1d08754b2d"
 
 [compat]
+AlgebraOfGraphics = "0.4"
 CSV = "0.8"
+CairoMakie = "0.5"
 CategoricalArrays = "0.10"
 DataFrames = "1.1"
 Distributions = "0.24"
