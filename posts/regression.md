@@ -149,43 +149,22 @@ using GeometryBasics
 # Linear and generalized linear models (GLMs).
 using GLM
 
+layers = data(df) * visual(Scatter)
+
 m = mean(H)
 df_mean = (W=df.W, H=fill(m, nrow(df)))
-# df_diff = (W=df.W, H=df.H-m)
-# l = Line(Point(6.5, 11), Point(11, 11))
-# df_diff = (; x=[l])
-
-layers = data(df) * visual(Scatter)
 layers += data(df_mean) * linear()
+
 for (w, h) in zip(df.W, df.H)
   df_diff = (W=[w, w], H=[m, h])
   global layers += data(df_diff) * visual(Lines)
 end
-# fg += data(df_diff) * mapping(:l)
-
-# yintercept = data([m]) * mapping(:x)
 
 Blog.makie_svg(@OUTPUT, "w-h-mean", # hide
 draw(layers * mapping(:W, :H))
 ) # hide
 ```
 \textoutput{w-h-mean}
-
-```julia:w-h-mean2
-# Linear and generalized linear models (GLMs).
-using GLM
-
-m = mean(H)
-write_svg("w-h-mean", # hide
-plot(df, x = :W, y = :H,
-  Geom.point,
-  yintercept = [m], Geom.hline(),
-  layer(xend = :W, yend = [m], Geom.segment())
-)
-) # hide
-```
-\output{w-h-mean}
-\fig{./w-h-mean.svg}
 
 We can generalize the sum of squares error calculation to
 
@@ -211,19 +190,18 @@ See the blog post on [correlations](/posts/correlations) for more information.
 m1 = lm(@formula(H ~ W), df)
 
 # This is just a convenience function around `GLM.predict`.
-predict_value(model, x) = 
+predict_value(model, x) =
   first(skipmissing(predict(model, DataFrame(W = [x]))))
 
-write_svg("w-h-fit", # hide
-plot(df, x = :W, y = :H, 
-	# xviewmin = [wmin], xviewmax = [wmax], # hide
-  Geom.point,
-  layer(x -> predict_value(m1, x), wmin, wmax)
-)
+df_pred = (W=wmin:wmax, H=[predict_value(m1, x) for x in wmin:wmax])
+layers = data(df_pred) * visual(Lines)
+layers += data(df)
+
+Blog.makie_svg(@OUTPUT, "w-h-fit", # hide
+draw(layers * mapping(:W, :H))
 ) # hide
 ```
-\output{w-h-fit}
-\fig{./w-h-fit.svg}
+\textoutput{w-h-fit}
 
 The intercept and slope for the fitted line are
 ```julia:slope-intercept
@@ -231,7 +209,7 @@ intercept(linear_model) = coef(linear_model)[1]
 slope(linear_model) = coef(linear_model)[2]
 
 @show r_2(intercept(m1)) # hide
-@show r_2(slope(m1)) # hide 
+@show r_2(slope(m1)) # hide
 ```
 \output{slope-intercept}
 
@@ -243,20 +221,19 @@ A line can now be fitted.
 
 ```julia:m2
 digits = [i % 2 != 0 ? 0 : 1 for i in I]
-df[:, :Y_digit] = digits
+df[!, :Y_digit] = digits
 m2 = lm(@formula(Y_digit ~ W), df)
 
-write_svg("m2", # hide
-plot(df, x = :W, y = :Y_digit,
-  xmin = [wmin], xmax = [wmax],
-  Geom.point,
-  layer(x -> predict_value(m2, x), wmin, wmax),
-  layer(y = predict(m2), Geom.point)
-)
+df_pred = (W=df.W, Y_digit=[predict_value(m2, x) for x in df.W])
+layers = data(df_pred) * visual(Lines)
+layers += data(df_pred) * visual(Scatter)
+layers += data(df) * visual(Scatter)
+
+Blog.makie_svg(@OUTPUT, "m2", # hide
+draw(layers * mapping(:W, :Y_digit))
 ) # hide
 ```
-\output{m2}
-\fig{./m2.svg}
+\textoutput{m2}
 
 As can be observed, the model does not take into account that $Y$ is a binary variable.
 The model even predicts values outside the expected range, that is, values outside the range 0 to 1.
@@ -265,15 +242,16 @@ A better fit is the logistic function.
 ```julia:m3
 m3 = glm(@formula(Y_digit ~ W), df, Binomial(), LogitLink())
 
-write_svg("m3", # hide
-plot(df, x = :W, y = :Y_digit, 
-  Geom.point,
-  layer(x -> predict_value(m3, x), wmin, wmax),
-  layer(y = predict(m3), Geom.point)
-)
+df_pred = (W=df.W, Y_digit=[predict_value(m3, x) for x in df.W])
+layers = data(df_pred) * smooth(degree=3)
+layers += data(df_pred) * visual(Scatter)
+layers += data(df) * visual(Scatter)
+
+Blog.makie_svg(@OUTPUT, "m3", # hide
+draw(layers * mapping(:W, :Y_digit))
 ) # hide
 ```
-\fig{./m3.svg}
+\textoutput{m3}
 
 The correlation coefficient $r$ should not be used to compare the models, since the logistic model only predicts the class. 
 In other words, the logistic model is a classificatier.
