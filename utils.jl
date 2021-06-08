@@ -77,3 +77,15 @@ function hfun_rss()
     Franklin.set_var!(Franklin.LOCAL_VARS, "rss_description", descr)
     return "<p>$descr</p>"
 end
+
+function lx_makiesvg(com, _)
+    name = Franklin.content(com.braces[1])
+    name = string(name)::String
+    """
+    ```!
+    # hideall
+    fg = draw($(name))
+    save(joinpath(@OUTPUT, "$name.svg"), fg)
+    ```
+    """
+end
