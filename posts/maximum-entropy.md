@@ -3,6 +3,7 @@ title = "The principle of maximum entropy"
 published = "2020-09-26"
 tags = ["simulating data", "statistics"]
 rss = "Obtaining the least informative distribution."
+reeval = true
 +++
 
 Say that you are a statistician and are asked to come up with a probability distribution for the current state of knowledge on some particular topic you know little about.
@@ -14,31 +15,27 @@ consider a die which has been tossed a very large number of times $N$.
 We expect the average to be $3.5$, that is, we expect the following distribution where $P_n = \frac{1}{6}$ for each $n$.
 
 ```julia:preliminaries
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 using DataFrames
-using Gadfly
 
-output_dir = @OUTPUT
-write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg"), 6inch, 2inch), p)
-
-function plot_distribution(probabilities::Array)::Plot
-	df = DataFrame(n = 1:6, P_n = probabilities)
-	plot(df, x = :n, y = :P_n,
-    Geom.bar(position = :dodge),
-		Theme(bar_spacing=2mm, default_color = "gray"),
-		Guide.xticks(ticks = 1:6),
-		Guide.yticks(ticks = 0.2:0.2:1)
-	)
+function plot_distribution(probabilities::Array)
+  df = DataFrame(; n=1:6, P_n=probabilities)
+  fg = data(df) * mapping(:n, :P_n) * visual(BarPlot)
+  axis = (; xticks=1:6, yticks=0.2:0.2:1)
+  draw(fg; axis)
 end
 ```
 \output{preliminaries}
 
 ```julia:unbiased
-write_svg("unbiased", # hide
+Blog.makie_svg(@OUTPUT, "unbiased", # hide
 plot_distribution([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
 ) # hide
 ```
-\output{unbiased}
-\fig{unbiased.svg}
+\textoutput{unbiased}
+
 Instead, we are told that the average is $4.5$.
 How likely is it for each number $n = 1,2, \ldots, 6$ to come up for the next toss?
 
@@ -53,29 +50,29 @@ $$ \sum_{n=1}^6 n \cdot P_n = 4.5. $$
 We could satisfy these constraints by choosing $P_4 = P_5 = \frac{1}{2}$.
 
 ```julia:naive
-write_svg("naive", # hide
+Blog.makie_svg(@OUTPUT, "naive", # hide
 plot_distribution([0, 0, 0, 0.5, 0.5, 0])
-) # hide 
+) # hide
 ```
-\fig{naive.svg}
+\textoutput{naive}
 This is unlikely to be the distribution for our data since it can be derived in relatively few ways, namely: by throwing only $4$ and $5$, and in such a way that the throws average to $4.5$.
 A more likely distribution would be 
 
 ```julia:quarters
-write_svg("quarters", # hide
+Blog.makie_svg(@OUTPUT, "quarters", # hide
 plot_distribution([0, 0, 1/4, 1/4, 1/4, 1/4])
 ) # hide
 ```
-\fig{quarters.svg}
+\textoutput{quarters}
 This is still not the least informative distribution since it assumes $n = 1$ and $n = 2$ to be impossible events.
 Jaynes presents the straight line solution $P_n = (12n - 7)/210$,
 
 ```julia:straight
-write_svg("straight", # hide
+Blog.makie_svg(@OUTPUT, "straight", # hide
 plot_distribution([(12n - 7)/210 for n in 1:6])
 ) # hide
 ```
-\fig{straight.svg}
+\textoutput{straight}
 This solution would also fail if the mean would have been higher, because then $P_0 = 0$ would occur again.
 The correct measure is the following information measure \citep{shannon1948}, which is also known as information entropy,
 
@@ -96,18 +93,18 @@ Now, we only have to find the $\rho$ for which the average is $4.5$.
 After some [trial and error](#trial-and-error), you'll find that $\rho = 0.3715$ gives $\sum_{n=1}^6 n \cdot P_n \approx 4.501$.
 
 ```julia:entropy
-write_svg("entropy", # hide
+Blog.makie_svg(@OUTPUT, "entropy", # hide
 plot_distribution([0.0543, 0.0787, 0.114, 0.165, 0.240, 0.348])
 ) # hide
 ```
-\fig{entropy.svg}
+\textoutput{entropy}
 This is the least informative distribution which satisfies the constraints.
 In other words, this is the distribution which can be obtained in the largest number of ways, given the constraints.
 For another example of maximum entropy distributions, see Chapter 10.1 of the book by \citet{mcelreath2020}.
 
 ### References
-\biblabel{jaynes1968}{Jaynes (1968)} 
-Jaynes, E. T. (1968). Prior Probabilities. IEEE Transactions on Systems Science and Cybernetics. 4 (3): 227–241. 
+\biblabel{jaynes1968}{Jaynes (1968)}
+Jaynes, E. T. (1968). Prior Probabilities. IEEE Transactions on Systems Science and Cybernetics. 4 (3): 227–241.
 <https://doi.org/10.1109/TSSC.1968.300117>
 
 \biblabel{mcelreath2020}{McElreath (2020)}
