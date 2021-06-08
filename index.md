@@ -19,7 +19,7 @@ By adding the code, this blog aims to show that statistical results are not crea
 
 For example, creating a plot can be done in a few lines of code:
 
-```julia:./basic-plot.jl
+```julia:basic-plot
 using AlgebraOfGraphics
 using Blog # hide
 using CairoMakie
@@ -35,7 +35,7 @@ draw(xy)
 ) # hide
 
 ```
-\textoutput{./basic-plot.jl}
+\textoutput{basic-plot}
 
 The source code of this website is available at [GitHub](https://github.com/rikhuijzer/huijzer.xyz).
 

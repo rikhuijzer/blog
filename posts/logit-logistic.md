@@ -3,24 +3,19 @@ title = "The logit and logistic functions"
 published = "2020-11-04"
 tags = ["statistics"]
 rss = "Providing the definitions, some plots and useful values to remember."
+reeval = true
 +++
 
-```julia:preliminaries
-# hideall
-output_dir = @OUTPUT
-write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)
-```
-
-Linear regression works on real numbers $\mathbb{R}$, that is, the input and output are in $\mathbb{R}$. 
+Linear regression works on real numbers $\mathbb{R}$, that is, the input and output are in $\mathbb{R}$.
 For probabilities, this is problematic because the linear regression will happily give a probability of $-934$, where we know that probabilities should always lie between $0$ and $1$.
 This is only by definition, but it is an useful definition in practice.
 Informally, the *logistic* function has been designed to convert values from real numbers to probabilities and the *logit* function is the inverse.
 
-\toc 
+\toc
 
 ## Logistic
 
-The logistic function converts values from $(-\infty, \infty)$ to $(0, 1)$: 
+The logistic function converts values from $(-\infty, \infty)$ to $(0, 1)$:
 
 $$ \text{logistic}(x) = \frac{1}{1 + e^{-x}}. $$
 
@@ -32,16 +27,19 @@ logistic(x) = 1 / (1 + exp(-x))
 We can visualise this with
 
 ```julia:plot-logistic
-using Gadfly
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
-write_svg("logistic", # hide
-plot(y = [logistic], xmin = [-6], xmax = [6], 
-	Geom.line, Stat.func, Guide.xlabel("x")
-)
+I = -6:0.1:6
+df = (x=I, y=logistic.(I))
+fg = data(df) * mapping(:x, :y) * visual(Lines)
+
+Blog.makie_svg(@OUTPUT, "logistic", # hide
+draw(fg)
 ) # hide
 ```
-\output{plot-logistic}
-\fig{logistic.svg}
+\textoutput{plot-logistic}
 
 Some people advise to remember the following numbers by heart.
 $$
@@ -53,7 +51,7 @@ $$
 \end{aligned}
 $$
 
-since 
+since
 
 ```julia:logistic-numbers
 @show logistic(-3) # hide
@@ -65,7 +63,7 @@ since
 
 ## Logit
 
-The inverse of the logistic function is the *logit* function, 
+The inverse of the logistic function is the *logit* function,
 
 $$ \text{logit}(x) = \log(\frac{x}{1 - x}). $$
 
@@ -76,10 +74,12 @@ logit(x) = log(x / (1 - x))
 This function goes from $(0, 1)$ to $(- \infty, \infty)$.
 
 ```julia:plot-logit
-write_svg("logit", # hide
-plot(y = [logit], xmin = [0], xmax = [1],
-	Geom.line, Stat.func, Guide.xlabel("x")
-)
+I = 0:0.01:1
+df = (x=I, y=logit.(I))
+fg = data(df) * mapping(:x, :y) * visual(Lines)
+
+Blog.makie_svg(@OUTPUT, "logit", # hide
+draw(fg)
 ) # hide
 ```
-\fig{logit.svg}
+\textoutput{plot-logit}
