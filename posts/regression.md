@@ -145,17 +145,23 @@ The simplest estimator for the points is the mean.
 We can plot this and show horizontal lines for the errors.
 
 ```julia:w-h-mean
+using GeometryBasics
 # Linear and generalized linear models (GLMs).
 using GLM
 
 m = mean(H)
 df_mean = (W=df.W, H=fill(m, nrow(df)))
-# df[!, :m] .= mean(H)
-# df_mean = stack(df, [:H, :m];
-#   variable_name=:var, value_name=:H)
+# df_diff = (W=df.W, H=df.H-m)
+# l = Line(Point(6.5, 11), Point(11, 11))
+# df_diff = (; x=[l])
 
 layers = data(df) * visual(Scatter)
-layers += data(df_mean) * visual(Lines)
+layers += data(df_mean) * linear()
+for (w, h) in zip(df.W, df.H)
+  df_diff = (W=[w, w], H=[m, h])
+  global layers += data(df_diff) * visual(Lines)
+end
+# fg += data(df_diff) * mapping(:l)
 
 # yintercept = data([m]) * mapping(:x)
 
