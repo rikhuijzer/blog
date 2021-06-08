@@ -3,6 +3,7 @@ title = "Simple and binary regression"
 published = "2020-03-05"
 tags = ["simulating data", "statistics"]
 rss = "Applying a simple and binary (logistic) regression to simulated data."
+reeval = true
 +++
 
 ```julia:./preliminaries.jl
@@ -89,29 +90,32 @@ Y = [i % 2 != 0 for i in I]
 H = r_2.([y == "apple" ? rand(Normal(10, 1)) : rand(Normal(12, 1)) for y in Y])
 W = r_2.([0.6h for h in H])
 
-df = DataFrame(I = I, H = H, W = W, Y = Y)
+df = DataFrame(; I, H, W, Y)
 write_csv("df", df) # hide
 ```
 \output{generating_functions}
 \tableinput{}{./df.csv}
 
 ## Simple linear regression
+
 A *simple linear regression* fits a line through points in two dimensions.
 It should be able to infer the relation between $H$ and $W$.
 
-```julia:./w-h.jl
-using Gadfly
+```julia:w-h
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
 # These two are useful for plotting.
 wmin = minimum(W) - 0.2
 wmax = maximum(W) + 0.2
 
-write_svg("w-h", # hide
-plot(df, x = :W, y = :H)
+fg = data(df) * mapping(:W, :H)
+Blog.makie_svg(@OUTPUT, "w-h", # hide
+draw(fg)
 ) # hide
 ```
-\output{./w-h.jl}
-\fig{./w-h.svg}
+\textoutput{w-h}
 
 The algorithmic way to fit a line is via the *method of least squares*.
 Any straight line can be described by a linear equation of the form $y = p_1 x + p_0$, where the first parameter $p_0$ is the intercept with $y$ and the second parameter $p_1$ is the slope.
@@ -144,7 +148,28 @@ We can plot this and show horizontal lines for the errors.
 # Linear and generalized linear models (GLMs).
 using GLM
 
-m = mean(H) 
+m = mean(H)
+df_mean = (W=df.W, H=fill(m, nrow(df)))
+# df[!, :m] .= mean(H)
+# df_mean = stack(df, [:H, :m];
+#   variable_name=:var, value_name=:H)
+
+layers = data(df) * visual(Scatter)
+layers += data(df_mean) * visual(Lines)
+
+# yintercept = data([m]) * mapping(:x)
+
+Blog.makie_svg(@OUTPUT, "w-h-mean", # hide
+draw(layers * mapping(:W, :H))
+) # hide
+```
+\textoutput{w-h-mean}
+
+```julia:w-h-mean2
+# Linear and generalized linear models (GLMs).
+using GLM
+
+m = mean(H)
 write_svg("w-h-mean", # hide
 plot(df, x = :W, y = :H,
   Geom.point,

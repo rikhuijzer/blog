@@ -73,7 +73,7 @@ function makie_svg(dir::String, name::String, fg;
     path = joinpath(dir, file)
     AlgebraOfGraphics.save(joinpath(dir, file), fg)
     if !literate
-        println("\\fig{./$file}")
+        println("\\fig{./code/$file}")
     end
 end
 

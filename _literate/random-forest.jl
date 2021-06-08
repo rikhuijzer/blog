@@ -106,8 +106,6 @@ forest_aoc = auc(forest_predictions, truths) |> r3
 
 #
 
-n = length(logistic_tprs)
-
 logistic_df = DataFrame(
     x = logistic_fprs,
     y = logistic_tprs,
