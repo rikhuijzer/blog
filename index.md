@@ -2,7 +2,6 @@
 title = "Home"
 rss = "Rik Huijzer - PhD student; writing blog posts about statistics and related topics."
 image = "/assets/self.jpg"
-reeval = false
 +++
 
 ~~~
@@ -21,21 +20,20 @@ By adding the code, this blog aims to show that statistical results are not crea
 For example, creating a plot can be done in a few lines of code:
 
 ```julia:./basic-plot.jl
-using Franklin # hide
-using AlgebraOfGraphics, CairoMakie
-output_dir = Franklin.@OUTPUT # hide
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
 X = 1:30
 df = (x=X, y=X.*2)
 xy = data(df) * mapping(:x, :y)
 
-# write_svg("basic-plot", # hide
-# draw(xy)
-# ) # hide
+Blog.makie_svg(@OUTPUT, "basic-plot", # hide
+draw(xy)
+) # hide
+
 ```
-\output{./basic-plot.jl}
-\makiesvg{xy}
-\fig{./basic-plot.svg}
+\textoutput{./basic-plot.jl}
 
 The source code of this website is available at [GitHub](https://github.com/rikhuijzer/huijzer.xyz).
 

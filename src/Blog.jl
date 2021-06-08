@@ -1,6 +1,8 @@
 # This file is required for Julia packages.
 module Blog
 
+using AlgebraOfGraphics
+using CairoMakie
 using TikzPictures
 
 # Don't export methods to avoid confusing readers of the code.
@@ -63,6 +65,13 @@ function print_graph_partial(out_path)
     return function(name::String, width::String, tex::String)
         print_graph(name, width, tex, out_path)
     end
+end
+
+function makie_svg(dir::String, name::String, fg)
+    file = "$name.svg"
+    path = joinpath(dir, file)
+    AlgebraOfGraphics.save(joinpath(dir, file), fg)
+    println("\\fig{./$file}")
 end
 
 end # module
