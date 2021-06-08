@@ -2,6 +2,7 @@
 title = "Frequentist and Bayesian coin flipping"
 published = "2020-11-14"
 rss = "Comparing both statistical paradigms on a coin flipping example."
+reeval = true
 +++
 
 To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics.
@@ -9,18 +10,16 @@ Most explanations involve terms such as "likelihood", "uncertainty" and "prior p
 Here, I'm going to show the difference between both statistical paradigms by using a coin flipping example.
 In the examples, the effect of showing more data to both paradigms will be visualised.
 
-\toc 
+\toc
 
-## Generating data 
+## Generating data
 
 Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.
 
 ```julia:preliminaries
 # hideall
 using CSV
-output_dir = @OUTPUT
 write_csv(name, data) = CSV.write(joinpath(output_dir, "$name.csv"), data)
-write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)
 ```
 \output{preliminaries}
 
@@ -76,14 +75,27 @@ function bayesian_estimate(n)
 end
 ```
 
-```julia:./plot_estimates.jl
-using Gadfly
+```julia:plot_estimates
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
 function plot_estimates(estimate_function; title="")
   draws = 2:4:80
   estimates = estimate_function.(draws)
   middles = [t.middle for t in estimates]
-  plot(y = draws, 
+  lowers = [t.lower for t in estimates]
+  uppers = [t.upper for t in estimates]
+  df = (; draws, estimates, middles, lowers, uppers)
+  layers = data(df)
+  df_middle = (; middles=fill(0.5, length(draws)), draws)
+  layers += data(df_middle) * visual(Lines)
+  draw(layers * mapping(:middles, :draws))
+end
+```
+\output{plot_estimates}
+
+  plot(y = draws,
     x = [t.middle for t in estimates],
     xmin = [t.lower for t in estimates],
     xmax = [t.upper for t in estimates],
@@ -93,16 +105,13 @@ function plot_estimates(estimate_function; title="")
     Guide.title(title),
     layer(xintercept = [0.5], Geom.vline(color = "gray"))
   )
-end
-```
 
 ```julia:plot_frequentist_estimates
-write_svg("frequentist-estimates", # hide
+Blog.makie_svg(@OUTPUT, "frequentist-estimates", # hide
 plot_estimates(frequentist_estimate, title = "Frequentist estimates")
-) # hide 
+) # hide
 ```
-\output{plot_frequentist_estimates}
-\fig{frequentist-estimates.svg}
+\textoutput{plot_frequentist_estimates}
 
 ```julia:plot_bayesian_estimates
 write_svg("bayesian-estimates", # hide
