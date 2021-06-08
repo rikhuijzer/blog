@@ -67,11 +67,14 @@ function print_graph_partial(out_path)
     end
 end
 
-function makie_svg(dir::String, name::String, fg)
+function makie_svg(dir::String, name::String, fg;
+        literate=false)
     file = "$name.svg"
     path = joinpath(dir, file)
     AlgebraOfGraphics.save(joinpath(dir, file), fg)
-    println("\\fig{./$file}")
+    if !literate
+        println("\\fig{./$file}")
+    end
 end
 
 end # module
