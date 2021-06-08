@@ -1,6 +1,0 @@
-MethodError: no method matching size(::Compose.Property{Compose.FillPrimitive})
-Closest candidates are:
-  size(!Matched::Union{LinearAlgebra.QR, LinearAlgebra.QRCompactWY, LinearAlgebra.QRPivoted}) at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/LinearAlgebra/src/qr.jl:524
-  size(!Matched::Union{LinearAlgebra.QR, LinearAlgebra.QRCompactWY, LinearAlgebra.QRPivoted}, !Matched::Integer) at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/LinearAlgebra/src/qr.jl:523
-  size(!Matched::Union{LinearAlgebra.Cholesky, LinearAlgebra.CholeskyPivoted}) at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/LinearAlgebra/src/cholesky.jl:442
-  ...
