@@ -3,6 +3,7 @@ title = "Simple and binary regression"
 published = "2020-03-05"
 tags = ["simulating data", "statistics"]
 rss = "Applying a simple and binary (logistic) regression to simulated data."
+reeval = true
 +++
 
 ```julia:./preliminaries.jl
@@ -152,7 +153,7 @@ layers = data(df) * visual(Scatter)
 
 m = mean(H)
 df_mean = (W=df.W, H=fill(m, nrow(df)))
-layers += data(df_mean) * linear()
+layers += data(df_mean) * linear() * visual(linestyle=:dash)
 
 for (w, h) in zip(df.W, df.H)
   df_diff = (W=[w, w], H=[m, h])
