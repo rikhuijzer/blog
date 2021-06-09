@@ -86,25 +86,21 @@ function plot_estimates(estimate_function; title="")
   middles = [t.middle for t in estimates]
   lowers = [t.lower for t in estimates]
   uppers = [t.upper for t in estimates]
-  df = (; draws, estimates, middles, lowers, uppers)
-  layers = data(df)
-  df_middle = (; middles=fill(0.5, length(draws)), draws)
+  df = (; draws, estimates, P=middles)
+  layers = data(df) * visual(Scatter)
+  df_middle = (; P=fill(0.5, length(draws) + 2), draws=[-1; draws; 83])
   layers += data(df_middle) * visual(Lines)
-  draw(layers * mapping(:middles, :draws))
+  for (n, lower, upper) in zip(draws, lowers, uppers)
+    df_bounds = (; P=[lower, upper], draws=[n, n])
+    layers += data(df_bounds) * visual(Lines)
+  end
+
+  axis = (; xticks=0:0.5:1, yticks=0:20:80)
+  map = mapping(:P => "Probability of heads", :draws => "Observed number of draws")
+  draw(layers * map; axis)
 end
 ```
 \output{plot_estimates}
-
-  plot(y = draws,
-    x = [t.middle for t in estimates],
-    xmin = [t.lower for t in estimates],
-    xmax = [t.upper for t in estimates],
-    Geom.point, Geom.errorbar,
-    Coord.cartesian(xmin = 0.0, xmax = 1.0),
-    Guide.xlabel("Probability of heads"), Guide.ylabel("Observed number of draws"),
-    Guide.title(title),
-    layer(xintercept = [0.5], Geom.vline(color = "gray"))
-  )
 
 ```julia:plot_frequentist_estimates
 Blog.makie_svg(@OUTPUT, "frequentist-estimates", # hide
@@ -114,15 +110,11 @@ plot_estimates(frequentist_estimate, title = "Frequentist estimates")
 \textoutput{plot_frequentist_estimates}
 
 ```julia:plot_bayesian_estimates
-write_svg("bayesian-estimates", # hide
+Blog.makie_svg(@OUTPUT, "bayesian-estimates", # hide
 plot_estimates(bayesian_estimate, title = "Bayesian estimates")
 ) # hide
 ```
-\output{plot_bayesian_estimates}
-\fig{bayesian-estimates.svg}
-
-If you don't have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist **and** Bayesian estimates.
-The answer is: lots of trial and error, and moving text around.
+\textoutput{plot_bayesian_estimates}
 
 ## Conclusion
 

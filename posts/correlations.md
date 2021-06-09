@@ -55,7 +55,7 @@ df = DataFrame(x = range, A = A, B = B, C = C, D = D)
 \output{./data-generation}
 
 We can plot the variables to obtain the following figure.
-Note that stack is needed to prepare the data for Gadfly, see Appendix [1](#appendix_1) for the effect of the `stack` function.
+Note that stack is needed to prepare the data for the plot, see Appendix [1](#appendix_1) for the effect of the `stack` function.
 
 ```julia:generate-plot
 using AlgebraOfGraphics

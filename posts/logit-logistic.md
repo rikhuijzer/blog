@@ -3,7 +3,6 @@ title = "The logit and logistic functions"
 published = "2020-11-04"
 tags = ["statistics"]
 rss = "Providing the definitions, some plots and useful values to remember."
-reeval = true
 +++
 
 Linear regression works on real numbers $\mathbb{R}$, that is, the input and output are in $\mathbb{R}$.
