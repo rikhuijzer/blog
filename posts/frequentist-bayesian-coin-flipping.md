@@ -2,6 +2,7 @@
 title = "Frequentist and Bayesian coin flipping"
 published = "2020-11-14"
 rss = "Comparing both statistical paradigms on a coin flipping example."
+reeval = true
 +++
 
 To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics.
@@ -88,7 +89,7 @@ function plot_estimates(estimate_function; title="")
   df = (; draws, estimates, P=middles)
   layers = data(df) * visual(Scatter)
   df_middle = (; P=fill(0.5, length(draws) + 2), draws=[-1; draws; 83])
-  layers += data(df_middle) * visual(Lines)
+  layers += data(df_middle) * visual(Lines) * visual(linestyle=:dash)
   for (n, lower, upper) in zip(draws, lowers, uppers)
     df_bounds = (; P=[lower, upper], draws=[n, n])
     layers += data(df_bounds) * visual(Lines)

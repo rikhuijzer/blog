@@ -3,7 +3,6 @@ title = "Simple and binary regression"
 published = "2020-03-05"
 tags = ["simulating data", "statistics"]
 rss = "Applying a simple and binary (logistic) regression to simulated data."
-reeval = true
 +++
 
 ```julia:./preliminaries.jl
