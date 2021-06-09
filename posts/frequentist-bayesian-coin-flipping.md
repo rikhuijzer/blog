@@ -9,18 +9,16 @@ Most explanations involve terms such as "likelihood", "uncertainty" and "prior p
 Here, I'm going to show the difference between both statistical paradigms by using a coin flipping example.
 In the examples, the effect of showing more data to both paradigms will be visualised.
 
-\toc 
+\toc
 
-## Generating data 
+## Generating data
 
 Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.
 
 ```julia:preliminaries
 # hideall
 using CSV
-output_dir = @OUTPUT
 write_csv(name, data) = CSV.write(joinpath(output_dir, "$name.csv"), data)
-write_svg(name, p) = draw(SVG(joinpath(output_dir, "$name.svg")), p)
 ```
 \output{preliminaries}
 
@@ -76,44 +74,46 @@ function bayesian_estimate(n)
 end
 ```
 
-```julia:./plot_estimates.jl
-using Gadfly
+```julia:plot_estimates
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
 function plot_estimates(estimate_function; title="")
   draws = 2:4:80
   estimates = estimate_function.(draws)
   middles = [t.middle for t in estimates]
-  plot(y = draws, 
-    x = [t.middle for t in estimates],
-    xmin = [t.lower for t in estimates],
-    xmax = [t.upper for t in estimates],
-    Geom.point, Geom.errorbar,
-    Coord.cartesian(xmin = 0.0, xmax = 1.0),
-    Guide.xlabel("Probability of heads"), Guide.ylabel("Observed number of draws"),
-    Guide.title(title),
-    layer(xintercept = [0.5], Geom.vline(color = "gray"))
-  )
+  lowers = [t.lower for t in estimates]
+  uppers = [t.upper for t in estimates]
+  df = (; draws, estimates, P=middles)
+  layers = data(df) * visual(Scatter)
+  df_middle = (; P=fill(0.5, length(draws) + 2), draws=[-1; draws; 83])
+  layers += data(df_middle) * visual(Lines)
+  for (n, lower, upper) in zip(draws, lowers, uppers)
+    df_bounds = (; P=[lower, upper], draws=[n, n])
+    layers += data(df_bounds) * visual(Lines)
+  end
+
+  axis = (; xticks=0:0.5:1, yticks=0:20:80)
+  map = mapping(:P => "Probability of heads", :draws => "Observed number of draws")
+  draw(layers * map; axis)
 end
 ```
+\output{plot_estimates}
 
 ```julia:plot_frequentist_estimates
-write_svg("frequentist-estimates", # hide
+Blog.makie_svg(@OUTPUT, "frequentist-estimates", # hide
 plot_estimates(frequentist_estimate, title = "Frequentist estimates")
-) # hide 
+) # hide
 ```
-\output{plot_frequentist_estimates}
-\fig{frequentist-estimates.svg}
+\textoutput{plot_frequentist_estimates}
 
 ```julia:plot_bayesian_estimates
-write_svg("bayesian-estimates", # hide
+Blog.makie_svg(@OUTPUT, "bayesian-estimates", # hide
 plot_estimates(bayesian_estimate, title = "Bayesian estimates")
 ) # hide
 ```
-\output{plot_bayesian_estimates}
-\fig{bayesian-estimates.svg}
-
-If you don't have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist **and** Bayesian estimates.
-The answer is: lots of trial and error, and moving text around.
+\textoutput{plot_bayesian_estimates}
 
 ## Conclusion
 

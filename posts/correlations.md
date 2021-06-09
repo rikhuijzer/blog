@@ -55,22 +55,21 @@ df = DataFrame(x = range, A = A, B = B, C = C, D = D)
 \output{./data-generation}
 
 We can plot the variables to obtain the following figure.
-Note that stack is needed to prepare the data for Gadfly, see Appendix [1](#appendix_1) for the effect of the `stack` function.
+Note that stack is needed to prepare the data for the plot, see Appendix [1](#appendix_1) for the effect of the `stack` function.
 
-```julia:./generate-plot.jl
-using Gadfly
+```julia:generate-plot
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
 sdf = stack(df, [:A, :B, :C, :D])
-p = plot(sdf, x = :x, y = :value, 
-  Guide.yticks(ticks = collect(2:8)), # hide
-  color = :variable
-)
-store_svg(name::String) = SVG(joinpath(@OUTPUT, "$name.svg")) # hide
-p |> store_svg("plot") # hide
-```
+fg = data(sdf) * mapping(:x, :value; color=:variable)
 
-\output{./generate-plot}
-\fig{./plot.svg}
+Blog.makie_svg(@OUTPUT, "plot", # hide
+draw(fg)
+) # hide
+```
+\textoutput{generate-plot}
 
 To get an intuition for the covariance, consider a negative covariance.
 \citet{rice2006} states that the covariance will be negative if when $X$ is larger than its mean, $Y$ tends to be smaller than its mean.

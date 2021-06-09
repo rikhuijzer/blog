@@ -2,10 +2,12 @@
 
 import MLDataUtils
 
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 using CategoricalArrays
 using DataFrames
 using Distributions
-using Gadfly
 using MLJ
 using Suppressor # hide
 using Random
@@ -31,12 +33,11 @@ first(df, 10)
 
 #
 
-write_svg(name, p) = draw(SVG(joinpath(@OUTPUT, "$name.svg")), p) # hide
-write_svg("u-class", # hide
-plot(df, x = :U, y = :V, color = :class)
-); # hide
+fg = data(df) * mapping(:U, :V, color=:class)
 
-nothing # hide
+Blog.makie_svg(@OUTPUT, "u-class", # hide
+draw(fg)
+; literate=true); # hide
 
 # \fig{u-class.svg}
 
@@ -103,23 +104,32 @@ forest_predictions = MLJ.predict(forest, rows=test)
 forest_fprs, forest_tprs, _ = roc_curve(forest_predictions, truths)
 forest_aoc = auc(forest_predictions, truths) |> r3
 
-# 
+#
 
-write_svg("roc", # hide
-plot(x = logistic_fprs, y = logistic_tprs, color = ["logistic"],
-    Coord.cartesian(ymin = 0, ymax = 1), # hide
-    Guide.yticks(ticks = 0:0.1:1), # hide
-    Guide.xlabel("False positive rate"),
-    Guide.ylabel("True positive rate estimate"),
-    Geom.smooth(method = :loess, smoothing = 0.99),
-    layer(
-        x = forest_fprs, y = forest_tprs, color = ["forest"],
-        Geom.smooth(method = :loess, smoothing = 0.99),
-    )
+logistic_df = DataFrame(
+    x = logistic_fprs,
+    y = logistic_tprs,
+    method = "logistic"
 )
-); # hide
 
-nothing # hide
+forest_df = DataFrame(
+    x = forest_fprs,
+    y = forest_tprs,
+    method = "forest"
+)
+
+roc_df = vcat(logistic_df, forest_df)
+
+fg = data(roc_df)
+fg *= smooth() + visual(Scatter)
+fg *= mapping(
+    :x => "False positive rate estimate",
+    :y => "True positive rate estimate",
+    color=:method)
+
+Blog.makie_svg(@OUTPUT, "roc", # hide
+draw(fg)
+; literate=true); # hide
 
 # \fig{roc.svg}
 
