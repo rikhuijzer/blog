@@ -2,13 +2,13 @@
 m1 = lm(@formula(H ~ W), df)
 
 # This is just a convenience function around `GLM.predict`.
-predict_value(model, x) = 
+predict_value(model, x) =
   first(skipmissing(predict(model, DataFrame(W = [x]))))
 
-write_svg("w-h-fit", # hide
-plot(df, x = :W, y = :H, 
-	# xviewmin = [wmin], xviewmax = [wmax], # hide
-  Geom.point,
-  layer(x -> predict_value(m1, x), wmin, wmax)
-)
+df_pred = (W=wmin:wmax, H=[predict_value(m1, x) for x in wmin:wmax])
+layers = data(df_pred) * visual(Lines)
+layers += data(df)
+
+Blog.makie_svg(@OUTPUT, "w-h-fit", # hide
+draw(layers * mapping(:W, :H))
 ) # hide

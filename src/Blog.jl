@@ -1,9 +1,10 @@
 # This file is required for Julia packages.
 module Blog
 
+import TikzPictures
+
 using AlgebraOfGraphics
 using CairoMakie
-using TikzPictures
 
 # Don't export methods to avoid confusing readers of the code.
 # export
@@ -43,11 +44,12 @@ The `out_path` is expected to be the output of `@OUTPUT`; use `print_graph_parti
 convinience helper.
 """
 function print_graph(name::String, width::String, text::String, out_path::String)
-  tp = TikzPicture(text, options="scale=1.0", preamble=causal_preamble)
-  save(SVG(joinpath(out_path, "$name.svg")), tp)
+  tp = TikzPictures.TikzPicture(text, options="scale=1.0", preamble=causal_preamble)
+  path = joinpath(out_path, "$name.svg")
+  TikzPictures.save(TikzPictures.SVG(path), tp)
   println("""
   ~~~
-  </div> 
+  </div>
   <div class=\"tikz\">
     <img src=\"/assets/posts/data-fusion-example/code/output/$name.svg\" style=\"width:$width\" />
   </div>
@@ -61,17 +63,20 @@ end
 
 Partial function application on `print_graph` to fix `out_path`.
 """
-function print_graph_partial(out_path) 
+function print_graph_partial(out_path)
     return function(name::String, width::String, tex::String)
         print_graph(name, width, tex, out_path)
     end
 end
 
-function makie_svg(dir::String, name::String, fg)
+function makie_svg(dir::String, name::String, fg;
+        literate=false)
     file = "$name.svg"
     path = joinpath(dir, file)
     AlgebraOfGraphics.save(joinpath(dir, file), fg)
-    println("\\fig{./$file}")
+    if !literate
+        println("\\fig{./code/$file}")
+    end
 end
 
 end # module

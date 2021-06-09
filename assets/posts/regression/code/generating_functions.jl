@@ -12,5 +12,5 @@ Y = [i % 2 != 0 for i in I]
 H = r_2.([y == "apple" ? rand(Normal(10, 1)) : rand(Normal(12, 1)) for y in Y])
 W = r_2.([0.6h for h in H])
 
-df = DataFrame(I = I, H = H, W = W, Y = Y)
+df = DataFrame(; I, H, W, Y)
 write_csv("df", df) # hide

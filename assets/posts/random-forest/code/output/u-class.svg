@@ -1,750 +1,348 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     xmlns:gadfly="http://www.gadflyjl.org/ns"
-     version="1.2"
-     width="141.42mm" height="100mm" viewBox="0 0 141.42 100"
-     stroke="none"
-     fill="#000000"
-     stroke-width="0.3"
-     font-size="3.88"
->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600pt" height="450pt" viewBox="0 0 600 450" version="1.1">
 <defs>
-  <marker id="arrow" markerWidth="15" markerHeight="7" refX="5" refY="3.5" orient="auto" markerUnits="strokeWidth">
-    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"/>
-  </marker>
-</defs>
-<g class="plotroot xscalable yscalable" id="img-2b67c858-1">
-  <g font-size="3.88" font-family="'PT Sans','Helvetica Neue','Helvetica',sans-serif" fill="#564A55" stroke="#000000" stroke-opacity="0.000" id="img-2b67c858-2">
-    <g transform="translate(73.28,88.39)">
-      <g class="primitive">
-        <text text-anchor="middle" dy="0.6em">U</text>
-      </g>
-    </g>
-  </g>
-  <g class="guide xlabels" font-size="2.82" font-family="'PT Sans Caption','Helvetica Neue','Helvetica',sans-serif" fill="#6C606B" id="img-2b67c858-3">
-    <g transform="translate(20.22,81.72)">
-      <g class="primitive">
-        <text text-anchor="middle" dy="0.6em">0</text>
-      </g>
-    </g>
-    <g transform="translate(46.75,81.72)">
-      <g class="primitive">
-        <text text-anchor="middle" dy="0.6em">5</text>
-      </g>
-    </g>
-    <g transform="translate(73.28,81.72)">
-      <g class="primitive">
-        <text text-anchor="middle" dy="0.6em">10</text>
-      </g>
-    </g>
-    <g transform="translate(99.81,81.72)">
-      <g class="primitive">
-        <text text-anchor="middle" dy="0.6em">15</text>
-      </g>
-    </g>
-    <g transform="translate(126.35,81.72)">
-      <g class="primitive">
-        <text text-anchor="middle" dy="0.6em">20</text>
-      </g>
-    </g>
-  </g>
-  <g class="guide colorkey" id="img-2b67c858-4">
-    <g fill="#4C404B" font-size="2.82" font-family="'PT Sans','Helvetica Neue','Helvetica',sans-serif" id="img-2b67c858-5">
-      <g transform="translate(132.16,42.86)" id="img-2b67c858-6" class="color_B">
-        <g class="primitive">
-          <text dy="0.35em">B</text>
-        </g>
-      </g>
-      <g transform="translate(132.16,46.48)" id="img-2b67c858-7" class="color_A">
-        <g class="primitive">
-          <text dy="0.35em">A</text>
-        </g>
-      </g>
-    </g>
-    <g fill-opacity="1" id="img-2b67c858-8">
-      <g transform="translate(130.25,42.86)" id="img-2b67c858-9" stroke="#FFFFFF" class="color_B" fill="#00BFFF">
-        <path d="M-0.91,-0.91 L0.91,-0.91 0.91,0.91 -0.91,0.91  z" class="primitive"/>
-      </g>
-      <g transform="translate(130.25,46.48)" id="img-2b67c858-10" stroke="#FFFFFF" class="color_A" fill="#D4CA3A">
-        <path d="M-0.91,-0.91 L0.91,-0.91 0.91,0.91 -0.91,0.91  z" class="primitive"/>
-      </g>
-    </g>
-    <g fill="#362A35" font-size="3.88" font-family="'PT Sans','Helvetica Neue','Helvetica',sans-serif" stroke="#000000" stroke-opacity="0.000" id="img-2b67c858-11">
-      <g transform="translate(129.35,39.04)" id="img-2b67c858-12">
-        <g class="primitive">
-          <text dy="-0em">class</text>
-        </g>
-      </g>
-    </g>
-  </g>
-  <g clip-path="url(#img-2b67c858-13)">
-    <g id="img-2b67c858-14">
-      <g pointer-events="visible" stroke-width="0.3" fill="#000000" fill-opacity="0.000" stroke="#000000" stroke-opacity="0.000" class="guide background" id="img-2b67c858-15">
-        <g transform="translate(73.28,42.86)" id="img-2b67c858-16">
-          <path d="M-55.06,-37.86 L55.06,-37.86 55.06,37.86 -55.06,37.86  z" class="primitive"/>
-        </g>
-      </g>
-      <g class="guide ygridlines xfixed" stroke-dasharray="0.5,0.5" stroke-width="0.2" stroke="#D0D0E0" id="img-2b67c858-17">
-        <g transform="translate(73.28,78.72)" id="img-2b67c858-18">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,66.76)" id="img-2b67c858-19">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,54.81)" id="img-2b67c858-20">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,42.86)" id="img-2b67c858-21">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,30.91)" id="img-2b67c858-22">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,18.95)" id="img-2b67c858-23">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,7)" id="img-2b67c858-24">
-          <path fill="none" d="M-55.06,0 L55.06,0 " class="primitive"/>
-        </g>
-      </g>
-      <g class="guide xgridlines yfixed" stroke-dasharray="0.5,0.5" stroke-width="0.2" stroke="#D0D0E0" id="img-2b67c858-25">
-        <g transform="translate(20.22,42.86)" id="img-2b67c858-26">
-          <path fill="none" d="M0,-37.86 L0,37.86 " class="primitive"/>
-        </g>
-        <g transform="translate(46.75,42.86)" id="img-2b67c858-27">
-          <path fill="none" d="M0,-37.86 L0,37.86 " class="primitive"/>
-        </g>
-        <g transform="translate(73.28,42.86)" id="img-2b67c858-28">
-          <path fill="none" d="M0,-37.86 L0,37.86 " class="primitive"/>
-        </g>
-        <g transform="translate(99.81,42.86)" id="img-2b67c858-29">
-          <path fill="none" d="M0,-37.86 L0,37.86 " class="primitive"/>
-        </g>
-        <g transform="translate(126.35,42.86)" id="img-2b67c858-30">
-          <path fill="none" d="M0,-37.86 L0,37.86 " class="primitive"/>
-        </g>
-      </g>
-      <g class="plotpanel" id="img-2b67c858-31">
-        <metadata>
-          <boundingbox value="18.22mm 5.0mm 110.12552290397618mm 75.715mm"/>
-          <unitbox value="-0.3769121593510785 131.67329010667225 20.753824318702158 -63.346580213344495"/>
-        </metadata>
-        <g class="geometry" id="img-2b67c858-32">
-          <g stroke-width="0.3" id="img-2b67c858-33">
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-34">
-              <g class="marker" id="img-2b67c858-35">
-                <g transform="translate(84.28,40.63)" id="img-2b67c858-36">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-37">
-              <g class="marker" id="img-2b67c858-38">
-                <g transform="translate(76.74,38.24)" id="img-2b67c858-39">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-40">
-              <g class="marker" id="img-2b67c858-41">
-                <g transform="translate(91.46,67.45)" id="img-2b67c858-42">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-43">
-              <g class="marker" id="img-2b67c858-44">
-                <g transform="translate(64.98,26.74)" id="img-2b67c858-45">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-46">
-              <g class="marker" id="img-2b67c858-47">
-                <g transform="translate(81.86,28.98)" id="img-2b67c858-48">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-49">
-              <g class="marker" id="img-2b67c858-50">
-                <g transform="translate(68.95,48.67)" id="img-2b67c858-51">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-52">
-              <g class="marker" id="img-2b67c858-53">
-                <g transform="translate(67.05,28.86)" id="img-2b67c858-54">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-55">
-              <g class="marker" id="img-2b67c858-56">
-                <g transform="translate(65.1,47.67)" id="img-2b67c858-57">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-58">
-              <g class="marker" id="img-2b67c858-59">
-                <g transform="translate(67.48,35.38)" id="img-2b67c858-60">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-61">
-              <g class="marker" id="img-2b67c858-62">
-                <g transform="translate(90.91,22.9)" id="img-2b67c858-63">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-64">
-              <g class="marker" id="img-2b67c858-65">
-                <g transform="translate(79.73,34.69)" id="img-2b67c858-66">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-67">
-              <g class="marker" id="img-2b67c858-68">
-                <g transform="translate(83.22,52.64)" id="img-2b67c858-69">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-70">
-              <g class="marker" id="img-2b67c858-71">
-                <g transform="translate(100.88,54.5)" id="img-2b67c858-72">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-73">
-              <g class="marker" id="img-2b67c858-74">
-                <g transform="translate(77.46,39.22)" id="img-2b67c858-75">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-76">
-              <g class="marker" id="img-2b67c858-77">
-                <g transform="translate(76.26,38.03)" id="img-2b67c858-78">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-79">
-              <g class="marker" id="img-2b67c858-80">
-                <g transform="translate(78.39,21.51)" id="img-2b67c858-81">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-82">
-              <g class="marker" id="img-2b67c858-83">
-                <g transform="translate(78.15,38.36)" id="img-2b67c858-84">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-85">
-              <g class="marker" id="img-2b67c858-86">
-                <g transform="translate(66.79,33.39)" id="img-2b67c858-87">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-88">
-              <g class="marker" id="img-2b67c858-89">
-                <g transform="translate(101.81,45.71)" id="img-2b67c858-90">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-91">
-              <g class="marker" id="img-2b67c858-92">
-                <g transform="translate(106.53,56.3)" id="img-2b67c858-93">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-94">
-              <g class="marker" id="img-2b67c858-95">
-                <g transform="translate(67.75,35.5)" id="img-2b67c858-96">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-97">
-              <g class="marker" id="img-2b67c858-98">
-                <g transform="translate(75.62,67.28)" id="img-2b67c858-99">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-100">
-              <g class="marker" id="img-2b67c858-101">
-                <g transform="translate(81.31,49.47)" id="img-2b67c858-102">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-103">
-              <g class="marker" id="img-2b67c858-104">
-                <g transform="translate(70.99,41.58)" id="img-2b67c858-105">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-106">
-              <g class="marker" id="img-2b67c858-107">
-                <g transform="translate(74.53,32.42)" id="img-2b67c858-108">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-109">
-              <g class="marker" id="img-2b67c858-110">
-                <g transform="translate(68.16,58.68)" id="img-2b67c858-111">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-112">
-              <g class="marker" id="img-2b67c858-113">
-                <g transform="translate(52.92,62.57)" id="img-2b67c858-114">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-115">
-              <g class="marker" id="img-2b67c858-116">
-                <g transform="translate(74.09,55.61)" id="img-2b67c858-117">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-118">
-              <g class="marker" id="img-2b67c858-119">
-                <g transform="translate(89.75,52.31)" id="img-2b67c858-120">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-121">
-              <g class="marker" id="img-2b67c858-122">
-                <g transform="translate(75.86,26.95)" id="img-2b67c858-123">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-124">
-              <g class="marker" id="img-2b67c858-125">
-                <g transform="translate(73.2,24.94)" id="img-2b67c858-126">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-127">
-              <g class="marker" id="img-2b67c858-128">
-                <g transform="translate(88.81,56.02)" id="img-2b67c858-129">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-130">
-              <g class="marker" id="img-2b67c858-131">
-                <g transform="translate(71.49,48.88)" id="img-2b67c858-132">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-133">
-              <g class="marker" id="img-2b67c858-134">
-                <g transform="translate(101.53,46.05)" id="img-2b67c858-135">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-136">
-              <g class="marker" id="img-2b67c858-137">
-                <g transform="translate(60.37,68.18)" id="img-2b67c858-138">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-139">
-              <g class="marker" id="img-2b67c858-140">
-                <g transform="translate(73.31,38.56)" id="img-2b67c858-141">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-142">
-              <g class="marker" id="img-2b67c858-143">
-                <g transform="translate(72.36,35.44)" id="img-2b67c858-144">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-145">
-              <g class="marker" id="img-2b67c858-146">
-                <g transform="translate(92.09,24.07)" id="img-2b67c858-147">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-148">
-              <g class="marker" id="img-2b67c858-149">
-                <g transform="translate(57.01,44.05)" id="img-2b67c858-150">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-151">
-              <g class="marker" id="img-2b67c858-152">
-                <g transform="translate(75.1,25.42)" id="img-2b67c858-153">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-154">
-              <g class="marker" id="img-2b67c858-155">
-                <g transform="translate(83,27.08)" id="img-2b67c858-156">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-157">
-              <g class="marker" id="img-2b67c858-158">
-                <g transform="translate(74.42,43.64)" id="img-2b67c858-159">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-160">
-              <g class="marker" id="img-2b67c858-161">
-                <g transform="translate(87.26,35.56)" id="img-2b67c858-162">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-163">
-              <g class="marker" id="img-2b67c858-164">
-                <g transform="translate(81.89,18.67)" id="img-2b67c858-165">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-166">
-              <g class="marker" id="img-2b67c858-167">
-                <g transform="translate(69.21,56.05)" id="img-2b67c858-168">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-169">
-              <g class="marker" id="img-2b67c858-170">
-                <g transform="translate(93.85,33.38)" id="img-2b67c858-171">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-172">
-              <g class="marker" id="img-2b67c858-173">
-                <g transform="translate(76.14,59.65)" id="img-2b67c858-174">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-175">
-              <g class="marker" id="img-2b67c858-176">
-                <g transform="translate(85.83,62.88)" id="img-2b67c858-177">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-178">
-              <g class="marker" id="img-2b67c858-179">
-                <g transform="translate(63.43,42.15)" id="img-2b67c858-180">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-181">
-              <g class="marker" id="img-2b67c858-182">
-                <g transform="translate(68.43,8.58)" id="img-2b67c858-183">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-184">
-              <g class="marker" id="img-2b67c858-185">
-                <g transform="translate(96.01,46.44)" id="img-2b67c858-186">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-187">
-              <g class="marker" id="img-2b67c858-188">
-                <g transform="translate(79.03,37.16)" id="img-2b67c858-189">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-190">
-              <g class="marker" id="img-2b67c858-191">
-                <g transform="translate(84.14,53.32)" id="img-2b67c858-192">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-193">
-              <g class="marker" id="img-2b67c858-194">
-                <g transform="translate(73.3,38.15)" id="img-2b67c858-195">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-196">
-              <g class="marker" id="img-2b67c858-197">
-                <g transform="translate(76.49,29.14)" id="img-2b67c858-198">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-199">
-              <g class="marker" id="img-2b67c858-200">
-                <g transform="translate(100.6,38.81)" id="img-2b67c858-201">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-202">
-              <g class="marker" id="img-2b67c858-203">
-                <g transform="translate(84.98,46.43)" id="img-2b67c858-204">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-205">
-              <g class="marker" id="img-2b67c858-206">
-                <g transform="translate(74.36,37.48)" id="img-2b67c858-207">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-208">
-              <g class="marker" id="img-2b67c858-209">
-                <g transform="translate(73.84,54.19)" id="img-2b67c858-210">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-211">
-              <g class="marker" id="img-2b67c858-212">
-                <g transform="translate(87.05,48.67)" id="img-2b67c858-213">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-214">
-              <g class="marker" id="img-2b67c858-215">
-                <g transform="translate(78.2,52.92)" id="img-2b67c858-216">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-217">
-              <g class="marker" id="img-2b67c858-218">
-                <g transform="translate(69.49,25.83)" id="img-2b67c858-219">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-220">
-              <g class="marker" id="img-2b67c858-221">
-                <g transform="translate(87.03,37.94)" id="img-2b67c858-222">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-223">
-              <g class="marker" id="img-2b67c858-224">
-                <g transform="translate(76.08,46.26)" id="img-2b67c858-225">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-226">
-              <g class="marker" id="img-2b67c858-227">
-                <g transform="translate(79.55,58.97)" id="img-2b67c858-228">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-229">
-              <g class="marker" id="img-2b67c858-230">
-                <g transform="translate(102.53,35.08)" id="img-2b67c858-231">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-232">
-              <g class="marker" id="img-2b67c858-233">
-                <g transform="translate(80.71,37.27)" id="img-2b67c858-234">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-235">
-              <g class="marker" id="img-2b67c858-236">
-                <g transform="translate(70.53,46.15)" id="img-2b67c858-237">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-238">
-              <g class="marker" id="img-2b67c858-239">
-                <g transform="translate(84.97,35.05)" id="img-2b67c858-240">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-241">
-              <g class="marker" id="img-2b67c858-242">
-                <g transform="translate(66.95,36.66)" id="img-2b67c858-243">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-244">
-              <g class="marker" id="img-2b67c858-245">
-                <g transform="translate(75.03,27.07)" id="img-2b67c858-246">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-247">
-              <g class="marker" id="img-2b67c858-248">
-                <g transform="translate(67.8,55.74)" id="img-2b67c858-249">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-250">
-              <g class="marker" id="img-2b67c858-251">
-                <g transform="translate(66.67,26.24)" id="img-2b67c858-252">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-253">
-              <g class="marker" id="img-2b67c858-254">
-                <g transform="translate(73.13,53.75)" id="img-2b67c858-255">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-256">
-              <g class="marker" id="img-2b67c858-257">
-                <g transform="translate(90.45,43.71)" id="img-2b67c858-258">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-259">
-              <g class="marker" id="img-2b67c858-260">
-                <g transform="translate(67.13,32.72)" id="img-2b67c858-261">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-262">
-              <g class="marker" id="img-2b67c858-263">
-                <g transform="translate(76.51,30.84)" id="img-2b67c858-264">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-265">
-              <g class="marker" id="img-2b67c858-266">
-                <g transform="translate(87.71,50.16)" id="img-2b67c858-267">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_A" fill-opacity="1" stroke="#FFFFFF" fill="#D4CA3A" id="img-2b67c858-268">
-              <g class="marker" id="img-2b67c858-269">
-                <g transform="translate(73.32,42.9)" id="img-2b67c858-270">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-            <g class="color_B" fill-opacity="1" stroke="#FFFFFF" fill="#00BFFF" id="img-2b67c858-271">
-              <g class="marker" id="img-2b67c858-272">
-                <g transform="translate(81.67,29.01)" id="img-2b67c858-273">
-                  <circle cx="0" cy="0" r="0.9" class="primitive"/>
-                </g>
-              </g>
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
-  </g>
-  <g class="guide ylabels" font-size="2.82" font-family="'PT Sans Caption','Helvetica Neue','Helvetica',sans-serif" fill="#6C606B" id="img-2b67c858-274">
-    <g transform="translate(17.22,78.72)" id="img-2b67c858-275">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">70</text>
-      </g>
-    </g>
-    <g transform="translate(17.22,66.76)" id="img-2b67c858-276">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">80</text>
-      </g>
-    </g>
-    <g transform="translate(17.22,54.81)" id="img-2b67c858-277">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">90</text>
-      </g>
-    </g>
-    <g transform="translate(17.22,42.86)" id="img-2b67c858-278">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">100</text>
-      </g>
-    </g>
-    <g transform="translate(17.22,30.91)" id="img-2b67c858-279">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">110</text>
-      </g>
-    </g>
-    <g transform="translate(17.22,18.95)" id="img-2b67c858-280">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">120</text>
-      </g>
-    </g>
-    <g transform="translate(17.22,7)" id="img-2b67c858-281">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">130</text>
-      </g>
-    </g>
-  </g>
-  <g font-size="3.88" font-family="'PT Sans','Helvetica Neue','Helvetica',sans-serif" fill="#564A55" stroke="#000000" stroke-opacity="0.000" id="img-2b67c858-282">
-    <g transform="translate(9.2,42.86)" id="img-2b67c858-283">
-      <g class="primitive">
-        <text text-anchor="end" dy="0.35em">V</text>
-      </g>
-    </g>
-  </g>
+<g>
+<symbol overflow="visible" id="nRN2H2b40-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-1">
+<path style="stroke:none;" d="M 0.984375 -8.75 L 6.609375 -8.75 L 6.609375 -8.25 L 3.4375 0 L 2.203125 0 L 5.1875 -7.75 L 0.984375 -7.75 Z M 0.984375 -8.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-2">
+<path style="stroke:none;" d="M 1.484375 -1 L 3.421875 -1 L 3.421875 -7.671875 L 1.3125 -7.25 L 1.3125 -8.328125 L 3.40625 -8.75 L 4.59375 -8.75 L 4.59375 -1 L 6.53125 -1 L 6.53125 0 L 1.484375 0 Z M 1.484375 -1 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-3">
+<path style="stroke:none;" d="M 2.296875 -1 L 6.4375 -1 L 6.4375 0 L 0.875 0 L 0.875 -1 C 1.320312 -1.457031 1.929688 -2.078125 2.703125 -2.859375 C 3.484375 -3.648438 3.972656 -4.160156 4.171875 -4.390625 C 4.554688 -4.804688 4.820312 -5.160156 4.96875 -5.453125 C 5.125 -5.753906 5.203125 -6.046875 5.203125 -6.328125 C 5.203125 -6.796875 5.035156 -7.175781 4.703125 -7.46875 C 4.378906 -7.757812 3.957031 -7.90625 3.4375 -7.90625 C 3.0625 -7.90625 2.664062 -7.84375 2.25 -7.71875 C 1.84375 -7.59375 1.40625 -7.394531 0.9375 -7.125 L 0.9375 -8.328125 C 1.414062 -8.515625 1.859375 -8.65625 2.265625 -8.75 C 2.679688 -8.851562 3.0625 -8.90625 3.40625 -8.90625 C 4.3125 -8.90625 5.035156 -8.675781 5.578125 -8.21875 C 6.117188 -7.769531 6.390625 -7.164062 6.390625 -6.40625 C 6.390625 -6.050781 6.320312 -5.710938 6.1875 -5.390625 C 6.050781 -5.066406 5.804688 -4.6875 5.453125 -4.25 C 5.347656 -4.132812 5.035156 -3.804688 4.515625 -3.265625 C 3.992188 -2.722656 3.253906 -1.96875 2.296875 -1 Z M 2.296875 -1 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-4">
+<path style="stroke:none;" d="M 1.296875 -8.75 L 5.9375 -8.75 L 5.9375 -7.75 L 2.375 -7.75 L 2.375 -5.609375 C 2.550781 -5.671875 2.722656 -5.710938 2.890625 -5.734375 C 3.066406 -5.765625 3.238281 -5.78125 3.40625 -5.78125 C 4.382812 -5.78125 5.160156 -5.507812 5.734375 -4.96875 C 6.304688 -4.4375 6.59375 -3.71875 6.59375 -2.8125 C 6.59375 -1.863281 6.296875 -1.128906 5.703125 -0.609375 C 5.117188 -0.0859375 4.296875 0.171875 3.234375 0.171875 C 2.859375 0.171875 2.476562 0.140625 2.09375 0.078125 C 1.71875 0.015625 1.328125 -0.078125 0.921875 -0.203125 L 0.921875 -1.390625 C 1.273438 -1.203125 1.640625 -1.0625 2.015625 -0.96875 C 2.390625 -0.875 2.785156 -0.828125 3.203125 -0.828125 C 3.878906 -0.828125 4.414062 -1.003906 4.8125 -1.359375 C 5.207031 -1.710938 5.40625 -2.195312 5.40625 -2.8125 C 5.40625 -3.414062 5.207031 -3.894531 4.8125 -4.25 C 4.414062 -4.601562 3.878906 -4.78125 3.203125 -4.78125 C 2.890625 -4.78125 2.570312 -4.742188 2.25 -4.671875 C 1.9375 -4.609375 1.617188 -4.503906 1.296875 -4.359375 Z M 1.296875 -8.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-5">
+<path style="stroke:none;" d="M 1.28125 -1.484375 L 2.515625 -1.484375 L 2.515625 0 L 1.28125 0 Z M 1.28125 -1.484375 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-6">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-7">
+<path style="stroke:none;" d="M 1.046875 -8.75 L 2.234375 -8.75 L 2.234375 -3.4375 C 2.234375 -2.5 2.398438 -1.820312 2.734375 -1.40625 C 3.078125 -1 3.628906 -0.796875 4.390625 -0.796875 C 5.148438 -0.796875 5.695312 -1 6.03125 -1.40625 C 6.375 -1.820312 6.546875 -2.5 6.546875 -3.4375 L 6.546875 -8.75 L 7.734375 -8.75 L 7.734375 -3.28125 C 7.734375 -2.144531 7.453125 -1.285156 6.890625 -0.703125 C 6.328125 -0.117188 5.492188 0.171875 4.390625 0.171875 C 3.285156 0.171875 2.453125 -0.117188 1.890625 -0.703125 C 1.328125 -1.285156 1.046875 -2.144531 1.046875 -3.28125 Z M 1.046875 -8.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b40-8">
+<path style="stroke:none;" d="M 2.359375 -4.171875 L 2.359375 -0.96875 L 4.265625 -0.96875 C 4.898438 -0.96875 5.367188 -1.097656 5.671875 -1.359375 C 5.984375 -1.628906 6.140625 -2.035156 6.140625 -2.578125 C 6.140625 -3.128906 5.984375 -3.53125 5.671875 -3.78125 C 5.367188 -4.039062 4.898438 -4.171875 4.265625 -4.171875 Z M 2.359375 -7.78125 L 2.359375 -5.140625 L 4.109375 -5.140625 C 4.691406 -5.140625 5.125 -5.25 5.40625 -5.46875 C 5.6875 -5.6875 5.828125 -6.015625 5.828125 -6.453125 C 5.828125 -6.898438 5.6875 -7.234375 5.40625 -7.453125 C 5.125 -7.671875 4.691406 -7.78125 4.109375 -7.78125 Z M 1.171875 -8.75 L 4.203125 -8.75 C 5.109375 -8.75 5.800781 -8.5625 6.28125 -8.1875 C 6.769531 -7.8125 7.015625 -7.28125 7.015625 -6.59375 C 7.015625 -6.050781 6.890625 -5.617188 6.640625 -5.296875 C 6.390625 -4.984375 6.023438 -4.789062 5.546875 -4.71875 C 6.128906 -4.59375 6.582031 -4.332031 6.90625 -3.9375 C 7.226562 -3.539062 7.390625 -3.046875 7.390625 -2.453125 C 7.390625 -1.671875 7.125 -1.066406 6.59375 -0.640625 C 6.0625 -0.210938 5.300781 0 4.3125 0 L 1.171875 0 Z M 1.171875 -8.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b41-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b41-1">
+<path style="stroke:none;" d="M 1.28125 -1.484375 L 2.515625 -1.484375 L 2.515625 0 L 1.28125 0 Z M 1.28125 -1.484375 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b42-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b42-1">
+<path style="stroke:none;" d="M 1.296875 -8.75 L 5.9375 -8.75 L 5.9375 -7.75 L 2.375 -7.75 L 2.375 -5.609375 C 2.550781 -5.671875 2.722656 -5.710938 2.890625 -5.734375 C 3.066406 -5.765625 3.238281 -5.78125 3.40625 -5.78125 C 4.382812 -5.78125 5.160156 -5.507812 5.734375 -4.96875 C 6.304688 -4.4375 6.59375 -3.71875 6.59375 -2.8125 C 6.59375 -1.863281 6.296875 -1.128906 5.703125 -0.609375 C 5.117188 -0.0859375 4.296875 0.171875 3.234375 0.171875 C 2.859375 0.171875 2.476562 0.140625 2.09375 0.078125 C 1.71875 0.015625 1.328125 -0.078125 0.921875 -0.203125 L 0.921875 -1.390625 C 1.273438 -1.203125 1.640625 -1.0625 2.015625 -0.96875 C 2.390625 -0.875 2.785156 -0.828125 3.203125 -0.828125 C 3.878906 -0.828125 4.414062 -1.003906 4.8125 -1.359375 C 5.207031 -1.710938 5.40625 -2.195312 5.40625 -2.8125 C 5.40625 -3.414062 5.207031 -3.894531 4.8125 -4.25 C 4.414062 -4.601562 3.878906 -4.78125 3.203125 -4.78125 C 2.890625 -4.78125 2.570312 -4.742188 2.25 -4.671875 C 1.9375 -4.609375 1.617188 -4.503906 1.296875 -4.359375 Z M 1.296875 -8.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b43-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b43-1">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b43-2">
+<path style="stroke:none;" d="M 1.28125 -1.484375 L 2.515625 -1.484375 L 2.515625 0 L 1.28125 0 Z M 1.28125 -1.484375 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b43-3">
+<path style="stroke:none;" d="M 1.484375 -1 L 3.421875 -1 L 3.421875 -7.671875 L 1.3125 -7.25 L 1.3125 -8.328125 L 3.40625 -8.75 L 4.59375 -8.75 L 4.59375 -1 L 6.53125 -1 L 6.53125 0 L 1.484375 0 Z M 1.484375 -1 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b43-4">
+<path style="stroke:none;" d="M 1.296875 -8.75 L 5.9375 -8.75 L 5.9375 -7.75 L 2.375 -7.75 L 2.375 -5.609375 C 2.550781 -5.671875 2.722656 -5.710938 2.890625 -5.734375 C 3.066406 -5.765625 3.238281 -5.78125 3.40625 -5.78125 C 4.382812 -5.78125 5.160156 -5.507812 5.734375 -4.96875 C 6.304688 -4.4375 6.59375 -3.71875 6.59375 -2.8125 C 6.59375 -1.863281 6.296875 -1.128906 5.703125 -0.609375 C 5.117188 -0.0859375 4.296875 0.171875 3.234375 0.171875 C 2.859375 0.171875 2.476562 0.140625 2.09375 0.078125 C 1.71875 0.015625 1.328125 -0.078125 0.921875 -0.203125 L 0.921875 -1.390625 C 1.273438 -1.203125 1.640625 -1.0625 2.015625 -0.96875 C 2.390625 -0.875 2.785156 -0.828125 3.203125 -0.828125 C 3.878906 -0.828125 4.414062 -1.003906 4.8125 -1.359375 C 5.207031 -1.710938 5.40625 -2.195312 5.40625 -2.8125 C 5.40625 -3.414062 5.207031 -3.894531 4.8125 -4.25 C 4.414062 -4.601562 3.878906 -4.78125 3.203125 -4.78125 C 2.890625 -4.78125 2.570312 -4.742188 2.25 -4.671875 C 1.9375 -4.609375 1.617188 -4.503906 1.296875 -4.359375 Z M 1.296875 -8.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b44-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b44-1">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b45-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b45-1">
+<path style="stroke:none;" d="M 3.8125 -4.15625 C 3.25 -4.15625 2.804688 -4.003906 2.484375 -3.703125 C 2.160156 -3.398438 2 -2.988281 2 -2.46875 C 2 -1.9375 2.160156 -1.519531 2.484375 -1.21875 C 2.804688 -0.914062 3.25 -0.765625 3.8125 -0.765625 C 4.375 -0.765625 4.816406 -0.914062 5.140625 -1.21875 C 5.460938 -1.519531 5.625 -1.9375 5.625 -2.46875 C 5.625 -2.988281 5.460938 -3.398438 5.140625 -3.703125 C 4.828125 -4.003906 4.382812 -4.15625 3.8125 -4.15625 Z M 2.625 -4.65625 C 2.125 -4.78125 1.726562 -5.015625 1.4375 -5.359375 C 1.15625 -5.710938 1.015625 -6.140625 1.015625 -6.640625 C 1.015625 -7.335938 1.265625 -7.890625 1.765625 -8.296875 C 2.265625 -8.703125 2.945312 -8.90625 3.8125 -8.90625 C 4.6875 -8.90625 5.367188 -8.703125 5.859375 -8.296875 C 6.359375 -7.890625 6.609375 -7.335938 6.609375 -6.640625 C 6.609375 -6.140625 6.46875 -5.710938 6.1875 -5.359375 C 5.90625 -5.015625 5.507812 -4.78125 5 -4.65625 C 5.570312 -4.519531 6.015625 -4.257812 6.328125 -3.875 C 6.648438 -3.488281 6.8125 -3.019531 6.8125 -2.46875 C 6.8125 -1.613281 6.550781 -0.957031 6.03125 -0.5 C 5.519531 -0.0507812 4.78125 0.171875 3.8125 0.171875 C 2.851562 0.171875 2.113281 -0.0507812 1.59375 -0.5 C 1.070312 -0.957031 0.8125 -1.613281 0.8125 -2.46875 C 0.8125 -3.019531 0.972656 -3.488281 1.296875 -3.875 C 1.617188 -4.257812 2.0625 -4.519531 2.625 -4.65625 Z M 2.203125 -6.53125 C 2.203125 -6.070312 2.34375 -5.71875 2.625 -5.46875 C 2.90625 -5.21875 3.300781 -5.09375 3.8125 -5.09375 C 4.320312 -5.09375 4.71875 -5.21875 5 -5.46875 C 5.289062 -5.71875 5.4375 -6.070312 5.4375 -6.53125 C 5.4375 -6.976562 5.289062 -7.328125 5 -7.578125 C 4.71875 -7.835938 4.320312 -7.96875 3.8125 -7.96875 C 3.300781 -7.96875 2.90625 -7.835938 2.625 -7.578125 C 2.34375 -7.328125 2.203125 -6.976562 2.203125 -6.53125 Z M 2.203125 -6.53125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b46-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b46-1">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b47-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b47-1">
+<path style="stroke:none;" d="M 1.484375 -1 L 3.421875 -1 L 3.421875 -7.671875 L 1.3125 -7.25 L 1.3125 -8.328125 L 3.40625 -8.75 L 4.59375 -8.75 L 4.59375 -1 L 6.53125 -1 L 6.53125 0 L 1.484375 0 Z M 1.484375 -1 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b47-2">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b48-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b48-1">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b49-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b49-1">
+<path style="stroke:none;" d="M 1.484375 -1 L 3.421875 -1 L 3.421875 -7.671875 L 1.3125 -7.25 L 1.3125 -8.328125 L 3.40625 -8.75 L 4.59375 -8.75 L 4.59375 -1 L 6.53125 -1 L 6.53125 0 L 1.484375 0 Z M 1.484375 -1 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b49-2">
+<path style="stroke:none;" d="M 3.8125 -7.96875 C 3.207031 -7.96875 2.75 -7.664062 2.4375 -7.0625 C 2.132812 -6.46875 1.984375 -5.566406 1.984375 -4.359375 C 1.984375 -3.160156 2.132812 -2.257812 2.4375 -1.65625 C 2.75 -1.0625 3.207031 -0.765625 3.8125 -0.765625 C 4.425781 -0.765625 4.882812 -1.0625 5.1875 -1.65625 C 5.5 -2.257812 5.65625 -3.160156 5.65625 -4.359375 C 5.65625 -5.566406 5.5 -6.46875 5.1875 -7.0625 C 4.882812 -7.664062 4.425781 -7.96875 3.8125 -7.96875 Z M 3.8125 -8.90625 C 4.789062 -8.90625 5.539062 -8.515625 6.0625 -7.734375 C 6.582031 -6.960938 6.84375 -5.835938 6.84375 -4.359375 C 6.84375 -2.890625 6.582031 -1.765625 6.0625 -0.984375 C 5.539062 -0.210938 4.789062 0.171875 3.8125 0.171875 C 2.832031 0.171875 2.082031 -0.210938 1.5625 -0.984375 C 1.050781 -1.765625 0.796875 -2.890625 0.796875 -4.359375 C 0.796875 -5.835938 1.050781 -6.960938 1.5625 -7.734375 C 2.082031 -8.515625 2.832031 -8.90625 3.8125 -8.90625 Z M 3.8125 -8.90625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b410-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b410-1">
+<path style="stroke:none;" d="M 2.296875 -1 L 6.4375 -1 L 6.4375 0 L 0.875 0 L 0.875 -1 C 1.320312 -1.457031 1.929688 -2.078125 2.703125 -2.859375 C 3.484375 -3.648438 3.972656 -4.160156 4.171875 -4.390625 C 4.554688 -4.804688 4.820312 -5.160156 4.96875 -5.453125 C 5.125 -5.753906 5.203125 -6.046875 5.203125 -6.328125 C 5.203125 -6.796875 5.035156 -7.175781 4.703125 -7.46875 C 4.378906 -7.757812 3.957031 -7.90625 3.4375 -7.90625 C 3.0625 -7.90625 2.664062 -7.84375 2.25 -7.71875 C 1.84375 -7.59375 1.40625 -7.394531 0.9375 -7.125 L 0.9375 -8.328125 C 1.414062 -8.515625 1.859375 -8.65625 2.265625 -8.75 C 2.679688 -8.851562 3.0625 -8.90625 3.40625 -8.90625 C 4.3125 -8.90625 5.035156 -8.675781 5.578125 -8.21875 C 6.117188 -7.769531 6.390625 -7.164062 6.390625 -6.40625 C 6.390625 -6.050781 6.320312 -5.710938 6.1875 -5.390625 C 6.050781 -5.066406 5.804688 -4.6875 5.453125 -4.25 C 5.347656 -4.132812 5.035156 -3.804688 4.515625 -3.265625 C 3.992188 -2.722656 3.253906 -1.96875 2.296875 -1 Z M 2.296875 -1 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b411-0">
+<path style="stroke:none;" d="M 2.125 -0.59375 L -8.46875 -0.59375 L -8.46875 -6.59375 L 2.125 -6.59375 Z M 1.453125 -1.265625 L 1.453125 -5.9375 L -7.78125 -5.9375 L -7.78125 -1.265625 Z M 1.453125 -1.265625 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b411-1">
+<path style="stroke:none;" d="M 0 -3.4375 L -8.75 -0.09375 L -8.75 -1.328125 L -1.390625 -4.109375 L -8.75 -6.875 L -8.75 -8.109375 L 0 -4.78125 Z M 0 -3.4375 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b412-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b412-1">
+<path style="stroke:none;" d="M 5.859375 -6.3125 L 5.859375 -5.296875 C 5.546875 -5.472656 5.238281 -5.601562 4.9375 -5.6875 C 4.632812 -5.769531 4.328125 -5.8125 4.015625 -5.8125 C 3.304688 -5.8125 2.757812 -5.585938 2.375 -5.140625 C 1.988281 -4.703125 1.796875 -4.082031 1.796875 -3.28125 C 1.796875 -2.476562 1.988281 -1.851562 2.375 -1.40625 C 2.757812 -0.96875 3.304688 -0.75 4.015625 -0.75 C 4.328125 -0.75 4.632812 -0.789062 4.9375 -0.875 C 5.238281 -0.957031 5.546875 -1.082031 5.859375 -1.25 L 5.859375 -0.25 C 5.554688 -0.113281 5.242188 -0.0078125 4.921875 0.0625 C 4.597656 0.132812 4.253906 0.171875 3.890625 0.171875 C 2.898438 0.171875 2.113281 -0.132812 1.53125 -0.75 C 0.945312 -1.375 0.65625 -2.21875 0.65625 -3.28125 C 0.65625 -4.34375 0.945312 -5.179688 1.53125 -5.796875 C 2.125 -6.410156 2.9375 -6.71875 3.96875 -6.71875 C 4.289062 -6.71875 4.609375 -6.679688 4.921875 -6.609375 C 5.242188 -6.546875 5.554688 -6.445312 5.859375 -6.3125 Z M 5.859375 -6.3125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b412-2">
+<path style="stroke:none;" d="M 1.125 -9.125 L 2.203125 -9.125 L 2.203125 0 L 1.125 0 Z M 1.125 -9.125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b412-3">
+<path style="stroke:none;" d="M 4.109375 -3.296875 C 3.242188 -3.296875 2.640625 -3.195312 2.296875 -3 C 1.960938 -2.800781 1.796875 -2.460938 1.796875 -1.984375 C 1.796875 -1.597656 1.921875 -1.289062 2.171875 -1.0625 C 2.429688 -0.84375 2.773438 -0.734375 3.203125 -0.734375 C 3.804688 -0.734375 4.285156 -0.941406 4.640625 -1.359375 C 5.003906 -1.785156 5.1875 -2.351562 5.1875 -3.0625 L 5.1875 -3.296875 Z M 6.265625 -3.75 L 6.265625 0 L 5.1875 0 L 5.1875 -1 C 4.9375 -0.601562 4.628906 -0.304688 4.265625 -0.109375 C 3.898438 0.078125 3.453125 0.171875 2.921875 0.171875 C 2.242188 0.171875 1.707031 -0.015625 1.3125 -0.390625 C 0.914062 -0.773438 0.71875 -1.28125 0.71875 -1.90625 C 0.71875 -2.644531 0.960938 -3.203125 1.453125 -3.578125 C 1.953125 -3.953125 2.691406 -4.140625 3.671875 -4.140625 L 5.1875 -4.140625 L 5.1875 -4.25 C 5.1875 -4.75 5.019531 -5.132812 4.6875 -5.40625 C 4.363281 -5.675781 3.910156 -5.8125 3.328125 -5.8125 C 2.953125 -5.8125 2.582031 -5.765625 2.21875 -5.671875 C 1.863281 -5.578125 1.523438 -5.441406 1.203125 -5.265625 L 1.203125 -6.265625 C 1.597656 -6.421875 1.976562 -6.535156 2.34375 -6.609375 C 2.71875 -6.679688 3.082031 -6.71875 3.4375 -6.71875 C 4.382812 -6.71875 5.09375 -6.472656 5.5625 -5.984375 C 6.03125 -5.492188 6.265625 -4.75 6.265625 -3.75 Z M 6.265625 -3.75 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b412-4">
+<path style="stroke:none;" d="M 5.3125 -6.375 L 5.3125 -5.34375 C 5.007812 -5.5 4.691406 -5.613281 4.359375 -5.6875 C 4.035156 -5.769531 3.695312 -5.8125 3.34375 -5.8125 C 2.8125 -5.8125 2.410156 -5.726562 2.140625 -5.5625 C 1.867188 -5.40625 1.734375 -5.160156 1.734375 -4.828125 C 1.734375 -4.578125 1.828125 -4.378906 2.015625 -4.234375 C 2.210938 -4.097656 2.601562 -3.96875 3.1875 -3.84375 L 3.546875 -3.75 C 4.316406 -3.59375 4.863281 -3.363281 5.1875 -3.0625 C 5.507812 -2.757812 5.671875 -2.34375 5.671875 -1.8125 C 5.671875 -1.195312 5.425781 -0.710938 4.9375 -0.359375 C 4.457031 -0.00390625 3.796875 0.171875 2.953125 0.171875 C 2.597656 0.171875 2.226562 0.132812 1.84375 0.0625 C 1.46875 0 1.070312 -0.0976562 0.65625 -0.234375 L 0.65625 -1.359375 C 1.050781 -1.148438 1.441406 -0.992188 1.828125 -0.890625 C 2.210938 -0.785156 2.597656 -0.734375 2.984375 -0.734375 C 3.484375 -0.734375 3.867188 -0.816406 4.140625 -0.984375 C 4.421875 -1.160156 4.5625 -1.410156 4.5625 -1.734375 C 4.5625 -2.023438 4.460938 -2.25 4.265625 -2.40625 C 4.066406 -2.5625 3.632812 -2.710938 2.96875 -2.859375 L 2.59375 -2.9375 C 1.925781 -3.082031 1.441406 -3.300781 1.140625 -3.59375 C 0.847656 -3.882812 0.703125 -4.28125 0.703125 -4.78125 C 0.703125 -5.40625 0.921875 -5.882812 1.359375 -6.21875 C 1.796875 -6.550781 2.414062 -6.71875 3.21875 -6.71875 C 3.613281 -6.71875 3.988281 -6.6875 4.34375 -6.625 C 4.695312 -6.570312 5.019531 -6.488281 5.3125 -6.375 Z M 5.3125 -6.375 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b413-0">
+<path style="stroke:none;" d="M 0.59375 2.125 L 0.59375 -8.46875 L 6.59375 -8.46875 L 6.59375 2.125 Z M 1.265625 1.453125 L 5.9375 1.453125 L 5.9375 -7.78125 L 1.265625 -7.78125 Z M 1.265625 1.453125 "/>
+</symbol>
+<symbol overflow="visible" id="nRN2H2b413-1">
+<path style="stroke:none;" d="M 4.109375 -7.578125 L 2.5 -3.234375 L 5.71875 -3.234375 Z M 3.4375 -8.75 L 4.78125 -8.75 L 8.109375 0 L 6.875 0 L 6.078125 -2.25 L 2.140625 -2.25 L 1.34375 0 L 0.09375 0 Z M 3.4375 -8.75 "/>
+</symbol>
 </g>
-<defs>
-  <clipPath id="img-2b67c858-13">
-    <path d="M18.22,5 L128.35,5 128.35,80.72 18.22,80.72 " />
-  </clipPath>
+<clipPath id="clip1">
+  <path d="M 544.5 175 L 588 175 L 588 239 L 544.5 239 Z M 544.5 175 "/>
+</clipPath>
+<clipPath id="clip2">
+  <path d="M 544.5 174.75 L 588 174.75 L 588 239.25 L 544.5 239.25 Z M 544.5 174.75 "/>
+</clipPath>
 </defs>
+<g id="surface1">
+<rect x="0" y="0" width="600" height="450" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 57.75 402 L 526.5 402 L 526.5 12 L 57.75 12 Z M 57.75 402 "/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 180.625 536 L 180.625 16 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 321.213542 536 L 321.213542 16 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 461.796875 536 L 461.796875 16 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 602.385417 536 L 602.385417 16 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 77 501.09375 L 702 501.09375 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 77 311.510417 L 702 311.510417 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:0.12;stroke-miterlimit:10;" d="M 77 121.932292 L 702 121.932292 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-1" x="126.421875" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b41-1" x="134.054688" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b42-1" x="137.871094" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-2" x="227.683594" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b43-1" x="235.320312" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b43-2" x="242.953125" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b44-1" x="246.769531" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b43-3" x="333.316406" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-3" x="340.953125" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b43-2" x="348.585938" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b43-4" x="352.402344" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-2" x="438.5625" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-4" x="446.199219" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-5" x="453.832031" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-6" x="457.648438" y="419.890625"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-7" x="288.253906" y="436.109375"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b45-1" x="35.820312" y="379.972656"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b46-1" x="43.453125" y="379.972656"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b47-1" x="28.183594" y="237.789062"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b48-1" x="35.820312" y="237.789062"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b47-2" x="43.453125" y="237.789062"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b49-1" x="28.183594" y="95.605469"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b410-1" x="35.820312" y="95.605469"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b49-2" x="43.453125" y="95.605469"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b411-1" x="22.128906" y="211.054688"/>
+</g>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 244.546875 233.902344 C 244.546875 238.402344 237.796875 238.402344 237.796875 233.902344 C 237.796875 229.402344 244.546875 229.402344 244.546875 233.902344 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 358.960938 277.089844 C 358.960938 281.589844 352.210938 281.589844 352.210938 277.089844 C 352.210938 272.589844 358.960938 272.589844 358.960938 277.089844 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 269.933594 162.15625 C 269.933594 166.65625 263.183594 166.65625 263.183594 162.15625 C 263.183594 157.65625 269.933594 157.65625 269.933594 162.15625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 243.089844 298.4375 C 243.089844 302.9375 236.339844 302.9375 236.339844 298.4375 C 236.339844 293.9375 243.089844 293.9375 243.089844 298.4375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 200.691406 310.269531 C 200.691406 314.769531 193.941406 314.769531 193.941406 310.269531 C 193.941406 305.769531 200.691406 305.769531 200.691406 310.269531 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 193.910156 196.742188 C 193.910156 201.242188 187.160156 201.242188 187.160156 196.742188 C 187.160156 192.242188 193.910156 192.242188 193.910156 196.742188 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 222.40625 253.242188 C 222.40625 257.742188 215.65625 257.742188 215.65625 253.242188 C 215.65625 248.742188 222.40625 248.742188 222.40625 253.242188 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 303.320312 200.421875 C 303.320312 204.921875 296.570312 204.921875 296.570312 200.421875 C 296.570312 195.921875 303.320312 195.921875 303.320312 200.421875 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 294.085938 329.449219 C 294.085938 333.949219 287.335938 333.949219 287.335938 329.449219 C 287.335938 324.949219 294.085938 324.949219 294.085938 329.449219 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 266.496094 253.855469 C 266.496094 258.355469 259.746094 258.355469 259.746094 253.855469 C 259.746094 249.355469 266.496094 249.355469 266.496094 253.855469 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 214.136719 132.351562 C 214.136719 136.851562 207.386719 136.851562 207.386719 132.351562 C 207.386719 127.851562 214.136719 127.851562 214.136719 132.351562 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 248.671875 301.011719 C 248.671875 305.511719 241.921875 305.511719 241.921875 301.011719 C 241.921875 296.511719 248.671875 296.511719 248.671875 301.011719 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 252.847656 201.648438 C 252.847656 206.148438 246.097656 206.148438 246.097656 201.648438 C 246.097656 197.148438 252.847656 197.148438 252.847656 201.648438 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 337.25 254.871094 C 337.25 259.371094 330.5 259.371094 330.5 254.871094 C 330.5 250.371094 337.25 250.371094 337.25 254.871094 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 244.394531 205.625 C 244.394531 210.125 237.644531 210.125 237.644531 205.625 C 237.644531 201.125 244.394531 201.125 244.394531 205.625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 330.566406 295.839844 C 330.566406 300.339844 323.816406 300.339844 323.816406 295.839844 C 323.816406 291.339844 330.566406 291.339844 330.566406 295.839844 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 205.710938 29.726562 C 205.710938 34.226562 198.960938 34.226562 198.960938 29.726562 C 198.960938 25.226562 205.710938 25.226562 205.710938 29.726562 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 211.902344 312.101562 C 211.902344 316.601562 205.152344 316.601562 205.152344 312.101562 C 205.152344 307.601562 211.902344 307.601562 211.902344 312.101562 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 355.390625 190.246094 C 355.390625 194.746094 348.640625 194.746094 348.640625 190.246094 C 348.640625 185.746094 355.390625 185.746094 355.390625 190.246094 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 253.320312 238.296875 C 253.320312 242.796875 246.570312 242.796875 246.570312 238.296875 C 246.570312 233.796875 253.320312 233.796875 253.320312 238.296875 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 321.5 139.800781 C 321.5 144.300781 314.75 144.300781 314.75 139.800781 C 314.75 135.300781 321.5 135.300781 321.5 139.800781 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 258.714844 129.941406 C 258.714844 134.441406 251.964844 134.441406 251.964844 129.941406 C 251.964844 125.441406 258.714844 125.441406 258.714844 129.941406 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 114.917969 240.703125 C 114.917969 245.203125 108.167969 245.203125 108.167969 240.703125 C 108.167969 236.203125 114.917969 236.203125 114.917969 240.703125 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 236.964844 189.511719 C 236.964844 194.011719 230.214844 194.011719 230.214844 189.511719 C 230.214844 185.011719 236.964844 185.011719 236.964844 189.511719 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 141.679688 384.273438 C 141.679688 388.773438 134.929688 388.773438 134.929688 384.273438 C 134.929688 379.773438 141.679688 379.773438 141.679688 384.273438 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 375.160156 289.867188 C 375.160156 294.367188 368.410156 294.367188 368.410156 289.867188 C 368.410156 285.367188 375.160156 285.367188 375.160156 289.867188 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 250.683594 309.511719 C 250.683594 314.011719 243.933594 314.011719 243.933594 309.511719 C 243.933594 305.011719 250.683594 305.011719 250.683594 309.511719 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 82.433594 350.859375 C 82.433594 355.359375 75.683594 355.359375 75.683594 350.859375 C 75.683594 346.359375 82.433594 346.359375 82.433594 350.859375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 203.5625 327.765625 C 203.5625 332.265625 196.8125 332.265625 196.8125 327.765625 C 196.8125 323.265625 203.5625 323.265625 203.5625 327.765625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 254.160156 171.535156 C 254.160156 176.035156 247.410156 176.035156 247.410156 171.535156 C 247.410156 167.035156 254.160156 167.035156 254.160156 171.535156 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 308.085938 272.96875 C 308.085938 277.46875 301.335938 277.46875 301.335938 272.96875 C 301.335938 268.46875 308.085938 268.46875 308.085938 272.96875 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 262.851562 378.867188 C 262.851562 383.367188 256.101562 383.367188 256.101562 378.867188 C 256.101562 374.367188 262.851562 374.367188 262.851562 378.867188 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 200.273438 189.859375 C 200.273438 194.359375 193.523438 194.359375 193.523438 189.859375 C 193.523438 185.359375 200.273438 185.359375 200.273438 189.859375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 284.90625 106.65625 C 284.90625 111.15625 278.15625 111.15625 278.15625 106.65625 C 278.15625 102.15625 284.90625 102.15625 284.90625 106.65625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 277.476562 211.984375 C 277.476562 216.484375 270.726562 216.484375 270.726562 211.984375 C 270.726562 207.484375 277.476562 207.484375 277.476562 211.984375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 179.277344 262.28125 C 179.277344 266.78125 172.527344 266.78125 172.527344 262.28125 C 172.527344 257.78125 179.277344 257.78125 179.277344 262.28125 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 194.71875 150.386719 C 194.71875 154.886719 187.96875 154.886719 187.96875 150.386719 C 187.96875 145.886719 194.71875 145.886719 194.71875 150.386719 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 209.835938 268.203125 C 209.835938 272.703125 203.085938 272.703125 203.085938 268.203125 C 203.085938 263.703125 209.835938 263.703125 209.835938 268.203125 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 178.324219 137.746094 C 178.324219 142.246094 171.574219 142.246094 171.574219 137.746094 C 171.574219 133.246094 178.324219 133.246094 178.324219 137.746094 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 331.730469 220.394531 C 331.730469 224.894531 324.980469 224.894531 324.980469 220.394531 C 324.980469 215.894531 331.730469 215.894531 331.730469 220.394531 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 310.929688 151.25 C 310.929688 155.75 304.179688 155.75 304.179688 151.25 C 304.179688 146.75 310.929688 146.75 310.929688 151.25 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 195.355469 173.339844 C 195.355469 177.839844 188.605469 177.839844 188.605469 173.339844 C 188.605469 168.839844 195.355469 168.839844 195.355469 173.339844 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 380.726562 238.734375 C 380.726562 243.234375 373.976562 243.234375 373.976562 238.734375 C 373.976562 234.234375 380.726562 234.234375 380.726562 238.734375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 191.757812 134.777344 C 191.757812 139.277344 185.007812 139.277344 185.007812 134.777344 C 185.007812 130.277344 191.757812 130.277344 191.757812 134.777344 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 258.148438 139.734375 C 258.148438 144.234375 251.398438 144.234375 251.398438 139.734375 C 251.398438 135.234375 258.148438 135.234375 258.148438 139.734375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 337.15625 187.175781 C 337.15625 191.675781 330.40625 191.675781 330.40625 187.175781 C 330.40625 182.675781 337.15625 182.675781 337.15625 187.175781 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 476.785156 187.378906 C 476.785156 191.878906 470.035156 191.878906 470.035156 187.378906 C 470.035156 182.878906 476.785156 182.878906 476.785156 187.378906 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 353.535156 204.371094 C 353.535156 208.871094 346.785156 208.871094 346.785156 204.371094 C 346.785156 199.871094 353.535156 199.871094 353.535156 204.371094 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 283.355469 293.488281 C 283.355469 297.988281 276.605469 297.988281 276.605469 293.488281 C 276.605469 288.988281 283.355469 288.988281 283.355469 293.488281 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 353.6875 268.1875 C 353.6875 272.6875 346.9375 272.6875 346.9375 268.1875 C 346.9375 263.6875 353.6875 263.6875 353.6875 268.1875 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 461.433594 209.570312 C 461.433594 214.070312 454.683594 214.070312 454.683594 209.570312 C 454.683594 205.070312 461.433594 205.070312 461.433594 209.570312 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 269.785156 152.039062 C 269.785156 156.539062 263.035156 156.539062 263.035156 152.039062 C 263.035156 147.539062 269.785156 147.539062 269.785156 152.039062 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 290 199.722656 C 290 204.222656 283.25 204.222656 283.25 199.722656 C 283.25 195.222656 290 195.222656 290 199.722656 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 424.898438 254.953125 C 424.898438 259.453125 418.148438 259.453125 418.148438 254.953125 C 418.148438 250.453125 424.898438 250.453125 424.898438 254.953125 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 165.957031 229.441406 C 165.957031 233.941406 159.207031 233.941406 159.207031 229.441406 C 159.207031 224.941406 165.957031 224.941406 165.957031 229.441406 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 343.976562 352.75 C 343.976562 357.25 337.226562 357.25 337.226562 352.75 C 337.226562 348.25 343.976562 348.25 343.976562 352.75 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 267.007812 333.5 C 267.007812 338 260.257812 338 260.257812 333.5 C 260.257812 329 267.007812 329 267.007812 333.5 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 407.761719 177.257812 C 407.761719 181.757812 401.011719 181.757812 401.011719 177.257812 C 401.011719 172.757812 407.761719 172.757812 407.761719 177.257812 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 312.667969 89.761719 C 312.667969 94.261719 305.917969 94.261719 305.917969 89.761719 C 305.917969 85.261719 312.667969 85.261719 312.667969 89.761719 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 393.769531 121.890625 C 393.769531 126.390625 387.019531 126.390625 387.019531 121.890625 C 387.019531 117.390625 393.769531 117.390625 393.769531 121.890625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 244.507812 208.089844 C 244.507812 212.589844 237.757812 212.589844 237.757812 208.089844 C 237.757812 203.589844 244.507812 203.589844 244.507812 208.089844 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 468.792969 252.59375 C 468.792969 257.09375 462.042969 257.09375 462.042969 252.59375 C 462.042969 248.09375 468.792969 248.09375 468.792969 252.59375 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 230.039062 269.460938 C 230.039062 273.960938 223.289062 273.960938 223.289062 269.460938 C 223.289062 264.960938 230.039062 264.960938 230.039062 269.460938 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 367.738281 311.921875 C 367.738281 316.421875 360.988281 316.421875 360.988281 311.921875 C 360.988281 307.421875 367.738281 307.421875 367.738281 311.921875 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 243.648438 127.089844 C 243.648438 131.589844 236.898438 131.589844 236.898438 127.089844 C 236.898438 122.589844 243.648438 122.589844 243.648438 127.089844 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 264.753906 139.015625 C 264.753906 143.515625 258.003906 143.515625 258.003906 139.015625 C 258.003906 134.515625 264.753906 134.515625 264.753906 139.015625 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 226.078125 226.042969 C 226.078125 230.542969 219.328125 230.542969 219.328125 226.042969 C 219.328125 221.542969 226.078125 221.542969 226.078125 226.042969 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 508.566406 313.613281 C 508.566406 318.113281 501.816406 318.113281 501.816406 313.613281 C 501.816406 309.113281 508.566406 309.113281 508.566406 313.613281 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 471.027344 250.578125 C 471.027344 255.078125 464.277344 255.078125 464.277344 250.578125 C 464.277344 246.078125 471.027344 246.078125 471.027344 250.578125 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 192.667969 177.296875 C 192.667969 181.796875 185.917969 181.796875 185.917969 177.296875 C 185.917969 172.796875 192.667969 172.796875 192.667969 177.296875 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 283 206.871094 C 283 211.371094 276.25 211.371094 276.25 206.871094 C 276.25 202.371094 283 202.371094 283 206.871094 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 267.921875 204.898438 C 267.921875 209.398438 261.171875 209.398438 261.171875 204.898438 C 261.171875 200.398438 267.921875 200.398438 267.921875 204.898438 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 463.625 302.855469 C 463.625 307.355469 456.875 307.355469 456.875 302.855469 C 456.875 298.355469 463.625 298.355469 463.625 302.855469 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 323.265625 291.804688 C 323.265625 296.304688 316.515625 296.304688 316.515625 291.804688 C 316.515625 287.304688 323.265625 287.304688 323.265625 291.804688 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 295.5625 185.070312 C 295.5625 189.570312 288.8125 189.570312 288.8125 185.070312 C 288.8125 180.570312 295.5625 180.570312 295.5625 185.070312 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 384.394531 114.953125 C 384.394531 119.453125 377.644531 119.453125 377.644531 114.953125 C 377.644531 110.453125 384.394531 110.453125 384.394531 114.953125 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 198.199219 189.164062 C 198.199219 193.664062 191.449219 193.664062 191.449219 189.164062 C 191.449219 184.664062 198.199219 184.664062 198.199219 189.164062 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 312.457031 151.101562 C 312.457031 155.601562 305.707031 155.601562 305.707031 151.101562 C 305.707031 146.601562 312.457031 146.601562 312.457031 151.101562 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 388.773438 379.886719 C 388.773438 384.386719 382.023438 384.386719 382.023438 379.886719 C 382.023438 375.386719 388.773438 375.386719 388.773438 379.886719 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 271.792969 206.195312 C 271.792969 210.695312 265.042969 210.695312 265.042969 206.195312 C 265.042969 201.695312 271.792969 201.695312 271.792969 206.195312 "/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 180.625 536.5 L 180.625 542.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 321.213542 536.5 L 321.213542 542.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 461.796875 536.5 L 461.796875 542.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 602.385417 536.5 L 602.385417 542.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 76.5 501.09375 L 70.5 501.09375 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 76.5 311.510417 L 70.5 311.510417 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 76.5 121.932292 L 70.5 121.932292 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 544.875 238.875 L 587.625 238.875 L 587.625 175.125 L 544.875 175.125 Z M 544.875 238.875 "/>
+</g>
+<g clip-path="url(#clip2)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 726.5 318.5 L 783.5 318.5 L 783.5 233.5 L 726.5 233.5 Z M 726.5 318.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b412-1" x="551.640625" y="192.027344"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b412-2" x="558.242188" y="192.027344"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b412-3" x="561.574219" y="192.027344"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b412-4" x="568.929688" y="192.027344"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b412-4" x="575.179688" y="192.027344"/>
+</g>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b413-1" x="571.523438" y="212.515625"/>
+</g>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,44.705883%,69.803923%);fill-opacity:1;" d="M 563.742188 208.359375 C 563.742188 212.859375 556.992188 212.859375 556.992188 208.359375 C 556.992188 203.859375 563.742188 203.859375 563.742188 208.359375 "/>
+<g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
+  <use xlink:href="#nRN2H2b40-8" x="570.4375" y="229.765625"/>
+</g>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(90.196079%,62.352943%,0%);fill-opacity:1;" d="M 563.742188 225.609375 C 563.742188 230.109375 556.992188 230.109375 556.992188 225.609375 C 556.992188 221.109375 563.742188 221.109375 563.742188 225.609375 "/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 76.5 536 L 702.5 536 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 77 536.5 L 77 15.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 76.5 16 L 702.5 16 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 702 536.5 L 702 15.5 " transform="matrix(0.75,0,0,0.75,0,0)"/>
+</g>
 </svg>

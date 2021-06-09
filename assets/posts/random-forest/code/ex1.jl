@@ -1,10 +1,12 @@
 # This file was generated, do not modify it. # hide
 import MLDataUtils
 
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 using CategoricalArrays
 using DataFrames
 using Distributions
-using Gadfly
 using MLJ
 using Suppressor # hide
 using Random

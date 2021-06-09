@@ -1,8 +1,12 @@
 # This file was generated, do not modify it. # hide
-using Gadfly
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
-write_svg("logistic", # hide
-plot(y = [logistic], xmin = [-6], xmax = [6], 
-	Geom.line, Stat.func, Guide.xlabel("x")
-)
+I = -6:0.1:6
+df = (x=I, y=logistic.(I))
+fg = data(df) * mapping(:x, :y) * visual(Lines)
+
+Blog.makie_svg(@OUTPUT, "logistic", # hide
+draw(fg)
 ) # hide

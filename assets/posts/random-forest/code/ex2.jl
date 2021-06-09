@@ -1,7 +1,6 @@
 # This file was generated, do not modify it. # hide
-write_svg(name, p) = draw(SVG(joinpath(@OUTPUT, "$name.svg")), p) # hide
-write_svg("u-class", # hide
-plot(df, x = :U, y = :V, color = :class)
-); # hide
+fg = data(df) * mapping(:U, :V, color=:class)
 
-nothing # hide
+Blog.makie_svg(@OUTPUT, "u-class", # hide
+draw(fg)
+; literate=true); # hide

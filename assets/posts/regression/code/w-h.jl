@@ -1,10 +1,13 @@
 # This file was generated, do not modify it. # hide
-using Gadfly
+using AlgebraOfGraphics
+using Blog # hide
+using CairoMakie
 
 # These two are useful for plotting.
 wmin = minimum(W) - 0.2
 wmax = maximum(W) + 0.2
 
-write_svg("w-h", # hide
-plot(df, x = :W, y = :H)
+fg = data(df) * mapping(:W, :H)
+Blog.makie_svg(@OUTPUT, "w-h", # hide
+draw(fg)
 ) # hide

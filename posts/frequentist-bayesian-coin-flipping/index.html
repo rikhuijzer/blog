@@ -1,4 +1,4 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Frequentist and Bayesian coin flipping - Huijzer.xyz </title> <meta property="og:title" content="Frequentist and Bayesian coin flipping" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Frequentist and Bayesian coin flipping" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Frequentist and Bayesian coin flipping </h1> <span class=page-date > 2020-11-14 </span> </div> <div class=franklin-content > <p>To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics. Most explanations involve terms such as &quot;likelihood&quot;, &quot;uncertainty&quot; and &quot;prior probabilities&quot;. Here, I&#39;m going to show the difference between both statistical paradigms by using a coin flipping example. In the examples, the effect of showing more data to both paradigms will be visualised.</p> <p><div class=franklin-toc ><ol><li><a href="#generating_data">Generating data </a><li><a href="#calculate_probability_estimates">Calculate probability estimates</a><li><a href="#conclusion">Conclusion</a><li><a href="#references">References </a></ol></div> </p> <h2 id=generating_data ><a href="#generating_data" class=header-anchor >Generating data </a></h2> <p>Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.</p> <pre><code class=language-julia >using Distributions
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Frequentist and Bayesian coin flipping - Huijzer.xyz </title> <meta property="og:title" content="Frequentist and Bayesian coin flipping" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Frequentist and Bayesian coin flipping" /> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Frequentist and Bayesian coin flipping </h1> <span class=page-date > 2020-11-14 </span> </div> <div class=franklin-content > <p>To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics. Most explanations involve terms such as &quot;likelihood&quot;, &quot;uncertainty&quot; and &quot;prior probabilities&quot;. Here, I&#39;m going to show the difference between both statistical paradigms by using a coin flipping example. In the examples, the effect of showing more data to both paradigms will be visualised.</p> <div class=franklin-toc ><ol><li><a href="#generating_data">Generating data</a><li><a href="#calculate_probability_estimates">Calculate probability estimates</a><li><a href="#conclusion">Conclusion</a><li><a href="#references">References </a></ol></div> <h2 id=generating_data ><a href="#generating_data" class=header-anchor >Generating data</a></h2> <p>Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.</p> <pre><code class=language-julia >using Distributions
 using Random
 
 n &#61; 80
@@ -21,27 +21,31 @@ beliefs &#61; &#91;closed_form_prior; update_belief.&#40;1:n&#41;&#93;</code></p
   distribution &#61; beliefs&#91;n&#93;
   q&#40;x&#41; &#61; quantile&#40;distribution, x&#41;
   &#40;lower &#61; q&#40;0.025&#41;, middle &#61; mean&#40;distribution&#41;, upper &#61; q&#40;0.975&#41;&#41;
-end</code></pre> <pre><code class=language-julia >using Gadfly
+end</code></pre> <pre><code class=language-julia >using AlgebraOfGraphics
+using CairoMakie
 
 function plot_estimates&#40;estimate_function; title&#61;&quot;&quot;&#41;
   draws &#61; 2:4:80
   estimates &#61; estimate_function.&#40;draws&#41;
   middles &#61; &#91;t.middle for t in estimates&#93;
-  plot&#40;y &#61; draws, 
-    x &#61; &#91;t.middle for t in estimates&#93;,
-    xmin &#61; &#91;t.lower for t in estimates&#93;,
-    xmax &#61; &#91;t.upper for t in estimates&#93;,
-    Geom.point, Geom.errorbar,
-    Coord.cartesian&#40;xmin &#61; 0.0, xmax &#61; 1.0&#41;,
-    Guide.xlabel&#40;&quot;Probability of heads&quot;&#41;, Guide.ylabel&#40;&quot;Observed number of draws&quot;&#41;,
-    Guide.title&#40;title&#41;,
-    layer&#40;xintercept &#61; &#91;0.5&#93;, Geom.vline&#40;color &#61; &quot;gray&quot;&#41;&#41;
-  &#41;
+  lowers &#61; &#91;t.lower for t in estimates&#93;
+  uppers &#61; &#91;t.upper for t in estimates&#93;
+  df &#61; &#40;; draws, estimates, P&#61;middles&#41;
+  layers &#61; data&#40;df&#41; * visual&#40;Scatter&#41;
+  df_middle &#61; &#40;; P&#61;fill&#40;0.5, length&#40;draws&#41; &#43; 2&#41;, draws&#61;&#91;-1; draws; 83&#93;&#41;
+  layers &#43;&#61; data&#40;df_middle&#41; * visual&#40;Lines&#41;
+  for &#40;n, lower, upper&#41; in zip&#40;draws, lowers, uppers&#41;
+    df_bounds &#61; &#40;; P&#61;&#91;lower, upper&#93;, draws&#61;&#91;n, n&#93;&#41;
+    layers &#43;&#61; data&#40;df_bounds&#41; * visual&#40;Lines&#41;
+  end
+
+  axis &#61; &#40;; xticks&#61;0:0.5:1, yticks&#61;0:20:80&#41;
+  map &#61; mapping&#40;:P &#61;&gt; &quot;Probability of heads&quot;, :draws &#61;&gt; &quot;Observed number of draws&quot;&#41;
+  draw&#40;layers * map; axis&#41;
 end</code></pre> <pre><code class=language-julia >plot_estimates&#40;frequentist_estimate, title &#61; &quot;Frequentist estimates&quot;&#41;</code></pre>
-<p> <img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/frequentist-estimates.svg" alt=""></p>
+<img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/frequentist-estimates.svg" alt="">
 <pre><code class=language-julia >plot_estimates&#40;bayesian_estimate, title &#61; &quot;Bayesian estimates&quot;&#41;</code></pre>
-<p> <img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/bayesian-estimates.svg" alt=""></p>
-<p>If you don&#39;t have much programming experience, then you might be wondering how to come up with this pretty code which can neatly work for the Frequentist <strong>and</strong> Bayesian estimates. The answer is: lots of trial and error, and moving text around.</p>
+<img src="/assets/posts/frequentist-bayesian-coin-flipping/code/output/bayesian-estimates.svg" alt="">
 <h2 id=conclusion ><a href="#conclusion" class=header-anchor >Conclusion</a></h2>
 <p>Based on these plots, we can conclude two things. Firstly, the Bayesian approach provides better estimates for small sample sizes. The Bayesian approach successfully uses the fact that a probability should be between 0 and 1, which was given to the model via the <code>Beta&#40;1, 1&#41;</code> prior. For increasingly larger sample sizes, the difference between both statistical paradigms vanish in this situation. Secondly, collecting more and more samples until the result is significant is dangerous. This approach is called <em>optional stopping</em>. Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false. <span class=bibref ><a href="#tcumming2011">Cumming (2011)</a></span> calls this the &quot;dance of the <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span></span></span></span>-values&quot;.</p>
 <h2 id=references ><a href="#references" class=header-anchor >References </a></h2>
@@ -50,7 +54,7 @@ end</code></pre> <pre><code class=language-julia >plot_estimates&#40;frequentist
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-06-08.
+    Last update: 2021-06-09.
   </div>
 </div>
 </div>

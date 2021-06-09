@@ -1,6 +1,8 @@
 # This file was generated, do not modify it. # hide
-write_svg("logit", # hide
-plot(y = [logit], xmin = [0], xmax = [1],
-	Geom.line, Stat.func, Guide.xlabel("x")
-)
+I = 0:0.01:1
+df = (x=I, y=logit.(I))
+fg = data(df) * mapping(:x, :y) * visual(Lines)
+
+Blog.makie_svg(@OUTPUT, "logit", # hide
+draw(fg)
 ) # hide

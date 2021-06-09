@@ -2,8 +2,6 @@
 using AlgebraOfGraphics
 using Blog # hide
 using CairoMakie
-# Gadfly also has a draw method. # hide
-draw = AlgebraOfGraphics.draw # hide
 
 X = 1:30
 df = (x=X, y=X.*2)
