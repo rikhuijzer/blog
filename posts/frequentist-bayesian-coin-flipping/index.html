@@ -33,7 +33,7 @@ function plot_estimates&#40;estimate_function; title&#61;&quot;&quot;&#41;
   df &#61; &#40;; draws, estimates, P&#61;middles&#41;
   layers &#61; data&#40;df&#41; * visual&#40;Scatter&#41;
   df_middle &#61; &#40;; P&#61;fill&#40;0.5, length&#40;draws&#41; &#43; 2&#41;, draws&#61;&#91;-1; draws; 83&#93;&#41;
-  layers &#43;&#61; data&#40;df_middle&#41; * visual&#40;Lines&#41;
+  layers &#43;&#61; data&#40;df_middle&#41; * visual&#40;Lines&#41; * visual&#40;linestyle&#61;:dash&#41;
   for &#40;n, lower, upper&#41; in zip&#40;draws, lowers, uppers&#41;
     df_bounds &#61; &#40;; P&#61;&#91;lower, upper&#93;, draws&#61;&#91;n, n&#93;&#41;
     layers &#43;&#61; data&#40;df_bounds&#41; * visual&#40;Lines&#41;
