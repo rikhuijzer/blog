@@ -27,7 +27,7 @@ layers &#61; data&#40;df&#41; * visual&#40;Scatter&#41;
 
 m &#61; mean&#40;H&#41;
 df_mean &#61; &#40;W&#61;df.W, H&#61;fill&#40;m, nrow&#40;df&#41;&#41;&#41;
-layers &#43;&#61; data&#40;df_mean&#41; * linear&#40;&#41;
+layers &#43;&#61; data&#40;df_mean&#41; * linear&#40;&#41; * visual&#40;linestyle&#61;:dash&#41;
 
 for &#40;w, h&#41; in zip&#40;df.W, df.H&#41;
   df_diff &#61; &#40;W&#61;&#91;w, w&#93;, H&#61;&#91;m, h&#93;&#41;
