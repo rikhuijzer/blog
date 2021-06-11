@@ -13,13 +13,13 @@ forest_df = DataFrame(
 
 roc_df = vcat(logistic_df, forest_df)
 
-fg = data(roc_df)
-fg *= smooth() + visual(Scatter)
-fg *= mapping(
-    :x => "False positive rate estimate",
-    :y => "True positive rate estimate",
+xy = data(roc_df)
+xy *= smooth() + visual(Scatter)
+xy *= mapping(
+    :x => "False positive rate",
+    :y => "True positive rate",
     color=:method)
 
 Blog.makie_svg(@OUTPUT, "roc", # hide
-draw(fg)
+draw(xy)
 ; literate=true); # hide

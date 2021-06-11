@@ -4,9 +4,9 @@ using DataFrames
 
 function plot_distribution&#40;probabilities::Array&#41;
   df &#61; DataFrame&#40;; n&#61;1:6, P_n&#61;probabilities&#41;
-  fg &#61; data&#40;df&#41; * mapping&#40;:n, :P_n&#41; * visual&#40;BarPlot&#41;
+  np &#61; data&#40;df&#41; * mapping&#40;:n, :P_n&#41; * visual&#40;BarPlot&#41;
   axis &#61; &#40;; xticks&#61;1:6, yticks&#61;0.2:0.2:1&#41;
-  draw&#40;fg; axis&#41;
+  draw&#40;np; axis&#41;
 end</code></pre> <pre><code class=language-julia >plot_distribution&#40;&#91;1/6, 1/6, 1/6, 1/6, 1/6, 1/6&#93;&#41;</code></pre>
 <img src="/assets/posts/maximum-entropy/code/output/unbiased.svg" alt="">
 <p>Instead, we are told that the average is <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4.5</mn></mrow><annotation encoding="application/x-tex">4.5</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.64444em;vertical-align:0em;"></span><span class=mord >4</span><span class=mord >.</span><span class=mord >5</span></span></span></span>. How likely is it for each number <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>1</mn><mo separator=true >,</mo><mn>2</mn><mo separator=true >,</mo><mo>…</mo><mo separator=true >,</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">n = 1,2, \ldots, 6</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span><span class=mrel >=</span><span class=mspace  style="margin-right:0.2777777777777778em;"></span></span><span class=base ><span class=strut  style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class=mord >1</span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class=mord >2</span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class=minner >…</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class=mord >6</span></span></span></span> to come up for the next toss?</p>
@@ -64,7 +64,7 @@ average &#61; 4.501036338141376</code></pre>
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-06-09.
+    Last update: 2021-06-11.
   </div>
 </div>
 </div>

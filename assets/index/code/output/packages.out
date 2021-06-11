@@ -1,6 +1,6 @@
-AlgebraOfGraphics 0.4.3
+AlgebraOfGraphics 0.4.4
 CSV 0.8.5
-CairoMakie 0.5.7
+CairoMakie 0.5.9
 CategoricalArrays 0.10.0
 DataFrames 1.1.1
 Distributions 0.24.18
@@ -10,7 +10,7 @@ GeometryBasics 0.3.12
 HypothesisTests 0.10.4
 MLDataUtils 0.5.4
 MLJ 0.16.4
-MLJBase 0.18.9
+MLJBase 0.18.11
 MLJDecisionTreeInterface 0.1.2
 MLJGLMInterface 0.1.4
 Query 1.0.0

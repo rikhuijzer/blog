@@ -5,8 +5,8 @@ using CairoMakie
 
 I = -6:0.1:6
 df = (x=I, y=logistic.(I))
-fg = data(df) * mapping(:x, :y) * visual(Lines)
+xy = data(df) * mapping(:x, :y) * visual(Lines)
 
 Blog.makie_svg(@OUTPUT, "logistic", # hide
-draw(fg)
+draw(xy)
 ) # hide
