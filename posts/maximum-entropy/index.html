@@ -3,9 +3,8 @@ using CairoMakie
 using DataFrames
 
 function plot_distribution&#40;probabilities::Array&#41;
-  df &#61; DataFrame&#40;; n&#61;1:6, P_n&#61;probabilities&#41;
-  np &#61; data&#40;df&#41; * mapping&#40;:n, :P_n&#41; * visual&#40;BarPlot&#41;
-  axis &#61; &#40;; xticks&#61;1:6, yticks&#61;0.2:0.2:1&#41;
+  np &#61; mapping&#40;&#91;1:6&#93; &#61;&gt; :n, &#91;probabilities&#93; &#61;&gt; :P_n&#41; * visual&#40;BarPlot&#41;
+  axis &#61; &#40;; xticks&#61;1:6, limits&#61;&#40;nothing, &#40;0, 1&#41;&#41;, height&#61;200&#41;
   draw&#40;np; axis&#41;
 end</code></pre> <pre><code class=language-julia >plot_distribution&#40;&#91;1/6, 1/6, 1/6, 1/6, 1/6, 1/6&#93;&#41;</code></pre>
 <img src="/assets/posts/maximum-entropy/code/output/unbiased.svg" alt="">

@@ -5,8 +5,7 @@
 using CairoMakie
 
 I &#61; -6:0.1:6
-df &#61; &#40;x&#61;I, y&#61;logistic.&#40;I&#41;&#41;
-xy &#61; data&#40;df&#41; * mapping&#40;:x, :y&#41; * visual&#40;Lines&#41;
+xy &#61; mapping&#40;&#91;I&#93; &#61;&gt; :x, &#91;logistic.&#40;I&#41;&#93; &#61;&gt; :y&#41; * visual&#40;Lines&#41;
 
 draw&#40;xy&#41;</code></pre>
 <img src="/assets/posts/logit-logistic/code/output/logistic.svg" alt="">
@@ -33,7 +32,7 @@ logistic(3) = 0.9525741268224334
 <p>This function goes from <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy=false >(</mo><mn>0</mn><mo separator=true >,</mo><mn>1</mn><mo stretchy=false >)</mo></mrow><annotation encoding="application/x-tex">(0, 1)</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:1em;vertical-align:-0.25em;"></span><span class=mopen >(</span><span class=mord >0</span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class=mord >1</span><span class=mclose >)</span></span></span></span> to <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy=false >(</mo><mo>−</mo><mi mathvariant=normal >∞</mi><mo separator=true >,</mo><mi mathvariant=normal >∞</mi><mo stretchy=false >)</mo></mrow><annotation encoding="application/x-tex">(- \infty, \infty)</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:1em;vertical-align:-0.25em;"></span><span class=mopen >(</span><span class=mord >−</span><span class=mord >∞</span><span class=mpunct >,</span><span class=mspace  style="margin-right:0.16666666666666666em;"></span><span class=mord >∞</span><span class=mclose >)</span></span></span></span>.</p>
 <pre><code class=language-julia >I &#61; 0:0.01:1
 df &#61; &#40;x&#61;I, y&#61;logit.&#40;I&#41;&#41;
-xy &#61; data&#40;df&#41; * mapping&#40;:x, :y&#41; * visual&#40;Lines&#41;
+xy &#61; mapping&#40;&#91;I&#93; &#61;&gt; :x, &#91;logit.&#40;I&#41;&#93; &#61;&gt; :y&#41; * visual&#40;Lines&#41;
 
 draw&#40;xy&#41;</code></pre>
 <img src="/assets/posts/logit-logistic/code/output/logit.svg" alt="">

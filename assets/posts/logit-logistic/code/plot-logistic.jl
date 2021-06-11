@@ -4,8 +4,7 @@ using Blog # hide
 using CairoMakie
 
 I = -6:0.1:6
-df = (x=I, y=logistic.(I))
-xy = data(df) * mapping(:x, :y) * visual(Lines)
+xy = mapping([I] => :x, [logistic.(I)] => :y) * visual(Lines)
 
 Blog.makie_svg(@OUTPUT, "logistic", # hide
 draw(xy)
