@@ -20,9 +20,8 @@ using CairoMakie
 using DataFrames
 
 function plot_distribution(probabilities::Array)
-  df = DataFrame(; n=1:6, P_n=probabilities)
-  np = data(df) * mapping(:n, :P_n) * visual(BarPlot)
-  axis = (; xticks=1:6, yticks=0.2:0.2:1)
+  np = mapping([1:6] => :n, [probabilities] => :P_n) * visual(BarPlot)
+  axis = (; xticks=1:6, limits=(nothing, (0, 1)), height=200)
   draw(np; axis)
 end
 ```

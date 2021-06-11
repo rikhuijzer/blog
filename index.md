@@ -24,9 +24,8 @@ using AlgebraOfGraphics
 using Blog # hide
 using CairoMakie
 
-X = 1:30
-df = (x=X, y=X.*2)
-xy = data(df) * mapping(:x, :y)
+I = 1:30
+xy = mapping([I] => :x, [I.*2] => :y)
 
 Blog.makie_svg(@OUTPUT, "basic-plot", # hide
 draw(xy)
