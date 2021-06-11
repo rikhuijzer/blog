@@ -21,9 +21,9 @@ using DataFrames
 
 function plot_distribution(probabilities::Array)
   df = DataFrame(; n=1:6, P_n=probabilities)
-  fg = data(df) * mapping(:n, :P_n) * visual(BarPlot)
+  np = data(df) * mapping(:n, :P_n) * visual(BarPlot)
   axis = (; xticks=1:6, yticks=0.2:0.2:1)
-  draw(fg; axis)
+  draw(np; axis)
 end
 ```
 \output{preliminaries}

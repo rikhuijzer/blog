@@ -32,10 +32,10 @@ using CairoMakie
 
 I = -6:0.1:6
 df = (x=I, y=logistic.(I))
-fg = data(df) * mapping(:x, :y) * visual(Lines)
+xy = data(df) * mapping(:x, :y) * visual(Lines)
 
 Blog.makie_svg(@OUTPUT, "logistic", # hide
-draw(fg)
+draw(xy)
 ) # hide
 ```
 \textoutput{plot-logistic}
@@ -75,10 +75,10 @@ This function goes from $(0, 1)$ to $(- \infty, \infty)$.
 ```julia:plot-logit
 I = 0:0.01:1
 df = (x=I, y=logit.(I))
-fg = data(df) * mapping(:x, :y) * visual(Lines)
+xy = data(df) * mapping(:x, :y) * visual(Lines)
 
 Blog.makie_svg(@OUTPUT, "logit", # hide
-draw(fg)
+draw(xy)
 ) # hide
 ```
 \textoutput{plot-logit}
