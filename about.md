@@ -4,7 +4,7 @@ description = "About this website"
 image = "/assets/about/output/basic-plot.svg"
 +++
 
-PhD student at the Faculty of Behavioural and Social Sciences, University of Groningen;
+PhD student at the University of Groningen;
 ~~~
 <a href="mailto:t.h.huijzer@rug.nl">t.h.huijzer@rug.nl</a>.
 ~~~
