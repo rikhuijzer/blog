@@ -39,7 +39,7 @@ function plot_estimates&#40;estimate_function; title&#61;&quot;&quot;&#41;
     layers &#43;&#61; data&#40;df_bounds&#41; * visual&#40;Lines&#41;
   end
 
-  axis &#61; &#40;; xticks&#61;0:0.5:1, yticks&#61;0:20:80&#41;
+  axis &#61; &#40;; yticks&#61;0:20:80, limits&#61;&#40;&#40;-0.2, 1.2&#41;, nothing&#41;&#41;
   map &#61; mapping&#40;:P &#61;&gt; &quot;Probability of heads&quot;, :draws &#61;&gt; &quot;Observed number of draws&quot;&#41;
   draw&#40;layers * map; axis&#41;
 end</code></pre> <pre><code class=language-julia >plot_estimates&#40;frequentist_estimate, title &#61; &quot;Frequentist estimates&quot;&#41;</code></pre>
@@ -54,7 +54,7 @@ end</code></pre> <pre><code class=language-julia >plot_estimates&#40;frequentist
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-06-11.
+    Last update: 2021-06-12.
   </div>
 </div>
 </div>
