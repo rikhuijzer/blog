@@ -28,7 +28,7 @@ _Contributions:_
 - Add quantile bars statistic ([Gadfly.jl#1521](https://github.com/GiovineItalia/Gadfly.jl/pull/1521))
 - Add Gadfly examples ([MCMCChains.jl#275](https://github.com/TuringLang/MCMCChains.jl/pull/275))
 - Add Documenter.jl ([MCMCChains.jl#265](https://github.com/TuringLang/MCMCChains.jl/pull/265))
-- Refactor ([Turing.jl#1548](https://github.com/TuringLang/Turing.jl/pull/1548)
+- Refactor ([Turing.jl#1548](https://github.com/TuringLang/Turing.jl/pull/1548))
 - Refactor ([StasticalRethinking.jl#104](https://github.com/StatisticalRethinkingJulia/StatisticalRethinking.jl/pull/104))
 - Refactor ([Plots.jl#3200](https://github.com/JuliaPlots/Plots.jl/pull/3200))
 - Switch to GitHub Actions ([Compose.jl#408](https://github.com/GiovineItalia/Compose.jl/pull/408))
