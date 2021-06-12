@@ -144,7 +144,6 @@ The simplest estimator for the points is the mean.
 We can plot this and show horizontal lines for the errors.
 
 ```julia:w-h-mean
-using GeometryBasics
 # Linear and generalized linear models (GLMs).
 using GLM
 
