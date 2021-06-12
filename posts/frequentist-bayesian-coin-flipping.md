@@ -94,7 +94,7 @@ function plot_estimates(estimate_function; title="")
     layers += data(df_bounds) * visual(Lines)
   end
 
-  axis = (; xticks=0:0.5:1, yticks=0:20:80)
+  axis = (; yticks=0:20:80, limits=((-0.2, 1.2), nothing))
   map = mapping(:P => "Probability of heads", :draws => "Observed number of draws")
   draw(layers * map; axis)
 end
