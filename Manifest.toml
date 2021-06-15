@@ -447,10 +447,10 @@ uuid = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
 version = "0.10.4"
 
 [[IOCapture]]
-deps = ["Logging"]
-git-tree-sha1 = "1868e4e7ad2f93d8de0904d89368c527b46aa6a1"
+deps = ["Logging", "Random"]
+git-tree-sha1 = "f7be53659ab06ddc986428d3a9dcc95f6fa6705a"
 uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
-version = "0.2.1"
+version = "0.2.2"
 
 [[IfElse]]
 git-tree-sha1 = "28e837ff3e7a6c3cdb252ce49fb412c8eb3caeef"
