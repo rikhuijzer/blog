@@ -27,7 +27,7 @@ _Contributions:_
 
 - Update documentation for density ([AlgebraOfGraphics.jl#211](https://github.com/JuliaPlots/AlgebraOfGraphics.jl/pull/211))
 - Add tests for authentication ([Pluto.jl#1170](https://github.com/fonsp/Pluto.jl/pull/1170))
-- Fix InExactError for [0.0] ([Showoff.jl#41](https://github.com/JuliaGraphics/Showoff.jl/pull/41))
+- Fix InExactError for `[0.0]` ([Showoff.jl#41](https://github.com/JuliaGraphics/Showoff.jl/pull/41))
 - Improve type stability for tryparse VersionNumber ([julia#40557](https://github.com/JuliaLang/julia/pull/40557))
 - Add quantile bars statistic ([Gadfly.jl#1521](https://github.com/GiovineItalia/Gadfly.jl/pull/1521))
 - Add Gadfly examples ([MCMCChains.jl#275](https://github.com/TuringLang/MCMCChains.jl/pull/275))
