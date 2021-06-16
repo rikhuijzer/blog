@@ -28,7 +28,7 @@ end
 \output{preliminaries}
 
 ```julia:unbiased
-Blog.makie_svg(@OUTPUT, "unbiased", # hide
+Blog.aog_svg(@OUTPUT, "unbiased", # hide
 plot_distribution([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
 ) # hide
 ```
@@ -48,7 +48,7 @@ $$ \sum_{n=1}^6 n \cdot P_n = 4.5. $$
 We could satisfy these constraints by choosing $P_4 = P_5 = \frac{1}{2}$.
 
 ```julia:naive
-Blog.makie_svg(@OUTPUT, "naive", # hide
+Blog.aog_svg(@OUTPUT, "naive", # hide
 plot_distribution([0, 0, 0, 0.5, 0.5, 0])
 ) # hide
 ```
@@ -57,7 +57,7 @@ This is unlikely to be the distribution for our data since it can be derived in 
 A more likely distribution would be 
 
 ```julia:quarters
-Blog.makie_svg(@OUTPUT, "quarters", # hide
+Blog.aog_svg(@OUTPUT, "quarters", # hide
 plot_distribution([0, 0, 1/4, 1/4, 1/4, 1/4])
 ) # hide
 ```
@@ -66,7 +66,7 @@ This is still not the least informative distribution since it assumes $n = 1$ an
 Jaynes presents the straight line solution $P_n = (12n - 7)/210$,
 
 ```julia:straight
-Blog.makie_svg(@OUTPUT, "straight", # hide
+Blog.aog_svg(@OUTPUT, "straight", # hide
 plot_distribution([(12n - 7)/210 for n in 1:6])
 ) # hide
 ```
@@ -91,7 +91,7 @@ Now, we only have to find the $\rho$ for which the average is $4.5$.
 After some [trial and error](#trial-and-error), you'll find that $\rho = 0.3715$ gives $\sum_{n=1}^6 n \cdot P_n \approx 4.501$.
 
 ```julia:entropy
-Blog.makie_svg(@OUTPUT, "entropy", # hide
+Blog.aog_svg(@OUTPUT, "entropy", # hide
 plot_distribution([0.0543, 0.0787, 0.114, 0.165, 0.240, 0.348])
 ) # hide
 ```

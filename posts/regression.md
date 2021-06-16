@@ -110,7 +110,7 @@ wmin = minimum(W) - 0.2
 wmax = maximum(W) + 0.2
 
 fg = data(df) * mapping(:W, :H)
-Blog.makie_svg(@OUTPUT, "w-h", # hide
+Blog.aog_svg(@OUTPUT, "w-h", # hide
 draw(fg)
 ) # hide
 ```
@@ -158,7 +158,7 @@ for (w, h) in zip(df.W, df.H)
   global layers += data(df_diff) * visual(Lines)
 end
 
-Blog.makie_svg(@OUTPUT, "w-h-mean", # hide
+Blog.aog_svg(@OUTPUT, "w-h-mean", # hide
 draw(layers * mapping(:W, :H))
 ) # hide
 ```
@@ -195,7 +195,7 @@ df_pred = (W=wmin:wmax, H=[predict_value(m1, x) for x in wmin:wmax])
 layers = data(df_pred) * visual(Lines)
 layers += data(df)
 
-Blog.makie_svg(@OUTPUT, "w-h-fit", # hide
+Blog.aog_svg(@OUTPUT, "w-h-fit", # hide
 draw(layers * mapping(:W, :H))
 ) # hide
 ```
@@ -227,7 +227,7 @@ layers = data(df_pred) * visual(Lines)
 layers += data(df_pred) * visual(Scatter)
 layers += data(df) * visual(Scatter)
 
-Blog.makie_svg(@OUTPUT, "m2", # hide
+Blog.aog_svg(@OUTPUT, "m2", # hide
 draw(layers * mapping(:W, :Y_digit))
 ) # hide
 ```
@@ -245,7 +245,7 @@ layers = data(df_pred) * smooth(degree=3)
 layers += data(df_pred) * visual(Scatter)
 layers += data(df) * visual(Scatter)
 
-Blog.makie_svg(@OUTPUT, "m3", # hide
+Blog.aog_svg(@OUTPUT, "m3", # hide
 draw(layers * mapping(:W, :Y_digit))
 ) # hide
 ```

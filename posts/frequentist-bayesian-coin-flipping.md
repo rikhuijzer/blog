@@ -102,14 +102,14 @@ end
 \output{plot_estimates}
 
 ```julia:plot_frequentist_estimates
-Blog.makie_svg(@OUTPUT, "frequentist-estimates", # hide
+Blog.aog_svg(@OUTPUT, "frequentist-estimates", # hide
 plot_estimates(frequentist_estimate, title = "Frequentist estimates")
 ) # hide
 ```
 \textoutput{plot_frequentist_estimates}
 
 ```julia:plot_bayesian_estimates
-Blog.makie_svg(@OUTPUT, "bayesian-estimates", # hide
+Blog.aog_svg(@OUTPUT, "bayesian-estimates", # hide
 plot_estimates(bayesian_estimate, title = "Bayesian estimates")
 ) # hide
 ```
