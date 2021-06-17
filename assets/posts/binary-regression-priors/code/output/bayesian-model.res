@@ -4,8 +4,8 @@ Iterations        = 1:10000
 Thinning interval = 1
 Number of chains  = 3
 Samples per chain = 10000
-Wall duration     = 49.99 seconds
-Compute duration  = 47.52 seconds
+Wall duration     = 48.49 seconds
+Compute duration  = 45.96 seconds
 parameters        = σ, intercept, βₐ, βᵣ
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 
@@ -13,10 +13,10 @@ Summary Statistics
   parameters      mean       std   naive_se      mcse          ess      rhat   ess_per_sec
       Symbol   Float64   Float64    Float64   Float64      Float64   Float64       Float64
 
-   intercept    0.7981    1.3815     0.0080    0.0119   13757.3112    1.0002      289.5179
-          βₐ    1.0468    0.0716     0.0004    0.0006   13860.9681    1.0002      291.6993
-          βᵣ    1.0788    0.0341     0.0002    0.0002   19017.6778    0.9999      400.2205
-           σ    1.1291    0.0743     0.0004    0.0006   18747.2740    1.0000      394.5299
+   intercept    0.7981    1.3815     0.0080    0.0119   13757.3112    1.0002      299.3453
+          βₐ    1.0468    0.0716     0.0004    0.0006   13860.9681    1.0002      301.6008
+          βᵣ    1.0788    0.0341     0.0002    0.0002   19017.6778    0.9999      413.8056
+           σ    1.1291    0.0743     0.0004    0.0006   18747.2740    1.0000      407.9219
 
 Quantiles
   parameters      2.5%     25.0%     50.0%     75.0%     97.5%

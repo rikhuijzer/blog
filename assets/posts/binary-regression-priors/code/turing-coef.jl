@@ -21,6 +21,6 @@ bay_err_r = coef_error(rₑ, coef_r_turing)
 """
 coefficient | true value | linear estimate | linear error | bayesian estimate | bayesian error
 --- | --- | --- | --- | --- | ---
-aₑ | $aₑ | $(coef_a |> r_2) | $lin_err_a | $(coef_a_turing |> r_2) | $bay_err_a
-rₑ | $rₑ | $(coef_r |> r_2) | $lin_err_r | $(coef_r_turing |> r_2) | $bay_err_r
+aₑ | $aₑ | $(coef_a |> r_3) | $lin_err_a | $(coef_a_turing |> r_3) | $bay_err_a
+rₑ | $rₑ | $(coef_r |> r_3) | $lin_err_r | $(coef_r_turing |> r_3) | $bay_err_r
 """ |> print
