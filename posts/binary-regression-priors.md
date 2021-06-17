@@ -3,7 +3,6 @@ title = "Increasing predictive accuracy by using foreknowledge"
 published = "2021-06-16"
 tags = ["statistics", "priors"]
 rss = "Using priors for binary logistic regression"
-reeval = true
 +++
 
 Typically, when making predictions via a linear model, we fit the model on our data and make predictions from the fitted model.
@@ -50,7 +49,7 @@ using Random
 function generate_data(i::Int)
   Random.seed!(i)
 
-  n = 80
+  n = 120
   I = 1:n
   P = [i % 2 == 0 for i in I]
   r_2(x) = round(x; digits=2)
@@ -58,7 +57,7 @@ function generate_data(i::Int)
 
   A = r_2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
   R = r_2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])
-  E = rand(Normal(0, 1), n)
+  E = r_2.(rand(Normal(0, 1), n))
   G = aₑ .* A + rₑ .* R .+ E
   G = r_2.(G)
 
@@ -143,8 +142,6 @@ Notice how these estimated coefficients are close to the coefficients that we se
 
 ## Bayesian regression
 
-# Dont need to measure accuracy per se, just see who gets closer on the coefficients.
-
 To allow Turing to find parameter estimates more easily, we rescale the features like in the [Turing.ml tutorial](https://turing.ml/dev/tutorials/02-logistic-regression/):
 This rescaling subtracts the mean and divides by the standard deviation for the columns `age` and `recent`.
 
@@ -176,11 +173,13 @@ using Statistics
 using StatsFuns: logistic
 using Turing
 
+# Use Bijectors Shift and Scale to work around the centering issue.
+
 @model function bayesian_model(ages, recents, grades, n)
     intercept ~ Normal(0, 5)
 
-    βₐ ~ Normal(aₑ, 2)
-    βᵣ ~ Normal(rₑ, 2)
+    βₐ ~ Normal(aₑ, 1)
+    βᵣ ~ Normal(rₑ, 3)
     σ ~ truncated(Cauchy(0, 2), 0, Inf)
 
     μ = intercept .+ βₐ .* ages .+ βᵣ .* recents
@@ -244,15 +243,11 @@ rₑ | $rₑ | $(coef_r |> r_2) | $lin_err_r | $(coef_r_turing |> r_2) | $bay_er
 ```
 \textoutput{turing-coef}
 
-## Measuring accuracy
+## Conclusion
 
-For the accuracy, we use the receiver operating characteristic curve (ROC curve).
-To reduce the effect of random noise, we fit the model on a number of batches of generated data.
-
-```julia:fit-lm-batch
-function fit_and_eval(i::Int)
-  df = generate_data(i)
-  model = lm(@formula(grade ~ age + recent), df)
-
-end
-```
+After giving the true coefficients to the Bayesian model in the form of priors, it does score better than the linear model.
+However, the differences aren't very big.
+This could be due to the particular random noise in this sample `E` or due to the relatively big sample size.
+The more samples, the more likely it is that the data will overrule the prior.
+In any way, there are real-world situations where gathering extra data is more expensive than gathering priors via reading papers.
+In those cases, the increased accuracy introduced by using priors could have serious benefits.
