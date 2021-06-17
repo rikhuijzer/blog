@@ -5,6 +5,7 @@ import TikzPictures
 
 using AlgebraOfGraphics
 using CairoMakie
+using Makie
 
 # Don't export methods to avoid confusing readers of the code.
 # export
@@ -69,7 +70,7 @@ function print_graph_partial(out_path)
     end
 end
 
-function makie_svg(dir::String, name::String, fg;
+function aog_svg(dir::String, name::String, fg;
         literate=false)
     file = "$name.svg"
     path = joinpath(dir, file)
@@ -78,5 +79,16 @@ function makie_svg(dir::String, name::String, fg;
         println("\\fig{./code/$file}")
     end
 end
+
+function makie_svg(dir::String, name::String, scene;
+        literate=false)
+    file = "$name.svg"
+    path = joinpath(dir, file)
+    Makie.FileIO.save(joinpath(dir, file), scene)
+    if !literate
+        println("\\fig{./code/$file}")
+    end
+end
+
 
 end # module
