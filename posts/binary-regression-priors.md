@@ -135,18 +135,22 @@ r5(x) = round(x; digits=5)
 coef_a = coef(linear_model)[2] |> r5
 coef_r = coef(linear_model)[3] |> r5
 """
-Notice how these estimated coefficients are close to the coefficients that we set for `age` and `recent`, namely \$a_e = $aₑ \\approx $coef_a \$ and \$ r_e = $rₑ \\approx $coef_r \$.
+Notice how these estimated coefficients are close to the coefficients that we set for `age` and `recent`, namely \$a_e = $aₑ \\approx $coef_a \$ and \$ r_e = $rₑ \\approx $coef_r \$, as expected.
 """ |> print
 ```
 \textoutput{note-coef}
 
 ## Bayesian regression
 
-To allow Turing to find parameter estimates more easily, we rescale the features like in the [Turing.ml tutorial](https://turing.ml/dev/tutorials/02-logistic-regression/):
-This rescaling subtracts the mean and divides by the standard deviation for the columns `age` and `recent`.
+For the Bayesian regression we fit a model via Turing.jl.
+Now, we give the model information about the structure of the data as well as priors for the size of the coefficients.
+For demonstration purposes, I've set the priors to the correct values.
+This is reasonable since guessing a similar prior wouldn't be too difficult in an example like given here.
+Also, it is reasonable because the prior will be mostly overruled by the data.
 
 ```julia:rescale
 # hideall
+# Not used because it makes the analysis much more complex.
 using MLDataUtils: rescale!
 
 function rescale_data(df)
