@@ -70,7 +70,7 @@ function print_graph_partial(out_path)
     end
 end
 
-function aeg_svg(dir::String, name::String, fg;
+function aog_svg(dir::String, name::String, fg;
         literate=false)
     file = "$name.svg"
     path = joinpath(dir, file)

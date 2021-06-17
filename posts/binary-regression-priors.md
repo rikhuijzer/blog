@@ -3,7 +3,6 @@ title = "Increasing predictive accuracy by using foreknowledge"
 published = "2021-06-16"
 tags = ["statistics", "priors"]
 rss = "Using priors for binary logistic regression"
-reeval = true
 +++
 
 Typically, when making predictions via a linear model, we fit the model on our data and make predictions from the fitted model.
@@ -22,8 +21,8 @@ Let's say that the data generation formula for the grade $g_i$ for some individu
 
 ```julia:genformula
 # hideall
-aₑ = 1.02
-rₑ = 1.00
+aₑ = 1.1
+rₑ = 1.05
 
 """
 \$\$
@@ -44,20 +43,28 @@ write_csv(name, data) = CSV.write(joinpath(@OUTPUT, "$name.csv"), data)
 
 ```julia:generate
 using DataFrames
+using Distributions
 using Random
-using Turing
-Random.seed!(1)
 
-n = 80
-sample(d::Distribution, n::Int) = round.(rand(d, n); digits=2)
-A = sample(Normal(19, 1), n)
-R = sample(Normal(6, 3), n)
-E = sample(Normal(0, 1), n)
-G = aₑ .* A + rₑ .* R .+ E
-G = round.(G, digits=3)
-P = [g < 31 for g in G]
+function generate_data(i::Int)
+  Random.seed!(i)
 
-df = DataFrame(age=A, recent=R, error=E, grade=G, pass=P)
+  n = 80
+  I = 1:n
+  P = [i % 2 == 0 for i in I]
+  r2(x) = round(x; digits=2)
+  r3(x) = round(x; digits=3)
+
+  A = r2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
+  R = r2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])
+  E = rand(Normal(0, 1), n)
+  G = aₑ .* A + rₑ .* R .+ E
+  G = r2.(G)
+
+  df = DataFrame(age=A, recent=R, error=E, grade=G, pass=P)
+end
+
+df = generate_data(1)
 write_csv("df", # hide
 first(df, 8)
 ) # hide
@@ -110,14 +117,108 @@ fig
 
 ## Linear regression
 
-First, we fit a linear model and see how accurate it is.
-Here, the only prior information that we can give the model is the structure of the data, that is, the formula.
+First, we fit a linear model and verify that the coefficients are estimated reasonably well.
+Here, the only prior information that we give the model is the structure of the data, that is, a formula.
 
 ```julia:lm
 using GLM
 
-model = lm(@formula(grade ~ age + recent), df)
-println(model)
+linear_model = lm(@formula(grade ~ age + recent), df)
+println(linear_model) # hide
 ```
 \output{lm}
 
+```julia:note-coef
+# hideall
+r5(x) = round(x; digits=5)
+coef_a = coef(linear_model)[2] |> r5
+coef_r = coef(linear_model)[3] |> r5
+"""
+Notice how these estimated coefficients are close to the coefficients that we set for `age` and `recent`, namely \$a_e = $aₑ \\approx $coef_a \$ and \$ r_e = $rₑ \\approx $coef_r \$.
+""" |> print
+```
+\textoutput{note-coef}
+
+## Bayesian regression
+
+# Dont need to measure accuracy per se, just see who gets closer on the coefficients.
+
+To allow Turing to find parameter estimates more easily, we rescale the features like in the [Turing.ml tutorial](https://turing.ml/dev/tutorials/02-logistic-regression/):
+This rescaling subtracts the mean and divides by the standard deviation for the columns `age` and `recent`.
+
+```julia:rescale
+# hideall
+using MLDataUtils: rescale!
+
+function rescale_data(df)
+    out = DataFrame(df)
+    rescale!(out, [:age, :recent, :grade])
+    for col in [:age, :recent, :error, :grade] # hide
+        out[!, col] = round.(out[!, col]; digits=3) # hide
+    end # hide
+    out
+end
+
+rescaled = rescale_data(df)
+rescaled[!, :pass_num] = [p ? 1.0 : 0.0 for p in rescaled.pass]
+
+write_csv("rescaled", # hide
+first(rescaled, 8)
+) # hide
+# \tableinput{}{./code/rescaled.csv}
+```
+\output{rescale}
+
+```julia:bayesian-model
+using StatsFuns: logistic
+using Turing
+
+@model function bayesian_model(ages, recents, grades, n)
+    intercept ~ Normal(0, 5)
+
+    βₐ ~ Normal(aₑ, 2)
+    βᵣ ~ Normal(rₑ, 2)
+    σ ~ truncated(Cauchy(0, 2), 0, Inf)
+
+    μ = intercept .+ βₐ .* ages .+ βᵣ .* recents
+    grades .~ Normal.(μ, σ)
+end
+
+n = nrow(df)
+bm = bayesian_model(df.age, df.recent, df.grade, n)
+chns = Turing.sample(bm, NUTS(), MCMCThreads(), 10_000, 3)
+show(stdout, MIME("text/plain"), chns) |> print # hide
+```
+\output{bayesian-model}
+
+```julia:bayesian-coef
+samples_age = get(chns, :βₐ).βₐ
+samples_recent = get(chns, :βᵣ).βᵣ
+@show samples_age
+```
+\output{bayesian-coef}
+
+```julia:note-coef
+# hideall
+r5(x) = round(x; digits=5)
+coef_a = coef(linear_model)[2] |> r5
+coef_r = coef(linear_model)[3] |> r5
+"""
+Now, the 
+Notice how these estimated coefficients are close to the coefficients that we set for `age` and `recent`, namely \$a_e = $aₑ \\approx $coef_a \$ and \$ r_e = $rₑ \\approx $coef_r \$.
+""" |> print
+```
+\textoutput{note-coef}
+
+## Measuring accuracy
+
+For the accuracy, we use the receiver operating characteristic curve (ROC curve).
+To reduce the effect of random noise, we fit the model on a number of batches of generated data.
+
+```julia:fit-lm-batch
+function fit_and_eval(i::Int)
+  df = generate_data(i)
+  model = lm(@formula(grade ~ age + recent), df)
+
+end
+```

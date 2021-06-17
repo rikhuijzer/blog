@@ -71,7 +71,7 @@ Let the height and width also be correlated.
 Define the width to be 0.6 times the height.
 Specifically,
 
-$$ w_i = 0.6 H_i. $$
+$$ w_i = 0.6 h_i. $$
 
 In Julia, this can be defined as
 
