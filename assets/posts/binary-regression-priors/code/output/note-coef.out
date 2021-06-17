@@ -1,0 +1,1 @@
+Notice how these estimated coefficients are close to the coefficients that we set for `age` and `recent`, namely $a_e = 1.1 \approx 1.0436 $ and $ r_e = 1.05 \approx 1.07894 $.

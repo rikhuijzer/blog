@@ -1,0 +1,4 @@
+coefficient | true value | linear estimate | linear error | bayesian estimate | bayesian error
+--- | --- | --- | --- | --- | ---
+aₑ | 1.1 | 1.04 | 5.1 % | 1.05 | 4.8 %
+rₑ | 1.05 | 1.08 | 2.8 % | 1.08 | 2.7 %

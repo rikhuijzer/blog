@@ -3,6 +3,6 @@ I = 0:0.01:1
 df = (x=I, y=logit.(I))
 xy = mapping([I] => :x, [logit.(I)] => :y) * visual(Lines)
 
-Blog.makie_svg(@OUTPUT, "logit", # hide
+Blog.aog_svg(@OUTPUT, "logit", # hide
 draw(xy)
 ) # hide

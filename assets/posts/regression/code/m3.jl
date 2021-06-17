@@ -6,6 +6,6 @@ layers = data(df_pred) * smooth(degree=3)
 layers += data(df_pred) * visual(Scatter)
 layers += data(df) * visual(Scatter)
 
-Blog.makie_svg(@OUTPUT, "m3", # hide
+Blog.aog_svg(@OUTPUT, "m3", # hide
 draw(layers * mapping(:W, :Y_digit))
 ) # hide

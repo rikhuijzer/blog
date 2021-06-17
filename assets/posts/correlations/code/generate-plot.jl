@@ -6,6 +6,6 @@ using CairoMakie
 sdf = stack(df, [:A, :B, :C, :D])
 xv = data(sdf) * mapping(:x, :value; color=:variable)
 
-Blog.makie_svg(@OUTPUT, "plot", # hide
+Blog.aog_svg(@OUTPUT, "plot", # hide
 draw(xv)
 ) # hide

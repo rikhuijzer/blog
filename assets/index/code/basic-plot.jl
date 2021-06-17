@@ -6,6 +6,6 @@ using CairoMakie
 I = 1:30
 xy = mapping([I] => :x, [I.*2] => :y)
 
-Blog.makie_svg(@OUTPUT, "basic-plot", # hide
+Blog.aog_svg(@OUTPUT, "basic-plot", # hide
 draw(xy)
 ) # hide

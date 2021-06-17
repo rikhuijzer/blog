@@ -12,7 +12,10 @@ MLJ 0.16.4
 MLJBase 0.18.11
 MLJDecisionTreeInterface 0.1.2
 MLJGLMInterface 0.1.4
+Makie 0.13.14
 Query 1.0.0
 StableRNGs 1.0.0
+StatsFuns 0.9.8
 Suppressor 0.2.0
 TikzPictures 3.3.3
+Turing 0.16.2
