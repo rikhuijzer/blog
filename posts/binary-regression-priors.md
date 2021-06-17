@@ -3,6 +3,7 @@ title = "Increasing predictive accuracy by using foreknowledge"
 published = "2021-06-16"
 tags = ["statistics", "priors"]
 rss = "Using priors for binary logistic regression"
+reeval = true
 +++
 
 Typically, when making predictions via a linear model, we fit the model on our data and make predictions from the fitted model.
@@ -52,14 +53,14 @@ function generate_data(i::Int)
   n = 80
   I = 1:n
   P = [i % 2 == 0 for i in I]
-  r2(x) = round(x; digits=2)
+  r_2(x) = round(x; digits=2)
   r3(x) = round(x; digits=3)
 
-  A = r2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
-  R = r2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])
+  A = r_2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
+  R = r_2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])
   E = rand(Normal(0, 1), n)
   G = aₑ .* A + rₑ .* R .+ E
-  G = r2.(G)
+  G = r_2.(G)
 
   df = DataFrame(age=A, recent=R, error=E, grade=G, pass=P)
 end
@@ -105,9 +106,10 @@ df[!, :str_pass] = string.(df.pass)
 fig = Figure(; resolution=(800, 400))
 dens = data(df) * AlgebraOfGraphics.density()
 ag = dens * mapping(:age; color=:str_pass)
-draw!(fig[1, 1], ag)
+axis = (ylabel="estimated density",)
+draw!(fig[1, 1], ag; axis)
 rg = dens * mapping(:recent; color=:str_pass)
-draw!(fig[1, 2], rg)
+draw!(fig[1, 2], rg; axis)
 
 Blog.makie_svg(@OUTPUT, "dist", # hide
 fig
@@ -170,6 +172,7 @@ first(rescaled, 8)
 \output{rescale}
 
 ```julia:bayesian-model
+using Statistics
 using StatsFuns: logistic
 using Turing
 
@@ -187,28 +190,59 @@ end
 n = nrow(df)
 bm = bayesian_model(df.age, df.recent, df.grade, n)
 chns = Turing.sample(bm, NUTS(), MCMCThreads(), 10_000, 3)
-show(stdout, MIME("text/plain"), chns) |> print # hide
+# show(stdout, MIME("text/plain"), chns) # hide
 ```
 \output{bayesian-model}
 
-```julia:bayesian-coef
-samples_age = get(chns, :βₐ).βₐ
-samples_recent = get(chns, :βᵣ).βᵣ
-@show samples_age
-```
-\output{bayesian-coef}
+Lets plot the density for the coefficient estimates $\beta_a$ and $\beta_r$.
 
-```julia:note-coef
+```julia:turingplot
 # hideall
-r5(x) = round(x; digits=5)
-coef_a = coef(linear_model)[2] |> r5
-coef_r = coef(linear_model)[3] |> r5
+using CategoricalArrays
+
+chns_df = DataFrame(chns)
+chns_df[!, :chain] = categorical(chns_df.chain)
+sdf = DataFrames.stack(chns_df, names(chns), variable_name=:parameter)
+sdf = filter(:parameter => p -> p == "βₐ" || p == "βᵣ", sdf)
+
+layer = data(sdf) * mapping(:value; color=:chain, col=:parameter)
+dens = layer * AlgebraOfGraphics.density()
+axis = (ylabel="density",)
+
+Blog.makie_svg(@OUTPUT, "turingplot", # hide
+draw(dens; axis)
+) # hide
+```
+\textoutput{turingplot}
+
+```julia:turing-coef
+# hideall
+r_2(x) = round(x; digits=2)
+r_3(x) = round(x; digits=3)
+coef_a_turing = mean(chns_df.βₐ)
+coef_r_turing = mean(chns_df.βᵣ)
+
+function coef_error(true_value, estimate)
+    err = abs(true_value - estimate)
+    part = err / true_value
+    percentage = part * 100
+    percentage = round(percentage; digits=1)
+    percentage = "$percentage %"
+end
+
+lin_err_a = coef_error(aₑ, coef_a)
+lin_err_r = coef_error(rₑ, coef_r)
+bay_err_a = coef_error(aₑ, coef_a_turing)
+bay_err_r = coef_error(rₑ, coef_r_turing)
+
 """
-Now, the 
-Notice how these estimated coefficients are close to the coefficients that we set for `age` and `recent`, namely \$a_e = $aₑ \\approx $coef_a \$ and \$ r_e = $rₑ \\approx $coef_r \$.
+coefficient | true value | linear estimate | linear error | bayesian estimate | bayesian error
+--- | --- | --- | --- | --- | ---
+aₑ | $aₑ | $(coef_a |> r_2) | $lin_err_a | $(coef_a_turing |> r_2) | $bay_err_a
+rₑ | $rₑ | $(coef_r |> r_2) | $lin_err_r | $(coef_r_turing |> r_2) | $bay_err_r
 """ |> print
 ```
-\textoutput{note-coef}
+\textoutput{turing-coef}
 
 ## Measuring accuracy
 
