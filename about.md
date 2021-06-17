@@ -25,6 +25,7 @@ _Projects:_
 
 _Contributions:_
 
+- Add t-test for cases where only mean and sd are known ([HypothesisTests.jl#237](https://github.com/JuliaStats/HypothesisTests.jl/pull/237))
 - Update documentation for density ([AlgebraOfGraphics.jl#211](https://github.com/JuliaPlots/AlgebraOfGraphics.jl/pull/211))
 - Add tests for authentication ([Pluto.jl#1170](https://github.com/fonsp/Pluto.jl/pull/1170))
 - Fix InExactError for `[0.0]` ([Showoff.jl#41](https://github.com/JuliaGraphics/Showoff.jl/pull/41))
