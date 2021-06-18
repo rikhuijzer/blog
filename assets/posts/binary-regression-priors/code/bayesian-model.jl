@@ -2,8 +2,7 @@
 using Statistics
 using StatsFuns: logistic
 using Turing
-
-# Use Bijectors Shift and Scale to work around the centering issue. # hide
+# TODO: Use Bijectors Shift and Scale to work around the centering issue. # hide
 
 @model function bayesian_model(ages, recents, grades, n)
     intercept ~ Normal(0, 5)
