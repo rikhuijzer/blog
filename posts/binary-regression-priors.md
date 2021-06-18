@@ -1,5 +1,5 @@
 +++
-title = "Increasing predictive accuracy by using foreknowledge"
+title = "Increasing model accuracy by using foreknowledge"
 published = "2021-06-16"
 tags = ["statistics", "priors"]
 rss = "Using priors for binary logistic regression"
@@ -9,9 +9,10 @@ Typically, when making predictions via a linear model, we fit the model on our d
 However, this doesn't take much foreknowledge into account.
 For example, when predicting a person's length given only the weight and gender, we already have an intuition about the effect size and direction.
 Bayesian analysis should be able to incorporate this prior information.
-In this blog post, I aim to figure out how much can be gained from using foreknowledge.
-To do this, I generate data and fit a Bayesian binary regression.
-Next, I compare the accuracy from the Bayesian model with a simple linear model.
+
+In this blog post, I aim to figure out whether foreknowledge can, in theory, increase model accuracy.
+To do this, I generate data and fit a linear model and a Bayesian binary regression.
+Next, I compare the accuracy of the model parameters from the linear and Bayesian model.
 
 \toc
 
@@ -53,7 +54,6 @@ function generate_data(i::Int)
   I = 1:n
   P = [i % 2 == 0 for i in I]
   r_2(x) = round(x; digits=2)
-  r3(x) = round(x; digits=3)
 
   A = r_2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
   R = r_2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])
@@ -145,8 +145,7 @@ Notice how these estimated coefficients are close to the coefficients that we se
 For the Bayesian regression we fit a model via Turing.jl.
 Now, we give the model information about the structure of the data as well as priors for the size of the coefficients.
 For demonstration purposes, I've set the priors to the correct values.
-This is reasonable since guessing a similar prior wouldn't be too difficult in an example like given here.
-Also, it is reasonable because the prior will be mostly overruled by the data.
+This is reasonable because I was wondering whether finding a good prior could have a positive effect on the model accuracy.
 
 ```julia:rescale
 # hideall
