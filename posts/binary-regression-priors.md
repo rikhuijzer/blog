@@ -32,7 +32,6 @@ g_i = a_e * a_i + r_e * r_i + \\epsilon_i = $(aₑ) * a_i + $(rₑ) * r_i + \\ep
 """ |> print
 ```
 \textoutput{genformula} where $a_e$ is the coefficient for the age, $r_e$ is a coefficient for the nationality and $\epsilon_i$ is some random noise for individual $i$.
-An individual passes the course if the grade is 31 or higher.
 
 We generate data for $n$ individuals via
 
@@ -175,8 +174,7 @@ first(rescaled, 8)
 using Statistics
 using StatsFuns: logistic
 using Turing
-
-# Use Bijectors Shift and Scale to work around the centering issue. # hide
+# TODO: Use Bijectors Shift and Scale to work around the centering issue. # hide
 
 @model function bayesian_model(ages, recents, grades, n)
     intercept ~ Normal(0, 5)
