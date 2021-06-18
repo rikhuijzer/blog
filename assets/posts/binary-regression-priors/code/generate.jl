@@ -10,7 +10,6 @@ function generate_data(i::Int)
   I = 1:n
   P = [i % 2 == 0 for i in I]
   r_2(x) = round(x; digits=2)
-  r3(x) = round(x; digits=3)
 
   A = r_2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
   R = r_2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])

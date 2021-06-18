@@ -1,4 +1,4 @@
-AlgebraOfGraphics 0.4.4
+AlgebraOfGraphics 0.4.5
 CSV 0.8.5
 CairoMakie 0.5.10
 CategoricalArrays 0.10.0
@@ -8,7 +8,7 @@ Franklin 0.10.37
 GLM 1.4.2
 HypothesisTests 0.10.4
 MLDataUtils 0.5.4
-MLJ 0.16.4
+MLJ 0.16.5
 MLJBase 0.18.11
 MLJDecisionTreeInterface 0.1.2
 MLJGLMInterface 0.1.4
@@ -18,4 +18,4 @@ StableRNGs 1.0.0
 StatsFuns 0.9.8
 Suppressor 0.2.0
 TikzPictures 3.3.3
-Turing 0.16.2
+Turing 0.16.3

@@ -23,7 +23,7 @@
 
 <item>
   <title>
-    <![CDATA[  Increasing predictive accuracy by using foreknowledge  ]]>
+    <![CDATA[  Increasing model accuracy by using foreknowledge  ]]>
   </title>
   <link> https://huijzer.xyz/posts/binary-regression-priors/index.html </link>
   <guid> https://huijzer.xyz/posts/binary-regression-priors/index.html </guid>
@@ -31,7 +31,7 @@
     <![CDATA[  Using priors for binary logistic regression  ]]>
   </description>  
     
-  <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>  
+  <pubDate>Fri, 18 Jun 2021 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
