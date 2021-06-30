@@ -31,7 +31,7 @@ Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
 [compat]
 AlgebraOfGraphics = "0.4"
 CSV = "0.8"
-CairoMakie = "0.5"
+CairoMakie = "0.6"
 CategoricalArrays = "0.10"
 DataFrames = "1.1"
 Distributions = "0.24"
