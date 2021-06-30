@@ -94,7 +94,7 @@ function plot_estimates(estimate_function; title="")
     layers += data(df_bounds) * visual(Lines)
   end
 
-  axis = (; yticks=0:20:80, limits=((-0.2, 1.2), nothing))
+  axis = (; yticks=0:20:80, limits=((-0.2, 1.2), nothing), title)
   map = mapping(:P => "Probability of heads", :draws => "Observed number of draws")
   draw(layers * map; axis)
 end
@@ -103,14 +103,14 @@ end
 
 ```julia:plot_frequentist_estimates
 Blog.aog_svg(@OUTPUT, "frequentist-estimates", # hide
-plot_estimates(frequentist_estimate, title = "Frequentist estimates")
+plot_estimates(frequentist_estimate; title="Frequentist estimates")
 ) # hide
 ```
 \textoutput{plot_frequentist_estimates}
 
 ```julia:plot_bayesian_estimates
 Blog.aog_svg(@OUTPUT, "bayesian-estimates", # hide
-plot_estimates(bayesian_estimate, title = "Bayesian estimates")
+plot_estimates(bayesian_estimate; title="Bayesian estimates")
 ) # hide
 ```
 \textoutput{plot_bayesian_estimates}
@@ -126,13 +126,13 @@ This approach is called *optional stopping*.
 Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false.
 \citet{tCumming2011} calls this the "dance of the $p$-values".
 
-## References 
+## References
 \biblabel{tCumming2011}{Cumming (2011)}
-Cumming, G. (2011). 
+Cumming, G. (2011).
 Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis. 
 Routledge.
 
 \biblabel{turing2020closed}{The Turing Language, 2020}
-The Turing Language (2020). 
+The Turing Language (2020).
 Introduction to Turing.
 <https://turing.ml/dev/tutorials/0-introduction/>.
