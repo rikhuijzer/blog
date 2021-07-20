@@ -1,6 +1,6 @@
 AlgebraOfGraphics 0.4.8
 CSV 0.8.5
-CairoMakie 0.6.2
+CairoMakie 0.6.3
 CategoricalArrays 0.10.0
 DataFrames 1.2.0
 Distributions 0.25.11
@@ -12,7 +12,7 @@ MLJ 0.16.7
 MLJBase 0.18.14
 MLJDecisionTreeInterface 0.1.2
 MLJGLMInterface 0.1.5
-Makie 0.14.2
+Makie 0.15.0
 Query 1.0.0
 StableRNGs 1.0.0
 StatsFuns 0.9.8
