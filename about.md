@@ -58,6 +58,7 @@ _Courses:_
 
 _MSc theses:_
 
+- Daniel Buxton, 2021. _Het proces van stress en herstel tijdens het selectietraject van het Korps Commandotroepen_
 - Calum Guthrie, 2020. _What are the Characteristics of Successful Commando Candidates?_
 
 #### Presentations
