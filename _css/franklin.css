@@ -2,7 +2,8 @@
   --accent: #3D93F6;
   --black: hsl(0, 0%, 15%);
   --background: hsl(0, 0%, 100%);
-  --block-background: hsl(0, 0%, 97%);
+  --block-background: hsl(0, 0%, 94%);
+  --output-background: hsl(0, 0%, 98%);
 }
 
 html {
@@ -267,6 +268,11 @@ code {
 .hljs-metas { color: red; }
 
 .hljs-metap { color: rgb(51, 131, 231); }
+
+.code-output {
+  background: var(--output-background);
+  border: 1px dashed #dbdbdb;
+}
 
 /* ==================================================================
     BOXES

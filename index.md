@@ -33,7 +33,7 @@ draw(xy)
 ```
 \textoutput{basic-plot}
 
-The source code of this website is available at [GitHub](https://github.com/rikhuijzer/huijzer.xyz).
+The source code of this website is available on [GitHub](https://github.com/rikhuijzer/huijzer.xyz).
 
 ## Posts
 
