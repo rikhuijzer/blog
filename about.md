@@ -13,7 +13,7 @@ PhD student at the University of Groningen;
 
 #### Publications
 
-Nothing yet.
+- [Julia Data Science](https://juliadatascience.io) (book, work in progress)
 
 #### Open source
 
