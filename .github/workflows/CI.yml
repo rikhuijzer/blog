@@ -45,14 +45,7 @@ jobs:
         # In response to error luatex85.sty not found.
         sudo apt-get install -y texlive-luatex
 
-    - name: Install extra dependencies
-      run: julia -e '
-        using Pkg; Pkg.add(["NodeJS"]);
-        using NodeJS; run(`$(npm_cmd()) install highlight.js`);'
-
     - uses: julia-actions/julia-buildpkg@latest
-
-    - run: julia --project -e 'Pkg.add(url="https://github.com/JuliaData/CSV.jl")'
 
     - name: Build site
       run: julia --project -e '
