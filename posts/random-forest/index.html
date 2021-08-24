@@ -25,7 +25,7 @@ df &#61; DataFrame&#40;
     V &#61; rand&#40;Normal&#40;100, 10&#41;, n&#41;
 &#41;
 
-first&#40;df, 10&#41;</code></pre><pre><code class=plaintext >10×3 DataFrame
+first&#40;df, 10&#41;</code></pre><pre><code class="plaintext code-output">10×3 DataFrame
  Row │ class  U         V
      │ Cat…   Float64   Float64
 ─────┼───────────────────────────
@@ -43,7 +43,7 @@ first&#40;df, 10&#41;</code></pre><pre><code class=plaintext >10×3 DataFrame
 draw&#40;uv&#41;</code></pre> <img src="/assets/posts/random-forest/code/output/u-class.svg" alt=""> <h2 id=train_and_test_split ><a href="#train_and_test_split" class=header-anchor >Train and test split</a></h2> <p>Training and evaluating &#40;testing&#41; on the same data is not particulary useful because we want to know how well our model generalizes. For more information, see topics such as <a href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a>. Instead, we split the data up in a <em>train</em> and <em>test</em> set.</p> <pre><code class=language-julia >using StableRNGs
 
 rng &#61; StableRNG&#40;123&#41;
-train, test &#61; MLJ.partition&#40;eachindex&#40;classes&#41;, 0.7; shuffle&#61;true, rng&#41;</code></pre><pre><code class=plaintext >length(train) = 56
+train, test &#61; MLJ.partition&#40;eachindex&#40;classes&#41;, 0.7; shuffle&#61;true, rng&#41;</code></pre><pre><code class="plaintext code-output">length(train) = 56
 length(test) = 24
 </code></pre> <h2 id=model_fitting ><a href="#model_fitting" class=header-anchor >Model fitting</a></h2> <pre><code class=language-julia >LinearBinary &#61; @load LinearBinaryClassifier pkg&#61;GLM verbosity&#61;0
 logistic_model &#61; LinearBinary&#40;&#41;;
@@ -54,26 +54,26 @@ forest_model &#61; EnsembleModel&#40;atom&#61;tree, n&#61;10&#41;;
 
 logistic &#61; machine&#40;logistic_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
 fit&#33;&#40;logistic; rows&#61;train&#41;
-fitted_params&#40;logistic&#41;.coef</code></pre><pre><code class=plaintext >2-element Vector{Float64}:
+fitted_params&#40;logistic&#41;.coef</code></pre><pre><code class="plaintext code-output">2-element Vector{Float64}:
  0.7170450596947773
  0.04093656719487316</code></pre> <p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is random noise.</p> <pre><code class=language-julia >forest &#61; machine&#40;forest_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
-fit&#33;&#40;forest; rows&#61;train&#41;;</code></pre><pre><code class=plaintext >
+fit&#33;&#40;forest; rows&#61;train&#41;;</code></pre><pre><code class="plaintext code-output">
 </code></pre> <h2 id=accuracy ><a href="#accuracy" class=header-anchor >Accuracy</a></h2> <p>Now that we have fitted the two models, we can compare the accuracies and plot the <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic</a>.</p> <pre><code class=language-julia >logistic_predictions &#61; predict_mode&#40;logistic, rows&#61;test&#41;
 forest_predictions &#61; predict_mode&#40;forest, rows&#61;test&#41;
 truths &#61; classes&#91;test&#93;
 
 r3&#40;x&#41; &#61; round&#40;x; sigdigits&#61;3&#41;
 
-accuracy&#40;logistic_predictions, classes&#91;test&#93;&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.625</code></pre>
-<pre><code class=language-julia >accuracy&#40;forest_predictions, classes&#91;test&#93;&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.5</code></pre>
+accuracy&#40;logistic_predictions, classes&#91;test&#93;&#41; |&gt; r3</code></pre><pre><code class="plaintext code-output">0.625</code></pre>
+<pre><code class=language-julia >accuracy&#40;forest_predictions, classes&#91;test&#93;&#41; |&gt; r3</code></pre><pre><code class="plaintext code-output">0.5</code></pre>
 <pre><code class=language-julia >using MLJBase
 
 logistic_predictions &#61; MLJ.predict&#40;logistic, rows&#61;test&#41;
 logistic_fprs, logistic_tprs, _ &#61; roc_curve&#40;logistic_predictions, truths&#41;
-logistic_aoc &#61; auc&#40;logistic_predictions, truths&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.686</code></pre>
+logistic_aoc &#61; auc&#40;logistic_predictions, truths&#41; |&gt; r3</code></pre><pre><code class="plaintext code-output">0.686</code></pre>
 <pre><code class=language-julia >forest_predictions &#61; MLJ.predict&#40;forest, rows&#61;test&#41;
 forest_fprs, forest_tprs, _ &#61; roc_curve&#40;forest_predictions, truths&#41;
-forest_aoc &#61; auc&#40;forest_predictions, truths&#41; |&gt; r3</code></pre><pre><code class=plaintext >0.571</code></pre>
+forest_aoc &#61; auc&#40;forest_predictions, truths&#41; |&gt; r3</code></pre><pre><code class="plaintext code-output">0.571</code></pre>
 <pre><code class=language-julia >logistic_df &#61; DataFrame&#40;
     x &#61; logistic_fprs,
     y &#61; logistic_tprs,
@@ -112,16 +112,16 @@ function fitted_accuracy&#40;model, train, test&#41;
 end
 
 accuracies &#61; &#91;fitted_accuracy&#40;logistic_model, train, test&#41; for &#40;train, test&#41; in folds&#93;
-accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class=plaintext >([0.7, 0.7, 0.4, 0.6, 0.7, 0.8, 0.7, 0.6], 0.65)</code></pre>
+accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class="plaintext code-output">([0.7, 0.7, 0.4, 0.6, 0.7, 0.8, 0.7, 0.6], 0.65)</code></pre>
 <pre><code class=language-julia >accuracies &#61; &#91;fitted_accuracy&#40;forest_model, train, test&#41; for &#40;train, test&#41; in folds&#93;
-accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class=plaintext >([0.5, 0.6, 0.3, 0.5, 0.5, 0.7, 0.5, 0.4], 0.5)</code></pre>
+accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class="plaintext code-output">([0.5, 0.6, 0.3, 0.5, 0.5, 0.7, 0.5, 0.4], 0.5)</code></pre>
 
 <h2 id=references ><a href="#references" class=header-anchor >References</a></h2>
 <p><a id=pbiau2016  class=anchor ></a> Biau, G., Scornet, E. &#40;2016&#41;. A Random Forest Guided Tour.  TEST 25, 197–227 &#40;2016&#41;.  <a href="https://doi.org/10.1007/s11749-016-0481-7">https://doi.org/10.1007/s11749-016-0481-7</a></p>
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-07-20.
+    Last update: 2021-08-24.
   </div>
 </div>
 </div>

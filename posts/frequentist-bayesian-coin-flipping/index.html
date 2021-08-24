@@ -4,7 +4,7 @@ using Random
 n &#61; 80
 Random.seed&#33;&#40;102&#41;
 p_true &#61; 0.5
-is_heads &#61; rand&#40;Bernoulli&#40;p_true&#41;, n&#41;</code></pre> <p>To give some intuition about the sample, the first six elements of <code>is_heads</code> are</p> <pre><code class=plaintext >is_heads[1:6] = Bool[1, 0, 0, 1, 1, 1]
+is_heads &#61; rand&#40;Bernoulli&#40;p_true&#41;, n&#41;</code></pre> <p>To give some intuition about the sample, the first six elements of <code>is_heads</code> are</p> <pre><code class="plaintext code-output">is_heads[1:6] = Bool[1, 0, 0, 1, 1, 1]
 </code></pre> <h2 id=calculate_probability_estimates ><a href="#calculate_probability_estimates" class=header-anchor >Calculate probability estimates</a></h2> <p>The Frequentist estimate for a one sample t-test after seeing <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> samples can be calculated with</p> <pre><code class=language-julia >using HypothesisTests
 
 function frequentist_estimate&#40;n&#41;
@@ -54,7 +54,7 @@ end</code></pre> <pre><code class=language-julia >plot_estimates&#40;frequentist
 <div class=page-foot >
   <div class=copyright >
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-07-20.
+    Last update: 2021-08-24.
   </div>
 </div>
 </div>
