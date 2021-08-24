@@ -49,7 +49,8 @@ jobs:
         optimize();
         verify_links()' > build.log
 
-    - name: Validate output
+    - name: Validate output before deployment when not in PR
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         if grep -1 "Franklin Warning" build.log; then
           echo "Franklin reported a warning"
@@ -62,6 +63,13 @@ jobs:
       if: ${{ github.event_name != 'pull_request' }}
       uses: peaceiris/actions-gh-pages@v3
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./__site
+        cname: huijzer.xyz
+
+    - name: Deploy to secondary branch
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        publish_branch: gh-pages-debug
         publish_dir: ./__site
         cname: huijzer.xyz
