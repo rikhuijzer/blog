@@ -63,6 +63,7 @@ jobs:
       if: ${{ github.event_name != 'pull_request' }}
       uses: peaceiris/actions-gh-pages@v3
       with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./__site
         cname: huijzer.xyz
 
@@ -70,6 +71,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
       uses: peaceiris/actions-gh-pages@v3
       with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages-debug
         publish_dir: ./__site
         cname: huijzer.xyz
