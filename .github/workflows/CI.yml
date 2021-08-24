@@ -52,6 +52,8 @@ jobs:
 
     - uses: julia-actions/julia-buildpkg@latest
 
+    - run: julia --project -e 'Pkg.add(url="https://github.com/JuliaData/CSV.jl")'
+
     - name: Build site
       run: julia --project -e '
         using Franklin; optimize();
