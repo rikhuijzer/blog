@@ -16,6 +16,22 @@ jobs:
       with:
         persist-credentials: false
 
+    - name: Install Julia
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: "1.6"
+
+    - uses: actions/cache@v1
+      env:
+        cache-name: cache-artifacts
+      with:
+        path: ~/.julia/artifacts
+        key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-test-${{ env.cache-name }}-    
+          ${{ runner.os }}-test-
+          ${{ runner.os }}-
+
     - name: Install LaTeX (used by TikzPictures.jl)
       run: |
         sudo apt-get -qq update
@@ -29,24 +45,11 @@ jobs:
         # In response to error luatex85.sty not found.
         sudo apt-get install -y texlive-luatex
 
-    # NOTE: Python is necessary for the pre-rendering (minification) step
-    - name: Install python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-
-    - name: Install Julia
-      uses: julia-actions/setup-julia@v1
-      with:
-        version: "1.6"
+    - uses: julia-actions/julia-buildpkg@latest
 
     - name: Build site
-      run: julia -e '
-        using Pkg; Pkg.add(["NodeJS", "Franklin"]);
-        using NodeJS; run(`$(npm_cmd()) install highlight.js`);
-        using Franklin;
-        Pkg.activate("."); Pkg.instantiate();
-        optimize();
+      run: julia --project -e '
+        using Franklin; optimize();
         verify_links()' > build.log
 
     - name: Validate output
