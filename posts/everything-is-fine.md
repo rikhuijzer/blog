@@ -1,5 +1,5 @@
 +++
-title = "Everything is fine"
+title = "Why we're in a speculative bubble"
 published = "2021-08-05"
 tags = ["economy", "stocks"]
 rss = "Why I'm baffled by people claiming that the economy is doing fine"
