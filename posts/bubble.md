@@ -1,6 +1,6 @@
 +++
-title = "Why we're in a speculative bubble"
-published = "2021-08-05"
+title = "Why we are in a speculative bubble"
+published = "2021-08-26"
 tags = ["economy", "stocks"]
 rss = "Why I'm baffled by people claiming that the economy is doing fine"
 +++
@@ -9,7 +9,7 @@ The news is full of headlines such as
 "Why The Global Economy is Recovering Faster Than Expected"
 (Harvard Business Review, October [2020](https://hbr.org/2020/11/why-the-global-economy-is-recovering-faster-than-expected)).
 and "Dutch Economy Grows Again, Second Corona Low is Over"
-(NOS, August [2021](https://nos.nl/artikel/2394161-nederlandse-economie-groeit-weer-tweede-coronadip-voorbij) _(in Dutch)_)
+(NOS, August [2021](https://nos.nl/artikel/2394161-nederlandse-economie-groeit-weer-tweede-coronadip-voorbij) _(in Dutch)_).
 It completely baffles me how these articles overlook a simple explanation from Warren Buffet and Charlie Munger:
 we are in a massive speculative bubble.
 
@@ -30,29 +30,48 @@ To see why this is the case, let's look at the long-term stock price of Microsof
 
 \figure{/assets/everything-is-fine/msft.jpg}{Microsoft stock price}{Stock price of Microsoft. The two red circles indicate the dot come bubble of 2000 and the housing market crash of 2007}{https://finance.yahoo.com/quote/MSFT}{Yahoo}
 
+Here, you can see that the price of Microsoft went up by 1000% from 1995 to 1999.
+Then, the dot-com bubble burst and the price halved in one year.
+Around 2007, a similar increase and subsequent sharp decrease is visible.
+From January 2008 to February 2009, the price halved.
+Both these crises were considered big financial crises and resulted in many people losing their income.
+Now, compare the price in 2013 to the price today.
+Again, we see a 1000% increase.
+
 So, aha.
 Okay.
 Well, that can happen you could say.
-Investors apparently think that Microsoft is doing very well and I agree.
-But, are they doing **this** well?
-Let's go to a completely different brand that is not related to software.
+Investors apparently think that Microsoft is doing very well, and I agree that they indeed are doing very well.
+However, are they really doing **this** well?
+Are they doing 10 times better than 2012?
+For example, Microsoft's annual report of 2012 reports a cash flow from operations of about \$32 billion.
+This operational cash flow is a great number to look at since it tells how much money the company can spend freely on things like more research or paying back investors.
+The cash flow in 2020 is \$77 billion.
+That is slightly more than a twofold increase and **not** a 10-fold increase.
+The only reason that this difference could be legit is when future potential for a company improves.
+
+As a comparison, let's go to a completely different brand that is not related to software.
 The brand that most of us love and know, namely WD-40.
 
 \figure{/assets/everything-is-fine/wdfc.jpg}{WD-40 Company stock price}{Stock price of WD-40 Company}{https://finance.yahoo.com/quote/WDFC}{Yahoo}
 
-Both these images show that the crises of 2000 and 2007 have affected the stock price, but that we're now seeing something **completely different**.
-If you think that I've cherry picked these companies, just look at the NASDAQ Composite index.
+Both these images show that the crises of 2000 and 2007 have affected the stock price, but what is happening now looks almost insane.
+WD-40 is the brand and trademarket product that can be used to get stuck things loose.
+The product was first sold in 1958 and in 1965, it was already being used by aviation companies in the United States.
+Since then, I cannot really find any evidence that they have created new products.
+Still, the stock increased by 200% from after the dot-com bubble to it's peak in 2007.
+During the 2007 financial crisis, the stock dropped by about 60%.
+Since this peak of 2007, the stock price has increased by **600%** again.
 
-\figure{/assets/everything-is-fine/nasdaq.jpg}{NASDAQ composite price}{Price of the NASDAQ Composite}{https://finance.yahoo.com/quote/^IXIC}{Yahoo}
+If you think that I've cherry picked these companies, just look at the S&P 500.
+The S&P 500 is a composite index which tracks 500 large companies in the United States.
 
-Okay, so now you're thinking that it's probably only the NASDAQ.
+\figure{/assets/everything-is-fine/sp500.jpg}{S&P 500}{Price of the S&P 500}{https://finance.yahoo.com/quote/^GSPC}{Yahoo}
+
+Okay, so now you're thinking that it's probably only America.
 This is the AEX index (Amsterdam):
 
 \figure{/assets/everything-is-fine/aex.jpg}{AEX index (Amsterdam)}{Price of the AEX index}{https://finance.yahoo.com/quote/^AEX}{Yahoo}
-
-Or, the Jakarta Composite index (Indonesia):
-
-\figure{/assets/everything-is-fine/jkse.jpg}{Jakarta Composite index (Indonesia)}{Price of the Jakarta Composite index}{https://finance.yahoo.com/quote/^JKSE}{Yahoo}
 
 Or, Bitcoin:
 
@@ -60,7 +79,7 @@ Or, Bitcoin:
 
 Or, houses:
 
-\figure{/assets/everything-is-fine/houses.jpg}{House price}{House price index}{https://www.economist.com/graphic-detail/2017/03/09/global-house-prices}{Economist}
+\figure{/assets/everything-is-fine/houses.jpg}{House price}{House price index. The red circle indicates the housing market crash of 2007}{https://www.economist.com/graphic-detail/2017/03/09/global-house-prices}{Economist}
 
 Okay, so everything has increased in price.
 But why is that bad?
@@ -72,12 +91,12 @@ For example, the [Japanese asset price bubble](https://en.wikipedia.org/wiki/Jap
 > [...]
 > Even though asset prices had visibly collapsed by early 1992, the economy's decline continued for more than a decade.
 
-The starts sounds exactly like the current situation.
+The sounds exactly like the current situation.
 Governments are printing lots of money, that is, an _excessive monetary easing policy_ comparable to the policy used to **recover** from the financial crisis of 2007.
-Note that in the figures above, we haven't had any crisis yet.
 
 \figure{/assets/everything-is-fine/fed.jpg}{Money supply}{Federal Reserve buyback of US debt}{https://returnontime.com/quantitative-easing-2008-vs-2020/}{Return on Time}
 
+Note that in the figures above, we haven't had any crisis yet.
 Another example is the [Wall Street Crash of 1929](https://en.wikipedia.org/wiki/Wall_Street_Crash_of_1929).
 
 > The "Roaring Twenties", the decade following World War I that led to the crash, was a time of wealth and excess.
