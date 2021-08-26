@@ -32,8 +32,7 @@ To see why this is the case, let's look at the long-term stock price of Microsof
 
 Here, you can see that the price of Microsoft went up by **1000%** from 1995 to 1999.
 Then, the dot-com bubble burst and the price halved in one year.
-Around 2007, a similar increase and subsequent sharp decrease is visible.
-From January 2008 to February 2009, the price halved.
+Around 2007, a similar increase and decrease happened.
 Both these crises were considered big financial crises and resulted in many people losing their income.
 Now, compare the price in 2013 to the price today.
 Again, we see a **1000%** increase.
@@ -62,6 +61,7 @@ Since then, I cannot really find any evidence that they have created new product
 Still, the stock increased by 200% from after the dot-com bubble to it's peak in 2007.
 During the 2007 financial crisis, the stock dropped by about 60%.
 Since this peak of 2007, the stock price has increased by **600%** again.
+At the same time, the operating cash flow didn't even double (from \$49 million in 2007 to \$77 million in 2020).
 
 If you think that I've cherry picked these companies, just look at the S&P 500.
 The S&P 500 is a composite index which tracks 500 large companies in the United States.
@@ -73,11 +73,6 @@ This is the AEX index (Amsterdam):
 
 \figure{/assets/everything-is-fine/aex.jpg}{AEX index (Amsterdam)}{Price of the AEX index}{https://finance.yahoo.com/quote/^AEX}{Yahoo}
 
-Or, Bitcoin:
-
-\figure{/assets/everything-is-fine/bitcoin.jpg}{Bitcoin price}{Price of Bitcoin compared to US dollars. The red circles have been omitted because there is no price in the graph for 2000 and 2007}{https://finance.yahoo.com/quote/BTC-USD}{Yahoo}
-
-Note that Bitcoin mainly spikes since 
 Or, houses:
 
 \figure{/assets/everything-is-fine/houses.jpg}{House price}{House price index. The red circle indicates the housing market crash of 2007}{https://www.economist.com/graphic-detail/2017/03/09/global-house-prices}{Economist}
@@ -107,8 +102,8 @@ Another example is the [Wall Street Crash of 1929](https://en.wikipedia.org/wiki
 > [...]
 > The crash, which followed the London Stock Exchange's crash of September, signaled the beginning of the Great Depression.
 
-So, **are we going into a new great depression?**
-If you look at history, it's likely to happen in the next months to years, but, of course, nobody knows for sure.
+Hence, the big question is: **are we going into a new great depression?**
+If you look at history, I'd say it could happen in the next months to years, but, of course, nobody knows for sure.
 To quote Warren Buffet in response to massive spending by the Federal Reserve (2013):
 
 > It will be interesting to watch.
