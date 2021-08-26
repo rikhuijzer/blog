@@ -30,13 +30,13 @@ To see why this is the case, let's look at the long-term stock price of Microsof
 
 \figure{/assets/everything-is-fine/msft.jpg}{Microsoft stock price}{Stock price of Microsoft. The two red circles indicate the dot come bubble of 2000 and the housing market crash of 2007}{https://finance.yahoo.com/quote/MSFT}{Yahoo}
 
-Here, you can see that the price of Microsoft went up by 1000% from 1995 to 1999.
+Here, you can see that the price of Microsoft went up by **1000%** from 1995 to 1999.
 Then, the dot-com bubble burst and the price halved in one year.
 Around 2007, a similar increase and subsequent sharp decrease is visible.
 From January 2008 to February 2009, the price halved.
 Both these crises were considered big financial crises and resulted in many people losing their income.
 Now, compare the price in 2013 to the price today.
-Again, we see a 1000% increase.
+Again, we see a **1000%** increase.
 
 So, aha.
 Okay.
@@ -48,7 +48,7 @@ For example, Microsoft's annual report of 2012 reports a cash flow from operatio
 This operational cash flow is a great number to look at since it tells how much money the company can spend freely on things like more research or paying back investors.
 The cash flow in 2020 is \$77 billion.
 That is slightly more than a twofold increase and **not** a 10-fold increase.
-The only reason that this difference could be legit is when future potential for a company improves.
+The only reason that this difference could be legit is when future income potential for a company is expected to improve.
 
 As a comparison, let's go to a completely different brand that is not related to software.
 The brand that most of us love and know, namely WD-40.
@@ -77,6 +77,7 @@ Or, Bitcoin:
 
 \figure{/assets/everything-is-fine/bitcoin.jpg}{Bitcoin price}{Price of Bitcoin compared to US dollars. The red circles have been omitted because there is no price in the graph for 2000 and 2007}{https://finance.yahoo.com/quote/BTC-USD}{Yahoo}
 
+Note that Bitcoin mainly spikes since 
 Or, houses:
 
 \figure{/assets/everything-is-fine/houses.jpg}{House price}{House price index. The red circle indicates the housing market crash of 2007}{https://www.economist.com/graphic-detail/2017/03/09/global-house-prices}{Economist}
@@ -92,7 +93,8 @@ For example, the [Japanese asset price bubble](https://en.wikipedia.org/wiki/Jap
 > Even though asset prices had visibly collapsed by early 1992, the economy's decline continued for more than a decade.
 
 The sounds exactly like the current situation.
-Governments are printing lots of money, that is, an _excessive monetary easing policy_ comparable to the policy used to **recover** from the financial crisis of 2007.
+Governments are printing lots of money, and one could call it an _excessive monetary easing policy_.
+The policy is comparable to the policy used to **recover** from the financial crisis of 2007.
 
 \figure{/assets/everything-is-fine/fed.jpg}{Money supply}{Federal Reserve buyback of US debt}{https://returnontime.com/quantitative-easing-2008-vs-2020/}{Return on Time}
 
@@ -105,17 +107,8 @@ Another example is the [Wall Street Crash of 1929](https://en.wikipedia.org/wiki
 > [...]
 > The crash, which followed the London Stock Exchange's crash of September, signaled the beginning of the Great Depression.
 
-Although this sounds abstract, great depressions are just bad.
-People lose their income, which results in a lot of suffering.
-
 So, **are we going into a new great depression?**
-Nobody knows.
-I can only end with some timeless ideas from Charlie Munger and Warren Buffet.
-They have said on multiple occasions that they cannot predict when a market crash will occur.
-They only know when prices are too high and if that they just sit on their hands and wait for the next crash.
-This might take months to years, they have [patience](https://summarycollection.com/tao-of-charlie-munger/).
-This quote from Buffet in 2013 seems like a nice one to end with:
+If you look at history, it's likely to happen in the next months to years, but, of course, nobody knows for sure.
+To quote Warren Buffet in response to massive spending by the Federal Reserve (2013):
 
-> [The Fed] is under no pressure, none whatsoever to have to deleverage.
-> So it can pick it's time, and if you have somebody wise there [...] it can be handled.
-> But it is something that's never quite been done on this scale. It will be interesting to watch.
+> It will be interesting to watch.
