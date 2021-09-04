@@ -13,12 +13,12 @@
 
   {{isdef title}} <meta property="og:title" content="{{fill title}}" /> {{end}}
   {{isdef published}} <meta property="og:type" content="article" /> {{end}}
-  {{isdef description}} <meta property="og:description" content="{{fill description}}" /> {{end}}
+  {{isdef rss}} <meta property="og:description" content="{{fill rss}}" /> {{end}}
   {{isdef image}} <meta property="og:image" content="{{website_url}}{{fill image}}" /> {{end}}
 
   {{isdef title}} <meta name="twitter:title" content="{{fill title}}" /> {{end}}
-  {{isdef description}} <meta name="twitter:card" content="summary" /> {{end}}
-  {{isdef description}} <meta name="twitter:description" content="{{fill description}}" /> {{end}}
+  {{isdef rss}} <meta name="twitter:card" content="summary" /> {{end}}
+  <meta name="twitter:creator" content="@rikhuijzer"/>
   {{isdef image}} <meta name="twitter:image" content="{{website_url}}{{fill image}}" /> {{end}}
 </head>
 <body>
