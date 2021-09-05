@@ -3,6 +3,7 @@ title = "Writing checklist"
 published = "2020-07-29"
 tags = ["checklist", "writing"]
 rss = "A list to quickly check for common mistakes in writing."
+image = "/assets/self.jpg"
 +++
 
 I keep forgetting lessons about writing.

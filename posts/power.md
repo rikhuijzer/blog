@@ -3,6 +3,7 @@ title = "Statistical power from scratch"
 published = "2019-12-29"
 tags = ["statistics", "normal distribution", "t-test"]
 rss = "Explaining statistical power by first finding the binomial and normal distributions."
+image = "/assets/self.jpg"
 +++
 
 In the 1970s the American government wanted to save fuel by allowing drivers to turn right at a red light \citep{reinhart2020}.

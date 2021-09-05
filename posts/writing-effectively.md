@@ -3,6 +3,7 @@ title = "Writing effectively"
 published = "2020-08-12"
 tags = ["valuable", "academia", "writing"]
 rss = "Why writing should be valuable to the reader."
+image = "/assets/self.jpg"
 +++
 
 According to \citet{tMcEnerney}, academics are trained to be poor writers.

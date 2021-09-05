@@ -3,6 +3,7 @@ title = "Design cheatsheet"
 published = "2020-11-29"
 tags = ["design"]
 rss = "A summary of design tips and tricks."
+image = "/assets/self.jpg"
 +++
 
 I like to complain that design can distract from the main topic and is therefore not important.

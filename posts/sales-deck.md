@@ -3,6 +3,7 @@ title = "The greatest sales deck someone else has ever seen"
 published = "2020-02-02"
 tags = ["sales"]
 rss = "It's Zuora's deck"
+image = "/assets/self.jpg"
 +++
 
 According to [Andy Raskin](https://medium.com/the-mission/the-greatest-sales-deck-ive-ever-seen-4f4ef3391ba0), the greatest sales deck has five elements.

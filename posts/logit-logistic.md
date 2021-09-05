@@ -3,6 +3,7 @@ title = "The logit and logistic functions"
 published = "2020-11-04"
 tags = ["statistics"]
 rss = "Providing the definitions, some plots and useful values to remember."
+image = "/assets/og-image/logistic.png"
 +++
 
 Linear regression works on real numbers $\mathbb{R}$, that is, the input and output are in $\mathbb{R}$.
@@ -33,6 +34,7 @@ using CairoMakie
 I = -6:0.1:6
 xy = mapping([I] => :x, [logistic.(I)] => :y) * visual(Lines)
 
+Blog.aog_og_image(draw(xy), "logistic") # hide
 Blog.aog_svg(@OUTPUT, "logistic", # hide
 draw(xy)
 ) # hide

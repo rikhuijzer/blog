@@ -3,6 +3,7 @@ title = "NixOS configuration highlights"
 published = "2019-12-01"
 tags = ["libsecret", "fish"]
 rss = "Particularily neat parts of using NixOS."
+image = "/assets/self.jpg"
 +++
 
 I have recently started paying attention to the time spent on fine-tuning my Linux installation.

@@ -1,6 +1,6 @@
 +++
 title = "About"
-description = "About this website"
+rss = "About this website"
 image = "/assets/about/output/basic-plot.svg"
 +++
 

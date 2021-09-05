@@ -4,6 +4,7 @@ published = "2021-01-21"
 tags = ["simulating data", "machine learning"]
 rss = "Fitting a random forest classifier and reporting accuracy metrics."
 showall = true
+image = "/assets/og-image/random-forest.png"
 +++
 
 Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia.
@@ -32,6 +33,6 @@ One way to do that would be to have more variables than observations \citep{pBia
 
 \biblabel{pBiau2016}{Biau & Scornet, 2016}
 Biau, G., Scornet, E. (2016).
-A Random Forest Guided Tour. 
-TEST 25, 197–227 (2016). 
+A Random Forest Guided Tour.
+TEST 25, 197–227 (2016).
 <https://doi.org/10.1007/s11749-016-0481-7>

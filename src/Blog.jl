@@ -10,6 +10,8 @@ using Makie
 # Don't export methods to avoid confusing readers of the code.
 # export
 
+const PKGDIR = string(pkgdir(Blog))::String
+
 """
     blue
 
@@ -80,6 +82,20 @@ function aog_svg(dir::String, name::String, fg;
     end
 end
 
+"""
+    aog_og_image(fg, filename::String)
+
+Write `fg` to "/assets/og-image/\$(filename).png".
+This is useful for social media images (`og:image`).
+"""
+function aog_og_image(fg, filename::String)
+    dir = joinpath(PKGDIR, "_assets", "og-image")
+    mkpath(dir)
+    image_path = joinpath(dir, "$(filename).png")
+    AlgebraOfGraphics.save(image_path, fg)
+    return image_path
+end
+
 function makie_svg(dir::String, name::String, scene;
         literate=false)
     file = "$name.svg"
@@ -88,6 +104,14 @@ function makie_svg(dir::String, name::String, scene;
     if !literate
         println("\\fig{./code/$file}")
     end
+end
+
+function makie_og_image(scene, filename::String)
+    dir = joinpath(PKGDIR, "_assets", "og-image")
+    mkpath(dir)
+    image_path = joinpath(dir, "$(filename).png")
+    Makie.FileIO.save(image_path, scene)
+    return image_path
 end
 
 

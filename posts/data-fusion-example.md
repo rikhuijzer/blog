@@ -3,6 +3,7 @@ title = "A data-fusion example"
 published = "2020-11-02"
 tags = ["causality"]
 rss = "An example in causal data-fusion."
+image = "/assets/self.jpg"
 +++
 
 ```julia:preliminaries

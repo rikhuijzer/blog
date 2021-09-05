@@ -3,6 +3,7 @@ title = "Predicates and reproducibility"
 published = "2020-05-11"
 tags = ["reproducibility", "statistics"]
 rss = "Thinking about the layers above statistics."
+image = "/assets/self.jpg"
 +++
 
 While reading texts on statistics and meta-science I kept noticing vagueness.

@@ -3,6 +3,7 @@ title = "The principle of maximum entropy"
 published = "2020-09-26"
 tags = ["simulating data", "statistics"]
 rss = "Obtaining the least informative distribution."
+image = "/assets/og-image/maximum-entropy.png"
 +++
 
 Say that you are a statistician and are asked to come up with a probability distribution for the current state of knowledge on some particular topic you know little about.
@@ -66,8 +67,10 @@ This is still not the least informative distribution since it assumes $n = 1$ an
 Jaynes presents the straight line solution $P_n = (12n - 7)/210$,
 
 ```julia:straight
+fg = plot_distribution([(12n - 7)/210 for n in 1:6])
+Blog.aog_og_image(fg, "maximum-entropy") # hide
 Blog.aog_svg(@OUTPUT, "straight", # hide
-plot_distribution([(12n - 7)/210 for n in 1:6])
+fg
 ) # hide
 ```
 \textoutput{straight}

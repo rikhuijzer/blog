@@ -3,6 +3,7 @@ title = "Correlations"
 published = "2020-01-24"
 tags = ["statistics", "independence", "covariance"]
 rss = "The equations and some examples for the Pearson correlation coefficient."
+image = "/assets/og-image/correlations.png"
 +++
 
 Correlations are ubiquitous.
@@ -65,6 +66,7 @@ using CairoMakie
 sdf = stack(df, [:A, :B, :C, :D])
 xv = data(sdf) * mapping(:x, :value; color=:variable)
 
+Blog.aog_og_image(draw(xv), "correlations") # hide
 Blog.aog_svg(@OUTPUT, "plot", # hide
 draw(xv)
 ) # hide
