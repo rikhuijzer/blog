@@ -85,11 +85,12 @@ end
 """
     aog_og_image(fg, filename::String)
 
-Write `fg` to "/assets/og-image/\$(filename).png".
+Write `fg` to "__site/assets/og-image/\$(filename).png".
+Writing directly to "/__site/assets" and not "_assets" to avoid having to run two Franklin passes.
 This is useful for social media images (`og:image`).
 """
 function aog_og_image(fg, filename::String)
-    dir = joinpath(PKGDIR, "_assets", "og-image")
+    dir = joinpath(PKGDIR, "__site", "assets", "og-image")
     mkpath(dir)
     image_path = joinpath(dir, "$(filename).png")
     AlgebraOfGraphics.save(image_path, fg)
