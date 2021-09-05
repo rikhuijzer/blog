@@ -3,6 +3,7 @@ title = "Entr"
 published = "2019-10-29"
 tags = ["shortcut", "compile", "run"]
 rss = "A tool for executing commands automatically upon file changes."
+image = "/assets/self.jpg"
 +++
 
 Having a compile and run shortcut seems like the most basic requirement for a developer.

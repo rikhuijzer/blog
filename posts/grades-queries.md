@@ -2,9 +2,10 @@
 title = "Grades queries"
 published = "2020-11-26"
 rss = "Using SQL like query syntax in Julia."
+image = "/assets/self.jpg"
 +++
 
-**EDIT:** 
+**EDIT:**
 *This query syntax is nice but can be very slow for many columns, which is quite annoying when using it in a project.
 Instead, checkout Tom Kwong's DataFrames [cheat sheet](https://ahsmart.com/pub/data-wrangling-with-data-frames-jl-cheat-sheet/).*
 

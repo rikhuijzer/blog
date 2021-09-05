@@ -3,6 +3,7 @@ title = "Why we are in a speculative bubble"
 published = "2021-08-26"
 tags = ["economy", "stocks"]
 rss = "Why I'm baffled by people claiming that the economy is doing fine"
+image = "/assets/everything-is-fine/msft.jpg"
 +++
 
 The news is full of headlines such as

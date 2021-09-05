@@ -3,6 +3,7 @@ title = "Combinations and permutations"
 published = "2020-06-28"
 tags = ["order", "statistics"]
 rss = "Deriving the equations for combinations and permutations."
+image = "/assets/self.jpg"
 +++
 
 Counting is simple except when there is a lot to be counted.

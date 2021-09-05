@@ -3,6 +3,7 @@ title = "GitHub and GitLab commands cheatsheet"
 published = "2020-12-16"
 tags = ["shortcut", "git"]
 rss = "A cheatsheet for commands like 'Fix #2334'."
+image = "/assets/self.jpg"
 +++
 
 Both GitHub and GitLab provide shortcuts for interacting with the layers they have built on top of Git.

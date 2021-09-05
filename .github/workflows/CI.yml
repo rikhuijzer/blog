@@ -49,7 +49,7 @@ jobs:
 
     - name: Build site
       run: julia --project -e '
-        using Franklin; optimize();
+        using Franklin; optimize(; minify=false);
         verify_links()' > build.log
 
     - name: Validate output

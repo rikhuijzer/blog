@@ -3,6 +3,7 @@ title = "Increasing model accuracy by using foreknowledge"
 published = "2021-06-16"
 tags = ["statistics", "priors"]
 rss = "Using priors for binary logistic regression"
+image = "/assets/og-image/binary-regression-priors.png"
 +++
 
 Typically, when making predictions via a linear model, we fit the model on our data and make predictions from the fitted model.
@@ -109,6 +110,7 @@ draw!(fig[1, 1], ag; axis)
 rg = dens * mapping(:recent; color=:str_pass)
 draw!(fig[1, 2], rg; axis)
 
+Blog.makie_og_image(fig, "binary-regression-priors")
 Blog.makie_svg(@OUTPUT, "dist", # hide
 fig
 ) # hide

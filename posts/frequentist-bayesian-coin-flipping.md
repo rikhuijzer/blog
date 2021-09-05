@@ -2,6 +2,7 @@
 title = "Frequentist and Bayesian coin flipping"
 published = "2020-11-14"
 rss = "Comparing both statistical paradigms on a coin flipping example."
+image = "/assets/og-image/frequentist-bayesian-coin-flipping.png"
 +++
 
 To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics.
@@ -102,15 +103,18 @@ end
 \output{plot_estimates}
 
 ```julia:plot_frequentist_estimates
+fg = plot_estimates(frequentist_estimate; title="Frequentist estimates")
 Blog.aog_svg(@OUTPUT, "frequentist-estimates", # hide
-plot_estimates(frequentist_estimate; title="Frequentist estimates")
+fg
 ) # hide
 ```
 \textoutput{plot_frequentist_estimates}
 
 ```julia:plot_bayesian_estimates
+fg = plot_estimates(bayesian_estimate; title="Bayesian estimates")
+Blog.aog_og_image(fg, "frequentist-bayesian-coin-flipping") # hide
 Blog.aog_svg(@OUTPUT, "bayesian-estimates", # hide
-plot_estimates(bayesian_estimate; title="Bayesian estimates")
+fg
 ) # hide
 ```
 \textoutput{plot_bayesian_estimates}

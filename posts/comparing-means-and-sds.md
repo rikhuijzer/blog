@@ -3,6 +3,7 @@ title = "Comparing means and SDs"
 published = "2020-06-27"
 tags = ["statistics", "rescaling", "variance", "feature scaling"]
 rss = "Transforming means and SDs from numbers in different ranges to the same range."
+image = "/assets/self.jpg"
 +++
 
 When comparing different papers it might be that the papers have numbers about the same thing, but that the numbers are on different scales.

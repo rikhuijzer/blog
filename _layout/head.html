@@ -11,15 +11,14 @@
   {{isdef title}} <title> {{fill title}} - Huijzer.xyz </title> {{end}}
   {{isdef description}} <meta name="description" content="{{fill description}}" /> {{end}}
 
-  {{isdef title}} <meta property="og:title" content="{{fill title}}" /> {{end}}
-  {{isdef published}} <meta property="og:type" content="article" /> {{end}}
-  {{isdef rss}} <meta property="og:description" content="{{fill rss}}" /> {{end}}
-  {{isdef image}} <meta property="og:image" content="{{website_url}}{{fill image}}" /> {{end}}
+  <meta property="og:title" content="{{requiredfill title}}" />
+  {{isdef published}}<meta property="og:type" content="article" /> {{end}}
+  <meta property="og:description" content="{{requiredfill rss}}" />
+  <meta property="og:image" content="{{website_url}}{{requiredfill image}}" />
 
-  {{isdef title}} <meta name="twitter:title" content="{{fill title}}" /> {{end}}
-  {{isdef rss}} <meta name="twitter:card" content="summary" /> {{end}}
+  <meta name="twitter:title" content="{{requiredfill title}}" />
+  <meta name="twitter:card" content="summary" />
   <meta name="twitter:creator" content="@rikhuijzer"/>
-  {{isdef image}} <meta name="twitter:image" content="{{website_url}}{{fill image}}" /> {{end}}
 </head>
 <body>
   {{insert header.html}}

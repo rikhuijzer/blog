@@ -3,6 +3,7 @@ title = "Simple and binary regression"
 published = "2020-03-05"
 tags = ["simulating data", "statistics"]
 rss = "Applying a simple and binary (logistic) regression to simulated data."
+image = "/asssets/og-image/regression.png"
 +++
 
 ```julia:./preliminaries.jl
@@ -158,6 +159,7 @@ for (w, h) in zip(df.W, df.H)
   global layers += data(df_diff) * visual(Lines)
 end
 
+Blog.aog_og_image(draw(layers * mapping(:W, :H)), "regression") # hide
 Blog.aog_svg(@OUTPUT, "w-h-mean", # hide
 draw(layers * mapping(:W, :H))
 ) # hide

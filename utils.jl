@@ -77,3 +77,15 @@ function hfun_rss()
     Franklin.set_var!(Franklin.LOCAL_VARS, "rss_description", descr)
     return "<p>$descr</p>"
 end
+
+"""
+    hfun_requiredfill(params::Vector{String})
+
+Return the value for the field, just like `fill`, but throws an assertion error if the value is not given.
+"""
+function hfun_requiredfill(params::Vector{String})::String
+    value = Franklin.hfun_fill(params)
+    field = params[1]
+    @assert(value != "", "Missing a value for the field $field")
+    return value
+end
