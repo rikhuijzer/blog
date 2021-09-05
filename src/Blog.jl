@@ -82,6 +82,8 @@ function aog_svg(dir::String, name::String, fg;
     end
 end
 
+const OG_IMAGE_DIR = joinpath(PKGDIR, "__site", "assets", "og-image")
+
 """
     aog_og_image(fg, filename::String)
 
@@ -90,7 +92,7 @@ Writing directly to "/__site/assets" and not "_assets" to avoid having to run tw
 This is useful for social media images (`og:image`).
 """
 function aog_og_image(fg, filename::String)
-    dir = joinpath(PKGDIR, "__site", "assets", "og-image")
+    dir = OG_IMAGE_DIR
     mkpath(dir)
     image_path = joinpath(dir, "$(filename).png")
     AlgebraOfGraphics.save(image_path, fg)
@@ -108,7 +110,7 @@ function makie_svg(dir::String, name::String, scene;
 end
 
 function makie_og_image(scene, filename::String)
-    dir = joinpath(PKGDIR, "_assets", "og-image")
+    dir = OG_IMAGE_DIR
     mkpath(dir)
     image_path = joinpath(dir, "$(filename).png")
     Makie.FileIO.save(image_path, scene)
