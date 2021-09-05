@@ -1,4 +1,7 @@
-# Franklin-blog
+# huijzer.xyz
+
+[![CI Build](https://github.com/rikhuijzer/huijzer.xyz/workflows/CI/badge.svg)](https://github.com/rikhuijzer/huijzer.xyz/actions?query=workflow%3ACI+branch%3Amain)
+[![Site Analytics](https://img.shields.io/badge/Site-Analytics-blueviolet)](https://app.usefathom.com/share/bqrgkknx/blog)
 
 My blog at <https://huijzer.xyz>.
 
