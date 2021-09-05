@@ -3,8 +3,8 @@ Chains MCMC chain (10000×16×3 Array{Float64, 3}):
 Iterations        = 1001:1:11000
 Number of chains  = 3
 Samples per chain = 10000
-Wall duration     = 54.97 seconds
-Compute duration  = 89.31 seconds
+Wall duration     = 40.13 seconds
+Compute duration  = 64.69 seconds
 parameters        = σ, intercept, βₐ, βᵣ
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 
@@ -12,16 +12,16 @@ Summary Statistics
   parameters      mean       std   naive_se      mcse          ess      rhat   ess_per_sec
       Symbol   Float64   Float64    Float64   Float64      Float64   Float64       Float64
 
-   intercept    0.7791    1.3941     0.0080    0.0133   11397.3520    1.0001      127.6113
-          βₐ    1.0477    0.0725     0.0004    0.0007   11520.6762    1.0001      128.9922
-          βᵣ    1.0789    0.0338     0.0002    0.0002   18278.3154    1.0000      204.6546
-           σ    1.1298    0.0739     0.0004    0.0006   16996.1717    1.0001      190.2990
+   intercept    0.7718    1.3907     0.0080    0.0116   13465.2029    0.9999      208.1626
+          βₐ    1.0480    0.0723     0.0004    0.0006   13680.4460    1.0000      211.4901
+          βᵣ    1.0793    0.0344     0.0002    0.0002   19743.0958    1.0001      305.2144
+           σ    1.1303    0.0736     0.0004    0.0005   19665.3448    1.0000      304.0124
 
 Quantiles
   parameters      2.5%     25.0%     50.0%     75.0%     97.5%
       Symbol   Float64   Float64   Float64   Float64   Float64
 
-   intercept   -1.9703   -0.1551    0.7792    1.7185    3.5196
-          βₐ    0.9052    0.9986    1.0477    1.0961    1.1897
-          βᵣ    1.0128    1.0559    1.0787    1.1019    1.1454
-           σ    0.9960    1.0787    1.1256    1.1775    1.2855
+   intercept   -1.9399   -0.1796    0.7724    1.7162    3.4954
+          βₐ    0.9067    0.9989    1.0483    1.0965    1.1890
+          βᵣ    1.0121    1.0561    1.0790    1.1025    1.1472
+           σ    0.9961    1.0783    1.1270    1.1783    1.2837
