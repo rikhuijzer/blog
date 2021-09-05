@@ -9,6 +9,7 @@ draw!(fig[1, 1], ag; axis)
 rg = dens * mapping(:recent; color=:str_pass)
 draw!(fig[1, 2], rg; axis)
 
+Blog.makie_og_image(fig, "binary-regression-priors") # hide
 Blog.makie_svg(@OUTPUT, "dist", # hide
 fig
 ) # hide

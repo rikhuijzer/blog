@@ -1,33 +1,80 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title> Installing NixOS with encryption on a Lenovo laptop - Huijzer.xyz </title> <meta property="og:title" content="Installing NixOS with encryption on a Lenovo laptop" /> <meta property="og:type" content=article  /> <meta name="twitter:title" content="Installing NixOS with encryption on a Lenovo laptop" /> <meta name="twitter:creator" content="@rikhuijzer"/> <header> <div class=blog-name ><a href="/">HUIJZER.XYZ</a></div> <nav> <ul> <li><a href="/about/">About</a> <li><a href="/posts/">Blog</a> <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml"> <img class=rss-icon  src="/assets/feed.svg"> </a> </ul> </nav> </header> <div class=franklin-content > <h1 class=page-title > Installing NixOS with encryption on a Lenovo laptop </h1> <span class=page-date > 2020-11-7 </span> </div> <div class=franklin-content > <p>In this post, I walk through the steps to install NixOS on a Lenovo Yoga 7 with an encrypted root disk. This tutorial is mainly based on the tutorial by <a href="https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134">Martijn Vermaat</a> and comments by <code>@ahstro</code> and <code>dbwest</code>.</p> <div class=franklin-toc ><ol><li><a href="#usb_preparation">USB preparation</a><li><a href="#laptop_preparation">Laptop preparation</a><li><a href="#partitioning">Partitioning</a><li><a href="#installing">Installing</a><li><a href="#troubleshooting">Troubleshooting</a><li><a href="#appendix_i">Appendix I </a></ol></div> <h2 id=usb_preparation ><a href="#usb_preparation" class=header-anchor >USB preparation</a></h2> <p><a href="https://nixos.org/download.html">Download</a> NixOS and figure out the location of the USB drive with <code>lsblk</code>. Use the location of the drive and not the partition, so <code>/dev/sdb</code> instead of <code>/dev/sdb1</code>. Then, prepare the USB with</p> <pre><code class=language-text >dd if&#61;nixos.iso of&#61;/dev/&lt;name of USB drive&gt;</code></pre>
-<h2 id=laptop_preparation ><a href="#laptop_preparation" class=header-anchor >Laptop preparation</a></h2>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/libs/highlight/github.min.css">
+ 
+  <link rel="stylesheet" href="/css/franklin.css">
+  <link rel="stylesheet" href="/css/basic.css">
+  <link rel="icon" href="/assets/favicon.png">
+   <title> Installing NixOS with encryption on a Lenovo laptop - Huijzer.xyz </title> 
+  
+
+  <meta property="og:title" content="Installing NixOS with encryption on a Lenovo laptop" />
+  <meta property="og:type" content="article" /> 
+  <meta property="og:description" content="Specifically, installing NixOS on the Lenovo Yoga 7." />
+  <meta property="og:image" content="https://huijzer.xyz/assets/self.jpg" />
+
+  <meta name="twitter:title" content="Installing NixOS with encryption on a Lenovo laptop" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@rikhuijzer"/>
+</head>
+<body>
+  <header>
+<div class="blog-name"><a href="/">HUIJZER.XYZ</a></div>
+<nav>
+  <ul>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/posts/">Blog</a></li>
+    <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml">
+      <img class="rss-icon" src="/assets/feed.svg">
+      </a></li>
+  </ul>
+</nav>
+</header>
+
+
+<div class="franklin-content">
+   <h1 class="page-title"> Installing NixOS with encryption on a Lenovo laptop </h1> 
+   <span class="page-date"> 2020-11-7 </span> 
+</div>
+<div class="franklin-content">
+<p>In this post, I walk through the steps to install NixOS on a Lenovo Yoga 7 with an encrypted root disk. This tutorial is mainly based on the tutorial by <a href="https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134">Martijn Vermaat</a> and comments by <code>@ahstro</code> and <code>dbwest</code>.</p>
+<div class="franklin-toc"><ol><li><a href="#usb_preparation">USB preparation</a></li><li><a href="#laptop_preparation">Laptop preparation</a></li><li><a href="#partitioning">Partitioning</a></li><li><a href="#installing">Installing</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#appendix_i">Appendix I </a></li></ol></div>
+<h2 id="usb_preparation"><a href="#usb_preparation" class="header-anchor">USB preparation</a></h2>
+<p><a href="https://nixos.org/download.html">Download</a> NixOS and figure out the location of the USB drive with <code>lsblk</code>. Use the location of the drive and not the partition, so <code>/dev/sdb</code> instead of <code>/dev/sdb1</code>. Then, prepare the USB with</p>
+<pre><code class="language-text">dd if&#61;nixos.iso of&#61;/dev/&lt;name of USB drive&gt;</code></pre>
+<h2 id="laptop_preparation"><a href="#laptop_preparation" class="header-anchor">Laptop preparation</a></h2>
 <p>For Lenovo laptops, Wi-Fi might not work out of the box. To enable Wi-Fi, edit the boot options by pressing <code>e</code> in the boot menu and add <code>modprobe.blacklist&#61;ideapad_laptop</code> to the command.</p>
 <p>The new device needs some preparation before starting the NixOS installation. Firstly, disable secure boot from BIOS settings &#40;and, optionally, other baloney&#41;. If you cannot move inside the BIOS settings since it is not responding to key presses, then go into the BIOS settings via Windows. That is, search for BIOS in start and then reboot into some blue basic interface. From there, some of the options allow you get into the BIOS settings.</p>
 <p>Next, check whether you have an internet connection on the new device because installing NixOS without it will be difficult. To increase the font size of the terminal, use <code>setfont ter-v32n</code>. Useful commands for configuring Wi-Fi are </p>
-<pre><code class=language-julia >uname -a # Check that kernel is above 5.3 for the Intel Wi-Fi driver to be available.
+<pre><code class="language-julia">uname -a # Check that kernel is above 5.3 for the Intel Wi-Fi driver to be available.
 ip link
 nmcli # Network Manager CLI
 sudo wpa_supplicant -B -i wlp1s0 -c /etc/wpa_supplicant.conf</code></pre>
 <p>where the <code>wpa_supplicant.conf</code> contains</p>
-<pre><code class=language-text >network&#61;&#123;
+<pre><code class="language-text">network&#61;&#123;
   ssid&#61;&quot;&lt;Wi-Fi SSID&gt;&quot;
   psk&#61;&quot;&lt;Wi-Fi password&gt;&quot;
 &#125;</code></pre>
 <p>Also see the NixOS manual for more information on setting up Wi-Fi. For tethering with an iPhone, see <a href="#appendix_i">Appendix I</a>.</p>
-<h2 id=partitioning ><a href="#partitioning" class=header-anchor >Partitioning</a></h2>
+<h2 id="partitioning"><a href="#partitioning" class="header-anchor">Partitioning</a></h2>
 <p>After you have ensured that the system has an internet connection, NixOS can be installed.</p>
-<pre><code class=language-julia >lsblk
+<pre><code class="language-julia">lsblk
 sudo gdisk /dev/nvme0n1</code></pre>
 <ul>
 <li><p>o -&gt; y &#40;create new empty partition table&#41;</p>
-
+</li>
 <li><p>n -&gt;  -&gt; 500M -&gt; ef00 &#40;add partition, 500M, type ef00 EFI&#41;</p>
-
+</li>
 <li><p>n -&gt;  -&gt;  -&gt;  -&gt;  -&gt;  &#40;add partition, remaining space, type 8300 Linux LVM&#41;</p>
-
+</li>
 <li><p>w -&gt; y &#40;write partition  table and exit&#41;</p>
-
+</li>
 </ul>
-<pre><code class=language-text >sudo cryptsetup luksFormat /dev/nvme0n1p2
+<pre><code class="language-text">sudo cryptsetup luksFormat /dev/nvme0n1p2
 sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv
 
 sudo pvcreate /dev/mapper/enc-pv
@@ -48,9 +95,9 @@ sudo nixos-generate-config --root /mnt
 
 cd /mnt/etc/nixos/</code></pre>
 <p>Now find the UUID for <code>/dev/nvme1n1p2</code> with</p>
-<pre><code class=language-julia >sudo blkid /dev/nvme0n1p2</code></pre>
+<pre><code class="language-julia">sudo blkid /dev/nvme0n1p2</code></pre>
 <p>And use <code>sudo vi configuration.nix</code> to add the following lines to the configuration</p>
-<pre><code class=language-text >networking.wireless.enable &#61; true;
+<pre><code class="language-text">networking.wireless.enable &#61; true;
 
 environment.systemPackages &#61; with pkgs; &#91;
   usbmuxd
@@ -66,33 +113,37 @@ boot.initrd.luks.devices &#61; &#123;
 
 # Without this, the graphics won&#39;t work &#40;at the time of writing&#41; on this relatively new laptop.
 boot.kernelPackages &#61; pkgs.linuxPackages_latest;</code></pre>
-<h2 id=installing ><a href="#installing" class=header-anchor >Installing</a></h2>
+<h2 id="installing"><a href="#installing" class="header-anchor">Installing</a></h2>
 <p>Finally, install NixOS with</p>
-<pre><code class=language-julia >sudo nixos-install
+<pre><code class="language-julia">sudo nixos-install
 sudo reboot now</code></pre>
-<h2 id=troubleshooting ><a href="#troubleshooting" class=header-anchor >Troubleshooting</a></h2>
+<h2 id="troubleshooting"><a href="#troubleshooting" class="header-anchor">Troubleshooting</a></h2>
 <p>To fix issues with the installation, reboot from the installation media and remount all partitions.</p>
-<pre><code class=language-text >sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv
+<pre><code class="language-text">sudo cryptsetup luksOpen /dev/nvme0n1p2 enc-pv
 sudo lvchange -a y /dev/vg/swap
 sudo lvchange -a y /dev/vg/root
 sudo mount /dev/vg/root /mnt
 sudo mount /dev/nvme0n1p1 /mnt/boot
 sudo swapon /dev/vg/swap
 sudo wpa_supplicant -B -i wlp1s0 -c /mnt/etc/wpa_supplicant.conf</code></pre>
-<h2 id=appendix_i ><a href="#appendix_i" class=header-anchor >Appendix I </a></h2>
+<h2 id="appendix_i"><a href="#appendix_i" class="header-anchor">Appendix I </a></h2>
 <p>For me, Wi-Fi wasn&#39;t working until I read about the <code>modprobe.blacklist</code> listed above, nor did I have an ethernet port. So, for tethering an iPhone add <code>pkgs.usbmuxd</code> to <code>nixos/modules/profiles/base.nix</code> in a cloned version of <code>nixpkgs</code>. Note that its a good idea to clone from a release tag such as 20.03. Then,</p>
-<pre><code class=language-text >nix-build -A config.system.build.isoImage -I nixos-config&#61;modules/installer/cd-dvd/installation-cd-minimal.nix
+<pre><code class="language-text">nix-build -A config.system.build.isoImage -I nixos-config&#61;modules/installer/cd-dvd/installation-cd-minimal.nix
 dd if&#61;result/iso/nixos-&lt;...&gt;.iso of&#61;/dev/sda</code></pre>
 <p>From there, iPhone tethering worked after starting the <code>usbmuxd</code> tool as a background job.</p>
-<pre><code class=language-julia >sudo usbmuxd -s &gt; usbmuxd.log 2&gt;&amp;1 &amp;</code></pre>
-<div class=page-foot >
-  <div class=copyright >
+<pre><code class="language-julia">sudo usbmuxd -s &gt; usbmuxd.log 2&gt;&amp;1 &amp;</code></pre>
+<div class="page-foot">
+  <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-09-04.
+    Last update: 2021-09-05.
   </div>
 </div>
-</div>
+</div><!-- CONTENT ENDS HERE -->
     
     
         <script src="/libs/highlight/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
