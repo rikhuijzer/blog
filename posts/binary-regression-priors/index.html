@@ -133,14 +133,14 @@ chns &#61; Turing.sample&#40;bm, NUTS&#40;&#41;, MCMCThreads&#40;&#41;, 10_000, 
 
 <img src="/assets/posts/binary-regression-priors/code/output/turingplot.svg" alt="">
 
-<table><tr><th align="right">coefficient</th><th align="right">true value</th><th align="right">linear estimate</th><th align="right">linear error</th><th align="right">bayesian estimate</th><th align="right">bayesian error</th></tr><tr><td align="right">aₑ</td><td align="right">1.1</td><td align="right">1.044</td><td align="right">5.1 &#37;</td><td align="right">1.048</td><td align="right">4.8 &#37;</td></tr><tr><td align="right">rₑ</td><td align="right">1.05</td><td align="right">1.079</td><td align="right">2.8 &#37;</td><td align="right">1.079</td><td align="right">2.8 &#37;</td></tr></table>
+<table><tr><th align="right">coefficient</th><th align="right">true value</th><th align="right">linear estimate</th><th align="right">linear error</th><th align="right">bayesian estimate</th><th align="right">bayesian error</th></tr><tr><td align="right">aₑ</td><td align="right">1.1</td><td align="right">1.044</td><td align="right">5.1 &#37;</td><td align="right">1.048</td><td align="right">4.7 &#37;</td></tr><tr><td align="right">rₑ</td><td align="right">1.05</td><td align="right">1.079</td><td align="right">2.8 &#37;</td><td align="right">1.079</td><td align="right">2.8 &#37;</td></tr></table>
 
 <h2 id="conclusion"><a href="#conclusion" class="header-anchor">Conclusion</a></h2>
 <p>After giving the true coefficients to the Bayesian model in the form of priors, it does score better than the linear model. However, the differences aren&#39;t very big. This could be due to the particular random noise in this sample <code>E</code> or due to the relatively big sample size. The more samples, the more likely it is that the data will overrule the prior. In any way, there are real-world situations where gathering extra data is more expensive than gathering priors via reading papers. In those cases, the increased accuracy introduced by using priors could have serious benefits.</p>
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-09-05.
+    Last update: 2021-09-08.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
