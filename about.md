@@ -72,7 +72,7 @@ _MSc theses:_
 ~~~
   <b>Eindhoven University of Technology</b><br>
   <b>MSc</b>, Computer Science and Engineering, Software Science, Mar 2019.<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;Thesis: "<a href=](https://research.tue.nl/en/studentTheses/automatical  ly-responding-to-customers">Automatically responding to customers</a>".<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Thesis: <a href="https://research.tue.nl/en/studentTheses/automatically-responding-to-customers">Automatically responding to customers</a>.<br>
   &nbsp;&nbsp;&nbsp;&nbsp;Committee: dr. Nikolay <a href="http://www.yakovets.ca">Yakovets</a>, dr. George Fletcher, and dr. Joaquin Vanschoren.&nbsp;&nbsp;<br>
 
   <br>
