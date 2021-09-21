@@ -10,14 +10,14 @@ image = "/assets/self.jpg"
 </center>
 ~~~
 
+Hi!
+I'm a PhD student at the University of Groningen.
+See [about](/about) for more information about me.
+
 Most posts on this site are about statistics and programming.
 The posts contain math, plots and the code to reproduce the results.
-The code makes reading the posts more difficult.
-However, most statistical calculations cannot be done by hand.
-For example, fitting a linear model requires minimizing the sum of squares.
-By adding the code, this blog aims to show that statistical results are not created by some magical procedure.
 
-For example, creating a plot can be done in a few lines of code:
+For example, a simple plot looks as follows:
 
 ```julia:basic-plot
 using AlgebraOfGraphics
