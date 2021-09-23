@@ -25,6 +25,11 @@ _Projects:_
 
 _Contributions:_
 
+- Add deploy check ([www.julialang.org#1364](https://github.com/JuliaLang/www.julialang.org/pull/1364))
+- Allow Ints ([EffectSizes.jl#24](https://github.com/harryscholes/EffectSizes.jl/pull/24))
+- Document the `Explicit` tuning strategy ([MLJ.jl#836](https://github.com/alan-turing-institute/MLJ.jl/pull/836))
+- Add where syntax to rules ([SymbolicUtils.jl#329](https://github.com/JuliaSymbolics/SymbolicUtils.jl/pull/329))
+- Deprecate old package name ([General#41692](https://github.com/JuliaRegistries/General/pull/41692))
 - Setup automated builds for TuringTutorials ([TuringTutorials#123](https://github.com/TuringLang/TuringTutorials/pull/123))
 - Add t-test for cases where only mean and sd are known ([HypothesisTests.jl#237](https://github.com/JuliaStats/HypothesisTests.jl/pull/237))
 - Update documentation for density ([AlgebraOfGraphics.jl#211](https://github.com/JuliaPlots/AlgebraOfGraphics.jl/pull/211))
