@@ -119,8 +119,8 @@ forest_model &#61; EnsembleModel&#40;atom&#61;tree, n&#61;10&#41;;
 logistic &#61; machine&#40;logistic_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
 fit&#33;&#40;logistic; rows&#61;train&#41;
 fitted_params&#40;logistic&#41;.coef</code></pre><pre><code class="plaintext code-output">2-element Vector{Float64}:
- 0.7170450596947772
- 0.040936567194873125</code></pre>
+ 0.7170450596947773
+ 0.04093656719487316</code></pre>
 <p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> is random noise.</p>
 <pre><code class="language-julia">forest &#61; machine&#40;forest_model, &#40;U &#61; df.U, V &#61; df.V&#41;, df.class&#41;
 fit&#33;&#40;forest; rows&#61;train&#41;;</code></pre><pre><code class="plaintext code-output">
@@ -190,7 +190,7 @@ accuracies, mean&#40;accuracies&#41; |&gt; r3</code></pre><pre><code class="plai
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-09-21.
+    Last update: 2021-09-23.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->

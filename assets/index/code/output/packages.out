@@ -4,7 +4,7 @@ CairoMakie 0.6.5
 CategoricalArrays 0.10.1
 DataFrames 1.2.2
 Distributions 0.25.16
-Franklin 0.10.56
+Franklin 0.10.57
 GLM 1.5.1
 HypothesisTests 0.10.4
 MLDataUtils 0.5.4
