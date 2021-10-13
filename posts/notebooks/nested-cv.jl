@@ -68,38 +68,21 @@ function tree_model()
 	return mach
 end
 
-# ╔═╡ 85dd0d15-98d1-49cc-975f-c6bb1a9994b0
-function plot_predictions(mach)
-	predictions = predict(mach)
-	axis = (; xlabel="x", ylabel="y")
-	fig = Figure(; axis)
-	ax1 = Axis(fig[1, 1])
-	lines(ax1, df.x, predictions; color=:black, axis)
-	scatter!(df.x, df.y; color=:black, markersize=4)
-	return fig
-end
-
 # ╔═╡ d07d4596-bc21-4ba7-9f78-9ce00d1d9339
 let
 	linear_predictions = predict(linear_model())
 	tree_predictions = predict(tree_model())
+	color = :black
+	markersize = 4
 	fig = Figure()
 	ax1 = Axis(fig[1, 1]; ylabel="y", title="LinearRegressor")
 	ax2 = Axis(fig[2, 1]; xlabel="x", ylabel="y", title="DecisionTreeRegressor")
-	lines!(ax1, df.x, linear_predictions; color=:black)
-	lines!(ax2, df.x, tree_predictions; color=:black)
-	# lines!(df.x, tree_predictions; label="DecisionTree")
-	scatter!(ax1, df.x, df.y; color=:black, markersize=4)
-	scatter!(ax2, df.x, df.y; color=:black, markersize=4)
-	# axislegend(; position=:lt)
+	lines!(ax1, df.x, linear_predictions; color)
+	lines!(ax2, df.x, tree_predictions; color)
+	scatter!(ax1, df.x, df.y; color, markersize)
+	scatter!(ax2, df.x, df.y; color, markersize)
 	fig
 end
-
-# ╔═╡ 0b1d39e5-11c7-4a6d-af3f-3cf567671bc3
-plot_predictions(linear_model())
-
-# ╔═╡ aa7c6e32-495e-46f8-9256-d2bc51ffbcd5
-plot_predictions(tree_model())
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1543,9 +1526,6 @@ version = "3.5.0+0"
 # ╠═24c876da-9c14-46df-b9da-d348aac57a56
 # ╠═1e0ac73d-1faf-4250-a6f5-032c67649326
 # ╠═772ec163-7861-4bbe-a90b-d6b6f7c08040
-# ╠═85dd0d15-98d1-49cc-975f-c6bb1a9994b0
 # ╠═d07d4596-bc21-4ba7-9f78-9ce00d1d9339
-# ╠═0b1d39e5-11c7-4a6d-af3f-3cf567671bc3
-# ╠═aa7c6e32-495e-46f8-9256-d2bc51ffbcd5
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
