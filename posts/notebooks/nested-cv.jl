@@ -12,7 +12,7 @@ begin
 	
 	using DataFrames: DataFrame, select, Not
 	using Distributions: Normal
-	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkyaxes!
+	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkyaxes!, xlabel!
 	using MLJ: CV, evaluate, models, matching, @load, machine, fit!, predict, predict_mode, rms
 	using Random: seed!
 	using Statistics: mean
@@ -35,7 +35,7 @@ compatible_models()
 seed!(0)
 
 # ╔═╡ fc95dc54-7ebc-4310-a6ec-cc704a2523dc
-help(lines)
+# help(lines)
 
 # ╔═╡ e4584145-243d-4ba9-853c-82189a9b96df
 y_true(x) = 2x + 10
@@ -134,6 +134,9 @@ evaluate_model(LinearModel(), CV(; nfolds=14))
 # ╔═╡ 7ef58bde-7a24-4242-b0a3-20d61f3aee66
 evaluate_model(TreeModel(), CV(; nfolds=14))
 
+# ╔═╡ bfebf58b-daf5-4d74-ba9b-fc853da3b166
+foldsmean(per_fold) = fill(mean(per_fold), length(per_fold))
+
 # ╔═╡ da994d08-9d14-45b9-a80a-7ea6a13edd67
 let
 	nfolds = 10
@@ -145,16 +148,12 @@ let
 	foldsmean(per_fold) = fill(mean(per_fold), length(folds))
 	folds = 1:nfolds
 	
-	all_points = [linear_per_fold; tree_per_fold]
-	tickround(x) = round(x; digits=-1)
-	lower = minimum(all_points) - 3
-	upper = maximum(all_points) + 3
-	ax1 = Axis(fig[1, 1]; ylabel="Root-mean-square error")
+	ax1 = Axis(fig[1, 1]; xlabel="fold", ylabel="root-mean-square error")
 	lines!(ax1, folds, linear_per_fold; color, label="LinearRegressor")
 	lines!(ax1, folds, foldsmean(linear_per_fold); color, linestyle=:dash, label="Mean")
 	axislegend(ax1; position=:lt)
 	
-	ax2 = Axis(fig[1, 2])
+	ax2 = Axis(fig[1, 2]; xlabel="fold")
 	lines!(ax2, folds, tree_per_fold; color, label="DecisionTreeRegressor")
 	lines!(ax2, folds, foldsmean(tree_per_fold); color, linestyle=:dash, label="Mean")
 	axislegend(ax2; position=:lt)
@@ -180,7 +179,7 @@ inner_resampling = CV(; nfolds=nfolds);
 multi_model = TunedModel(; models=[LinearModel(), TreeModel()], resampling=inner_resampling);
 
 # ╔═╡ 7f2cd0ec-d3d9-4563-b86c-8ef450ea9ba2
-ntrials = 4
+ntrials = 6
 
 # ╔═╡ 622f4d66-afde-4c36-b15c-57b9956053c1
 outer_resampling = CV(; nfolds=ntrials);
@@ -188,18 +187,65 @@ outer_resampling = CV(; nfolds=ntrials);
 # ╔═╡ e1de9f5d-c062-4068-8652-e0bac41bee9b
 e = evaluate(multi_model, X, y; measure=rms, resampling=outer_resampling)
 
-# ╔═╡ a3675b35-f3b2-45c6-90db-e3dc20404900
-[e.report_per_fold[i].best_model for i in 1:ntrials]
-
 # ╔═╡ 9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
 md"""
 Now, lets plot the same as above, but for multiple runs
 """
 
+# ╔═╡ feaca510-5403-474f-b598-8467569161ce
+md"""
+The problem of CV is that it is still possible to overfit during model selection.
+Therefore, the only **reliable way to estimate model performance** is to use nested cross-validation (_On over-fitting in model selection and subsequent selection bias in performance evaluation_, 2010; _Cross-validation pitfalls when selecting and
+assessing regression and classification models_, 2014).
+"""
+
+# ╔═╡ 0024dfce-b6ff-4a38-8afc-1092591422cb
+function plot_trial_model!(ax, e, trial::Int, model::Int)
+	m = e.report_per_fold[trial].history[model]
+	indexes = 1:length(first(m.per_fold))
+	color = :black
+	label = string(m.model)
+	per_fold = first(m.per_fold)
+	lines!(ax, indexes, per_fold; label, color)
+	
+	# lines!(ax1, folds, linear_per_fold; color, label="LinearRegressor")
+	lines!(ax, indexes, foldsmean(per_fold); color, linestyle=:dash, label="Mean")
+	axislegend(ax; position=:lt)
+end
+
+# ╔═╡ b00e2da6-b44a-42f9-8033-e6f7e152f766
+e.report_per_fold[3].history[1]
+
+# ╔═╡ 72012d1a-fd91-4b40-9137-18dc01205c00
+function plot_trial!(fig, e, trial::Int)
+	ax1 = Axis(fig[trial, 1]; ylabel="trial $trial \n root-mean-square error")
+	ax2 = Axis(fig[trial, 2])
+	
+	plot_trial_model!(ax1, e, trial, 1)
+	plot_trial_model!(ax2, e, trial, 2)
+	linkyaxes!(ax1, ax2)
+	return ax1, ax2
+end
+
 # ╔═╡ 95f8e3cf-c6b9-4d84-bc35-b933008bf112
 let
+	nfolds = 10
+	color = :black
+	fig = Figure(; resolution=(900, 1500))
 	
+	plot_trial!(fig, e, 1)
+	plot_trial!(fig, e, 2)
+	plot_trial!(fig, e, 3)
+	plot_trial!(fig, e, 4)
+	plot_trial!(fig, e, 5)
+	axa, axb = plot_trial!(fig, e, 6)
+	axa.xlabel = "fold"
+	axb.xlabel = "fold"
+	current_figure()
 end
+
+# ╔═╡ ac084dda-ed95-40d5-a8a8-d32dfce15e16
+[string(e.report_per_fold[i].best_model) for i in 1:ntrials]
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1665,6 +1711,7 @@ version = "3.5.0+0"
 # ╠═916a78d9-a6f7-4e60-8511-9d654f74f3de
 # ╠═8846fb20-8f03-4139-8e7e-be933f669e4b
 # ╠═7ef58bde-7a24-4242-b0a3-20d61f3aee66
+# ╠═bfebf58b-daf5-4d74-ba9b-fc853da3b166
 # ╠═da994d08-9d14-45b9-a80a-7ea6a13edd67
 # ╠═641ac771-1424-45ba-a313-d6e1e8b7eaf4
 # ╠═8fc332be-dba1-4001-8f68-15f01d422325
@@ -1673,8 +1720,12 @@ version = "3.5.0+0"
 # ╠═7f2cd0ec-d3d9-4563-b86c-8ef450ea9ba2
 # ╠═622f4d66-afde-4c36-b15c-57b9956053c1
 # ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
-# ╠═a3675b35-f3b2-45c6-90db-e3dc20404900
 # ╠═9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
+# ╠═feaca510-5403-474f-b598-8467569161ce
+# ╠═0024dfce-b6ff-4a38-8afc-1092591422cb
+# ╠═b00e2da6-b44a-42f9-8033-e6f7e152f766
+# ╠═72012d1a-fd91-4b40-9137-18dc01205c00
 # ╠═95f8e3cf-c6b9-4d84-bc35-b933008bf112
+# ╠═ac084dda-ed95-40d5-a8a8-d32dfce15e16
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
