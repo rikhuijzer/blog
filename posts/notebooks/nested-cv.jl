@@ -12,8 +12,8 @@ begin
 	
 	using DataFrames: DataFrame, select, Not
 	using Distributions: Normal
-	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend
-	using MLJ: models, matching, @load, machine, fit!, predict, predict_mode
+	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help
+	using MLJ: models, matching, @load, machine, fit!, predict, predict_mode, rms
 	using Random: seed!
 end
 
@@ -31,14 +31,20 @@ compatible_models()
 # ╔═╡ 394d2b11-9788-4ce2-afd1-a15901b472a7
 seed!(0)
 
+# ╔═╡ fc95dc54-7ebc-4310-a6ec-cc704a2523dc
+help(lines)
+
 # ╔═╡ e4584145-243d-4ba9-853c-82189a9b96df
-y_true(x) = 2x + 10
+y_true(x) = 2x^1.7 + 10
 
 # ╔═╡ a998b36b-7183-4657-ae14-ab81212138ab
-y_real(x) = y_true(x) + rand(Normal(0, 20))
+y_real(x) = y_true(x) + rand(Normal(0, 400))
+
+# ╔═╡ fc89a45d-fe73-45aa-a8ef-bf090884dd00
+indexes = 1.0:100
 
 # ╔═╡ 3f39b4eb-7aab-4dda-adbf-3be971d4cb99
-df = DataFrame(x = 1.0:100, y = y_real.(1:100))
+df = DataFrame(x = indexes, y = y_real.(indexes))
 
 # ╔═╡ b641a8d6-624b-4562-92e2-276388f573de
 LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0
@@ -73,16 +79,37 @@ let
 	linear_predictions = predict(linear_model())
 	tree_predictions = predict(tree_model())
 	color = :black
-	markersize = 4
+	markersize = 2
+	linewidth = 2
 	fig = Figure()
 	ax1 = Axis(fig[1, 1]; ylabel="y", title="LinearRegressor")
 	ax2 = Axis(fig[2, 1]; xlabel="x", ylabel="y", title="DecisionTreeRegressor")
-	lines!(ax1, df.x, linear_predictions; color)
-	lines!(ax2, df.x, tree_predictions; color)
+	lines!(ax1, df.x, linear_predictions; linewidth, color, label="predictions")
+	lines!(ax1, df.x, y_true.(df.x); linewidth, linestyle=:dash, color, label="true")
 	scatter!(ax1, df.x, df.y; color, markersize)
+	axislegend(ax1; position=:lt)
+	lines!(ax2, df.x, tree_predictions; linewidth, color, label="predictions")
+	lines!(ax2, df.x, y_true.(df.x); linewidth, linestyle=:dash, color, label="true")
 	scatter!(ax2, df.x, df.y; color, markersize)
+	axislegend(ax2; position=:lt)
 	fig
 end
+
+# ╔═╡ 86a2c569-d139-467e-948c-18f60d0cd93a
+md"""
+Okay, so which model performs better. I would guess the `LinearRegressor`, but what would cross-validation tell us.
+"""
+
+# ╔═╡ a09b498e-931e-4fd3-b3e3-eefc16d2e65f
+rms(predict(linear_model()), y_true.(df.x))
+
+# ╔═╡ 662d7494-6248-4adc-ac0d-0f4c68e4418d
+rms(predict(tree_model()), y_true.(df.x))
+
+# ╔═╡ c0a0bd8b-fe78-4ea1-8619-62a26a968a10
+md"""
+So, the prediction of the DecisionTreeRegressor is so poor that it even fails on the test set. However, it might "win" on some CV folds.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1517,8 +1544,10 @@ version = "3.5.0+0"
 # ╠═b37e1bc1-2f53-4637-852b-5c8e38912a0e
 # ╠═b0b55bb3-d445-4f45-bd33-c26f28d074e1
 # ╠═394d2b11-9788-4ce2-afd1-a15901b472a7
+# ╠═fc95dc54-7ebc-4310-a6ec-cc704a2523dc
 # ╠═e4584145-243d-4ba9-853c-82189a9b96df
 # ╠═a998b36b-7183-4657-ae14-ab81212138ab
+# ╠═fc89a45d-fe73-45aa-a8ef-bf090884dd00
 # ╠═3f39b4eb-7aab-4dda-adbf-3be971d4cb99
 # ╠═b641a8d6-624b-4562-92e2-276388f573de
 # ╠═d7751696-1bb5-4ee8-a8e7-45da5dd71947
@@ -1527,5 +1556,9 @@ version = "3.5.0+0"
 # ╠═1e0ac73d-1faf-4250-a6f5-032c67649326
 # ╠═772ec163-7861-4bbe-a90b-d6b6f7c08040
 # ╠═d07d4596-bc21-4ba7-9f78-9ce00d1d9339
+# ╠═86a2c569-d139-467e-948c-18f60d0cd93a
+# ╠═a09b498e-931e-4fd3-b3e3-eefc16d2e65f
+# ╠═662d7494-6248-4adc-ac0d-0f4c68e4418d
+# ╠═c0a0bd8b-fe78-4ea1-8619-62a26a968a10
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
