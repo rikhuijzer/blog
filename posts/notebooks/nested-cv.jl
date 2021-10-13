@@ -53,17 +53,11 @@ function linear_model()
 	return mach
 end
 
-# ╔═╡ 4e2d1193-7285-4570-812b-8ef710ad23f4
-function linear_predictions()
-	lm = linear_model()
-	return predict(lm)
-end
-
 # ╔═╡ 85dd0d15-98d1-49cc-975f-c6bb1a9994b0
 let
-	# Remake plot from above via LinearModel.
-	predictions = linear_predictions()
-	lines(df.x, predictions)
+	predictions = predict(linear_model())
+	axis = (; xlabel="x", ylabel="y")
+	lines(df.x, predictions; axis)
 	scatter!(df.x, df.y)
 	current_figure()
 end
@@ -1487,7 +1481,6 @@ version = "3.5.0+0"
 # ╠═3f99e49e-9e51-4f8f-9c21-9f670d63f3c4
 # ╠═24c876da-9c14-46df-b9da-d348aac57a56
 # ╠═1e0ac73d-1faf-4250-a6f5-032c67649326
-# ╠═4e2d1193-7285-4570-812b-8ef710ad23f4
 # ╠═85dd0d15-98d1-49cc-975f-c6bb1a9994b0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
