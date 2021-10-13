@@ -8,13 +8,13 @@ using InteractiveUtils
 begin
 	import CairoMakie
 	import MLJLinearModels
+	import MLJDecisionTreeInterface
 	
 	using DataFrames: DataFrame, select, Not
 	using Distributions: Normal
-	using Makie: lines, lines!, scatter, scatter!, current_figure
+	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend
 	using MLJ: models, matching, @load, machine, fit!, predict, predict_mode
 	using Random: seed!
-	
 end
 
 # ╔═╡ b37e1bc1-2f53-4637-852b-5c8e38912a0e
@@ -28,6 +28,9 @@ end
 # ╔═╡ b0b55bb3-d445-4f45-bd33-c26f28d074e1
 compatible_models()
 
+# ╔═╡ 394d2b11-9788-4ce2-afd1-a15901b472a7
+seed!(0)
+
 # ╔═╡ e4584145-243d-4ba9-853c-82189a9b96df
 y_true(x) = 2x + 10
 
@@ -35,10 +38,13 @@ y_true(x) = 2x + 10
 y_real(x) = y_true(x) + rand(Normal(0, 20))
 
 # ╔═╡ 3f39b4eb-7aab-4dda-adbf-3be971d4cb99
-df = DataFrame(x = 1:100, y = y_real.(1:100))
+df = DataFrame(x = 1.0:100, y = y_real.(1:100))
 
 # ╔═╡ b641a8d6-624b-4562-92e2-276388f573de
 LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0
+
+# ╔═╡ d7751696-1bb5-4ee8-a8e7-45da5dd71947
+TreeModel = @load DecisionTreeRegressor pkg=DecisionTree verbosity=0
 
 # ╔═╡ 3f99e49e-9e51-4f8f-9c21-9f670d63f3c4
 X = select(df, Not(:y));
@@ -48,19 +54,52 @@ y = df.y;
 
 # ╔═╡ 1e0ac73d-1faf-4250-a6f5-032c67649326
 function linear_model()
-	mach = machine(LinearModel(fit_intercept=true), X, y)
+	model = LinearModel(fit_intercept=true)
+	mach = machine(model, X, y)
+	fit!(mach)
+	return mach
+end
+
+# ╔═╡ 772ec163-7861-4bbe-a90b-d6b6f7c08040
+function tree_model()
+	model = TreeModel()
+	mach = machine(model, X, y)
 	fit!(mach)
 	return mach
 end
 
 # ╔═╡ 85dd0d15-98d1-49cc-975f-c6bb1a9994b0
-let
-	predictions = predict(linear_model())
+function plot_predictions(mach)
+	predictions = predict(mach)
 	axis = (; xlabel="x", ylabel="y")
-	lines(df.x, predictions; axis)
-	scatter!(df.x, df.y)
-	current_figure()
+	fig = Figure(; axis)
+	ax1 = Axis(fig[1, 1])
+	lines(ax1, df.x, predictions; color=:black, axis)
+	scatter!(df.x, df.y; color=:black, markersize=4)
+	return fig
 end
+
+# ╔═╡ d07d4596-bc21-4ba7-9f78-9ce00d1d9339
+let
+	linear_predictions = predict(linear_model())
+	tree_predictions = predict(tree_model())
+	fig = Figure()
+	ax1 = Axis(fig[1, 1]; ylabel="y", title="LinearRegressor")
+	ax2 = Axis(fig[2, 1]; xlabel="x", ylabel="y", title="DecisionTreeRegressor")
+	lines!(ax1, df.x, linear_predictions; color=:black)
+	lines!(ax2, df.x, tree_predictions; color=:black)
+	# lines!(df.x, tree_predictions; label="DecisionTree")
+	scatter!(ax1, df.x, df.y; color=:black, markersize=4)
+	scatter!(ax2, df.x, df.y; color=:black, markersize=4)
+	# axislegend(; position=:lt)
+	fig
+end
+
+# ╔═╡ 0b1d39e5-11c7-4a6d-af3f-3cf567671bc3
+plot_predictions(linear_model())
+
+# ╔═╡ aa7c6e32-495e-46f8-9256-d2bc51ffbcd5
+plot_predictions(tree_model())
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -69,6 +108,7 @@ CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
+MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
 MLJLinearModels = "6ee0df7b-362f-4a72-a706-9e79364fb692"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -78,6 +118,7 @@ CairoMakie = "~0.6.5"
 DataFrames = "~1.2.2"
 Distributions = "~0.25.19"
 MLJ = "~0.16.9"
+MLJDecisionTreeInterface = "~0.1.3"
 MLJLinearModels = "~0.5.6"
 Makie = "~0.15.2"
 """
@@ -287,6 +328,12 @@ version = "1.0.0"
 [[Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[DecisionTree]]
+deps = ["DelimitedFiles", "Distributed", "LinearAlgebra", "Random", "ScikitLearnBase", "Statistics", "Test"]
+git-tree-sha1 = "123adca1e427dc8abc5eec5040644e7842d53c92"
+uuid = "7806a523-6efd-50cb-b5f6-3fa6f1930dbb"
+version = "0.10.11"
 
 [[DelimitedFiles]]
 deps = ["Mmap"]
@@ -771,6 +818,12 @@ git-tree-sha1 = "84cd04e1df20dee21d8aa2f00a69d225ba4f19d0"
 uuid = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
 version = "0.18.23"
 
+[[MLJDecisionTreeInterface]]
+deps = ["DecisionTree", "MLJModelInterface", "Random"]
+git-tree-sha1 = "e2a5e2f0fd72cae51d72a83e6c11167de96c7a4c"
+uuid = "c6f25543-311c-4c74-83dc-3ea6d1015661"
+version = "0.1.3"
+
 [[MLJEnsembles]]
 deps = ["CategoricalArrays", "ComputationalResources", "Distributed", "Distributions", "MLJBase", "MLJModelInterface", "ProgressMeter", "Random", "ScientificTypes", "StatsBase"]
 git-tree-sha1 = "f8ca949d52432b81f621d9da641cf59829ad2c8c"
@@ -1167,6 +1220,12 @@ git-tree-sha1 = "185e373beaf6b381c1e7151ce2c2a722351d6637"
 uuid = "30f210dd-8aff-4c5f-94ba-8e64358c1161"
 version = "2.3.0"
 
+[[ScikitLearnBase]]
+deps = ["LinearAlgebra", "Random", "Statistics"]
+git-tree-sha1 = "7877e55c1523a4b336b433da39c8e8c08d2f221f"
+uuid = "6e75b9c4-186b-50bd-896f-2d2496a4843e"
+version = "0.5.0"
+
 [[Scratch]]
 deps = ["Dates"]
 git-tree-sha1 = "0b4b7f1393cff97c33891da2a0bf69c6ed241fda"
@@ -1474,13 +1533,19 @@ version = "3.5.0+0"
 # ╠═5e902e3c-2c19-11ec-39df-3fba9fe5640c
 # ╠═b37e1bc1-2f53-4637-852b-5c8e38912a0e
 # ╠═b0b55bb3-d445-4f45-bd33-c26f28d074e1
+# ╠═394d2b11-9788-4ce2-afd1-a15901b472a7
 # ╠═e4584145-243d-4ba9-853c-82189a9b96df
 # ╠═a998b36b-7183-4657-ae14-ab81212138ab
 # ╠═3f39b4eb-7aab-4dda-adbf-3be971d4cb99
 # ╠═b641a8d6-624b-4562-92e2-276388f573de
+# ╠═d7751696-1bb5-4ee8-a8e7-45da5dd71947
 # ╠═3f99e49e-9e51-4f8f-9c21-9f670d63f3c4
 # ╠═24c876da-9c14-46df-b9da-d348aac57a56
 # ╠═1e0ac73d-1faf-4250-a6f5-032c67649326
+# ╠═772ec163-7861-4bbe-a90b-d6b6f7c08040
 # ╠═85dd0d15-98d1-49cc-975f-c6bb1a9994b0
+# ╠═d07d4596-bc21-4ba7-9f78-9ce00d1d9339
+# ╠═0b1d39e5-11c7-4a6d-af3f-3cf567671bc3
+# ╠═aa7c6e32-495e-46f8-9256-d2bc51ffbcd5
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
