@@ -12,9 +12,12 @@ begin
 	
 	using DataFrames: DataFrame, select, Not
 	using Distributions: Normal
-	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help
-	using MLJ: models, matching, @load, machine, fit!, predict, predict_mode, rms
+	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkyaxes!
+	using MLJ: CV, evaluate, models, matching, @load, machine, fit!, predict, predict_mode, rms
 	using Random: seed!
+	using Statistics: mean
+	using MLJTuning: TunedModel, Explicit
+	using MLJModelInterface: Probabilistic, Deterministic
 end
 
 # ╔═╡ b37e1bc1-2f53-4637-852b-5c8e38912a0e
@@ -35,16 +38,19 @@ seed!(0)
 help(lines)
 
 # ╔═╡ e4584145-243d-4ba9-853c-82189a9b96df
-y_true(x) = 2x^1.7 + 10
+y_true(x) = 2x + 10
 
 # ╔═╡ a998b36b-7183-4657-ae14-ab81212138ab
-y_real(x) = y_true(x) + rand(Normal(0, 400))
+y_real(x) = y_true(x) + rand(Normal(0, 40))
 
 # ╔═╡ fc89a45d-fe73-45aa-a8ef-bf090884dd00
 indexes = 1.0:100
 
 # ╔═╡ 3f39b4eb-7aab-4dda-adbf-3be971d4cb99
-df = DataFrame(x = indexes, y = y_real.(indexes))
+df = let
+	seed!(0)
+	DataFrame(x = indexes, y = y_real.(indexes))
+end
 
 # ╔═╡ b641a8d6-624b-4562-92e2-276388f573de
 LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0
@@ -82,14 +88,14 @@ let
 	markersize = 2
 	linewidth = 2
 	fig = Figure()
-	ax1 = Axis(fig[1, 1]; ylabel="y", title="LinearRegressor")
-	ax2 = Axis(fig[2, 1]; xlabel="x", ylabel="y", title="DecisionTreeRegressor")
-	lines!(ax1, df.x, linear_predictions; linewidth, color, label="predictions")
-	lines!(ax1, df.x, y_true.(df.x); linewidth, linestyle=:dash, color, label="true")
+	ax1 = Axis(fig[1, 1]; ylabel="y")
+	ax2 = Axis(fig[2, 1]; xlabel="x", ylabel="y")
+	lines!(ax1, df.x, linear_predictions; linewidth, color, label="LinearRegressor")
+	lines!(ax1, df.x, y_true.(df.x); linewidth, linestyle=:dash, color, label="True model")
 	scatter!(ax1, df.x, df.y; color, markersize)
 	axislegend(ax1; position=:lt)
-	lines!(ax2, df.x, tree_predictions; linewidth, color, label="predictions")
-	lines!(ax2, df.x, y_true.(df.x); linewidth, linestyle=:dash, color, label="true")
+	lines!(ax2, df.x, tree_predictions; linewidth, color, label="DecisionTreeRegressor")
+	lines!(ax2, df.x, y_true.(df.x); linewidth, linestyle=:dash, color, label="True model")
 	scatter!(ax2, df.x, df.y; color, markersize)
 	axislegend(ax2; position=:lt)
 	fig
@@ -101,15 +107,99 @@ Okay, so which model performs better. I would guess the `LinearRegressor`, but w
 """
 
 # ╔═╡ a09b498e-931e-4fd3-b3e3-eefc16d2e65f
-rms(predict(linear_model()), y_true.(df.x))
+rms(predict(linear_model()), df.y)
 
 # ╔═╡ 662d7494-6248-4adc-ac0d-0f4c68e4418d
-rms(predict(tree_model()), y_true.(df.x))
+rms(predict(tree_model()), (df.y))
 
 # ╔═╡ c0a0bd8b-fe78-4ea1-8619-62a26a968a10
 md"""
-So, the prediction of the DecisionTreeRegressor is so poor that it even fails on the test set. However, it might "win" on some CV folds.
+So, clearly the tree model is overfitting the data meaning that the model is not expected to perform well on new data.
+
+Now the question is whether we can determine that the linear model is the right one via cross-validation.
 """
+
+# ╔═╡ 696808d5-3547-4666-bfcc-46e658ebbced
+r1(x) = round(x; digits=1)
+
+# ╔═╡ 916a78d9-a6f7-4e60-8511-9d654f74f3de
+function evaluate_model(model, resampling)
+	e = evaluate(model, X, y; resampling)
+	per_fold = first(e.per_fold)
+end
+
+# ╔═╡ 8846fb20-8f03-4139-8e7e-be933f669e4b
+evaluate_model(LinearModel(), CV(; nfolds=14))
+
+# ╔═╡ 7ef58bde-7a24-4242-b0a3-20d61f3aee66
+evaluate_model(TreeModel(), CV(; nfolds=14))
+
+# ╔═╡ da994d08-9d14-45b9-a80a-7ea6a13edd67
+let
+	nfolds = 10
+	color = :black
+	fig = Figure()
+	resampling = CV(; nfolds)
+	linear_per_fold = evaluate_model(LinearModel(), resampling)
+	tree_per_fold = evaluate_model(TreeModel(), resampling)
+	foldsmean(per_fold) = fill(mean(per_fold), length(folds))
+	folds = 1:nfolds
+	
+	all_points = [linear_per_fold; tree_per_fold]
+	tickround(x) = round(x; digits=-1)
+	lower = minimum(all_points) - 3
+	upper = maximum(all_points) + 3
+	ax1 = Axis(fig[1, 1]; ylabel="Root-mean-square error")
+	lines!(ax1, folds, linear_per_fold; color, label="LinearRegressor")
+	lines!(ax1, folds, foldsmean(linear_per_fold); color, linestyle=:dash, label="Mean")
+	axislegend(ax1; position=:lt)
+	
+	ax2 = Axis(fig[1, 2])
+	lines!(ax2, folds, tree_per_fold; color, label="DecisionTreeRegressor")
+	lines!(ax2, folds, foldsmean(tree_per_fold); color, linestyle=:dash, label="Mean")
+	axislegend(ax2; position=:lt)
+	
+	linkyaxes!(ax1, ax2)
+	current_figure()
+end
+
+# ╔═╡ 641ac771-1424-45ba-a313-d6e1e8b7eaf4
+md"""
+So, basically cross-validation isn't gonna be perfect. If the data or standard deviation would have been different, then another model could have obtained a lower error according to the cross-validation.
+
+Let's tryout nested cross-validation.
+"""
+
+# ╔═╡ 8fc332be-dba1-4001-8f68-15f01d422325
+nfolds = 14
+
+# ╔═╡ a51623ab-af57-4996-ac27-b48ecc9ecc19
+inner_resampling = CV(; nfolds=nfolds);
+
+# ╔═╡ 072276fc-556a-4cf8-b16e-53d93a0c51fc
+multi_model = TunedModel(; models=[LinearModel(), TreeModel()], resampling=inner_resampling);
+
+# ╔═╡ 7f2cd0ec-d3d9-4563-b86c-8ef450ea9ba2
+ntrials = 4
+
+# ╔═╡ 622f4d66-afde-4c36-b15c-57b9956053c1
+outer_resampling = CV(; nfolds=ntrials);
+
+# ╔═╡ e1de9f5d-c062-4068-8652-e0bac41bee9b
+e = evaluate(multi_model, X, y; measure=rms, resampling=outer_resampling)
+
+# ╔═╡ a3675b35-f3b2-45c6-90db-e3dc20404900
+[e.report_per_fold[i].best_model for i in 1:ntrials]
+
+# ╔═╡ 9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
+md"""
+Now, lets plot the same as above, but for multiple runs
+"""
+
+# ╔═╡ 95f8e3cf-c6b9-4d84-bc35-b933008bf112
+let
+	
+end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -120,8 +210,11 @@ Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
 MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
 MLJLinearModels = "6ee0df7b-362f-4a72-a706-9e79364fb692"
+MLJModelInterface = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
+MLJTuning = "03970b2e-30c4-11ea-3135-d1576263f10f"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 CairoMakie = "~0.6.5"
@@ -130,6 +223,8 @@ Distributions = "~0.25.19"
 MLJ = "~0.16.9"
 MLJDecisionTreeInterface = "~0.1.3"
 MLJLinearModels = "~0.5.6"
+MLJModelInterface = "~1.3.2"
+MLJTuning = "~0.6.13"
 Makie = "~0.15.2"
 """
 
@@ -607,6 +702,12 @@ deps = ["Test"]
 git-tree-sha1 = "098e4d2c533924c921f9f9847274f2ad89e018b8"
 uuid = "83e8ac13-25f8-5344-8a64-a9f2b223428f"
 version = "0.5.0"
+
+[[InlineStrings]]
+deps = ["Parsers"]
+git-tree-sha1 = "19cb49649f8c41de7fea32d089d37de917b553da"
+uuid = "842dd82b-1e85-43dc-bf29-5d0ee9dffc48"
+version = "1.0.1"
 
 [[IntelOpenMP_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1384,10 +1485,10 @@ uuid = "731e570b-9d59-4bfa-96dc-6df516fadf69"
 version = "0.4.3"
 
 [[TimeZones]]
-deps = ["Dates", "Future", "LazyArtifacts", "Mocking", "Pkg", "Printf", "RecipesBase", "Serialization", "Unicode"]
-git-tree-sha1 = "6c9040665b2da00d30143261aea22c7427aada1c"
+deps = ["Dates", "Downloads", "InlineStrings", "LazyArtifacts", "Mocking", "Pkg", "Printf", "RecipesBase", "Serialization", "Unicode"]
+git-tree-sha1 = "9408d0773ed2dbfba68ebc0e2d5dd388a5e668a9"
 uuid = "f269a46b-ccf7-5d73-abea-4c690281aa53"
-version = "1.5.7"
+version = "1.6.0"
 
 [[TranscodingStreams]]
 deps = ["Random", "Test"]
@@ -1560,5 +1661,20 @@ version = "3.5.0+0"
 # ╠═a09b498e-931e-4fd3-b3e3-eefc16d2e65f
 # ╠═662d7494-6248-4adc-ac0d-0f4c68e4418d
 # ╠═c0a0bd8b-fe78-4ea1-8619-62a26a968a10
+# ╠═696808d5-3547-4666-bfcc-46e658ebbced
+# ╠═916a78d9-a6f7-4e60-8511-9d654f74f3de
+# ╠═8846fb20-8f03-4139-8e7e-be933f669e4b
+# ╠═7ef58bde-7a24-4242-b0a3-20d61f3aee66
+# ╠═da994d08-9d14-45b9-a80a-7ea6a13edd67
+# ╠═641ac771-1424-45ba-a313-d6e1e8b7eaf4
+# ╠═8fc332be-dba1-4001-8f68-15f01d422325
+# ╠═a51623ab-af57-4996-ac27-b48ecc9ecc19
+# ╠═072276fc-556a-4cf8-b16e-53d93a0c51fc
+# ╠═7f2cd0ec-d3d9-4563-b86c-8ef450ea9ba2
+# ╠═622f4d66-afde-4c36-b15c-57b9956053c1
+# ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
+# ╠═a3675b35-f3b2-45c6-90db-e3dc20404900
+# ╠═9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
+# ╠═95f8e3cf-c6b9-4d84-bc35-b933008bf112
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
