@@ -57,7 +57,7 @@ function hfun_blogposts()
         surl = strip(url, '/')
         title = pagevar(surl, :title)
         pubdate = pagevar(surl, :published)
-        description = pagevar(surl, :rss)
+        description = pagevar(surl, :rss_description)
         if isnothing(pubdate)
             date = "$curyear-$curmonth-$curday"
         else
