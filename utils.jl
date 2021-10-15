@@ -31,12 +31,6 @@ Souce: <https://github.com/abhishalya/abhishalya.github.io>.
     curmonth = month(today)
     curday = day(today)
 
-    # Debug
-    K = keys(Franklin.ALL_PAGE_VARS)
-    print(K)
-    k = first(K)
-    print(Franklin.ALL_PAGE_VARS[k])
-
     list = readdir("posts")
     filter!(endswith(".md"), list)
     function sorter(p)
@@ -64,8 +58,6 @@ Souce: <https://github.com/abhishalya/abhishalya.github.io>.
         title = pagevar(surl, "title")
         pubdate = pagevar(surl, "published")
         description = pagevar(surl, "rss_description")
-        @assert !isnothing(title)
-        @assert !isnothing(description)
         if isnothing(pubdate)
             date = "$curyear-$curmonth-$curday"
         else
