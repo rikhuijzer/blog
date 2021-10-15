@@ -3,8 +3,8 @@ Chains MCMC chain (10000×16×3 Array{Float64, 3}):
 Iterations        = 1001:1:11000
 Number of chains  = 3
 Samples per chain = 10000
-Wall duration     = 43.2 seconds
-Compute duration  = 69.77 seconds
+Wall duration     = 46.17 seconds
+Compute duration  = 73.85 seconds
 parameters        = intercept, βₐ, βᵣ, σ
 internals         = lp, n_steps, is_accept, acceptance_rate, log_density, hamiltonian_energy, hamiltonian_energy_error, max_hamiltonian_energy_error, tree_depth, numerical_error, step_size, nom_step_size
 
@@ -12,10 +12,10 @@ Summary Statistics
   parameters      mean       std   naive_se      mcse          ess      rhat   ess_per_sec
       Symbol   Float64   Float64    Float64   Float64      Float64   Float64       Float64
 
-   intercept    0.7718    1.3907     0.0080    0.0114   13465.2029    0.9999      192.9969
-          βₐ    1.0480    0.0723     0.0004    0.0006   13680.4460    1.0000      196.0820
-          βᵣ    1.0793    0.0344     0.0002    0.0002   19743.0958    1.0001      282.9781
-           σ    1.1303    0.0736     0.0004    0.0006   19665.3448    1.0000      281.8636
+   intercept    0.7718    1.3907     0.0080    0.0114   13465.2029    0.9999      182.3293
+          βₐ    1.0480    0.0723     0.0004    0.0006   13680.4460    1.0000      185.2439
+          βᵣ    1.0793    0.0344     0.0002    0.0002   19743.0958    1.0001      267.3369
+           σ    1.1303    0.0736     0.0004    0.0006   19665.3448    1.0000      266.2841
 
 Quantiles
   parameters      2.5%     25.0%     50.0%     75.0%     97.5%
