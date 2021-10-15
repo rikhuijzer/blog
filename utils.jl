@@ -25,7 +25,7 @@ end
 Plug in the list of blog posts contained in the `/posts` folder.
 Souce: <https://github.com/abhishalya/abhishalya.github.io>.
 """
-function hfun_blogposts()
+@delay function hfun_blogposts()
     today = Dates.today()
     curyear = year(today)
     curmonth = month(today)

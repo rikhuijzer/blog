@@ -51,7 +51,6 @@ jobs:
       # Runs a second time to be sure.
       run: julia --project -e '
         using Franklin; optimize(; minify=false);
-        optimize(; minify=false);
         verify_links()' > build.log
       env:
         JULIA_NUM_THREADS: '2'
