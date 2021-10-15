@@ -31,6 +31,12 @@ function hfun_blogposts()
     curmonth = month(today)
     curday = day(today)
 
+    # Debug
+    K = keys(Franklin.ALL_PAGE_VARS)
+    print(K)
+    k = first(K)
+    print(Franklin.ALL_PAGE_VARS[k])
+
     list = readdir("posts")
     filter!(endswith(".md"), list)
     function sorter(p)
