@@ -51,7 +51,7 @@ function hfun_blogposts()
         if post == "index.md"
             continue
         end
-        ps  = splitext(post)[1]
+        ps = splitext(post)[1]
         write(io, "<li><span><i>")
         url = "/posts/$ps/"
         surl = strip(url, '/')
