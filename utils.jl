@@ -37,7 +37,7 @@ function hfun_blogposts()
         ps  = splitext(p)[1]
         url = "/posts/$ps/"
         surl = strip(url, '/')
-        pubdate = pagevar(surl, :published)
+        pubdate = pagevar(surl, "published")
         if isnothing(pubdate)
             return Date(Dates.unix2datetime(stat(surl * ".md").ctime))
         end
@@ -55,9 +55,9 @@ function hfun_blogposts()
         write(io, "<li><span><i>")
         url = "/posts/$ps/"
         surl = strip(url, '/')
-        title = pagevar(surl, :title)
-        pubdate = pagevar(surl, :published)
-        description = pagevar(surl, :rss_description)
+        title = pagevar(surl, "title")
+        pubdate = pagevar(surl, "published")
+        description = pagevar(surl, "rss_description")
         if isnothing(pubdate)
             date = "$curyear-$curmonth-$curday"
         else
