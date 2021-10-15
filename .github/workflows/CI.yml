@@ -48,9 +48,9 @@ jobs:
     - uses: julia-actions/julia-buildpkg@latest
 
     - name: Build site
+      # Runs a second time to be sure.
       run: julia --project -e '
         using Franklin; optimize(; minify=false);
-        # Run a second time to be sure.
         optimize(; minify=false);
         verify_links()' > build.log
       env:
