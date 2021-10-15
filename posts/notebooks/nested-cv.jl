@@ -12,10 +12,10 @@ begin
 	
 	using DataFrames: DataFrame, select, Not
 	using Distributions: Normal
-	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkyaxes!, xlabel!
+	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkxaxes!, linkyaxes!, xlabel!, density, density!, hidedecorations!, violin!, boxplot!, hidexdecorations!, hideydecorations!
 	using MLJ: CV, evaluate, models, matching, @load, machine, fit!, predict, predict_mode, rms
 	using Random: seed!
-	using Statistics: mean
+	using Statistics: mean, std, var, median
 	using MLJTuning: TunedModel, Explicit
 	using MLJModelInterface: Probabilistic, Deterministic
 end
@@ -157,35 +157,43 @@ let
 	lines!(ax2, folds, tree_per_fold; color, label="DecisionTreeRegressor")
 	lines!(ax2, folds, foldsmean(tree_per_fold); color, linestyle=:dash, label="Mean")
 	axislegend(ax2; position=:lt)
+	hideydecorations!(ax2)
+	
+	# ax3 = Axis(fig[1, 4:5])
+	# density!(ax3, linear_per_fold; strokewidth=1, strokecolor=:black, color=:white, direction=:y)
+	# hidedecorations!(ax3; grid=false)
 	
 	linkyaxes!(ax1, ax2)
 	current_figure()
 end
+
+# ╔═╡ 5b6ac019-d363-4141-8e12-a1973db68346
+
 
 # ╔═╡ 641ac771-1424-45ba-a313-d6e1e8b7eaf4
 md"""
 So, basically cross-validation isn't gonna be perfect. If the data or standard deviation would have been different, then another model could have obtained a lower error according to the cross-validation.
 
 Let's tryout nested cross-validation.
+
+According to Zhang[^Zhang], repeated 50- and 20- fold CV is best for $n_t$ sample points.
+
+The best CV for model selection does not necessarily imply the best CV for performance estimation [^Zhang] (p. 104 and p. 105).
+
+[^Zhang]: Zhang & Lang. 2015. Cross-validation for selecting a model selection procedure. https://doi.org/10.1016/j.jeconom.2015.02.006
 """
 
-# ╔═╡ 8fc332be-dba1-4001-8f68-15f01d422325
-nfolds = 14
-
-# ╔═╡ a51623ab-af57-4996-ac27-b48ecc9ecc19
-inner_resampling = CV(; nfolds=nfolds);
-
-# ╔═╡ 072276fc-556a-4cf8-b16e-53d93a0c51fc
-multi_model = TunedModel(; models=[LinearModel(), TreeModel()], resampling=inner_resampling);
-
-# ╔═╡ 7f2cd0ec-d3d9-4563-b86c-8ef450ea9ba2
-ntrials = 6
-
-# ╔═╡ 622f4d66-afde-4c36-b15c-57b9956053c1
-outer_resampling = CV(; nfolds=ntrials);
+# ╔═╡ d0e5d310-d09d-4e00-b942-07e48d8ab00e
+function evaluate_inner_folds(nfolds::Int, ntrials::Int)
+	inner_resampling = CV(; nfolds=nfolds)
+	multi_model = TunedModel(; models=[LinearModel(), TreeModel()], resampling=inner_resampling);
+	outer_resampling = CV(; nfolds=ntrials)
+	e = evaluate(multi_model, X, y; measure=rms, resampling=outer_resampling)
+	return e
+end
 
 # ╔═╡ e1de9f5d-c062-4068-8652-e0bac41bee9b
-e = evaluate(multi_model, X, y; measure=rms, resampling=outer_resampling)
+e = evaluate_inner_folds(60, 6)
 
 # ╔═╡ 9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
 md"""
@@ -195,8 +203,13 @@ Now, lets plot the same as above, but for multiple runs
 # ╔═╡ feaca510-5403-474f-b598-8467569161ce
 md"""
 The problem of CV is that it is still possible to overfit during model selection.
-Therefore, the only **reliable way to estimate model performance** is to use nested cross-validation (_On over-fitting in model selection and subsequent selection bias in performance evaluation_, 2010; _Cross-validation pitfalls when selecting and
-assessing regression and classification models_, 2014).
+Therefore, the only **reliable way to estimate model performance** is to use nested cross-validation (_On over-fitting in model selection and subsequent selection bias in performance evaluation_, 2010; [^Krstajic])
+
+Repeated k-fold CV is the most promising for prediction error estimation [^Krstajic].
+
+Maybe, the problem with nested CV is that it is **sometimes** possible to have the wrong model returned even though that isn't the case here.
+
+[^Krstajic]: Krstajic et al., 2014. Cross-validation pitfalls when selecting and assessing regression and classification models
 """
 
 # ╔═╡ 0024dfce-b6ff-4a38-8afc-1092591422cb
@@ -214,7 +227,15 @@ function plot_trial_model!(ax, e, trial::Int, model::Int)
 end
 
 # ╔═╡ b00e2da6-b44a-42f9-8033-e6f7e152f766
-e.report_per_fold[3].history[1]
+e
+
+# ╔═╡ dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
+function nested_variance(e)
+	var(e.per_fold[1])
+end
+
+# ╔═╡ 5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
+nested_variance(e)
 
 # ╔═╡ 72012d1a-fd91-4b40-9137-18dc01205c00
 function plot_trial!(fig, e, trial::Int)
@@ -224,12 +245,12 @@ function plot_trial!(fig, e, trial::Int)
 	plot_trial_model!(ax1, e, trial, 1)
 	plot_trial_model!(ax2, e, trial, 2)
 	linkyaxes!(ax1, ax2)
+	hideydecorations!(ax2)
 	return ax1, ax2
 end
 
 # ╔═╡ 95f8e3cf-c6b9-4d84-bc35-b933008bf112
 let
-	nfolds = 10
 	color = :black
 	fig = Figure(; resolution=(900, 1500))
 	
@@ -245,7 +266,57 @@ let
 end
 
 # ╔═╡ ac084dda-ed95-40d5-a8a8-d32dfce15e16
-[string(e.report_per_fold[i].best_model) for i in 1:ntrials]
+# [string(e.report_per_fold[i].best_model) for i in 1:ntrials]
+
+# ╔═╡ 960a2126-ef9d-447a-91a3-21d64f9cb3fd
+e
+
+# ╔═╡ 88544422-e781-43a4-8eae-35713aa59193
+foldrange = 2:2:80
+
+# ╔═╡ 43f00e6a-ad6d-47e9-8074-266fffa3cb82
+evaluations = [evaluate_inner_folds(i, 6) for i in foldrange]
+
+# ╔═╡ 37c2861b-fed1-4c78-a8e5-0827ab98e477
+function evaluate_function!(ax, range, evaluations, f)
+	results = [f(e.per_fold[1]) for e in evaluations]
+	
+	ax.ylabel = string(f)
+	lines!(ax, range, results; color=:black)
+	scatter!(ax, range, results; color=:black)
+end
+
+# ╔═╡ 626e0034-caef-4435-9716-c4449375159e
+let
+	range = foldrange
+	evals = evaluations
+	means = [mean(e.per_fold[1]) for e in evals]
+	
+	fig = Figure()
+	ax1 = Axis(fig[1, 1])
+	evaluate_function!(ax1, range, evals, mean)
+	
+	ax2 = Axis(fig[2, 1])
+	evaluate_function!(ax2, range, evals, median)
+	linkyaxes!(ax1, ax2)
+	hidexdecorations!(ax1)
+	
+	ax3 = Axis(fig[3, 1])
+	evaluate_function!(ax3, range, evals, var)
+	hidexdecorations!(ax2)
+	
+	linkxaxes!(ax1, ax2, ax3)
+	current_figure()
+end
+
+# ╔═╡ d682e41e-b434-4202-89ea-4e1d44a0e21c
+md"Maybe, we can make it more robust by doing more trials"
+
+# ╔═╡ 0630eb20-01a3-41f8-a7ad-202a56b43954
+trialrange = 2:2:20
+
+# ╔═╡ ad007c31-d39b-4f10-9e95-755f40cb6844
+trialevaluations = [evaluate_inner_folds(30, i) for i in trialrange]
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -280,9 +351,9 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 [[ARFFFiles]]
 deps = ["CategoricalArrays", "Dates", "Parsers", "Tables"]
-git-tree-sha1 = "e1cb619937aa96797c6bc85be68f49de9c2f0894"
+git-tree-sha1 = "3556fa90c0bea9f965388c0e123418cb9f5ff2e3"
 uuid = "da404889-ca92-49ff-9e8b-0aa6b4d38dc8"
-version = "1.3.0"
+version = "1.4.0"
 
 [[AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -437,12 +508,6 @@ git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
 uuid = "ed09eef8-17a6-5b46-8889-db040fac31e3"
 version = "0.3.2"
 
-[[ContextVariablesX]]
-deps = ["Compat", "Logging", "UUIDs"]
-git-tree-sha1 = "8ccaa8c655bc1b83d2da4d569c9b28254ababd6e"
-uuid = "6add18c4-b38d-439d-96f6-d6bc489c04c5"
-version = "0.1.2"
-
 [[Contour]]
 deps = ["StaticArrays"]
 git-tree-sha1 = "9f02045d934dc030edad45944ea80dbd1f0ebea7"
@@ -514,9 +579,9 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[Distributions]]
 deps = ["ChainRulesCore", "FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "e13d3977b559f013b3729a029119162f84e93f5b"
+git-tree-sha1 = "9809cf6871ca006d5a4669136c09e77ba08bf51a"
 uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.25.19"
+version = "0.25.20"
 
 [[DocStringExtensions]]
 deps = ["LibGit2"]
@@ -624,10 +689,10 @@ uuid = "59287772-0a20-5a39-b81b-1366585eb4c0"
 version = "0.4.2"
 
 [[ForwardDiff]]
-deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "LinearAlgebra", "NaNMath", "Printf", "Random", "SpecialFunctions", "StaticArrays"]
-git-tree-sha1 = "c4203b60d37059462af370c4f3108fb5d155ff13"
+deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "LinearAlgebra", "NaNMath", "Preferences", "Printf", "Random", "SpecialFunctions", "StaticArrays"]
+git-tree-sha1 = "63777916efbcb0ab6173d09a658fb7f2783de485"
 uuid = "f6369f11-7733-5829-9624-2563aa707210"
-version = "0.10.20"
+version = "0.10.21"
 
 [[FreeType]]
 deps = ["CEnum", "FreeType2_jll"]
@@ -989,9 +1054,9 @@ version = "0.1.2"
 
 [[MLJIteration]]
 deps = ["IterationControl", "MLJBase", "Random"]
-git-tree-sha1 = "f927564f7e295b3205f37186191c82720a3d93a5"
+git-tree-sha1 = "3bf120afd409c10b4689c1ad3d7bfe945092d722"
 uuid = "614be32b-d00c-4edb-bd02-1eb411ab5e55"
-version = "0.3.1"
+version = "0.3.2"
 
 [[MLJLinearModels]]
 deps = ["DocStringExtensions", "IterativeSolvers", "LinearAlgebra", "LinearMaps", "MLJModelInterface", "Optim", "Parameters"]
@@ -1087,10 +1152,10 @@ version = "1.0.2"
 uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[Mocking]]
-deps = ["Compat", "ContextVariablesX", "ExprTools"]
-git-tree-sha1 = "d5ca7901d59738132d6f9be9a18da50bc85c5115"
+deps = ["Compat", "ExprTools"]
+git-tree-sha1 = "29714d0a7a8083bba8427a4fbfb00a540c681ce7"
 uuid = "78c3b35d-d492-501b-9361-3d52fe80e533"
-version = "0.7.4"
+version = "0.7.3"
 
 [[MosaicViews]]
 deps = ["MappedArrays", "OffsetArrays", "PaddedViews", "StackViews"]
@@ -1233,9 +1298,9 @@ version = "0.12.3"
 
 [[Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "a8709b968a1ea6abc2dc1967cb1db6ac9a00dfb6"
+git-tree-sha1 = "98f59ff3639b3d9485a03a72f3ab35bab9465720"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.0.5"
+version = "2.0.6"
 
 [[Pixman_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1713,19 +1778,26 @@ version = "3.5.0+0"
 # ╠═7ef58bde-7a24-4242-b0a3-20d61f3aee66
 # ╠═bfebf58b-daf5-4d74-ba9b-fc853da3b166
 # ╠═da994d08-9d14-45b9-a80a-7ea6a13edd67
+# ╠═5b6ac019-d363-4141-8e12-a1973db68346
 # ╠═641ac771-1424-45ba-a313-d6e1e8b7eaf4
-# ╠═8fc332be-dba1-4001-8f68-15f01d422325
-# ╠═a51623ab-af57-4996-ac27-b48ecc9ecc19
-# ╠═072276fc-556a-4cf8-b16e-53d93a0c51fc
-# ╠═7f2cd0ec-d3d9-4563-b86c-8ef450ea9ba2
-# ╠═622f4d66-afde-4c36-b15c-57b9956053c1
 # ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
+# ╠═d0e5d310-d09d-4e00-b942-07e48d8ab00e
 # ╠═9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
 # ╠═feaca510-5403-474f-b598-8467569161ce
 # ╠═0024dfce-b6ff-4a38-8afc-1092591422cb
 # ╠═b00e2da6-b44a-42f9-8033-e6f7e152f766
+# ╠═dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
+# ╠═5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
 # ╠═72012d1a-fd91-4b40-9137-18dc01205c00
 # ╠═95f8e3cf-c6b9-4d84-bc35-b933008bf112
 # ╠═ac084dda-ed95-40d5-a8a8-d32dfce15e16
+# ╠═960a2126-ef9d-447a-91a3-21d64f9cb3fd
+# ╠═88544422-e781-43a4-8eae-35713aa59193
+# ╠═43f00e6a-ad6d-47e9-8074-266fffa3cb82
+# ╠═37c2861b-fed1-4c78-a8e5-0827ab98e477
+# ╠═626e0034-caef-4435-9716-c4449375159e
+# ╠═d682e41e-b434-4202-89ea-4e1d44a0e21c
+# ╠═0630eb20-01a3-41f8-a7ad-202a56b43954
+# ╠═ad007c31-d39b-4f10-9e95-755f40cb6844
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
