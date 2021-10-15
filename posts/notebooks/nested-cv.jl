@@ -192,9 +192,6 @@ function evaluate_inner_folds(nfolds::Int, ntrials::Int)
 	return e
 end
 
-# ╔═╡ e1de9f5d-c062-4068-8652-e0bac41bee9b
-e = evaluate_inner_folds(60, 6)
-
 # ╔═╡ 9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
 md"""
 Now, lets plot the same as above, but for multiple runs
@@ -226,16 +223,10 @@ function plot_trial_model!(ax, e, trial::Int, model::Int)
 	axislegend(ax; position=:lt)
 end
 
-# ╔═╡ b00e2da6-b44a-42f9-8033-e6f7e152f766
-e
-
 # ╔═╡ dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
 function nested_variance(e)
 	var(e.per_fold[1])
 end
-
-# ╔═╡ 5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
-nested_variance(e)
 
 # ╔═╡ 72012d1a-fd91-4b40-9137-18dc01205c00
 function plot_trial!(fig, e, trial::Int)
@@ -248,6 +239,12 @@ function plot_trial!(fig, e, trial::Int)
 	hideydecorations!(ax2)
 	return ax1, ax2
 end
+
+# ╔═╡ e1de9f5d-c062-4068-8652-e0bac41bee9b
+e = evaluate_inner_folds(20, 20)
+
+# ╔═╡ 5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
+nested_variance(e)
 
 # ╔═╡ 95f8e3cf-c6b9-4d84-bc35-b933008bf112
 let
@@ -272,36 +269,34 @@ end
 e
 
 # ╔═╡ 88544422-e781-43a4-8eae-35713aa59193
-foldrange = 2:2:80
+foldrange = 2:2:83
 
 # ╔═╡ 43f00e6a-ad6d-47e9-8074-266fffa3cb82
-evaluations = [evaluate_inner_folds(i, 6) for i in foldrange]
+foldevaluations = [evaluate_inner_folds(i, 6) for i in foldrange]
 
 # ╔═╡ 37c2861b-fed1-4c78-a8e5-0827ab98e477
 function evaluate_function!(ax, range, evaluations, f)
 	results = [f(e.per_fold[1]) for e in evaluations]
 	
-	ax.ylabel = string(f)
+	ax.ylabel = f == var ? "variance" : string(f)
 	lines!(ax, range, results; color=:black)
 	scatter!(ax, range, results; color=:black)
 end
 
 # ╔═╡ 626e0034-caef-4435-9716-c4449375159e
-let
-	range = foldrange
-	evals = evaluations
+function plot_evaluations(range, evals; xlabel=nothing)
 	means = [mean(e.per_fold[1]) for e in evals]
 	
 	fig = Figure()
 	ax1 = Axis(fig[1, 1])
-	evaluate_function!(ax1, range, evals, mean)
+	evaluate_function!(ax1, range, evals, median)
 	
 	ax2 = Axis(fig[2, 1])
-	evaluate_function!(ax2, range, evals, median)
+	evaluate_function!(ax2, range, evals, mean)
 	linkyaxes!(ax1, ax2)
 	hidexdecorations!(ax1)
 	
-	ax3 = Axis(fig[3, 1])
+	ax3 = Axis(fig[3, 1]; xlabel)
 	evaluate_function!(ax3, range, evals, var)
 	hidexdecorations!(ax2)
 	
@@ -309,14 +304,25 @@ let
 	current_figure()
 end
 
+# ╔═╡ 40f48800-1aca-4587-a26e-fea92b0ce8ba
+plot_evaluations(foldrange, foldevaluations; xlabel="number of folds")
+
 # ╔═╡ d682e41e-b434-4202-89ea-4e1d44a0e21c
 md"Maybe, we can make it more robust by doing more trials"
 
+# ╔═╡ 3b6ae716-bbc3-42ae-b673-17fb32b67c88
+md"""
+Maybe, the conclusion should be: "Even with CV and many computations, you can't be sure to pick the right model."
+"""
+
 # ╔═╡ 0630eb20-01a3-41f8-a7ad-202a56b43954
-trialrange = 2:2:20
+trialrange = 2:4:60
 
 # ╔═╡ ad007c31-d39b-4f10-9e95-755f40cb6844
 trialevaluations = [evaluate_inner_folds(30, i) for i in trialrange]
+
+# ╔═╡ 135f5d2b-4645-493b-97ae-e4d9e76ab8be
+plot_evaluations(trialrange, trialevaluations; xlabel="number of trials")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1780,15 +1786,14 @@ version = "3.5.0+0"
 # ╠═da994d08-9d14-45b9-a80a-7ea6a13edd67
 # ╠═5b6ac019-d363-4141-8e12-a1973db68346
 # ╠═641ac771-1424-45ba-a313-d6e1e8b7eaf4
-# ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
 # ╠═d0e5d310-d09d-4e00-b942-07e48d8ab00e
 # ╠═9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
 # ╠═feaca510-5403-474f-b598-8467569161ce
 # ╠═0024dfce-b6ff-4a38-8afc-1092591422cb
-# ╠═b00e2da6-b44a-42f9-8033-e6f7e152f766
 # ╠═dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
 # ╠═5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
 # ╠═72012d1a-fd91-4b40-9137-18dc01205c00
+# ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
 # ╠═95f8e3cf-c6b9-4d84-bc35-b933008bf112
 # ╠═ac084dda-ed95-40d5-a8a8-d32dfce15e16
 # ╠═960a2126-ef9d-447a-91a3-21d64f9cb3fd
@@ -1796,7 +1801,10 @@ version = "3.5.0+0"
 # ╠═43f00e6a-ad6d-47e9-8074-266fffa3cb82
 # ╠═37c2861b-fed1-4c78-a8e5-0827ab98e477
 # ╠═626e0034-caef-4435-9716-c4449375159e
+# ╠═40f48800-1aca-4587-a26e-fea92b0ce8ba
+# ╠═135f5d2b-4645-493b-97ae-e4d9e76ab8be
 # ╠═d682e41e-b434-4202-89ea-4e1d44a0e21c
+# ╠═3b6ae716-bbc3-42ae-b673-17fb32b67c88
 # ╠═0630eb20-01a3-41f8-a7ad-202a56b43954
 # ╠═ad007c31-d39b-4f10-9e95-755f40cb6844
 # ╟─00000000-0000-0000-0000-000000000001
