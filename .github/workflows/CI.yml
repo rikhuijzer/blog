@@ -32,9 +32,6 @@ jobs:
           ${{ runner.os }}-test-
           ${{ runner.os }}-
 
-    - run: julia --project -e 'using Pkg;
-        Pkg.add(url="https://github.com/rikhuijzer/PlutoHTML.jl#main")'
-
     - name: Install LaTeX (used by TikzPictures.jl)
       run: |
         sudo apt-get -qq update
@@ -48,15 +45,17 @@ jobs:
         # In response to error luatex85.sty not found.
         sudo apt-get install -y texlive-luatex
 
+    - run: julia --project -e 'using Pkg;
+        Pkg.add(url="https://github.com/rikhuijzer/PlutoHTML.jl#main")'
+
     - uses: julia-actions/julia-buildpkg@latest
 
     - name: Build site
-      # Runs a second time to be sure.
       run: julia --project -e '
         using Franklin; optimize(; minify=false);
-        verify_links()' > build.log
+        verify_links()'
       env:
-        JULIA_NUM_THREADS: '2'
+        JULIA_NUM_THREADS: '4'
 
     - name: Deploy to secondary branch
       if: ${{ github.event_name != 'pull_request' }}
