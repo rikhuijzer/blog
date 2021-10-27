@@ -33,7 +33,7 @@ jobs:
           ${{ runner.os }}-
 
     - run: julia --project -e 'using Pkg;
-        Pkg.add("https://github.com/rikhuijzer/PlutoHTML.jl")'
+        Pkg.add(url="https://github.com/rikhuijzer/PlutoHTML.jl#main")'
 
     - name: Install LaTeX (used by TikzPictures.jl)
       run: |
