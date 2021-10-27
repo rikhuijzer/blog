@@ -202,6 +202,10 @@ end;</code></pre>
 
 
 
+<div class="markdown"><p>That looks interesting, but what happens with the median, mean and variance if we change the number of folds and trials?</p>
+</div>
+
+
 
 
 

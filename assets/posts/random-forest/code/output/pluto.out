@@ -225,13 +225,13 @@ end;</code></pre>
 	accuracies = [fitted_accuracy(logistic_model, train, test) for (train, test) in folds]
 	accuracies
 end</code></pre>
-Dict{Symbol, Any}(:prefix => "Float64", :elements => Tuple{Int64, Any}[(1, ("0.7", MIME type text/plain)), (2, ("0.7", MIME type text/plain)), (3, ("0.4", MIME type text/plain)), (4, ("0.6", MIME type text/plain)), (5, ("0.7", MIME type text/plain)), (6, ("0.8", MIME type text/plain)), (7, ("0.7", MIME type text/plain)), (8, ("0.6", MIME type text/plain))], :type => :Array, :prefix_short => "", :objectid => "536e337eb16af29a")
+["0.7", "0.7", "0.4", "0.6", "0.7", "0.8", "0.7", "0.6"]
 
 <pre><code class="language-julia">let
 	accuracies = [fitted_accuracy(forest_model, train, test) for (train, test) in folds]
 	accuracies, mean(accuracies) |> r3
 end</code></pre>
-Dict{Symbol, Any}(:elements => Tuple{Int64, Tuple{Any, MIME}}[(1, (Dict{Symbol, Any}(:prefix => "Float64", :elements => Tuple{Int64, Any}[(1, ("0.9", MIME type text/plain)), (2, ("0.3", MIME type text/plain)), (3, ("0.3", MIME type text/plain)), (4, ("0.7", MIME type text/plain)), (5, ("0.5", MIME type text/plain)), (6, ("0.7", MIME type text/plain)), (7, ("0.5", MIME type text/plain)), (8, ("0.2", MIME type text/plain))], :type => :Array, :prefix_short => "", :objectid => "678926d4d4a78cca"), MIME type application/vnd.pluto.tree+object)), (2, ("0.513", MIME type text/plain))], :type => :Tuple, :objectid => "226037028fe77d17")
+Tuple{Int64, Tuple{Any, MIME}}[(1, (Dict{Symbol, Any}(:prefix => "Float64", :elements => Tuple{Int64, Any}[(1, ("0.9", MIME type text/plain)), (2, ("0.3", MIME type text/plain)), (3, ("0.3", MIME type text/plain)), (4, ("0.7", MIME type text/plain)), (5, ("0.5", MIME type text/plain)), (6, ("0.7", MIME type text/plain)), (7, ("0.5", MIME type text/plain)), (8, ("0.2", MIME type text/plain))], :type => :Array, :prefix_short => "", :objectid => "a9686b93f80f77"), MIME type application/vnd.pluto.tree+object)), (2, ("0.513", MIME type text/plain))]
 
 ~~~
 

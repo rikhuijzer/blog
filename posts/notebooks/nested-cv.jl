@@ -279,6 +279,12 @@ function evaluate_function!(ax, range, evaluations, f)
 	scatter!(ax, range, results; color=:black)
 end;
 
+# ╔═╡ 95877eb0-f7b7-4123-8718-b9d30f3e2c3f
+# hideall
+md"""
+That looks interesting, but what happens with the median, mean and variance if we change the number of folds and trials?
+"""
+
 # ╔═╡ 626e0034-caef-4435-9716-c4449375159e
 # hideall
 function plot_evaluations(range, evals; xlabel=nothing)
@@ -1796,6 +1802,7 @@ version = "3.5.0+0"
 # ╠═88544422-e781-43a4-8eae-35713aa59193
 # ╠═43f00e6a-ad6d-47e9-8074-266fffa3cb82
 # ╠═37c2861b-fed1-4c78-a8e5-0827ab98e477
+# ╠═95877eb0-f7b7-4123-8718-b9d30f3e2c3f
 # ╠═626e0034-caef-4435-9716-c4449375159e
 # ╠═40f48800-1aca-4587-a26e-fea92b0ce8ba
 # ╠═135f5d2b-4645-493b-97ae-e4d9e76ab8be
