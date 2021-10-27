@@ -1,18 +1,17 @@
 ### A Pluto.jl notebook ###
-# v0.16.1
+# v0.16.4
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 5e902e3c-2c19-11ec-39df-3fba9fe5640c
 begin
-	import CairoMakie
 	import MLJLinearModels
 	import MLJDecisionTreeInterface
 	
 	using DataFrames: DataFrame, select, Not
 	using Distributions: Normal
-	using Makie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkxaxes!, linkyaxes!, xlabel!, density, density!, hidedecorations!, violin!, boxplot!, hidexdecorations!, hideydecorations!
+	using CairoMakie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkxaxes!, linkyaxes!, xlabel!, density, density!, hidedecorations!, violin!, boxplot!, hidexdecorations!, hideydecorations!
 	using MLJ: CV, evaluate, models, matching, @load, machine, fit!, predict, predict_mode, rms
 	using Random: seed!
 	using Statistics: mean, std, var, median
@@ -21,30 +20,26 @@ begin
 end
 
 # ╔═╡ b37e1bc1-2f53-4637-852b-5c8e38912a0e
+# hideall
 function compatible_models()
 	X = (a = [1.0], b = [2.0], c = [3.0])
 	y = [4.0]
 	M = models(matching(X, y))
 	filter(m -> m.is_pure_julia, M)
-end
+end;
 
 # ╔═╡ b0b55bb3-d445-4f45-bd33-c26f28d074e1
-compatible_models()
-
-# ╔═╡ 394d2b11-9788-4ce2-afd1-a15901b472a7
-seed!(0)
-
-# ╔═╡ fc95dc54-7ebc-4310-a6ec-cc704a2523dc
-# help(lines)
+# hideall
+compatible_models();
 
 # ╔═╡ e4584145-243d-4ba9-853c-82189a9b96df
-y_true(x) = 2x + 10
+y_true(x) = 2x + 10;
 
 # ╔═╡ a998b36b-7183-4657-ae14-ab81212138ab
-y_real(x) = y_true(x) + rand(Normal(0, 40))
+y_real(x) = y_true(x) + rand(Normal(0, 40));
 
 # ╔═╡ fc89a45d-fe73-45aa-a8ef-bf090884dd00
-indexes = 1.0:100
+indexes = 1.0:100;
 
 # ╔═╡ 3f39b4eb-7aab-4dda-adbf-3be971d4cb99
 df = let
@@ -70,7 +65,7 @@ function linear_model()
 	mach = machine(model, X, y)
 	fit!(mach)
 	return mach
-end
+end;
 
 # ╔═╡ 772ec163-7861-4bbe-a90b-d6b6f7c08040
 function tree_model()
@@ -78,9 +73,10 @@ function tree_model()
 	mach = machine(model, X, y)
 	fit!(mach)
 	return mach
-end
+end;
 
 # ╔═╡ d07d4596-bc21-4ba7-9f78-9ce00d1d9339
+# hideall
 let
 	linear_predictions = predict(linear_model())
 	tree_predictions = predict(tree_model())
@@ -102,6 +98,7 @@ let
 end
 
 # ╔═╡ 86a2c569-d139-467e-948c-18f60d0cd93a
+# hideall
 md"""
 Okay, so which model performs better. I would guess the `LinearRegressor`, but what would cross-validation tell us.
 """
@@ -113,6 +110,7 @@ rms(predict(linear_model()), df.y)
 rms(predict(tree_model()), (df.y))
 
 # ╔═╡ c0a0bd8b-fe78-4ea1-8619-62a26a968a10
+# hideall
 md"""
 So, clearly the tree model is overfitting the data meaning that the model is not expected to perform well on new data.
 
@@ -120,13 +118,13 @@ Now the question is whether we can determine that the linear model is the right 
 """
 
 # ╔═╡ 696808d5-3547-4666-bfcc-46e658ebbced
-r1(x) = round(x; digits=1)
+r1(x) = round(x; digits=1);
 
 # ╔═╡ 916a78d9-a6f7-4e60-8511-9d654f74f3de
 function evaluate_model(model, resampling)
 	e = evaluate(model, X, y; resampling)
 	per_fold = first(e.per_fold)
-end
+end;
 
 # ╔═╡ 8846fb20-8f03-4139-8e7e-be933f669e4b
 evaluate_model(LinearModel(), CV(; nfolds=14))
@@ -135,9 +133,10 @@ evaluate_model(LinearModel(), CV(; nfolds=14))
 evaluate_model(TreeModel(), CV(; nfolds=14))
 
 # ╔═╡ bfebf58b-daf5-4d74-ba9b-fc853da3b166
-foldsmean(per_fold) = fill(mean(per_fold), length(per_fold))
+foldsmean(per_fold) = fill(mean(per_fold), length(per_fold));
 
 # ╔═╡ da994d08-9d14-45b9-a80a-7ea6a13edd67
+# hideall
 let
 	nfolds = 10
 	color = :black
@@ -167,10 +166,8 @@ let
 	current_figure()
 end
 
-# ╔═╡ 5b6ac019-d363-4141-8e12-a1973db68346
-
-
 # ╔═╡ 641ac771-1424-45ba-a313-d6e1e8b7eaf4
+# hideall
 md"""
 So, basically cross-validation isn't gonna be perfect. If the data or standard deviation would have been different, then another model could have obtained a lower error according to the cross-validation.
 
@@ -190,14 +187,10 @@ function evaluate_inner_folds(nfolds::Int, ntrials::Int)
 	outer_resampling = CV(; nfolds=ntrials)
 	e = evaluate(multi_model, X, y; measure=rms, resampling=outer_resampling)
 	return e
-end
-
-# ╔═╡ 9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
-md"""
-Now, lets plot the same as above, but for multiple runs
-"""
+end;
 
 # ╔═╡ feaca510-5403-474f-b598-8467569161ce
+# hideall
 md"""
 The problem of CV is that it is still possible to overfit during model selection.
 Therefore, the only **reliable way to estimate model performance** is to use nested cross-validation (_On over-fitting in model selection and subsequent selection bias in performance evaluation_, 2010; [^Krstajic])
@@ -210,6 +203,7 @@ Maybe, the problem with nested CV is that it is **sometimes** possible to have t
 """
 
 # ╔═╡ 0024dfce-b6ff-4a38-8afc-1092591422cb
+# hideall
 function plot_trial_model!(ax, e, trial::Int, model::Int)
 	m = e.report_per_fold[trial].history[model]
 	indexes = 1:length(first(m.per_fold))
@@ -221,14 +215,15 @@ function plot_trial_model!(ax, e, trial::Int, model::Int)
 	# lines!(ax1, folds, linear_per_fold; color, label="LinearRegressor")
 	lines!(ax, indexes, foldsmean(per_fold); color, linestyle=:dash, label="Mean")
 	axislegend(ax; position=:lt)
-end
+end;
 
 # ╔═╡ dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
 function nested_variance(e)
 	var(e.per_fold[1])
-end
+end;
 
 # ╔═╡ 72012d1a-fd91-4b40-9137-18dc01205c00
+# hideall
 function plot_trial!(fig, e, trial::Int)
 	ax1 = Axis(fig[trial, 1]; ylabel="trial $trial \n root-mean-square error")
 	ax2 = Axis(fig[trial, 2])
@@ -238,15 +233,16 @@ function plot_trial!(fig, e, trial::Int)
 	linkyaxes!(ax1, ax2)
 	hideydecorations!(ax2)
 	return ax1, ax2
-end
+end;
 
 # ╔═╡ e1de9f5d-c062-4068-8652-e0bac41bee9b
-e = evaluate_inner_folds(20, 20)
+e = evaluate_inner_folds(20, 20);
 
 # ╔═╡ 5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
-nested_variance(e)
+nested_variance(e);
 
 # ╔═╡ 95f8e3cf-c6b9-4d84-bc35-b933008bf112
+# hideall
 let
 	color = :black
 	fig = Figure(; resolution=(900, 1500))
@@ -265,25 +261,24 @@ end
 # ╔═╡ ac084dda-ed95-40d5-a8a8-d32dfce15e16
 # [string(e.report_per_fold[i].best_model) for i in 1:ntrials]
 
-# ╔═╡ 960a2126-ef9d-447a-91a3-21d64f9cb3fd
-e
-
 # ╔═╡ 88544422-e781-43a4-8eae-35713aa59193
-foldrange = 2:2:83
+foldrange = 2:2:83;
 
 # ╔═╡ 43f00e6a-ad6d-47e9-8074-266fffa3cb82
-foldevaluations = [evaluate_inner_folds(i, 6) for i in foldrange]
+foldevaluations = [evaluate_inner_folds(i, 6) for i in foldrange];
 
 # ╔═╡ 37c2861b-fed1-4c78-a8e5-0827ab98e477
+# hideall
 function evaluate_function!(ax, range, evaluations, f)
 	results = [f(e.per_fold[1]) for e in evaluations]
 	
 	ax.ylabel = f == var ? "variance" : string(f)
 	lines!(ax, range, results; color=:black)
 	scatter!(ax, range, results; color=:black)
-end
+end;
 
 # ╔═╡ 626e0034-caef-4435-9716-c4449375159e
+# hideall
 function plot_evaluations(range, evals; xlabel=nothing)
 	means = [mean(e.per_fold[1]) for e in evals]
 	
@@ -302,26 +297,20 @@ function plot_evaluations(range, evals; xlabel=nothing)
 	
 	linkxaxes!(ax1, ax2, ax3)
 	current_figure()
-end
+end;
 
 # ╔═╡ 40f48800-1aca-4587-a26e-fea92b0ce8ba
+# hideall
 plot_evaluations(foldrange, foldevaluations; xlabel="number of folds")
 
-# ╔═╡ d682e41e-b434-4202-89ea-4e1d44a0e21c
-md"Maybe, we can make it more robust by doing more trials"
-
-# ╔═╡ 3b6ae716-bbc3-42ae-b673-17fb32b67c88
-md"""
-Maybe, the conclusion should be: "Even with CV and many computations, you can't be sure to pick the right model."
-"""
-
 # ╔═╡ 0630eb20-01a3-41f8-a7ad-202a56b43954
-trialrange = 2:4:60
+trialrange = 2:4:60;
 
 # ╔═╡ ad007c31-d39b-4f10-9e95-755f40cb6844
-trialevaluations = [evaluate_inner_folds(30, i) for i in trialrange]
+trialevaluations = [evaluate_inner_folds(30, i) for i in trialrange];
 
 # ╔═╡ 135f5d2b-4645-493b-97ae-e4d9e76ab8be
+# hideall
 plot_evaluations(trialrange, trialevaluations; xlabel="number of trials")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -335,7 +324,6 @@ MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
 MLJLinearModels = "6ee0df7b-362f-4a72-a706-9e79364fb692"
 MLJModelInterface = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
 MLJTuning = "03970b2e-30c4-11ea-3135-d1576263f10f"
-Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
@@ -348,7 +336,6 @@ MLJDecisionTreeInterface = "~0.1.3"
 MLJLinearModels = "~0.5.6"
 MLJModelInterface = "~1.3.2"
 MLJTuning = "~0.6.13"
-Makie = "~0.15.2"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -1761,8 +1748,6 @@ version = "3.5.0+0"
 # ╠═5e902e3c-2c19-11ec-39df-3fba9fe5640c
 # ╠═b37e1bc1-2f53-4637-852b-5c8e38912a0e
 # ╠═b0b55bb3-d445-4f45-bd33-c26f28d074e1
-# ╠═394d2b11-9788-4ce2-afd1-a15901b472a7
-# ╠═fc95dc54-7ebc-4310-a6ec-cc704a2523dc
 # ╠═e4584145-243d-4ba9-853c-82189a9b96df
 # ╠═a998b36b-7183-4657-ae14-ab81212138ab
 # ╠═fc89a45d-fe73-45aa-a8ef-bf090884dd00
@@ -1784,10 +1769,8 @@ version = "3.5.0+0"
 # ╠═7ef58bde-7a24-4242-b0a3-20d61f3aee66
 # ╠═bfebf58b-daf5-4d74-ba9b-fc853da3b166
 # ╠═da994d08-9d14-45b9-a80a-7ea6a13edd67
-# ╠═5b6ac019-d363-4141-8e12-a1973db68346
 # ╠═641ac771-1424-45ba-a313-d6e1e8b7eaf4
 # ╠═d0e5d310-d09d-4e00-b942-07e48d8ab00e
-# ╠═9e08e2a0-60c6-42e6-a5b5-2408bdef40b3
 # ╠═feaca510-5403-474f-b598-8467569161ce
 # ╠═0024dfce-b6ff-4a38-8afc-1092591422cb
 # ╠═dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
@@ -1796,15 +1779,12 @@ version = "3.5.0+0"
 # ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
 # ╠═95f8e3cf-c6b9-4d84-bc35-b933008bf112
 # ╠═ac084dda-ed95-40d5-a8a8-d32dfce15e16
-# ╠═960a2126-ef9d-447a-91a3-21d64f9cb3fd
 # ╠═88544422-e781-43a4-8eae-35713aa59193
 # ╠═43f00e6a-ad6d-47e9-8074-266fffa3cb82
 # ╠═37c2861b-fed1-4c78-a8e5-0827ab98e477
 # ╠═626e0034-caef-4435-9716-c4449375159e
 # ╠═40f48800-1aca-4587-a26e-fea92b0ce8ba
 # ╠═135f5d2b-4645-493b-97ae-e4d9e76ab8be
-# ╠═d682e41e-b434-4202-89ea-4e1d44a0e21c
-# ╠═3b6ae716-bbc3-42ae-b673-17fb32b67c88
 # ╠═0630eb20-01a3-41f8-a7ad-202a56b43954
 # ╠═ad007c31-d39b-4f10-9e95-755f40cb6844
 # ╟─00000000-0000-0000-0000-000000000001

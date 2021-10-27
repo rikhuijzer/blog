@@ -89,3 +89,28 @@ function hfun_requiredfill(params::Vector{String})::String
     @assert(value != "", "Missing a value for the field $field")
     return value
 end
+
+"""
+    lx_pluto(com, _)
+
+Embed a Pluto notebook via:
+https://github.com/rikhuijzer/PlutoHTML.jl
+"""
+function lx_pluto(com, _)
+    file = string(Franklin.content(com.braces[1]))::String
+    path = joinpath("posts", "notebooks", "$file.jl")
+    return """
+        ```julia:pluto
+        # hideall
+
+        using PlutoHTML: notebook2html
+
+        path = "$path"
+        @assert isfile(path)
+        println("→ evaluating Pluto notebook at (\$path)")
+        html = notebook2html(path)
+        println("~~~\n\$html\n~~~\n")
+        ```
+        \\textoutput{pluto}
+        """
+end
