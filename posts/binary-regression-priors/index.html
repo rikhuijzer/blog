@@ -109,7 +109,26 @@ Notice how these estimated coefficients are close to the coefficients that we se
 <h2 id="bayesian_regression"><a href="#bayesian_regression" class="header-anchor">Bayesian regression</a></h2>
 <p>For the Bayesian regression we fit a model via Turing.jl. Now, we give the model information about the structure of the data as well as priors for the size of the coefficients. For demonstration purposes, I&#39;ve set the priors to the correct values. This is reasonable because I was wondering whether finding a good prior could have a positive effect on the model accuracy.</p>
 
+<pre><code class="plaintext code-output">On worker 2:
+ArgumentError: Package MLDataUtils [cc2ba9b6-d476-5e6d-8eaf-a92d5412d41d] is required but does not seem to be installed:
+ - Run `Pkg.instantiate()` to install all recorded dependencies.
 
+Stacktrace:
+ [1] _require
+   @ ./loading.jl:1012
+ [2] require
+   @ ./loading.jl:936
+ [3] #1
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/Distributed.jl:79
+ [4] #103
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:274
+ [5] run_work_thunk
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:63
+ [6] run_work_thunk
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:72
+ [7] #96
+   @ ./task.jl:411
+</code></pre>
 <pre><code class="language-julia">using Statistics
 using StatsFuns: logistic
 using Turing
@@ -147,6 +166,9 @@ Stacktrace:
    @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:72
  [7] #96
    @ ./task.jl:411
+
+...and 1 more exception.
+
 </code></pre>
 <p>Lets plot the density for the coefficient estimates <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">\beta_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\beta_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</p>
 

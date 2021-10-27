@@ -3,8 +3,8 @@
 
 using PlutoHTML: notebook2html
 
-path = "posts/notebooks/nested-cv.jl"
-log_path = "posts/notebooks/nested-cv.log"
+path = "posts/notebooks/random-forest.jl"
+log_path = "posts/notebooks/random-forest.log"
 @assert isfile(path)
 @info "→ evaluating Pluto notebook at ($path)"
 html = open(log_path, "w") do io
