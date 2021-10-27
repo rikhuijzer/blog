@@ -19,6 +19,16 @@ begin
 	using MLJModelInterface: Probabilistic, Deterministic
 end
 
+# ╔═╡ ea44c5c8-02d6-4bcb-90e7-01fb3db9e44e
+# hideall
+md"""
+Nested cross-validation is said to be an improvement over cross-validation.
+Unfortunately, I found most explanations quite confusing, so decided to simulate some data and see what happens.
+
+In this post, I simulate two models: one linear model which perfectly fits the data and one which overfits the data.
+Next, cross-validation and nested cross-validation are plotted.
+"""
+
 # ╔═╡ b37e1bc1-2f53-4637-852b-5c8e38912a0e
 # hideall
 function compatible_models()
@@ -48,10 +58,10 @@ df = let
 end
 
 # ╔═╡ b641a8d6-624b-4562-92e2-276388f573de
-LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0
+LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0;
 
 # ╔═╡ d7751696-1bb5-4ee8-a8e7-45da5dd71947
-TreeModel = @load DecisionTreeRegressor pkg=DecisionTree verbosity=0
+TreeModel = @load DecisionTreeRegressor pkg=DecisionTree verbosity=0;
 
 # ╔═╡ 3f99e49e-9e51-4f8f-9c21-9f670d63f3c4
 X = select(df, Not(:y));
@@ -112,27 +122,24 @@ rms(predict(tree_model()), (df.y))
 # ╔═╡ c0a0bd8b-fe78-4ea1-8619-62a26a968a10
 # hideall
 md"""
-So, clearly the tree model is overfitting the data meaning that the model is not expected to perform well on new data.
+Clearly, the tree model is overfitting the data meaning that the model is not expected to perform well on new data.
 
 Now the question is whether we can determine that the linear model is the right one via cross-validation.
 """
 
 # ╔═╡ 696808d5-3547-4666-bfcc-46e658ebbced
+# hideall
 r1(x) = round(x; digits=1);
 
 # ╔═╡ 916a78d9-a6f7-4e60-8511-9d654f74f3de
+# hideall
 function evaluate_model(model, resampling)
 	e = evaluate(model, X, y; resampling)
 	per_fold = first(e.per_fold)
 end;
 
-# ╔═╡ 8846fb20-8f03-4139-8e7e-be933f669e4b
-evaluate_model(LinearModel(), CV(; nfolds=14))
-
-# ╔═╡ 7ef58bde-7a24-4242-b0a3-20d61f3aee66
-evaluate_model(TreeModel(), CV(; nfolds=14))
-
 # ╔═╡ bfebf58b-daf5-4d74-ba9b-fc853da3b166
+# hideall
 foldsmean(per_fold) = fill(mean(per_fold), length(per_fold));
 
 # ╔═╡ da994d08-9d14-45b9-a80a-7ea6a13edd67
@@ -258,9 +265,6 @@ let
 	current_figure()
 end
 
-# ╔═╡ ac084dda-ed95-40d5-a8a8-d32dfce15e16
-# [string(e.report_per_fold[i].best_model) for i in 1:ntrials]
-
 # ╔═╡ 88544422-e781-43a4-8eae-35713aa59193
 foldrange = 2:2:83;
 
@@ -304,14 +308,28 @@ end;
 plot_evaluations(foldrange, foldevaluations; xlabel="number of folds")
 
 # ╔═╡ 0630eb20-01a3-41f8-a7ad-202a56b43954
+# hideall
 trialrange = 2:4:60;
 
 # ╔═╡ ad007c31-d39b-4f10-9e95-755f40cb6844
+# hideall
 trialevaluations = [evaluate_inner_folds(30, i) for i in trialrange];
 
 # ╔═╡ 135f5d2b-4645-493b-97ae-e4d9e76ab8be
 # hideall
 plot_evaluations(trialrange, trialevaluations; xlabel="number of trials")
+
+# ╔═╡ 734712fa-0871-4793-9ef4-74f856f2613f
+# hideall
+md"""
+I don't know what should be the take-away here.
+What kind of makes sense is that the variance increases for many trails.
+The reason is most likely that the samples become too small and fitting a model is either a complete hit or miss.
+
+Why the median and mean go down is unclear to me.
+Maybe, fitting is more likely to be a hit than a miss.
+Therefore, if the number of trails is increased, then more fits are a hit which result in a lower error on average.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1745,6 +1763,7 @@ version = "3.5.0+0"
 """
 
 # ╔═╡ Cell order:
+# ╠═ea44c5c8-02d6-4bcb-90e7-01fb3db9e44e
 # ╠═5e902e3c-2c19-11ec-39df-3fba9fe5640c
 # ╠═b37e1bc1-2f53-4637-852b-5c8e38912a0e
 # ╠═b0b55bb3-d445-4f45-bd33-c26f28d074e1
@@ -1765,8 +1784,6 @@ version = "3.5.0+0"
 # ╠═c0a0bd8b-fe78-4ea1-8619-62a26a968a10
 # ╠═696808d5-3547-4666-bfcc-46e658ebbced
 # ╠═916a78d9-a6f7-4e60-8511-9d654f74f3de
-# ╠═8846fb20-8f03-4139-8e7e-be933f669e4b
-# ╠═7ef58bde-7a24-4242-b0a3-20d61f3aee66
 # ╠═bfebf58b-daf5-4d74-ba9b-fc853da3b166
 # ╠═da994d08-9d14-45b9-a80a-7ea6a13edd67
 # ╠═641ac771-1424-45ba-a313-d6e1e8b7eaf4
@@ -1778,7 +1795,6 @@ version = "3.5.0+0"
 # ╠═72012d1a-fd91-4b40-9137-18dc01205c00
 # ╠═e1de9f5d-c062-4068-8652-e0bac41bee9b
 # ╠═95f8e3cf-c6b9-4d84-bc35-b933008bf112
-# ╠═ac084dda-ed95-40d5-a8a8-d32dfce15e16
 # ╠═88544422-e781-43a4-8eae-35713aa59193
 # ╠═43f00e6a-ad6d-47e9-8074-266fffa3cb82
 # ╠═37c2861b-fed1-4c78-a8e5-0827ab98e477
@@ -1787,5 +1803,6 @@ version = "3.5.0+0"
 # ╠═135f5d2b-4645-493b-97ae-e4d9e76ab8be
 # ╠═0630eb20-01a3-41f8-a7ad-202a56b43954
 # ╠═ad007c31-d39b-4f10-9e95-755f40cb6844
+# ╠═734712fa-0871-4793-9ef4-74f856f2613f
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
