@@ -4,8 +4,8 @@ module Blog
 import TikzPictures
 
 using AlgebraOfGraphics
+using Base64: base64encode
 using CairoMakie
-using Makie
 
 # Don't export methods to avoid confusing readers of the code.
 # export

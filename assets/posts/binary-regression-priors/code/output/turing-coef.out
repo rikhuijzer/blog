@@ -1,4 +1,1 @@
-coefficient | true value | linear estimate | linear error | bayesian estimate | bayesian error
---- | --- | --- | --- | --- | ---
-aₑ | 1.1 | 1.044 | 5.1 % | 1.048 | 4.7 %
-rₑ | 1.05 | 1.079 | 2.8 % | 1.079 | 2.8 %
+UndefVarError: chns_df not defined

@@ -86,16 +86,14 @@ vcat&#40;rows...&#41;</code></pre>
   @select &#123;i.name, i.age, j.grade_2019&#125;
   @collect DataFrame
 end</code></pre>
-<table><tr><th align="right">name</th><th align="right">age</th><th align="right">grade_2019</th></tr><tr><td align="right">Bob</td><td align="right">17</td><td align="right">5.0</td></tr><tr><td align="right">Sally</td><td align="right">18</td><td align="right">1.0</td></tr><tr><td align="right">Bob 2</td><td align="right">17</td><td align="right"></td></tr><tr><td align="right">Alice</td><td align="right">20</td><td align="right">8.5</td></tr><tr><td align="right">Hank</td><td align="right">19</td><td align="right">4.0</td></tr></table>
-
+<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/simple_join.csv' not found. //</span></p>
 <p>Here, the <code>@left_outer_join</code> ensures that all the persons in <code>person</code> have one row in the final output.  A normal <code>@join</code> would omit the row for Bob 2, because Bob 2 is not in the <code>grades_2019</code> table.</p>
 <pre><code class="language-julia">@from i in person begin
   @join j in grades_2019 on i.name equals j.name
   @select &#123;i.name, i.age, j.grade_2019&#125;
   @collect DataFrame
 end</code></pre>
-<table><tr><th align="right">name</th><th align="right">age</th><th align="right">grade_2019</th></tr><tr><td align="right">Bob</td><td align="right">17</td><td align="right">5.0</td></tr><tr><td align="right">Sally</td><td align="right">18</td><td align="right">1.0</td></tr><tr><td align="right">Alice</td><td align="right">20</td><td align="right">8.5</td></tr><tr><td align="right">Hank</td><td align="right">19</td><td align="right">4.0</td></tr></table>
-
+<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/normal_join.csv' not found. //</span></p>
 <p>The joins can be combined to see who did the exam twice and by how much the grade is increased on the second try.</p>
 <pre><code class="language-julia">@from i in person begin
   @left_outer_join j in grades_2019 on i.name equals j.name
@@ -104,8 +102,7 @@ end</code></pre>
     increase&#61;k.grade_2020 - j.grade_2019&#125;
   @collect DataFrame
 end</code></pre>
-<table><tr><th align="right">name</th><th align="right">grade_2019</th><th align="right">grade_2020</th><th align="right">increase</th></tr><tr><td align="right">Bob</td><td align="right">5.0</td><td align="right"></td><td align="right"></td></tr><tr><td align="right">Sally</td><td align="right">1.0</td><td align="right">9.5</td><td align="right">8.5</td></tr><tr><td align="right">Bob 2</td><td align="right"></td><td align="right">9.5</td><td align="right"></td></tr><tr><td align="right">Alice</td><td align="right">8.5</td><td align="right"></td><td align="right"></td></tr><tr><td align="right">Hank</td><td align="right">4.0</td><td align="right">5.0</td><td align="right">1.0</td></tr></table>
-
+<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/increase.csv' not found. //</span></p>
 <p>or who passed the course</p>
 <pre><code class="language-julia">@from i in person begin
 	@left_outer_join j in grades_2019 on i.name equals j.name
@@ -113,8 +110,7 @@ end</code></pre>
 	@select &#123;i.name, passed&#61;j.grade_2019 &gt; 6 || k.grade_2020 &gt; 6&#125;
   @collect DataFrame
 end</code></pre>
-<table><tr><th align="right">name</th><th align="right">passed</th></tr><tr><td align="right">Bob</td><td align="right">false</td></tr><tr><td align="right">Sally</td><td align="right">true</td></tr><tr><td align="right">Bob 2</td><td align="right">true</td></tr><tr><td align="right">Alice</td><td align="right">true</td></tr><tr><td align="right">Hank</td><td align="right">false</td></tr></table>
-
+<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/passed.csv' not found. //</span></p>
 <h2 id="debugging_tips"><a href="#debugging_tips" class="header-anchor">Debugging tips</a></h2>
 <p>Before going to more difficult examples, it is helpful to look what is happening inside the join. Printing all the rows can aid in solving errors.</p>
 <pre><code class="language-julia">@from i in person begin
@@ -122,8 +118,7 @@ end</code></pre>
   @select &#123;i, j&#125;
   @collect DataFrame
 end</code></pre>
-<table><tr><th align="right">i</th><th align="right">j</th></tr><tr><td align="right">&#40;name &#61; &quot;Bob&quot;, age &#61; 17&#41;</td><td align="right">&#40;name &#61; &quot;Bob&quot;, grade_2019 &#61; 5.0&#41;</td></tr><tr><td align="right">&#40;name &#61; &quot;Sally&quot;, age &#61; 18&#41;</td><td align="right">&#40;name &#61; &quot;Sally&quot;, grade_2019 &#61; 1.0&#41;</td></tr><tr><td align="right">&#40;name &#61; &quot;Alice&quot;, age &#61; 20&#41;</td><td align="right">&#40;name &#61; &quot;Alice&quot;, grade_2019 &#61; 8.5&#41;</td></tr><tr><td align="right">&#40;name &#61; &quot;Hank&quot;, age &#61; 19&#41;</td><td align="right">&#40;name &#61; &quot;Hank&quot;, grade_2019 &#61; 4.0&#41;</td></tr></table>
-
+<p><span style="color:red;">// Table matching '/assets/posts/grades-queries/debug.csv' not found. //</span></p>
 <p>So, basically the join puts the two tables next to each other and inside the select we just get the name if we type <code>i.name</code>.  Also note that the result of <code>i.name</code> would be the same as <code>j.name</code>, as expected.</p>
 <h2 id="grouping"><a href="#grouping" class="header-anchor">Grouping</a></h2>
 <p>Like in most real-world datasets, this dataset contains a mistake. Bob complained that he had, in fact, passed the course. His second grade is listed for the name Bob 2. This, in LINQ, is called grouping.  Basically, grouping can <em>group</em> multiple rows into one. This example is, unfortunately, quite involved, but I was unable to come up with a simpler example for which the output makes sense too.</p>
@@ -139,8 +134,9 @@ end</code></pre>
   @select &#123;name &#61; first&#40;g.name&#41;, pass&#125;
   @collect DataFrame
 end</code></pre>
-<p> <table><tr><th align="right">name</th><th align="right">pass</th></tr><tr><td align="right">Bob</td><td align="right">true</td></tr><tr><td align="right">Sally</td><td align="right">true</td></tr><tr><td align="right">Alice</td><td align="right">true</td></tr><tr><td align="right">Hank</td><td align="right">false</td></tr></table>
-</p>
+<p><pre><code class="plaintext code-output">LoadError: UndefVarError: @from not defined
+in expression starting at none:1
+</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/grades-queries/real_name.csv' not found. //</span></p></p>
 <h2 id="filtering_and_sorting"><a href="#filtering_and_sorting" class="header-anchor">Filtering and sorting</a></h2>
 <p>Of course, the most interesting part of this example is to obtain all the names for the people who passed the course and it would be nice to have this in alphabetical order. Specifically, we want to filter such that we obtain only the people <em>where</em> <code>pass &#61;&#61; true</code>.</p>
 <pre><code class="language-julia">@from i in results begin
@@ -149,12 +145,13 @@ end</code></pre>
   @select &#123;i.name&#125;
   @collect DataFrame
 end</code></pre>
-<p> <table><tr><th align="right">name</th></tr><tr><td align="right">Alice</td></tr><tr><td align="right">Bob</td></tr><tr><td align="right">Sally</td></tr></table>
-</p>
+<p><pre><code class="plaintext code-output">LoadError: UndefVarError: @from not defined
+in expression starting at none:2
+</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/grades-queries/graduates.csv' not found. //</span></p></p>
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-15.
+    Last update: 2021-10-27.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
