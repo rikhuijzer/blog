@@ -27,6 +27,7 @@ Unfortunately, I found most explanations quite confusing, so decided to simulate
 
 In this post, I simulate two models: one linear model which perfectly fits the data and one which overfits the data.
 Next, cross-validation and nested cross-validation are plotted.
+To keep the post short, I've hidden the code to produce the plots.
 """
 
 # ╔═╡ b37e1bc1-2f53-4637-852b-5c8e38912a0e
@@ -110,21 +111,23 @@ end
 # ╔═╡ 86a2c569-d139-467e-948c-18f60d0cd93a
 # hideall
 md"""
-Okay, so which model performs better. I would guess the `LinearRegressor`, but what would cross-validation tell us.
+Okay, so which model performs better. I would guess the `LinearRegressor`, but let's see what the root-mean-square error (RMS) is when we fit the models on the training data:
 """
 
 # ╔═╡ a09b498e-931e-4fd3-b3e3-eefc16d2e65f
 rms(predict(linear_model()), df.y)
 
 # ╔═╡ 662d7494-6248-4adc-ac0d-0f4c68e4418d
-rms(predict(tree_model()), (df.y))
+rms(predict(tree_model()), df.y)
 
 # ╔═╡ c0a0bd8b-fe78-4ea1-8619-62a26a968a10
 # hideall
 md"""
-Clearly, the tree model is overfitting the data meaning that the model is not expected to perform well on new data.
+Clearly, the tree model is overfitting the data.
+In other words, the model is not expected to perform well on new data.
 
 Now the question is whether we can determine that the linear model is the right one via cross-validation.
+Let's first plot the error for each of our $k$ folds.
 """
 
 # ╔═╡ 696808d5-3547-4666-bfcc-46e658ebbced
@@ -180,11 +183,7 @@ So, basically cross-validation isn't gonna be perfect. If the data or standard d
 
 Let's tryout nested cross-validation.
 
-According to Zhang[^Zhang], repeated 50- and 20- fold CV is best for $n_t$ sample points.
-
-The best CV for model selection does not necessarily imply the best CV for performance estimation [^Zhang] (p. 104 and p. 105).
-
-[^Zhang]: Zhang & Lang. 2015. Cross-validation for selecting a model selection procedure. https://doi.org/10.1016/j.jeconom.2015.02.006
+According to Zhang ([2015](https://doi.org/10.1016/j.jeconom.2015.02.006)), repeated 50- and 20- fold CV is best for $n_t$ sample points and the best cross-validation parameters for model selection are not necessarily the same the best cross-validation parameters for performance estimation (p. 104 and p. 105).
 """
 
 # ╔═╡ d0e5d310-d09d-4e00-b942-07e48d8ab00e
@@ -199,14 +198,11 @@ end;
 # ╔═╡ feaca510-5403-474f-b598-8467569161ce
 # hideall
 md"""
-The problem of CV is that it is still possible to overfit during model selection.
-Therefore, the only **reliable way to estimate model performance** is to use nested cross-validation (_On over-fitting in model selection and subsequent selection bias in performance evaluation_, 2010; [^Krstajic])
+The problem of cross-validation is that it is still possible to overfit during model selection.
+Therefore, the only reliable way to estimate model performance is to use nested cross-validation (Krstajic et al., [2014](https://doi.org/10.1186/1758-2946-6-10)).
+Also, repeated k-fold nested cross-validation is the most promising for prediction error estimation.
 
-Repeated k-fold CV is the most promising for prediction error estimation [^Krstajic].
-
-Maybe, the problem with nested CV is that it is **sometimes** possible to have the wrong model returned even though that isn't the case here.
-
-[^Krstajic]: Krstajic et al., 2014. Cross-validation pitfalls when selecting and assessing regression and classification models
+Let's see how the plots for nested cross-validation look:
 """
 
 # ╔═╡ 0024dfce-b6ff-4a38-8afc-1092591422cb
@@ -266,9 +262,11 @@ let
 end
 
 # ╔═╡ 88544422-e781-43a4-8eae-35713aa59193
+# hideall
 foldrange = 2:2:83;
 
 # ╔═╡ 43f00e6a-ad6d-47e9-8074-266fffa3cb82
+# hideall
 foldevaluations = [evaluate_inner_folds(i, 6) for i in foldrange];
 
 # ╔═╡ 37c2861b-fed1-4c78-a8e5-0827ab98e477
