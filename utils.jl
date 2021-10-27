@@ -117,7 +117,7 @@ function lx_pluto(com, _)
                 return html
             end
         end
-        println("~~~\n\$html\n~~~\n")
+        println("\n~~~\n\$html\n~~~\n")
         ```
         \\textoutput{pluto}
         """
