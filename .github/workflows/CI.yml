@@ -46,7 +46,8 @@ jobs:
         sudo apt-get install -y texlive-luatex
 
     - run: julia --project -e 'using Pkg;
-        Pkg.add(url="https://github.com/rikhuijzer/PlutoHTML.jl#main")'
+        Pkg.add(url="https://github.com/rikhuijzer/PlutoHTML.jl#main");
+        Pkg.instantiate()'
 
     - uses: julia-actions/julia-buildpkg@latest
 
