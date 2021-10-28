@@ -53,7 +53,7 @@ jobs:
 
     - name: Build site
       run: julia --project -e '
-        using Franklin; optimize(; minify=false);
+        using Franklin; optimize(; fail_on_warning=true, minify=false);
         verify_links()'
       env:
         JULIA_NUM_THREADS: '4'
