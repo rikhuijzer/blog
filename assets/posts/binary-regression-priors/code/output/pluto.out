@@ -1,51 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/libs/katex/katex.min.css">
 
-   <link rel="stylesheet" href="/libs/highlight/github.min.css">
- 
-  <link rel="stylesheet" href="/css/franklin.css">
-  <link rel="stylesheet" href="/css/basic.css">
-  <link rel="icon" href="/assets/favicon.png">
-   <title> Increasing model accuracy by using foreknowledge - Huijzer.xyz </title> 
-  
-
-  <meta property="og:title" content="Increasing model accuracy by using foreknowledge" />
-  <meta property="og:type" content="article" /> 
-  <meta property="og:description" content="Using priors for binary logistic regression" />
-  <meta property="og:image" content="https://huijzer.xyz/assets/self.jpg" />
-
-  <meta name="twitter:title" content="Increasing model accuracy by using foreknowledge" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:creator" content="@rikhuijzer"/>
-
-  <script src="https://cdn.usefathom.com/script.js" data-site="BQRGKKNX" defer></script>
-</head>
-<body>
-  <header>
-<div class="blog-name"><a href="/">HUIJZER.XYZ</a></div>
-<nav>
-  <ul>
-    <li><a href="/about/">About</a></li>
-    <li><a href="/posts/">Blog</a></li>
-    <li><a type="application/rss+xml" href="https://huijzer.xyz/feed.xml">
-      <img class="rss-icon" src="/assets/feed.svg">
-      </a></li>
-  </ul>
-</nav>
-</header>
-
-
-<div class="franklin-content">
-   <h1 class="page-title"> Increasing model accuracy by using foreknowledge </h1> 
-   <span class="page-date"> 2021-06-16 </span> 
-</div>
-<div class="franklin-content">
-</p>
-<p>
+~~~
 
 <div class="markdown"><p>Typically, when making predictions via a linear model, we fit the model on our data and make predictions from the fitted model. However, this doesn&#39;t take much foreknowledge into account. For example, when predicting a person&#39;s length given only the weight and gender, we already have an intuition about the effect size and direction. Bayesian analysis should be able to incorporate this prior information.</p>
 <p>In this blog post, I aim to figure out whether foreknowledge can, in theory, increase model accuracy. To do this, I generate data and fit a linear model and a Bayesian binary regression. Next, I compare the accuracy of the model parameters from the linear and Bayesian model.</p>
@@ -277,32 +231,6 @@ end;</code></pre>
 <p>After giving the true coefficients to the Bayesian model in the form of priors, it does score better than the linear model. However, the differences aren&#39;t very big. This could be due to the particular random noise in this sample <code>E</code> or due to the relatively big sample size. The more samples, the more likely it is that the data will overrule the prior. In any way, there are real-world situations where gathering extra data is more expensive than gathering priors via reading papers. In those cases, the increased accuracy introduced by using priors could have serious benefits.</p>
 </div>
 
-</p>
-<p><em>This blog post was built via a Pluto.jl <a href="posts/notebooks/binary-regression-priors.jl">notebook</a></em>.
-<div class="page-foot">
-  <div class="copyright">
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-28.
-  </div>
-</div>
-</div><!-- CONTENT ENDS HERE -->
-    <script src="/libs/katex/katex.min.js"></script>
-<script src="/libs/katex/auto-render.min.js"></script>
-<script>
-  renderMathInElement(document.body);
-  /* Apparently, Pluto wraps LaTeX inside a span class 'tex'. */
-  var equations = document.getElementsByClassName('tex');
-  for (var i = 0; i < equations.length; i++) {
-    var text = equations[i].textContent;
-    text = text.split('$').join('');
-    katex.render(text, equations[i]);
-  }
-</script>
+~~~
 
-    
-        <script src="/libs/highlight/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
-
-    
-  </body>
-</html>
+_This blog post was built via a Pluto.jl [notebook](posts/notebooks/binary-regression-priors.jl)_.
