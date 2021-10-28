@@ -365,25 +365,6 @@
 
 <item>
   <title>
-    <![CDATA[  Grades queries  ]]>
-  </title>
-  <link> https://huijzer.xyz/posts/grades-queries/index.html </link>
-  <guid> https://huijzer.xyz/posts/grades-queries/index.html </guid>
-  <description>
-    <![CDATA[  Using SQL like query syntax in Julia.  ]]>
-  </description>  
-    
-  <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>  
-  
-  
-  <atom:author>
-    <atom:name>Rik Huijzer</atom:name>
-  </atom:author>
-        
-</item>
-
-<item>
-  <title>
     <![CDATA[  Statistical power from scratch  ]]>
   </title>
   <link> https://huijzer.xyz/posts/power/index.html </link>

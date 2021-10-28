@@ -3,7 +3,7 @@ CSV 0.9.10
 CairoMakie 0.6.6
 CategoricalArrays 0.10.1
 DataFrames 1.2.2
-Distributions 0.25.22
+Distributions 0.25.23
 Franklin 0.10.61
 GLM 1.5.1
 HypothesisTests 0.10.4
