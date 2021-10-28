@@ -82,7 +82,13 @@ begin
 	logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 	fit!(logistic; rows=train)
 	fitted_params(logistic).coef
-end;
+end
+
+# ╔═╡ 8e4101dd-5f7d-4a6d-8c0c-ec9a8f49d3c7
+# hideall
+md"""
+The second coefficient in the linear model is close to zero. This is exactly what the model should do since `V` is random noise.
+"""
 
 # ╔═╡ ad858753-a90b-498b-a597-51f0fe9b3940
 forest_model = let
@@ -90,12 +96,6 @@ forest_model = let
 	tree = DecisionTree()
 	EnsembleModel(atom=tree, n=10)
 end;
-
-# ╔═╡ 8e4101dd-5f7d-4a6d-8c0c-ec9a8f49d3c7
-# hideall
-md"""
-The second coefficient in the linear model is close to zero. This is exactly what the model should do since `VV` is random noise.
-"""
 
 # ╔═╡ 0829b260-d2ed-463d-af83-7547e468474c
 forest = let
@@ -178,7 +178,7 @@ end;
 # ╔═╡ 39f3ddfa-9415-4e57-acf7-0e10bb8f483d
 let 
 	accuracies = [fitted_accuracy(logistic_model, train, test) for (train, test) in folds]
-	accuracies
+	accuracies, mean(accuracies) |> r3
 end
 
 # ╔═╡ f9c6897e-a97f-4711-8fa4-b01e0e39e0af
@@ -1621,8 +1621,8 @@ version = "3.5.0+0"
 # ╠═f11c33b5-966e-4cbb-b0e3-f3a2fc766a52
 # ╠═06f5a520-8edf-478b-9c37-4d21583a2b7a
 # ╠═c1517d60-d425-48a5-b214-e1ac4a04f4b3
-# ╠═ad858753-a90b-498b-a597-51f0fe9b3940
 # ╠═8e4101dd-5f7d-4a6d-8c0c-ec9a8f49d3c7
+# ╠═ad858753-a90b-498b-a597-51f0fe9b3940
 # ╠═0829b260-d2ed-463d-af83-7547e468474c
 # ╠═b235b9c0-f12f-409b-9832-b9c123da0066
 # ╠═4410e326-5b5f-4cd0-9086-90ece3a46839

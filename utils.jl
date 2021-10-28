@@ -118,6 +118,7 @@ function lx_pluto(com, _)
             end
         end
         println("\n~~~\n\$html\n~~~\n")
+        println("_This blog post was built via a Pluto.jl [notebook]($path)_.")
         ```
         \\textoutput{pluto}
         """
