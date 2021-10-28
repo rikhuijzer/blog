@@ -137,8 +137,12 @@ end;</code></pre>
 	logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 	fit!(logistic; rows=train)
 	fitted_params(logistic).coef
-end;</code></pre>
+end</code></pre>
+<pre><code class="code-output">[0.717045, 0.0409366, -12.2757]</code></pre>
 
+
+<div class="markdown"><p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <code>V</code> is random noise.</p>
+</div>
 
 <pre><code class="language-julia">forest_model = let
 	DecisionTree = @load DecisionTreeClassifier pkg=DecisionTree verbosity=0
@@ -146,10 +150,6 @@ end;</code></pre>
 	EnsembleModel(atom=tree, n=10)
 end;</code></pre>
 
-
-
-<div class="markdown"><p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <code>VV</code> is random noise.</p>
-</div>
 
 <pre><code class="language-julia">forest = let
 	forest = machine(forest_model, (U = df.U, V = df.V), df.class)
@@ -223,15 +223,16 @@ end;</code></pre>
 
 <pre><code class="language-julia">let 
 	accuracies = [fitted_accuracy(logistic_model, train, test) for (train, test) in folds]
-	accuracies
+	accuracies, mean(accuracies) |> r3
 end</code></pre>
-["0.7", "0.7", "0.4", "0.6", "0.7", "0.8", "0.7", "0.6"]
+<pre><code class="code-output">([0.7, 0.7, 0.4, 0.6, 0.7, 0.8, 0.7, 0.6], 0.65)</code></pre>
 
 <pre><code class="language-julia">let
 	accuracies = [fitted_accuracy(forest_model, train, test) for (train, test) in folds]
 	accuracies, mean(accuracies) |> r3
 end</code></pre>
-Tuple{Int64, Tuple{Any, MIME}}[(1, (Dict{Symbol, Any}(:prefix => "Float64", :elements => Tuple{Int64, Any}[(1, ("0.9", MIME type text/plain)), (2, ("0.3", MIME type text/plain)), (3, ("0.3", MIME type text/plain)), (4, ("0.7", MIME type text/plain)), (5, ("0.5", MIME type text/plain)), (6, ("0.7", MIME type text/plain)), (7, ("0.5", MIME type text/plain)), (8, ("0.2", MIME type text/plain))], :type => :Array, :prefix_short => "", :objectid => "a9686b93f80f77"), MIME type application/vnd.pluto.tree+object)), (2, ("0.513", MIME type text/plain))]
+<pre><code class="code-output">([0.9, 0.3, 0.3, 0.7, 0.5, 0.7, 0.5, 0.2], 0.513)</code></pre>
 
 ~~~
 
+_This blog post was built via a Pluto.jl [notebook](posts/notebooks/random-forest.jl)_.

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="/libs/katex/katex.min.css">
- 
+  <link rel="stylesheet" href="/libs/katex/katex.min.css">
+
    <link rel="stylesheet" href="/libs/highlight/github.min.css">
  
   <link rel="stylesheet" href="/css/franklin.css">
@@ -44,7 +44,7 @@
    <span class="page-date"> 2021-01-21 </span> 
 </div>
 <div class="franklin-content">
-<p>Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia. If code in this post doesn&#39;t work for you, then check that you&#39;re using the right <a href="/#versions">versions</a>. I&#39;ve used both models to have a baseline for the random forest. The model is evaluated on a mock variable <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> generated from two distributions, namely</p>
+<p>Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia. I&#39;ve used both models to have a baseline for the random forest. The model is evaluated on a mock variable <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> generated from two distributions, namely</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.24999999999999992em" columnalign="right left" columnspacing="0em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><msub><mi>d</mi><mn>1</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>=</mo><mtext>Normal</mtext><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>σ</mi><mo stretchy="false">)</mo><mtext> </mtext><mtext> </mtext><mtext>and</mtext></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><msub><mi>d</mi><mn>2</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>=</mo><mtext>Normal</mtext><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>2</mn></msub><mo separator="true">,</mo><mi>σ</mi><mo stretchy="false">)</mo><mo separator="true">,</mo></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
 d_1 &amp;= \text{Normal}(\mu_1, \sigma) \: \: \text{and} \\
@@ -192,8 +192,12 @@ end;</code></pre>
 	logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
 	fit!(logistic; rows=train)
 	fitted_params(logistic).coef
-end;</code></pre>
+end</code></pre>
+<pre><code class="code-output">[0.717045, 0.0409366, -12.2757]</code></pre>
 
+
+<div class="markdown"><p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <code>V</code> is random noise.</p>
+</div>
 
 <pre><code class="language-julia">forest_model = let
 	DecisionTree = @load DecisionTreeClassifier pkg=DecisionTree verbosity=0
@@ -201,10 +205,6 @@ end;</code></pre>
 	EnsembleModel(atom=tree, n=10)
 end;</code></pre>
 
-
-
-<div class="markdown"><p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <code>VV</code> is random noise.</p>
-</div>
 
 <pre><code class="language-julia">forest = let
 	forest = machine(forest_model, (U = df.U, V = df.V), df.class)
@@ -278,32 +278,40 @@ end;</code></pre>
 
 <pre><code class="language-julia">let 
 	accuracies = [fitted_accuracy(logistic_model, train, test) for (train, test) in folds]
-	accuracies
+	accuracies, mean(accuracies) |> r3
 end</code></pre>
-["0.7", "0.7", "0.4", "0.6", "0.7", "0.8", "0.7", "0.6"]
+<pre><code class="code-output">([0.7, 0.7, 0.4, 0.6, 0.7, 0.8, 0.7, 0.6], 0.65)</code></pre>
 
 <pre><code class="language-julia">let
 	accuracies = [fitted_accuracy(forest_model, train, test) for (train, test) in folds]
 	accuracies, mean(accuracies) |> r3
 end</code></pre>
-Tuple{Int64, Tuple{Any, MIME}}[(1, (Dict{Symbol, Any}(:prefix => "Float64", :elements => Tuple{Int64, Any}[(1, ("0.9", MIME type text/plain)), (2, ("0.3", MIME type text/plain)), (3, ("0.3", MIME type text/plain)), (4, ("0.7", MIME type text/plain)), (5, ("0.5", MIME type text/plain)), (6, ("0.7", MIME type text/plain)), (7, ("0.5", MIME type text/plain)), (8, ("0.2", MIME type text/plain))], :type => :Array, :prefix_short => "", :objectid => "a9686b93f80f77"), MIME type application/vnd.pluto.tree+object)), (2, ("0.513", MIME type text/plain))]
+<pre><code class="code-output">([0.9, 0.3, 0.3, 0.7, 0.5, 0.7, 0.5, 0.2], 0.513)</code></pre>
 
-
+</p>
+<p><em>This blog post was built via a Pluto.jl <a href="posts/notebooks/random-forest.jl">notebook</a></em>.
 <h2 id="references"><a href="#references" class="header-anchor">References</a></h2>
 <p><a id="pbiau2016" class="anchor"></a> Biau, G., Scornet, E. &#40;2016&#41;. A Random Forest Guided Tour. TEST 25, 197–227 &#40;2016&#41;. <a href="https://doi.org/10.1007/s11749-016-0481-7">https://doi.org/10.1007/s11749-016-0481-7</a></p>
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-27.
+    Last update: 2021-10-28.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
     
-        
 
+<script>
+  renderMathInElement(document.body);
+  /* Apparently, Pluto wraps LaTeX inside a span class 'tex'. */
+  var equations = document.getElementsByClassName('tex');
+  for (var i = 0; i < equations.length; i++) {
+    var text = equations[i].textContent;
+    text = text.split('$').join('');
+    katex.render(text, equations[i]);
+  }
+</script>
 
-
-    
     
         <script src="/libs/highlight/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>

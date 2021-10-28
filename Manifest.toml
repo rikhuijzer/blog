@@ -1301,7 +1301,7 @@ version = "0.16.4"
 
 [[PlutoHTML]]
 deps = ["Base64", "Pluto"]
-git-tree-sha1 = "b90e0ae183032095334b3b9bb5c1866c7ec7f29f"
+git-tree-sha1 = "71b96daa3d19a3a97225e98843336ed0192580c2"
 repo-rev = "main"
 repo-url = "https://github.com/rikhuijzer/PlutoHTML.jl#main"
 uuid = "359b1769-a58e-495b-9770-312e911026ad"

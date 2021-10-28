@@ -100,10 +100,7 @@ end</code></pre>
 <pre><code class="language-julia">TreeModel = @load DecisionTreeRegressor pkg=DecisionTree verbosity=0;</code></pre>
 
 
-<pre><code class="language-julia">X = select(df, Not(:y));</code></pre>
-
-
-<pre><code class="language-julia">y = df.y;</code></pre>
+<pre><code class="language-julia">X, y = (select(df, Not(:y)), df.y);</code></pre>
 
 
 <pre><code class="language-julia">function linear_model()
@@ -175,12 +172,10 @@ end;</code></pre>
 
 
 
-<pre><code class="language-julia">function nested_variance(e)
-	var(e.per_fold[1])
-end;</code></pre>
 
 
-<pre><code class="language-julia">nested_variance(e);</code></pre>
+
+
 
 
 
@@ -227,3 +222,4 @@ end;</code></pre>
 
 ~~~
 
+_This blog post was built via a Pluto.jl [notebook](posts/notebooks/nested-cv.jl)_.

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+  <link rel="stylesheet" href="/libs/katex/katex.min.css">
+
   
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/basic.css">
@@ -63,11 +64,23 @@
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-27.
+    Last update: 2021-10-28.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
-    
+    <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/auto-render.min.js"></script>
+<script>
+  renderMathInElement(document.body);
+  /* Apparently, Pluto wraps LaTeX inside a span class 'tex'. */
+  var equations = document.getElementsByClassName('tex');
+  for (var i = 0; i < equations.length; i++) {
+    var text = equations[i].textContent;
+    text = text.split('$').join('');
+    katex.render(text, equations[i]);
+  }
+</script>
+
     
   </body>
 </html>

@@ -18,3 +18,4 @@ println("
 $html
 ~~~
 ")
+println("_This blog post was built via a Pluto.jl [notebook](posts/notebooks/random-forest.jl)_.")

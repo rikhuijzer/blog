@@ -65,10 +65,7 @@ LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0;
 TreeModel = @load DecisionTreeRegressor pkg=DecisionTree verbosity=0;
 
 # ╔═╡ 3f99e49e-9e51-4f8f-9c21-9f670d63f3c4
-X = select(df, Not(:y));
-
-# ╔═╡ 24c876da-9c14-46df-b9da-d348aac57a56
-y = df.y;
+X, y = (select(df, Not(:y)), df.y);
 
 # ╔═╡ 1e0ac73d-1faf-4250-a6f5-032c67649326
 function linear_model()
@@ -221,6 +218,7 @@ function plot_trial_model!(ax, e, trial::Int, model::Int)
 end;
 
 # ╔═╡ dccd8ec8-cc40-43a1-bad7-e1ad699a4a40
+# hideall
 function nested_variance(e)
 	var(e.per_fold[1])
 end;
@@ -242,6 +240,7 @@ end;
 e = evaluate_inner_folds(20, 20);
 
 # ╔═╡ 5f92f025-fd2a-4ed4-84b6-ebadb0c689fe
+# hideall
 nested_variance(e);
 
 # ╔═╡ 95f8e3cf-c6b9-4d84-bc35-b933008bf112
@@ -1778,7 +1777,6 @@ version = "3.5.0+0"
 # ╠═b641a8d6-624b-4562-92e2-276388f573de
 # ╠═d7751696-1bb5-4ee8-a8e7-45da5dd71947
 # ╠═3f99e49e-9e51-4f8f-9c21-9f670d63f3c4
-# ╠═24c876da-9c14-46df-b9da-d348aac57a56
 # ╠═1e0ac73d-1faf-4250-a6f5-032c67649326
 # ╠═772ec163-7861-4bbe-a90b-d6b6f7c08040
 # ╠═d07d4596-bc21-4ba7-9f78-9ce00d1d9339
