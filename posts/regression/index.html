@@ -91,8 +91,8 @@ H &#61; r_2.&#40;&#91;y &#61;&#61; &quot;apple&quot; ? rand&#40;Normal&#40;10, 1
 W &#61; r_2.&#40;&#91;0.6h for h in H&#93;&#41;
 
 df &#61; DataFrame&#40;; I, H, W, Y&#41;</code></pre>
-<p> <table><tr><th align="right">I</th><th align="right">H</th><th align="right">W</th><th align="right">Y</th></tr><tr><td align="right">1</td><td align="right">13.72</td><td align="right">8.23</td><td align="right">true</td></tr><tr><td align="right">2</td><td align="right">10.95</td><td align="right">6.57</td><td align="right">false</td></tr><tr><td align="right">3</td><td align="right">12.9</td><td align="right">7.74</td><td align="right">true</td></tr><tr><td align="right">4</td><td align="right">10.71</td><td align="right">6.43</td><td align="right">false</td></tr><tr><td align="right">5</td><td align="right">12.94</td><td align="right">7.76</td><td align="right">true</td></tr><tr><td align="right">6</td><td align="right">11.38</td><td align="right">6.83</td><td align="right">false</td></tr><tr><td align="right">7</td><td align="right">12.61</td><td align="right">7.57</td><td align="right">true</td></tr><tr><td align="right">8</td><td align="right">12.56</td><td align="right">7.54</td><td align="right">false</td></tr><tr><td align="right">9</td><td align="right">12.37</td><td align="right">7.42</td><td align="right">true</td></tr><tr><td align="right">10</td><td align="right">12.1</td><td align="right">7.26</td><td align="right">false</td></tr><tr><td align="right">11</td><td align="right">12.05</td><td align="right">7.23</td><td align="right">true</td></tr><tr><td align="right">12</td><td align="right">11.85</td><td align="right">7.11</td><td align="right">false</td></tr></table>
-</p>
+<p><pre><code class="plaintext code-output">UndefVarError: write_csv not defined
+</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/regression/df.csv' not found. //</span></p></p>
 <h2 id="simple_linear_regression"><a href="#simple_linear_regression" class="header-anchor">Simple linear regression</a></h2>
 <p>A <em>simple linear regression</em> fits a line through points in two dimensions. It should be able to infer the relation between <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>.</p>
 <pre><code class="language-julia">using AlgebraOfGraphics
@@ -201,15 +201,15 @@ y_i&#x27; =
 	S &#61; r_2.&#40;&#91;S&#40;digits, predict&#40;m2&#41;&#41;, S&#40;digits, predict&#40;m3&#41;&#41;&#93;&#41;,
 	accuracy &#61; r_2.&#40;&#91;accuracy&#40;digits, binary_values&#40;m2&#41;&#41;, accuracy&#40;digits, binary_values&#40;m3&#41;&#41;&#93;&#41;
 &#41;</code></pre>
-<p> <table><tr><th align="right">model</th><th align="right">S</th><th align="right">accuracy</th></tr><tr><td align="right">Linear regression</td><td align="right">1.51</td><td align="right">0.83</td></tr><tr><td align="right">Logistic regression</td><td align="right">1.42</td><td align="right">0.83</td></tr></table>
-</p>
+<p><pre><code class="plaintext code-output">UndefVarError: write_csv not defined
+</code></pre> <p><span style="color:red;">// Table matching '/assets/posts/regression/comparison.csv' not found. //</span></p></p>
 <p>As can be seen, the error is lower for the logistic regression. However, for the accuracy both models score the same in this case. This is due to the fact that there is only a very small area where the linear and logistic model make different predictions. When this area becomes bigger &#40;for example, when doing regression in multiple dimensions&#41; or when more points lie in this area, then the accuracy for the logistic regression will be better compared to the linear regression.</p>
 <h2 id="references"><a href="#references" class="header-anchor">References</a></h2>
 <p><a id="rice2006" class="anchor"></a>  Rice, J. A. &#40;2006&#41;. Mathematical statistics and data analysis. Cengage Learning.</p>
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-28.
+    Last update: 2021-10-29.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
