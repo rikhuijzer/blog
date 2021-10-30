@@ -40,9 +40,9 @@ uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 
 [[ArrayInterface]]
 deps = ["Compat", "IfElse", "LinearAlgebra", "Requires", "SparseArrays", "Static"]
-git-tree-sha1 = "a8101545d6b15ff1ebc927e877e28b0ab4bc4f16"
+git-tree-sha1 = "d9352737cef8525944bf9ef34392d756321cbd54"
 uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
-version = "3.1.36"
+version = "3.1.38"
 
 [[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -162,9 +162,9 @@ version = "0.2.0"
 
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "SHA", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
-git-tree-sha1 = "31d0151f5716b655421d9d75b7fa74cc4e744df2"
+git-tree-sha1 = "dce3e3fea680869eaa0b774b2e8343e9ff442313"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "3.39.0"
+version = "3.40.0"
 
 [[CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -326,9 +326,9 @@ version = "3.3.10+0"
 
 [[FileIO]]
 deps = ["Pkg", "Requires", "UUIDs"]
-git-tree-sha1 = "3c041d2ac0a52a12a27af2782b34900d9c3ee68c"
+git-tree-sha1 = "2db648b6712831ecb333eae76dbfd1c156ca13bb"
 uuid = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
-version = "1.11.1"
+version = "1.11.2"
 
 [[FilePathsBase]]
 deps = ["Dates", "Mmap", "Printf", "Test", "UUIDs"]
@@ -1092,13 +1092,13 @@ version = "1.0.15"
 
 [[Pluto]]
 deps = ["Base64", "Configurations", "Dates", "Distributed", "FileWatching", "FuzzyCompletions", "HTTP", "InteractiveUtils", "Logging", "Markdown", "MsgPack", "Pkg", "REPL", "Sockets", "TableIOInterface", "Tables", "UUIDs"]
-git-tree-sha1 = "7b4eb6b87276b7ee6604cd9ababf68ba659cfacb"
+git-tree-sha1 = "ea742b160cac4540c7e259aed390550a4ce2b9a9"
 uuid = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
-version = "0.16.4"
+version = "0.17.0"
 
 [[PlutoHTML]]
 deps = ["Base64", "Pluto"]
-git-tree-sha1 = "3ff13b059d9c8820b43604b21fe3eafc5873ea04"
+git-tree-sha1 = "2a2028463db4ac8d26827e89f3589210d5ce2167"
 repo-rev = "main"
 repo-url = "https://github.com/rikhuijzer/PlutoHTML.jl#main"
 uuid = "359b1769-a58e-495b-9770-312e911026ad"

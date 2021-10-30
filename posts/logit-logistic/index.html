@@ -59,7 +59,12 @@ I &#61; -6:0.1:6
 xy &#61; mapping&#40;&#91;I&#93; &#61;&gt; :x, &#91;logistic.&#40;I&#41;&#93; &#61;&gt; :y&#41; * visual&#40;Lines&#41;
 
 draw&#40;xy&#41;</code></pre>
-<img src="/assets/posts/logit-logistic/code/output/logistic.svg" alt="">
+On worker 2: ArgumentError: Package Blog &#91;d958ca09-399e-4f2e-814c-197a134883df&#93; is required but does not seem to be installed:</p>
+<ul>
+<li><p>Run <code>Pkg.instantiate&#40;&#41;</code> to install all recorded dependencies.</p>
+</li>
+</ul>
+<p>Stacktrace:  &#91;1&#93; <em>require    @ ./loading.jl:1012  &#91;2&#93; require    @ ./loading.jl:936  &#91;3&#93; #1    @ /buildworker/worker/package</em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/Distributed.jl:79  &#91;4&#93; #103    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:274  &#91;5&#93; run<em>work</em>thunk    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:63  &#91;6&#93; run<em>work</em>thunk    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:72  &#91;7&#93; #96    @ ./task.jl:411
 <p>Some people advise to remember the following numbers by heart.</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.24999999999999992em" columnalign="right left" columnspacing="0em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mtext>logistic</mtext><mo stretchy="false">(</mo><mo>−</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>≈</mo><mn>0.05</mn><mo separator="true">,</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mtext>logistic</mtext><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>≈</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle><mo separator="true">,</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mtext>logistic</mtext><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>≈</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mn>3</mn><mn>4</mn></mfrac></mstyle><mo separator="true">,</mo><mtext> </mtext><mtext>and</mtext></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mtext>logistic</mtext><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mrow></mrow><mo>≈</mo><mn>0.95.</mn></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
@@ -86,11 +91,11 @@ df &#61; &#40;x&#61;I, y&#61;logit.&#40;I&#41;&#41;
 xy &#61; mapping&#40;&#91;I&#93; &#61;&gt; :x, &#91;logit.&#40;I&#41;&#93; &#61;&gt; :y&#41; * visual&#40;Lines&#41;
 
 draw&#40;xy&#41;</code></pre>
-<img src="/assets/posts/logit-logistic/code/output/logit.svg" alt="">
+UndefVarError: Lines not defined
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-29.
+    Last update: 2021-10-30.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->

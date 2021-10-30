@@ -63,7 +63,26 @@ C &#61; &#91;5 for x in range&#93;
 D &#61; reverse&#40;A&#41;
 
 df &#61; DataFrame&#40;x &#61; range, A &#61; A, B &#61; B, C &#61; C, D &#61; D&#41;</code></pre>
+<pre><code class="plaintext code-output">On worker 2:
+ArgumentError: Package DataFrames [a93c6f00-e57d-5684-b7b6-d8193f3e46c0] is required but does not seem to be installed:
+ - Run `Pkg.instantiate()` to install all recorded dependencies.
 
+Stacktrace:
+ [1] _require
+   @ ./loading.jl:1012
+ [2] require
+   @ ./loading.jl:936
+ [3] #1
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/Distributed.jl:79
+ [4] #103
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:274
+ [5] run_work_thunk
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:63
+ [6] run_work_thunk
+   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:72
+ [7] #96
+   @ ./task.jl:411
+</code></pre>
 <p>We can plot the variables to obtain the following figure. Note that stack is needed to prepare the data for the plot, see Appendix <a href="#appendix_1">1</a> for the effect of the <code>stack</code> function.</p>
 <pre><code class="language-julia">using AlgebraOfGraphics
 using CairoMakie
@@ -72,7 +91,7 @@ sdf &#61; stack&#40;df, &#91;:A, :B, :C, :D&#93;&#41;
 xv &#61; data&#40;sdf&#41; * mapping&#40;:x, :value; color&#61;:variable&#41;
 
 draw&#40;xv&#41;</code></pre>
-<img src="/assets/posts/correlations/code/output/plot.svg" alt="">
+UndefVarError: stack not defined
 <p>To get an intuition for the covariance, consider a negative covariance. <span class="bibref"><a href="#rice2006">Rice (2006)</a></span> states that the covariance will be negative if when <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> is larger than its mean, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span></span></span></span> tends to be smaller than its mean. To get a example of a perfect negative linear relationship look at <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">A</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span>. When <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">A</span></span></span></span> is larger than its mean, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> is smaller than its mean and vice versa. Therefore <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>o</mi><mi>v</mi><mo stretchy="false">(</mo><mi>A</mi><mo separator="true">,</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">cov(A, D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mclose">)</span></span></span></span> should be negative. We can manually check this:</p>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>μ</mi><mi>A</mi></msub><mo>=</mo><msub><mi>μ</mi><mi>B</mi></msub><mo>=</mo><msub><mi>μ</mi><mi>C</mi></msub><mo>=</mo><msub><mi>μ</mi><mi>D</mi></msub><mo>=</mo><mn>5</mn><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex"> \mu_A = \mu_B = \mu_C = \mu_D = 5, </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">5</span><span class="mpunct">,</span></span></span></span></span>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mi>A</mi><mo>−</mo><msub><mi>μ</mi><mi>A</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">[</mo><mo>−</mo><mn>3</mn><mo separator="true">,</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">]</mo><mo separator="true">,</mo><mtext> </mtext><mtext>and</mtext></mrow><annotation encoding="application/x-tex"> (A - \mu_A) = [-3, -2, -1, 0, 1, 2, 3], \: \text{and} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">−</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord text"><span class="mord">and</span></span></span></span></span></span>
@@ -147,52 +166,11 @@ M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
 <h2 id="appendix_1"><a href="#appendix_1" class="header-anchor">Appendix 1</a></h2>
 <p>Before stacking, the DataFrame looks like</p>
 
-<pre><code class="plaintext code-output">df = 7×5 DataFrame
- Row │ x      A      B        C      D
-     │ Int64  Int64  Float64  Int64  Int64
-─────┼─────────────────────────────────────
-   1 │     1      2      3.5      5      8
-   2 │     2      3      4.0      5      7
-   3 │     3      4      4.5      5      6
-   4 │     4      5      5.0      5      5
-   5 │     5      6      5.5      5      4
-   6 │     6      7      6.0      5      3
-   7 │     7      8      6.5      5      2
+<pre><code class="plaintext code-output">UndefVarError: df not defined
 </code></pre>
 <p>and after stacking, it has changed to</p>
 
-<pre><code class="plaintext code-output">sdf = 28×3 DataFrame
- Row │ x      variable  value
-     │ Int64  String    Float64
-─────┼──────────────────────────
-   1 │     1  A             2.0
-   2 │     2  A             3.0
-   3 │     3  A             4.0
-   4 │     4  A             5.0
-   5 │     5  A             6.0
-   6 │     6  A             7.0
-   7 │     7  A             8.0
-   8 │     1  B             3.5
-   9 │     2  B             4.0
-  10 │     3  B             4.5
-  11 │     4  B             5.0
-  12 │     5  B             5.5
-  13 │     6  B             6.0
-  14 │     7  B             6.5
-  15 │     1  C             5.0
-  16 │     2  C             5.0
-  17 │     3  C             5.0
-  18 │     4  C             5.0
-  19 │     5  C             5.0
-  20 │     6  C             5.0
-  21 │     7  C             5.0
-  22 │     1  D             8.0
-  23 │     2  D             7.0
-  24 │     3  D             6.0
-  25 │     4  D             5.0
-  26 │     5  D             4.0
-  27 │     6  D             3.0
-  28 │     7  D             2.0
+<pre><code class="plaintext code-output">UndefVarError: sdf not defined
 </code></pre>
 <h2 id="appendix_2"><a href="#appendix_2" class="header-anchor">Appendix 2</a></h2>
 <pre><code class="language-julia">using Statistics
@@ -209,15 +187,12 @@ end
 @show mycov&#40;A, B&#41;
 @show mycov&#40;A, C&#41;
 @show mycov&#40;A, D&#41;</code></pre>
-<pre><code class="plaintext code-output">mycov(A, A) = 4.0
-mycov(A, B) = 2.0
-mycov(A, C) = 0.0
-mycov(A, D) = -4.0
+<pre><code class="plaintext code-output">UndefVarError: A not defined
 </code></pre>
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-10-29.
+    Last update: 2021-10-30.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
