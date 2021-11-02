@@ -13,18 +13,19 @@ PhD student at the University of Groningen;
 
 #### Publications
 
-- [Julia Data Science](https://juliadatascience.io) (book, work in progress)
+- [Julia Data Science](https://juliadatascience.io) (book)
 
 #### Open source
 
 _Projects:_
 
-- [Books.jl](https://github.com/rikhuijzer/books.jl)
+- [Books.jl](https://github.com/JuliaBooks/books.jl)
+- [PowerAnalyses.jl](https://github.com/rikhuijzer/poweranalyses.jl)
 - [TuringModels.jl](https://github.com/StatisticalRethinkingJulia/TuringModels.jl)
-- [ShowLint](https://lint.huijzer.xyz/)
 
 _Contributions:_
 
+- Report feature names in `fitresult` ([MLJGLMInterface.jl#12](https://github.com/JuliaAI/MLJGLMInterface.jl/pull/12))
 - Add deploy check ([www.julialang.org#1364](https://github.com/JuliaLang/www.julialang.org/pull/1364))
 - Allow Ints ([EffectSizes.jl#24](https://github.com/harryscholes/EffectSizes.jl/pull/24))
 - Document the `Explicit` tuning strategy ([MLJ.jl#836](https://github.com/alan-turing-institute/MLJ.jl/pull/836))
