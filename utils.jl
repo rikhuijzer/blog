@@ -94,7 +94,7 @@ end
     lx_pluto(com, _)
 
 Embed a Pluto notebook via:
-https://github.com/rikhuijzer/PlutoHTML.jl
+https://github.com/rikhuijzer/PlutoStaticHTML.jl
 """
 function lx_pluto(com, _)
     file = string(Franklin.content(com.braces[1]))::String
@@ -105,7 +105,7 @@ function lx_pluto(com, _)
         ```julia:pluto
         # hideall
 
-        using PlutoHTML: notebook2html
+        using PlutoStaticHTML: notebook2html
 
         path = "$path"
         log_path = "$log_path"
