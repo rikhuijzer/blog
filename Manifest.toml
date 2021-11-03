@@ -40,9 +40,9 @@ uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 
 [[ArrayInterface]]
 deps = ["Compat", "IfElse", "LinearAlgebra", "Requires", "SparseArrays", "Static"]
-git-tree-sha1 = "d9352737cef8525944bf9ef34392d756321cbd54"
+git-tree-sha1 = "426050a30c2cda1969510e92d5c5b52735f41c7d"
 uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
-version = "3.1.38"
+version = "3.1.39"
 
 [[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -110,9 +110,9 @@ version = "0.10.1"
 
 [[ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "3533f5a691e60601fe60c90d8bc47a27aa2907ec"
+git-tree-sha1 = "f885e7e7c124f8c92650d61b9477b9ac2ee607dd"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.11.0"
+version = "1.11.1"
 
 [[CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
@@ -242,9 +242,9 @@ uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 
 [[Distances]]
 deps = ["LinearAlgebra", "Statistics", "StatsAPI"]
-git-tree-sha1 = "09d9eaef9ef719d2cd5d928a191dc95be2ec8059"
+git-tree-sha1 = "837c83e5574582e07662bbbba733964ff7c26b9d"
 uuid = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
-version = "0.10.5"
+version = "0.10.6"
 
 [[Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
@@ -296,9 +296,9 @@ uuid = "e2ba6199-217a-4e67-a87a-7c52f15ade04"
 version = "0.1.6"
 
 [[ExproniconLite]]
-git-tree-sha1 = "c04d5c3442126d75ee4500aa6b0e402cae3bf6ac"
+git-tree-sha1 = "8b08cc88844e4d01db5a2405a08e9178e19e479e"
 uuid = "55351af7-c7e9-48d6-89ff-24e801d99491"
-version = "0.6.12"
+version = "0.6.13"
 
 [[FFMPEG]]
 deps = ["FFMPEG_jll"]
@@ -365,9 +365,9 @@ version = "0.4.2"
 
 [[Franklin]]
 deps = ["Dates", "DelimitedFiles", "DocStringExtensions", "ExprTools", "FranklinTemplates", "HTTP", "Literate", "LiveServer", "Logging", "Markdown", "NodeJS", "OrderedCollections", "Pkg", "REPL", "Random"]
-git-tree-sha1 = "eb6d950d24eecdc971d0f803b17bd33a1b4e509b"
+git-tree-sha1 = "e6b669a59b2dbec199ff6c9452b339cbf66a4da0"
 uuid = "713c75ef-9fc9-4b05-94a9-213340da978e"
-version = "0.10.61"
+version = "0.10.63"
 
 [[FranklinTemplates]]
 deps = ["LiveServer"]
@@ -838,9 +838,9 @@ version = "1.1.2"
 
 [[MLJTuning]]
 deps = ["ComputationalResources", "Distributed", "Distributions", "LatinHypercubeSampling", "MLJBase", "ProgressMeter", "Random", "RecipesBase"]
-git-tree-sha1 = "b9ddb9dcc45b1b585119d9964290def61404ef61"
+git-tree-sha1 = "8f3911fa3aef4299059f573cf75669d61f8bcef5"
 uuid = "03970b2e-30c4-11ea-3135-d1576263f10f"
-version = "0.6.13"
+version = "0.6.14"
 
 [[MLLabelUtils]]
 deps = ["LearnBase", "MappedArrays", "StatsBase"]
@@ -1028,9 +1028,9 @@ version = "8.44.0+0"
 
 [[PDMats]]
 deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
-git-tree-sha1 = "4dd403333bcf0909341cfe57ec115152f937d7d8"
+git-tree-sha1 = "82041e63725d156bf61c6302dd7635ea13e3d5e7"
 uuid = "90014a1f-27ba-587c-ab20-58faa44d9150"
-version = "0.11.1"
+version = "0.11.2"
 
 [[PNGFiles]]
 deps = ["Base64", "CEnum", "ImageCore", "IndirectArrays", "OffsetArrays", "libpng_jll"]
@@ -1064,9 +1064,9 @@ version = "0.12.3"
 
 [[Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "d911b6a12ba974dabe2291c6d450094a7226b372"
+git-tree-sha1 = "ae4bbcadb2906ccc085cf52ac286dc1377dceccc"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.1.1"
+version = "2.1.2"
 
 [[Pixman_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1092,15 +1092,15 @@ version = "1.0.15"
 
 [[Pluto]]
 deps = ["Base64", "Configurations", "Dates", "Distributed", "FileWatching", "FuzzyCompletions", "HTTP", "InteractiveUtils", "Logging", "Markdown", "MsgPack", "Pkg", "REPL", "Sockets", "TableIOInterface", "Tables", "UUIDs"]
-git-tree-sha1 = "ea742b160cac4540c7e259aed390550a4ce2b9a9"
+git-tree-sha1 = "39da9dbed4931b85d65029ee78f75231cbfe20c4"
 uuid = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
-version = "0.17.0"
+version = "0.17.1"
 
-[[PlutoHTML]]
+[[PlutoStaticHTML]]
 deps = ["Base64", "Pluto"]
-git-tree-sha1 = "2a2028463db4ac8d26827e89f3589210d5ce2167"
+git-tree-sha1 = "4557e48195d06ac4107378f97c56dae680ed4368"
 repo-rev = "main"
-repo-url = "https://github.com/rikhuijzer/PlutoHTML.jl#main"
+repo-url = "https://github.com/rikhuijzer/PlutoStaticHTML.jl#main"
 uuid = "359b1769-a58e-495b-9770-312e911026ad"
 version = "0.1.0"
 
@@ -1231,9 +1231,9 @@ version = "0.3.0"
 
 [[ScientificTypes]]
 deps = ["CategoricalArrays", "ColorTypes", "Dates", "Distributions", "PrettyTables", "Reexport", "ScientificTypesBase", "StatisticalTraits", "Tables"]
-git-tree-sha1 = "b58ef9adeba0d96ae1add87e8df5a7128342e312"
+git-tree-sha1 = "7a3efcacd212801a8cf2f961e8238ffb2109b30d"
 uuid = "321657f4-b219-11e9-178b-2701a2544e81"
-version = "2.3.2"
+version = "2.3.3"
 
 [[ScientificTypesBase]]
 git-tree-sha1 = "185e373beaf6b381c1e7151ce2c2a722351d6637"

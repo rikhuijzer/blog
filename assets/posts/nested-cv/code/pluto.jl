@@ -1,7 +1,7 @@
 # This file was generated, do not modify it. # hide
 # hideall
 
-using PlutoHTML: notebook2html
+using PlutoStaticHTML: notebook2html
 
 path = "posts/notebooks/nested-cv.jl"
 log_path = "posts/notebooks/nested-cv.log"
