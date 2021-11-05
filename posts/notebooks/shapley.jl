@@ -7,12 +7,14 @@ using InteractiveUtils
 # ╔═╡ 9ef3eb9e-3e2f-11ec-1428-c1d95a7b793b
 begin
 	using CairoMakie
-	using DataFrames: DataFrame
+	using DataFrames: Not, DataFrame, select
 	using Distributions: Normal
 	using MLJ
-	using Random: seed!
+	using MLJDecisionTreeInterface: RandomForestRegressor
+	using Random: MersenneTwister, seed!
 	using Shapley
-	using Statistics: cor
+	using StableRNGs: StableRNG
+	using Statistics: cor, maximum, mean
 end
 
 # ╔═╡ 210e6108-7192-457d-95a4-abc1b8bdd75c
@@ -27,7 +29,7 @@ y_true(x) = 2x + 10;
 y_noise(x, coefficient) = coefficient * y_true(x) + rand(Normal(40, 10));
 
 # ╔═╡ 5dc4d959-aef2-4e6c-899e-4d820ef62ebe
-indexes = 1.0:100.0;
+indexes = 1.0:150.0;
 
 # ╔═╡ f107041f-8150-41f5-bf6c-6690228f7e14
 r2(x) = round(x; digits=2);
@@ -46,18 +48,18 @@ end
 
 # ╔═╡ cd9354f0-2523-4cc7-9545-c8a571efa1b0
 # hideall
-let
-	resolution = (1000, 800)
+function plot_data(df::DataFrame, ylabelpos)
+	resolution = (900, 700)
 	f = Figure(; resolution)
 
-	features = [:T, :U, :V, :W, :Y]
+	features = filter(n -> n != "X" && n != "Y", names(df))
 	axs = [Axis(f[i, 1]; ylabel=string(feat)) for (i, feat) in enumerate(features)]
 
 	for (ax, feat) in zip(axs, features)
 		scatter!(ax, df.X, df[:, feat])
 		c = cor(df[:, feat], df.Y) |> r2
 		t = "cor($(feat), Y) = $c"
-		text!(ax, t; position=(0, 200))
+		text!(ax, t; position=(1, ylabelpos))
 	end
 	
 	linkxaxes!(axs...)
@@ -65,10 +67,58 @@ let
 	hidexdecorations!.(axs[1:end-1]; ticks=false)
 	axs[end].xlabel = "X"
 	f
-end
+end;
 
-# ╔═╡ 3bfdcf56-88b8-42fe-b842-bc24f6aabd7f
+# ╔═╡ 38d29acb-ee55-476a-b5ac-212a9cb232a3
+# hideall
+plot_data(df, 212)
 
+# ╔═╡ 40020396-67d4-4e23-bba4-a06158bc1f3e
+function shapley_values(df::DataFrame)
+	X = select(df, Not([:X, :Y]));
+	y = df.Y;
+	rng = MersenneTwister(0)
+	m = fit!(machine(RandomForestRegressor(), X, y));
+	mc = Shapley.MonteCarlo(2048)
+	shapley_values = shapley(x -> predict(m, x), mc, X)
+end;
+
+# ╔═╡ e427b282-fcd1-45db-b382-de854415f419
+# hideall
+function plot_shapley_values(df::DataFrame)
+	V = shapley_values(df)
+	resolution = (900, 700)
+	f = Figure(; resolution)
+
+	features = keys(V)
+	axs = [Axis(f[i, 1]; ylabel=string(feat)) for (i, feat) in enumerate(features)]
+
+	for (ax, feat) in zip(axs, features)
+		values = V[feat]
+		density!(ax, values)
+		m = mean(values)
+		vlines!(ax, [m]; color=:black, linestyle=:dash, label="mean")
+		axislegend(ax)
+	end
+	hidexdecorations!.(axs[1:end-1]; ticks=false)
+	axs[end].xlabel = "Shapley values"
+
+	f
+end;
+
+# ╔═╡ 8fbc4a4c-bfb1-4362-b504-576ed46d3403
+# hideall
+plot_shapley_values(select(df, :X, :T, :W, :Y))
+
+# ╔═╡ 5d65273b-d3be-46a7-bf93-a7c7f2e8403e
+md"""
+The Shapley values tell us how important the feature is to the model.
+With the highly correlated variables, it is clear that 
+"""
+
+# ╔═╡ 5ad4917f-fb46-4ae4-99a8-03eec483df14
+# hideall
+plot_shapley_values(df)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -77,8 +127,10 @@ CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
+MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Shapley = "855ca7ad-a6ef-4de2-9ca8-726fe2a39065"
+StableRNGs = "860ef19b-820b-49d6-a774-d7a799459cd3"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
@@ -86,7 +138,9 @@ CairoMakie = "~0.6.6"
 DataFrames = "~1.2.2"
 Distributions = "~0.25.24"
 MLJ = "~0.16.11"
+MLJDecisionTreeInterface = "~0.1.3"
 Shapley = "~0.1.1"
+StableRNGs = "~1.0.0"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -315,6 +369,12 @@ version = "1.0.0"
 [[Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[DecisionTree]]
+deps = ["DelimitedFiles", "Distributed", "LinearAlgebra", "Random", "ScikitLearnBase", "Statistics", "Test"]
+git-tree-sha1 = "123adca1e427dc8abc5eec5040644e7842d53c92"
+uuid = "7806a523-6efd-50cb-b5f6-3fa6f1930dbb"
+version = "0.10.11"
 
 [[DefineSingletons]]
 git-tree-sha1 = "77b4ca280084423b728662fe040e5ff8819347c5"
@@ -803,6 +863,12 @@ git-tree-sha1 = "fb9e0429525ccbb0fb4528bff2dc3cdba1feab53"
 uuid = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
 version = "0.18.24"
 
+[[MLJDecisionTreeInterface]]
+deps = ["DecisionTree", "MLJModelInterface", "Random"]
+git-tree-sha1 = "e2a5e2f0fd72cae51d72a83e6c11167de96c7a4c"
+uuid = "c6f25543-311c-4c74-83dc-3ea6d1015661"
+version = "0.1.3"
+
 [[MLJEnsembles]]
 deps = ["CategoricalArrays", "ComputationalResources", "Distributed", "Distributions", "MLJBase", "MLJModelInterface", "ProgressMeter", "Random", "ScientificTypes", "StatsBase"]
 git-tree-sha1 = "f8ca949d52432b81f621d9da641cf59829ad2c8c"
@@ -1199,6 +1265,12 @@ git-tree-sha1 = "185e373beaf6b381c1e7151ce2c2a722351d6637"
 uuid = "30f210dd-8aff-4c5f-94ba-8e64358c1161"
 version = "2.3.0"
 
+[[ScikitLearnBase]]
+deps = ["LinearAlgebra", "Random", "Statistics"]
+git-tree-sha1 = "7877e55c1523a4b336b433da39c8e8c08d2f221f"
+uuid = "6e75b9c4-186b-50bd-896f-2d2496a4843e"
+version = "0.5.0"
+
 [[Scratch]]
 deps = ["Dates"]
 git-tree-sha1 = "0b4b7f1393cff97c33891da2a0bf69c6ed241fda"
@@ -1558,6 +1630,11 @@ version = "3.5.0+0"
 # ╠═f107041f-8150-41f5-bf6c-6690228f7e14
 # ╠═7a47e532-861c-4a6e-bd54-d63735d2140f
 # ╠═cd9354f0-2523-4cc7-9545-c8a571efa1b0
-# ╠═3bfdcf56-88b8-42fe-b842-bc24f6aabd7f
+# ╠═38d29acb-ee55-476a-b5ac-212a9cb232a3
+# ╠═40020396-67d4-4e23-bba4-a06158bc1f3e
+# ╠═e427b282-fcd1-45db-b382-de854415f419
+# ╠═8fbc4a4c-bfb1-4362-b504-576ed46d3403
+# ╠═5d65273b-d3be-46a7-bf93-a7c7f2e8403e
+# ╠═5ad4917f-fb46-4ae4-99a8-03eec483df14
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
