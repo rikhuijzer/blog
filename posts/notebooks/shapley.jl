@@ -9,7 +9,7 @@ begin
 	using CairoMakie
 	using DataFrames: Not, DataFrame, select
 	using Distributions: Normal
-	# This one is more accurate than LightGBM and exposes SHAP.
+	# This one is more accurate than XGBoost (they claim) and exposes SHAP.
 	# https://github.com/IQVIA-ML/LightGBM.jl/pull/52
 	using LightGBM.MLJInterface: LGBMClassifier
 	using MLJ
@@ -24,7 +24,24 @@ end
 
 # ╔═╡ 210e6108-7192-457d-95a4-abc1b8bdd75c
 md"""
-# Shapley values and multicollinearity
+# Random forest, Shapley values and multicollinearity
+
+Linear statistical models are great for many use-cases since they are easy to use and easy to interpret.
+Specifically, linear models can use _features_ (also known as _independent variables_, _predictors_ or _covariates_) to predict an _outcome_ (also known as _dependent variable_).
+
+In a linear model, a higher coefficient for a feature, the more a feature played a role in making a prediction.
+However, when variables in a regression model are correlated, these conclusions don't hold anymore.
+
+One way to solve this is to use clustering techniques such as pricipal component analysis (PCA) (Dormann et al., [2012](https://doi.org/10.1111/j.1600-0587.2012.07348.x)).
+With PCA, latent clusters are automatically determined.
+Unfortunately, these latent clusters now became, what I would like to call, magic blobs.
+These blobs are only related in the data and not necessarily in the real-world.
+To link these blobs (officially, clusters) back to the real-world, one can try to find the features closes to the blobs in one way or another, but this will always introduce bias.
+Another approach is to drop features which are highly correlated and expected to be less important.
+
+Some say that random forests combined with SHAP values can deal with collinearity reasonably well.
+This is because the random forest can find complex relations in the data and because SHAP values are based on mathematically proven ideas.
+In this post, I aim to verify that by simulating collinear data and seeing how good the conclusions of the model are.
 """
 
 # ╔═╡ 51e436eb-3c29-4367-9da2-4bd98bba00d5
