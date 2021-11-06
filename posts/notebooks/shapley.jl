@@ -11,15 +11,14 @@ begin
 	using Distributions: Normal
 	# This one is more accurate than XGBoost (they claim) and exposes SHAP.
 	# https://github.com/IQVIA-ML/LightGBM.jl/pull/52
-	using LightGBM.MLJInterface: LGBMClassifier
+	using LightGBM: predict as lightpredict
+	using LightGBM.MLJInterface: LGBMRegressor
 	using MLJ
 	using MLJDecisionTreeInterface: RandomForestRegressor
-	using MLJXGBoostInterface: XGBoostClassifier
 	using Random: MersenneTwister, seed!
 	using Shapley
 	using StableRNGs: StableRNG
 	using Statistics: cor, maximum, mean
-	using XGBoost
 end
 
 # ╔═╡ 210e6108-7192-457d-95a4-abc1b8bdd75c
@@ -41,7 +40,8 @@ Another approach is to drop features which are highly correlated and expected to
 
 Some say that random forests combined with SHAP values can deal with collinearity reasonably well.
 This is because the random forest can find complex relations in the data and because SHAP values are based on mathematically proven ideas.
-In this post, I aim to verify that by simulating collinear data and seeing how good the conclusions of the model are.
+Others say that the SHAP will choose one of the correlated features and ignore the others.
+In this post, I aim to simulating collinear data and see how good the conclusions of the model are.
 """
 
 # ╔═╡ 51e436eb-3c29-4367-9da2-4bd98bba00d5
@@ -95,15 +95,57 @@ end;
 # hideall
 plot_data(df, 212)
 
+# ╔═╡ 7580c47b-27c2-43e2-a104-81d8efbcf2c4
+function regressor()
+	max_depth = 2
+	kwargs = [
+		:num_leaves => 9,
+		:max_depth => 3,
+		:min_data_per_group => 2,
+		:learning_rate => 0.5
+	]
+	return LGBMRegressor( ) # ; kwargs...)
+end;
+
+# ╔═╡ 488e527c-1b32-4031-8592-4bfc51784e9f
+function fit_model(df::DataFrame)
+	X = select(df, Not([:X, :Y]))
+	y = df.Y
+	rng = MersenneTwister(0)
+	num_leaves = 10
+	m = fit!(machine(regressor(), X, y))
+	return X, y, m
+end;
+
+# ╔═╡ c6c880a0-b4b2-4918-b183-dcf3e53b8b99
+let
+	m = fit_model(df)
+	X = select(df, Not([:X, :Y]))
+	bst, _, _ = m.fitresult
+	predictions = predict(m)
+	rms(predictions, df.Y)
+end
+
 # ╔═╡ 40020396-67d4-4e23-bba4-a06158bc1f3e
 function shapley_values(df::DataFrame)
-	X = select(df, Not([:X, :Y]));
-	y = df.Y;
-	rng = MersenneTwister(0)
-	m = fit!(machine(RandomForestRegressor(), X, y));
+	X, y, m = fit_model(df)
+	# mc = Shapley.MonteCarlo(2048)
+	# shapley_values = shapley(x -> MLJ.predict(m, x), mc, X)
+	# predict_type = 3 # SHAP.
+	# MLJ.predict(m)
+	# Using Shapley because LightGBM.jl SHAP prediction gives one number.
 	mc = Shapley.MonteCarlo(2048)
-	shapley_values = shapley(x -> MLJ.predict(m, x), mc, X)
+	S = shapley(x -> MLJ.predict(m, x), mc, X)
+	# fieldnames(m |> typeof)
+	# bst, _, _ = m.fitresult
+	# bst
+	# shap_values = lightpredict(bst, Matrix(X); predict_type)
+	# mean(shap_values; dims=1)
+	return S
 end;
+
+# ╔═╡ 5c0139ef-aab7-4376-adf9-7b4cbd7693d7
+shapley_values(df)
 
 # ╔═╡ e427b282-fcd1-45db-b382-de854415f419
 # hideall
@@ -122,6 +164,7 @@ function plot_shapley_values(df::DataFrame)
 		vlines!(ax, [m]; color=:black, linestyle=:dash, label="mean")
 		axislegend(ax)
 	end
+	linkxaxes!(axs...)
 	hidexdecorations!.(axs[1:end-1]; ticks=false)
 	axs[end].xlabel = "Shapley values"
 
@@ -145,35 +188,6 @@ plot_shapley_values(df)
 # ╔═╡ a4e72308-a49a-4702-9c63-0c92c74793cb
 X = select(df, Not([:X, :Y]))
 
-# ╔═╡ 65d03ab2-2424-4be0-9cf9-a0f0223b4542
-bst = let
-	num_round = 2
-	# Y = select(df,)
-	xgboost(Matrix(X), num_round; label=df.Y)
-end;
-
-# ╔═╡ e75edf55-f3f5-4dff-8b12-787ec43dd2d9
-let
-	pred = XGBoost.predict(bst, Matrix(X))
-	# "test-error=$(sum((pred .> 0.5) .!= df.Y) / float(size(pred)[1]))"
-end
-
-# ╔═╡ 7b11a5a7-e363-4ebc-bbb1-cb7ab1439f23
-let
-	nfold = 5
-	param = ["max_depth" => 2,
-	         "eta" => 1,
-	         "objective" => "binary:logistic"]
-	metrics = ["auc"]
-	num_round = 2
-	nfold_cv(Matrix(X), num_round, nfold; label=df.Y, param, metrics)
-end
-
-# ╔═╡ e5f03104-b9f2-4648-8d29-60effdd50ade
-md"""
-`bst.predict(matrix, pred_contribs=True)` gives SHAP values in Python.
-"""
-
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -183,12 +197,10 @@ Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LightGBM = "7acf609c-83a4-11e9-1ffb-b912bcd3b04a"
 MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
 MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
-MLJXGBoostInterface = "54119dfa-1dab-4055-a167-80440f4f7a91"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Shapley = "855ca7ad-a6ef-4de2-9ca8-726fe2a39065"
 StableRNGs = "860ef19b-820b-49d6-a774-d7a799459cd3"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-XGBoost = "009559a3-9522-5dbb-924b-0b6ed2b22bb9"
 
 [compat]
 CairoMakie = "~0.6.6"
@@ -197,10 +209,8 @@ Distributions = "~0.25.24"
 LightGBM = "~0.5.2"
 MLJ = "~0.16.11"
 MLJDecisionTreeInterface = "~0.1.3"
-MLJXGBoostInterface = "~0.1.5"
 Shapley = "~0.1.1"
 StableRNGs = "~1.0.0"
-XGBoost = "~1.1.1"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -971,12 +981,6 @@ git-tree-sha1 = "8f3911fa3aef4299059f573cf75669d61f8bcef5"
 uuid = "03970b2e-30c4-11ea-3135-d1576263f10f"
 version = "0.6.14"
 
-[[MLJXGBoostInterface]]
-deps = ["MLJModelInterface", "Tables", "XGBoost"]
-git-tree-sha1 = "a8739c4f8ad2677cf4fb530c336bdb79120ec345"
-uuid = "54119dfa-1dab-4055-a167-80440f4f7a91"
-version = "0.1.5"
-
 [[MacroTools]]
 deps = ["Markdown", "Random"]
 git-tree-sha1 = "3d3e902b31198a27340d0bf00d6ac452866021cf"
@@ -1572,18 +1576,6 @@ git-tree-sha1 = "de67fa59e33ad156a590055375a30b23c40299d3"
 uuid = "efce3f68-66dc-5838-9240-27a6d6f5f9b6"
 version = "0.5.5"
 
-[[XGBoost]]
-deps = ["Libdl", "Printf", "Random", "SparseArrays", "Statistics", "Test", "XGBoost_jll"]
-git-tree-sha1 = "8a692f817f1a6c15ef4913a0ffefa6163117f43d"
-uuid = "009559a3-9522-5dbb-924b-0b6ed2b22bb9"
-version = "1.1.1"
-
-[[XGBoost_jll]]
-deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "d7614e82afe4a1569711892039b843b62ae4fe53"
-uuid = "a5c6f535-4255-5ca2-a466-0e519f119c46"
-version = "1.4.2+0"
-
 [[XML2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libiconv_jll", "Pkg", "Zlib_jll"]
 git-tree-sha1 = "1acf5bdf07aa0907e0a37d3718bb88d4b687b74a"
@@ -1715,15 +1707,15 @@ version = "3.5.0+0"
 # ╠═7a47e532-861c-4a6e-bd54-d63735d2140f
 # ╠═cd9354f0-2523-4cc7-9545-c8a571efa1b0
 # ╠═38d29acb-ee55-476a-b5ac-212a9cb232a3
+# ╠═7580c47b-27c2-43e2-a104-81d8efbcf2c4
+# ╠═488e527c-1b32-4031-8592-4bfc51784e9f
+# ╠═c6c880a0-b4b2-4918-b183-dcf3e53b8b99
 # ╠═40020396-67d4-4e23-bba4-a06158bc1f3e
+# ╠═5c0139ef-aab7-4376-adf9-7b4cbd7693d7
 # ╠═e427b282-fcd1-45db-b382-de854415f419
 # ╠═8fbc4a4c-bfb1-4362-b504-576ed46d3403
 # ╠═5d65273b-d3be-46a7-bf93-a7c7f2e8403e
 # ╠═5ad4917f-fb46-4ae4-99a8-03eec483df14
 # ╠═a4e72308-a49a-4702-9c63-0c92c74793cb
-# ╠═65d03ab2-2424-4be0-9cf9-a0f0223b4542
-# ╠═e75edf55-f3f5-4dff-8b12-787ec43dd2d9
-# ╠═7b11a5a7-e363-4ebc-bbb1-cb7ab1439f23
-# ╠═e5f03104-b9f2-4648-8d29-60effdd50ade
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
