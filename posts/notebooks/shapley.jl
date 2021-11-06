@@ -48,7 +48,7 @@ In this post, I aim to simulating collinear data and see how good the conclusion
 y_true(x) = 2x + 10;
 
 # ╔═╡ e59e032c-42a1-4235-9ac6-94e5ddbdaf23
-y_noise(x, coefficient) = coefficient * y_true(x) + rand(Normal(40, 10));
+y_noise(x, coefficient) = coefficient * y_true(x) + rand(Normal(0, 40));
 
 # ╔═╡ 5dc4d959-aef2-4e6c-899e-4d820ef62ebe
 indexes = 1.0:150.0;
@@ -62,9 +62,10 @@ df = let
 	X = indexes
 	T = y_noise.(indexes, 0)
 	U = y_noise.(indexes, 0.05)
-	V = y_noise.(indexes, 0.15)
+	V = y_noise.(indexes, 0.4)
 	W = y_noise.(indexes, 1)
 	Y = y_noise.(indexes, 1)
+	
 	DataFrame(; X, T, U, V, W, Y)
 end
 
@@ -93,7 +94,7 @@ end;
 
 # ╔═╡ 38d29acb-ee55-476a-b5ac-212a9cb232a3
 # hideall
-plot_data(df, 212)
+plot_data(df, 240)
 
 # ╔═╡ 7580c47b-27c2-43e2-a104-81d8efbcf2c4
 function regressor()
@@ -104,7 +105,7 @@ function regressor()
 		:min_data_per_group => 2,
 		:learning_rate => 0.5
 	]
-	return LGBMRegressor( ) # ; kwargs...)
+	return LGBMRegressor( ; kwargs...)
 end;
 
 # ╔═╡ 488e527c-1b32-4031-8592-4bfc51784e9f
@@ -116,6 +117,39 @@ function fit_model(df::DataFrame)
 	m = fit!(machine(regressor(), X, y))
 	return X, y, m
 end;
+
+# ╔═╡ af878c49-66eb-4c84-80c6-87625b265fc9
+md"""
+## Overfitting
+
+To get an idea of what the model is doing, we can plot the predictions on top of the data.
+"""
+
+# ╔═╡ 0f9af2be-c924-45aa-a198-6bfa4936453f
+# hideall
+let
+	color = :black
+	markersize = 2
+	linewidth = 2
+	
+	fig = Figure()
+	ax1 = Axis(fig[1, 1]; xlabel="X", ylabel="Y")
+	# ax2 = Axis(fig[2, 1]; xlabel="X", ylabel="Y")
+	X, y, m = fit_model(df)
+	predictions = predict(m)
+	lines!(ax1, df.X, predictions; linewidth, color, label="LightGBMRegressor")
+	lines!(ax1, df.X, y_true.(df.X); linewidth, linestyle=:dash, color, label="True model")
+	scatter!(ax1, df.X, df.Y; color, markersize)
+	axislegend(ax1; position=:lt)
+	fig
+end
+
+# ╔═╡ 2bbd0454-a03d-42c2-a9e9-c2d68219fd14
+md"""
+My main worry after seeing this is how we can avoid overfitting random forests on our data.
+Intuitively, it makes sense that the model overfits due to it's high flexibility combined with few samples.
+Of course, not all real-world phenomenons are linear, but it seems that the model is spending too much effort on fitting noise.
+"""
 
 # ╔═╡ c6c880a0-b4b2-4918-b183-dcf3e53b8b99
 let
@@ -171,9 +205,12 @@ function plot_shapley_values(df::DataFrame)
 	f
 end;
 
+# ╔═╡ 93b2d712-43ec-486c-af8f-a368eb8ee997
+select_features(df, F) = select(df, :X, F..., :Y)
+
 # ╔═╡ 8fbc4a4c-bfb1-4362-b504-576ed46d3403
 # hideall
-plot_shapley_values(select(df, :X, :T, :W, :Y))
+plot_shapley_values(select_features(df, [:T, :W]))
 
 # ╔═╡ 5d65273b-d3be-46a7-bf93-a7c7f2e8403e
 md"""
@@ -1709,10 +1746,14 @@ version = "3.5.0+0"
 # ╠═38d29acb-ee55-476a-b5ac-212a9cb232a3
 # ╠═7580c47b-27c2-43e2-a104-81d8efbcf2c4
 # ╠═488e527c-1b32-4031-8592-4bfc51784e9f
+# ╠═af878c49-66eb-4c84-80c6-87625b265fc9
+# ╠═0f9af2be-c924-45aa-a198-6bfa4936453f
+# ╠═2bbd0454-a03d-42c2-a9e9-c2d68219fd14
 # ╠═c6c880a0-b4b2-4918-b183-dcf3e53b8b99
 # ╠═40020396-67d4-4e23-bba4-a06158bc1f3e
 # ╠═5c0139ef-aab7-4376-adf9-7b4cbd7693d7
 # ╠═e427b282-fcd1-45db-b382-de854415f419
+# ╠═93b2d712-43ec-486c-af8f-a368eb8ee997
 # ╠═8fbc4a4c-bfb1-4362-b504-576ed46d3403
 # ╠═5d65273b-d3be-46a7-bf93-a7c7f2e8403e
 # ╠═5ad4917f-fb46-4ae4-99a8-03eec483df14
