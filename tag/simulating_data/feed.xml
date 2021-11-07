@@ -31,7 +31,7 @@
     <![CDATA[  Fitting a random forest classifier and reporting accuracy metrics.  ]]>
   </description>  
     
-  <pubDate>Wed, 03 Nov 2021 00:00:00 +0000</pubDate>  
+  <pubDate>Sun, 07 Nov 2021 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -50,7 +50,26 @@
     <![CDATA[  Obtaining the least informative distribution.  ]]>
   </description>  
     
-  <pubDate>Wed, 03 Nov 2021 00:00:00 +0000</pubDate>  
+  <pubDate>Sun, 07 Nov 2021 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Rik Huijzer</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  Random forest, Shapley values and multicollinearity  ]]>
+  </title>
+  <link> https://huijzer.xyz/posts/shapley/index.html </link>
+  <guid> https://huijzer.xyz/posts/shapley/index.html </guid>
+  <description>
+    <![CDATA[  How well do Shapley values and decision-tree-based models deal with multicollinearity?  ]]>
+  </description>  
+    
+  <pubDate>Sun, 07 Nov 2021 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -69,7 +88,7 @@
     <![CDATA[  Applying a simple and binary &#40;logistic&#41; regression to simulated data.  ]]>
   </description>  
     
-  <pubDate>Wed, 03 Nov 2021 00:00:00 +0000</pubDate>  
+  <pubDate>Sun, 07 Nov 2021 00:00:00 +0000</pubDate>  
   
   
   <atom:author>

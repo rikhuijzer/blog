@@ -1,12 +1,12 @@
 AlgebraOfGraphics 0.5.4
 CSV 0.9.10
 CairoMakie 0.6.6
-CategoricalArrays 0.10.1
+CategoricalArrays 0.10.2
 DataFrames 1.2.2
-Distributions 0.25.23
-Franklin 0.10.63
+Distributions 0.25.24
+Franklin 0.10.64
 GLM 1.5.1
-HypothesisTests 0.10.4
+HypothesisTests 0.10.6
 MLDataUtils 0.5.4
 MLJ 0.16.11
 MLJBase 0.18.24
