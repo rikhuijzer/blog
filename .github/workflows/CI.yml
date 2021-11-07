@@ -51,12 +51,21 @@ jobs:
 
     - uses: julia-actions/julia-buildpkg@latest
 
+    # Not using fail_on_warning since this is more robust.
     - name: Build site
       run: julia --project -e '
-        using Franklin; optimize(; fail_on_warning=true, minify=false);
-        verify_links()'
+        using Franklin; optimize(; minify=false)' > build.log
       env:
         JULIA_NUM_THREADS: '4'
+
+    - name: Validate output
+      run: |
+        if grep -1 "Franklin Warning" build.log; then
+          echo "Franklin reported a warning"
+          exit 1
+        else
+          echo "Franklin did not report a warning"
+        fi
 
     - name: Deploy to secondary branch
       if: ${{ github.event_name != 'pull_request' }}
