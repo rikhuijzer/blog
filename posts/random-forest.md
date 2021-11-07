@@ -4,7 +4,7 @@ published = "2021-01-21"
 tags = ["simulating data", "machine learning"]
 rss = "Fitting a random forest classifier and reporting accuracy metrics."
 image = "/assets/self.jpg"
-reeval = true
+reeval = false
 +++
 
 Below is example code for fitting and evaluating a linear regression and random forest classifier in Julia.

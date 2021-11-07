@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.1
+# v0.16.4
 
 using Markdown
 using InteractiveUtils
@@ -9,24 +9,18 @@ begin
 	using CairoMakie
 	using DataFrames: Not, DataFrame, select
 	using Distributions: Normal
-	# This one is more accurate than XGBoost (they claim) and exposes SHAP.
-	# https://github.com/IQVIA-ML/LightGBM.jl/pull/52
-	using LightGBM: predict as lightpredict
 	using LightGBM.MLJInterface: LGBMRegressor
-	using MLJ
-	using MLJDecisionTreeInterface: RandomForestRegressor
-	using Random: MersenneTwister, seed!
-	using Shapley
+	using MLJ: fit!, machine, predict
+	using Random: seed!
+	using Shapley: MonteCarlo, shapley
 	using StableRNGs: StableRNG
-	using Statistics: cor, maximum, mean
+	using Statistics: cor, mean
 end
 
 # ╔═╡ 210e6108-7192-457d-95a4-abc1b8bdd75c
 md"""
-# Random forest, Shapley values and multicollinearity
-
 Linear statistical models are great for many use-cases since they are easy to use and easy to interpret.
-Specifically, linear models can use _features_ (also known as _independent variables_, _predictors_ or _covariates_) to predict an _outcome_ (also known as _dependent variable_).
+Specifically, linear models can use _features_ (also known as _independent variables_, _predictors_ or _covariates_) to predict an _outcome_ (also known as _dependent variables_).
 
 In a linear model, a higher coefficient for a feature, the more a feature played a role in making a prediction.
 However, when variables in a regression model are correlated, these conclusions don't hold anymore.
@@ -45,6 +39,11 @@ Some say that random forests combined with Shapley values can deal with collinea
 This is because the random forest can find complex relations in the data and because Shapley values are based on mathematically proven ideas.
 Others say that the Shapley values will pick one of the correlated features and ignore the others.
 In this post, I aim to simulating collinear data and see how good the conclusions of the model are.
+"""
+
+# ╔═╡ c6e6e89a-55f3-4cd4-b70e-249ef4c7d396
+md"""
+## Simulating data
 """
 
 # ╔═╡ 51e436eb-3c29-4367-9da2-4bd98bba00d5
@@ -99,9 +98,15 @@ end;
 # hideall
 plot_data(df, 240)
 
+# ╔═╡ 08cd977e-8444-4927-9c26-0d21bfba6082
+md"""
+## Fitting a model
+
+For the LGBM regressor, I've set some hyperparameters to lower values because the default parameters are optimized for large datasets.
+"""
+
 # ╔═╡ 7580c47b-27c2-43e2-a104-81d8efbcf2c4
 function regressor()
-	max_depth = 2
 	kwargs = [
 		:num_leaves => 9,
 		:max_depth => 3,
@@ -115,16 +120,12 @@ end;
 function fit_model(df::DataFrame)
 	X = select(df, Not([:X, :Y]))
 	y = df.Y
-	rng = MersenneTwister(0)
-	num_leaves = 10
 	m = fit!(machine(regressor(), X, y))
 	return X, y, m
 end;
 
 # ╔═╡ af878c49-66eb-4c84-80c6-87625b265fc9
 md"""
-## Overfitting
-
 To get an idea of what the model is doing, we can plot the predictions on top of the data.
 """
 
@@ -165,15 +166,15 @@ md"""
 Shapley values are based on a theory by Shapley ([1953](https://doi.org/10.1515/9781400881970-018)).
 The goal of these values is to estimate how much each feature has contributed to the prediction.
 One way to do this is by changing the input for a feature while keeping all other feature inputs constant and seeing how much the output changes.
-This is called Monte Carlo simulation.
-We can aggregate the results from the Monte Carlo simulation to estimate how much a feature contributes to the outcome.
+This repeated sampling is called the Monte Carlo method.
+We can aggregate the Monte Carlo results to estimate how much a feature contributes to the outcome.
 """
 
 # ╔═╡ 40020396-67d4-4e23-bba4-a06158bc1f3e
 function shapley_values(df::DataFrame)
 	X, y, m = fit_model(df)
-	mc = Shapley.MonteCarlo(1024)
-	return shapley(x -> MLJ.predict(m, x), mc, X)
+	mc = MonteCarlo(1024)
+	return shapley(x -> predict(m, x), mc, X)
 end;
 
 # ╔═╡ e427b282-fcd1-45db-b382-de854415f419
@@ -234,6 +235,7 @@ plot_shapley_values(select_features(df, [:T, :W]))
 md"""
 Now, it's time for the final test:
 do Shapley values give appropriate credit to correlated features?
+We check this by passing all the features instead of only X, T, W and Y.
 """
 
 # ╔═╡ 5ad4917f-fb46-4ae4-99a8-03eec483df14
@@ -247,7 +249,8 @@ The values T, U, V, W are ordered by their correlation with the outcome (and eac
 As expected, features lower in the plot get a higher mean of absolute values, that is, feature importance.
 However, basing scientific conclusions on these outcomes may be deceptive because it's likely that there is a high variance on the reported feature importances.
 The main risk is here is that the model didn't properly fit resulting in incorrect outcomes.
-(This is also a risk for linear models.)
+Another risk is that the overfitted model generalizes poorly.
+Both risks also hold for linear models, so I guess it's just the best we have.
 """
 
 # ╔═╡ 7691cb81-e768-4671-abe2-aba9051a4817
@@ -255,11 +258,10 @@ md"""
 # Conclusion
 
 Based on this simple example, I would say that LightGBM combined with Shapley values can handle multicollinearity to some extend.
-The outcomes mainly depend on whether the fitted model has used the less correlated features or decided to only use the highly correlated features.
-In this case, LightGBM has overfitted the data, which is probably why less useful features (less predictive power) still are considered more important than useless features.
-So, in this multicollinear case, an overfitted model gives better feature importance estimates, but doubt remain about generalizability.
-
-an model which is too complex is good.
+Specifically, the outcomes mainly depend on whether the fitted model has used the less correlated features or decided to only use the highly correlated features.
+In this case, LightGBM has overfitted the data, which is probably why semi correlated features still receive some recognition even though other features are more useful.
+So, in this multicollinear case, an overfitted model gives better feature importance estimates.
+Doubts remain about generalizability.
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -270,7 +272,6 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LightGBM = "7acf609c-83a4-11e9-1ffb-b912bcd3b04a"
 MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
-MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Shapley = "855ca7ad-a6ef-4de2-9ca8-726fe2a39065"
 StableRNGs = "860ef19b-820b-49d6-a774-d7a799459cd3"
@@ -282,7 +283,6 @@ DataFrames = "~1.2.2"
 Distributions = "~0.25.24"
 LightGBM = "~0.5.2"
 MLJ = "~0.16.11"
-MLJDecisionTreeInterface = "~0.1.3"
 Shapley = "~0.1.1"
 StableRNGs = "~1.0.0"
 """
@@ -513,12 +513,6 @@ version = "1.0.0"
 [[Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
-
-[[DecisionTree]]
-deps = ["DelimitedFiles", "Distributed", "LinearAlgebra", "Random", "ScikitLearnBase", "Statistics", "Test"]
-git-tree-sha1 = "123adca1e427dc8abc5eec5040644e7842d53c92"
-uuid = "7806a523-6efd-50cb-b5f6-3fa6f1930dbb"
-version = "0.10.11"
 
 [[DefineSingletons]]
 git-tree-sha1 = "77b4ca280084423b728662fe040e5ff8819347c5"
@@ -1013,12 +1007,6 @@ git-tree-sha1 = "fb9e0429525ccbb0fb4528bff2dc3cdba1feab53"
 uuid = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
 version = "0.18.24"
 
-[[MLJDecisionTreeInterface]]
-deps = ["DecisionTree", "MLJModelInterface", "Random"]
-git-tree-sha1 = "e2a5e2f0fd72cae51d72a83e6c11167de96c7a4c"
-uuid = "c6f25543-311c-4c74-83dc-3ea6d1015661"
-version = "0.1.3"
-
 [[MLJEnsembles]]
 deps = ["CategoricalArrays", "ComputationalResources", "Distributed", "Distributions", "MLJBase", "MLJModelInterface", "ProgressMeter", "Random", "ScientificTypes", "StatsBase"]
 git-tree-sha1 = "f8ca949d52432b81f621d9da641cf59829ad2c8c"
@@ -1415,12 +1403,6 @@ git-tree-sha1 = "185e373beaf6b381c1e7151ce2c2a722351d6637"
 uuid = "30f210dd-8aff-4c5f-94ba-8e64358c1161"
 version = "2.3.0"
 
-[[ScikitLearnBase]]
-deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "7877e55c1523a4b336b433da39c8e8c08d2f221f"
-uuid = "6e75b9c4-186b-50bd-896f-2d2496a4843e"
-version = "0.5.0"
-
 [[Scratch]]
 deps = ["Dates"]
 git-tree-sha1 = "0b4b7f1393cff97c33891da2a0bf69c6ed241fda"
@@ -1773,6 +1755,7 @@ version = "3.5.0+0"
 
 # ╔═╡ Cell order:
 # ╠═210e6108-7192-457d-95a4-abc1b8bdd75c
+# ╠═c6e6e89a-55f3-4cd4-b70e-249ef4c7d396
 # ╠═9ef3eb9e-3e2f-11ec-1428-c1d95a7b793b
 # ╠═51e436eb-3c29-4367-9da2-4bd98bba00d5
 # ╠═e59e032c-42a1-4235-9ac6-94e5ddbdaf23
@@ -1781,6 +1764,7 @@ version = "3.5.0+0"
 # ╠═7a47e532-861c-4a6e-bd54-d63735d2140f
 # ╠═cd9354f0-2523-4cc7-9545-c8a571efa1b0
 # ╠═38d29acb-ee55-476a-b5ac-212a9cb232a3
+# ╠═08cd977e-8444-4927-9c26-0d21bfba6082
 # ╠═7580c47b-27c2-43e2-a104-81d8efbcf2c4
 # ╠═488e527c-1b32-4031-8592-4bfc51784e9f
 # ╠═af878c49-66eb-4c84-80c6-87625b265fc9
