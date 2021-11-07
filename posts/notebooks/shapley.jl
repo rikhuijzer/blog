@@ -31,16 +31,19 @@ Specifically, linear models can use _features_ (also known as _independent varia
 In a linear model, a higher coefficient for a feature, the more a feature played a role in making a prediction.
 However, when variables in a regression model are correlated, these conclusions don't hold anymore.
 
-One way to solve this is to use clustering techniques such as pricipal component analysis (PCA) (Dormann et al., [2012](https://doi.org/10.1111/j.1600-0587.2012.07348.x)).
+One way to solve this is to use clustering techniques such as principal component analysis (PCA) (Dormann et al., [2012](https://doi.org/10.1111/j.1600-0587.2012.07348.x)).
 With PCA, latent clusters are automatically determined.
 Unfortunately, these latent clusters now became, what I would like to call, magic blobs.
-These blobs are only related in the data and not necessarily in the real-world.
+Proponents of these techniques could say:
+"But we know that there **is** an underlying variable which **causes** our effect, why can't this variable be the same as the cluster that we found?"
+Well, because these blobs are found in the data and not in the real-world.
+
 To link these blobs (officially, clusters) back to the real-world, one can try to find the features closes to the blobs in one way or another, but this will always introduce bias.
 Another approach is to drop features which are highly correlated and expected to be less important.
 
-Some say that random forests combined with SHAP values can deal with collinearity reasonably well.
-This is because the random forest can find complex relations in the data and because SHAP values are based on mathematically proven ideas.
-Others say that the SHAP will choose one of the correlated features and ignore the others.
+Some say that random forests combined with Shapley values can deal with collinearity reasonably well.
+This is because the random forest can find complex relations in the data and because Shapley values are based on mathematically proven ideas.
+Others say that the Shapley values will pick one of the correlated features and ignore the others.
 In this post, I aim to simulating collinear data and see how good the conclusions of the model are.
 """
 
@@ -62,7 +65,7 @@ df = let
 	X = indexes
 	T = y_noise.(indexes, 0)
 	U = y_noise.(indexes, 0.05)
-	V = y_noise.(indexes, 0.4)
+	V = y_noise.(indexes, 0.7)
 	W = y_noise.(indexes, 1)
 	Y = y_noise.(indexes, 1)
 	
@@ -149,64 +152,79 @@ md"""
 My main worry after seeing this is how we can avoid overfitting random forests on our data.
 Intuitively, it makes sense that the model overfits due to it's high flexibility combined with few samples.
 Of course, not all real-world phenomenons are linear, but it seems that the model is spending too much effort on fitting noise.
+Luckily, approaches such as [(nested) cross-validation](/posts/nested-cv) can estimate how well a model will generalize.
+
+Anyway, I'm digressing.
+Back to the original problem of whether we can infer anything from the non-linear model about feature importance.
 """
 
-# ╔═╡ c6c880a0-b4b2-4918-b183-dcf3e53b8b99
-let
-	m = fit_model(df)
-	X = select(df, Not([:X, :Y]))
-	bst, _, _ = m.fitresult
-	predictions = predict(m)
-	rms(predictions, df.Y)
-end
+# ╔═╡ 91986603-7653-4cd2-b53c-d0dd732016a4
+md"""
+## Shapley values
+
+Shapley values are based on a theory by Shapley ([1953](https://doi.org/10.1515/9781400881970-018)).
+The goal of these values is to estimate how much each feature has contributed to the prediction.
+One way to do this is by changing the input for a feature while keeping all other feature inputs constant and seeing how much the output changes.
+This is called Monte Carlo simulation.
+We can aggregate the results from the Monte Carlo simulation to estimate how much a feature contributes to the outcome.
+"""
 
 # ╔═╡ 40020396-67d4-4e23-bba4-a06158bc1f3e
 function shapley_values(df::DataFrame)
 	X, y, m = fit_model(df)
-	# mc = Shapley.MonteCarlo(2048)
-	# shapley_values = shapley(x -> MLJ.predict(m, x), mc, X)
-	# predict_type = 3 # SHAP.
-	# MLJ.predict(m)
-	# Using Shapley because LightGBM.jl SHAP prediction gives one number.
-	mc = Shapley.MonteCarlo(2048)
-	S = shapley(x -> MLJ.predict(m, x), mc, X)
-	# fieldnames(m |> typeof)
-	# bst, _, _ = m.fitresult
-	# bst
-	# shap_values = lightpredict(bst, Matrix(X); predict_type)
-	# mean(shap_values; dims=1)
-	return S
+	mc = Shapley.MonteCarlo(1024)
+	return shapley(x -> MLJ.predict(m, x), mc, X)
 end;
-
-# ╔═╡ 5c0139ef-aab7-4376-adf9-7b4cbd7693d7
-shapley_values(df)
 
 # ╔═╡ e427b282-fcd1-45db-b382-de854415f419
 # hideall
 function plot_shapley_values(df::DataFrame)
 	V = shapley_values(df)
-	resolution = (900, 700)
-	f = Figure(; resolution)
-
 	features = keys(V)
-	axs = [Axis(f[i, 1]; ylabel=string(feat)) for (i, feat) in enumerate(features)]
 
-	for (ax, feat) in zip(axs, features)
+	height = 200 * length(features)
+	resolution = (900, height)
+	f = Figure(; resolution)
+	density_axs = [Axis(f[i, 1:2]; ylabel=string(feat)) for (i, feat) in enumerate(features)]
+
+	for (ax, feat) in zip(density_axs, features)
 		values = V[feat]
 		density!(ax, values)
-		m = mean(values)
-		vlines!(ax, [m]; color=:black, linestyle=:dash, label="mean")
-		axislegend(ax)
+		# m = mean(abs.(values))
+		# vlines!(ax, [m]; color=:black, linestyle=:dash, label="mean of absolute values")
+		# axislegend(ax)
 	end
-	linkxaxes!(axs...)
-	hidexdecorations!.(axs[1:end-1]; ticks=false)
-	axs[end].xlabel = "Shapley values"
+	linkxaxes!(density_axs...)
+	hidexdecorations!.(density_axs[1:end-1]; ticks=false)
+	density_axs[end].xlabel = "Shapley values"
 
+	bar_axs = [Axis(f[i, 3]) for (i, feat) in enumerate(features)]
+	for (ax, feat) in zip(bar_axs, features)
+		values = V[feat]
+		meanabs = mean(abs.(values))
+		barplot!(ax, [1], [meanabs]; direction=:x)
+	end
+	linkxaxes!(bar_axs...)
+	hideydecorations!.(bar_axs)
+	hidexdecorations!.(bar_axs[1:end-1]; ticks=false)
+	bar_axs[end].xlabel = "Mean of absolute values"
 	f
 end;
 
 # ╔═╡ 93b2d712-43ec-486c-af8f-a368eb8ee997
-select_features(df, F) = select(df, :X, F..., :Y)
+# hideall
+select_features(df, F) = select(df, :X, F..., :Y);
+
+# ╔═╡ e869116a-a926-4600-86ae-388b0cd8f4da
+md"""
+As a simple check, let's first see what happens if we only pass the dataset with X, T, W and Y.
+Because T has no relation to the outcome Y and W has a strong relation to the outcome Y, we expect that T gets a low score and W gets a high score.
+
+In the plot below, I've shown all the Shapley values from the Monte Carlo simulation on the left and aggregated them on the right.
+As expected, the plots on the right clearly show that W has a greater contribution.
+
+As a side note, usually people only show the plot on the right when talking about Shapley values, but I think it is good to have the one on the left too to give the full picture.
+"""
 
 # ╔═╡ 8fbc4a4c-bfb1-4362-b504-576ed46d3403
 # hideall
@@ -214,16 +232,35 @@ plot_shapley_values(select_features(df, [:T, :W]))
 
 # ╔═╡ 5d65273b-d3be-46a7-bf93-a7c7f2e8403e
 md"""
-The Shapley values tell us how important the feature is to the model.
-With the highly correlated variables, it is clear that 
+Now, it's time for the final test:
+do Shapley values give appropriate credit to correlated features?
 """
 
 # ╔═╡ 5ad4917f-fb46-4ae4-99a8-03eec483df14
 # hideall
 plot_shapley_values(df)
 
-# ╔═╡ a4e72308-a49a-4702-9c63-0c92c74793cb
-X = select(df, Not([:X, :Y]))
+# ╔═╡ d0cc887a-77b1-4ae2-bef2-73ee5d613207
+md"""
+Based on this outcome, I would say that Shapley values do a pretty good job in combination with the LightGBM model.
+The values T, U, V, W are ordered by their correlation with the outcome (and each other).
+As expected, features lower in the plot get a higher mean of absolute values, that is, feature importance.
+However, basing scientific conclusions on these outcomes may be deceptive because it's likely that there is a high variance on the reported feature importances.
+The main risk is here is that the model didn't properly fit resulting in incorrect outcomes.
+(This is also a risk for linear models.)
+"""
+
+# ╔═╡ 7691cb81-e768-4671-abe2-aba9051a4817
+md"""
+# Conclusion
+
+Based on this simple example, I would say that LightGBM combined with Shapley values can handle multicollinearity to some extend.
+The outcomes mainly depend on whether the fitted model has used the less correlated features or decided to only use the highly correlated features.
+In this case, LightGBM has overfitted the data, which is probably why less useful features (less predictive power) still are considered more important than useless features.
+So, in this multicollinear case, an overfitted model gives better feature importance estimates, but doubt remain about generalizability.
+
+an model which is too complex is good.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1749,14 +1786,15 @@ version = "3.5.0+0"
 # ╠═af878c49-66eb-4c84-80c6-87625b265fc9
 # ╠═0f9af2be-c924-45aa-a198-6bfa4936453f
 # ╠═2bbd0454-a03d-42c2-a9e9-c2d68219fd14
-# ╠═c6c880a0-b4b2-4918-b183-dcf3e53b8b99
+# ╠═91986603-7653-4cd2-b53c-d0dd732016a4
 # ╠═40020396-67d4-4e23-bba4-a06158bc1f3e
-# ╠═5c0139ef-aab7-4376-adf9-7b4cbd7693d7
 # ╠═e427b282-fcd1-45db-b382-de854415f419
 # ╠═93b2d712-43ec-486c-af8f-a368eb8ee997
+# ╠═e869116a-a926-4600-86ae-388b0cd8f4da
 # ╠═8fbc4a4c-bfb1-4362-b504-576ed46d3403
 # ╠═5d65273b-d3be-46a7-bf93-a7c7f2e8403e
 # ╠═5ad4917f-fb46-4ae4-99a8-03eec483df14
-# ╠═a4e72308-a49a-4702-9c63-0c92c74793cb
+# ╠═d0cc887a-77b1-4ae2-bef2-73ee5d613207
+# ╠═7691cb81-e768-4671-abe2-aba9051a4817
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
