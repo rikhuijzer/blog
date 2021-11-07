@@ -16,7 +16,7 @@
   <meta property="og:title" content="Home" />
   
   <meta property="og:description" content="Blog posts about statistics, research and related topics" />
-  <meta property="og:image" content="https://huijzer.xyz/assets/self.jpg" />
+  <!-- <meta property="og:image" content="{{website_url}}{{requiredfill image}}" /> -->
 
   <meta name="twitter:title" content="Home" />
   <meta name="twitter:card" content="summary" />
@@ -59,7 +59,13 @@ I &#61; 1:30
 xy &#61; mapping&#40;&#91;I&#93; &#61;&gt; :x, &#91;I.*2&#93; &#61;&gt; :y&#41;
 
 draw&#40;xy&#41;</code></pre>
-<img src="/assets/index/code/output/basic-plot.svg" alt="">
+On worker 2: ArgumentError: Package Blog &#91;d958ca09-399e-4f2e-814c-197a134883df&#93; is required but does not seem to be installed:</p>
+<ul>
+<li><p>Run <code>Pkg.instantiate&#40;&#41;</code> to install all recorded dependencies.</p>
+</li>
+</ul>
+<p>Stacktrace:  &#91;1&#93; <em>require    @ ./loading.jl:1012  &#91;2&#93; require    @ ./loading.jl:936  &#91;3&#93; #1    @ /buildworker/worker/package</em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/Distributed.jl:79  &#91;4&#93; #103    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:274  &#91;5&#93; run<em>work</em>thunk    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:63  &#91;6&#93; run<em>work</em>thunk    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:72  &#91;7&#93; #96    @ ./task.jl:411</p>
+<p>...and 3 more exceptions.
 <p>The source code of this website is available on <a href="https://github.com/rikhuijzer/huijzer.xyz">GitHub</a>.</p>
 <h2 id="posts"><a href="#posts" class="header-anchor">Posts</a></h2>
 <ul class="blog-posts"><li><span><i>2021-11-07</i></span><b><a href="/posts/shapley/">Random forest, Shapley values and multicollinearity</a></b><li><i class="description">How well do Shapley values and decision-tree-based models deal with multicollinearity?</i></li><li><span><i>2021-10-27</i></span><b><a href="/posts/nested-cv/">Nested cross-validation</a></b><li><i class="description">Plots for nested cross-validation</i></li><li><span><i>2021-06-16</i></span><b><a href="/posts/binary-regression-priors/">Increasing model accuracy by using foreknowledge</a></b><li><i class="description">Using priors for binary logistic regression</i></li><li><span><i>2021-01-21</i></span><b><a href="/posts/random-forest/">Random forest classification in Julia</a></b><li><i class="description">Fitting a random forest classifier and reporting accuracy metrics.</i></li><li><span><i>2020-12-16</i></span><b><a href="/posts/github-gitlab-commands-cheatsheet/">GitHub and GitLab commands cheatsheet</a></b><li><i class="description">A cheatsheet for commands like 'Fix #2334'.</i></li><li><span><i>2020-11-29</i></span><b><a href="/posts/design/">Design cheatsheet</a></b><li><i class="description">A summary of design tips and tricks.</i></li><li><span><i>2020-11-14</i></span><b><a href="/posts/frequentist-bayesian-coin-flipping/">Frequentist and Bayesian coin flipping</a></b><li><i class="description">Comparing both statistical paradigms on a coin flipping example.</i></li><li><span><i>2020-11-07</i></span><b><a href="/posts/nixos-laptop/">Installing NixOS with encryption on a Lenovo laptop</a></b><li><i class="description">Specifically, installing NixOS on the Lenovo Yoga 7.</i></li><li><span><i>2020-11-04</i></span><b><a href="/posts/logit-logistic/">The logit and logistic functions</a></b><li><i class="description">Providing the definitions, some plots and useful values to remember.</i></li><li><span><i>2020-11-02</i></span><b><a href="/posts/data-fusion-example/">A data-fusion example</a></b><li><i class="description">An example in causal data-fusion.</i></li><li><span><i>2020-09-26</i></span><b><a href="/posts/maximum-entropy/">The principle of maximum entropy</a></b><li><i class="description">Obtaining the least informative distribution.</i></li><li><span><i>2020-08-12</i></span><b><a href="/posts/writing-effectively/">Writing effectively</a></b><li><i class="description">Why writing should be valuable to the reader.</i></li><li><span><i>2020-07-29</i></span><b><a href="/posts/writing-checklist/">Writing checklist</a></b><li><i class="description">A list to quickly check for common mistakes in writing.</i></li><li><span><i>2020-06-28</i></span><b><a href="/posts/combinations-permuations/">Combinations and permutations</a></b><li><i class="description">Deriving the equations for combinations and permutations.</i></li><li><span><i>2020-06-27</i></span><b><a href="/posts/comparing-means-and-sds/">Comparing means and SDs</a></b><li><i class="description">Transforming means and SDs from numbers in different ranges to the same range.</i></li><li><span><i>2020-05-11</i></span><b><a href="/posts/predicates/">Predicates and reproducibility</a></b><li><i class="description">Thinking about the layers above statistics.</i></li><li><span><i>2020-03-05</i></span><b><a href="/posts/regression/">Simple and binary regression</a></b><li><i class="description">Applying a simple and binary (logistic) regression to simulated data.</i></li><li><span><i>2020-02-02</i></span><b><a href="/posts/sales-deck/">The greatest sales deck someone else has ever seen</a></b><li><i class="description">It's Zuora's deck</i></li><li><span><i>2020-01-24</i></span><b><a href="/posts/correlations/">Correlations</a></b><li><i class="description">The equations and some examples for the Pearson correlation coefficient.</i></li><li><span><i>2020-01-16</i></span><b><a href="/posts/blog-benefits/">Benefits of writing blog posts</a></b><li><i class="description">Convincing myself of why writing is a good habit to have.</i></li><li><span><i>2019-12-29</i></span><b><a href="/posts/power/">Statistical power from scratch</a></b><li><i class="description">Explaining statistical power by first finding the binomial and normal distributions.</i></li><li><span><i>2019-12-03</i></span><b><a href="/posts/julia-niceties/">Niceties in the Julia programming language</a></b><li><i class="description">A quick walk through some Julia syntax and interesting features.</i></li><li><span><i>2019-12-01</i></span><b><a href="/posts/nixos/">NixOS configuration highlights</a></b><li><i class="description">Particularily neat parts of using NixOS.</i></li><li><span><i>2019-10-29</i></span><b><a href="/posts/entr/">Entr</a></b><li><i class="description">A tool for executing commands automatically upon file changes.</i></li><li><span><i>2015-08-25</i></span><b><a href="/posts/tomato/">QoS setup using Tomato in combination with an Experiabox</a></b><li><i class="description">My first blog post.</i></li></ul>
@@ -101,14 +107,19 @@ TikzPictures 3.4.1
     <script src="/libs/katex/katex.min.js"></script>
 <script src="/libs/katex/auto-render.min.js"></script>
 <script>
-  renderMathInElement(document.body);
-  /* Apparently, Pluto wraps LaTeX inside a span class 'tex'. */
-  var equations = document.getElementsByClassName('tex');
-  for (var i = 0; i < equations.length; i++) {
-    var text = equations[i].textContent;
-    text = text.split('$').join('');
-    katex.render(text, equations[i]);
-  }
+  const options = {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false},
+      {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+      {left: "\\begin{align}", right: "\\end{align}", display: true},
+      {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+      {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+      {left: "\\(", right: "\\)", display: false},
+      {left: "\\[", right: "\\]", display: true}
+    ]
+  };
+  renderMathInElement(document.body, options);
 </script>
 
     

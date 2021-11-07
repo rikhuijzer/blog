@@ -15,7 +15,7 @@
   <meta property="og:title" content="The greatest sales deck someone else has ever seen" />
   <meta property="og:type" content="article" /> 
   <meta property="og:description" content="It's Zuora's deck" />
-  <meta property="og:image" content="https://huijzer.xyz/assets/self.jpg" />
+  <!-- <meta property="og:image" content="{{website_url}}{{requiredfill image}}" /> -->
 
   <meta name="twitter:title" content="The greatest sales deck someone else has ever seen" />
   <meta name="twitter:card" content="summary" />
@@ -106,14 +106,19 @@
     <script src="/libs/katex/katex.min.js"></script>
 <script src="/libs/katex/auto-render.min.js"></script>
 <script>
-  renderMathInElement(document.body);
-  /* Apparently, Pluto wraps LaTeX inside a span class 'tex'. */
-  var equations = document.getElementsByClassName('tex');
-  for (var i = 0; i < equations.length; i++) {
-    var text = equations[i].textContent;
-    text = text.split('$').join('');
-    katex.render(text, equations[i]);
-  }
+  const options = {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false},
+      {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+      {left: "\\begin{align}", right: "\\end{align}", display: true},
+      {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+      {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+      {left: "\\(", right: "\\)", display: false},
+      {left: "\\[", right: "\\]", display: true}
+    ]
+  };
+  renderMathInElement(document.body, options);
 </script>
 
     

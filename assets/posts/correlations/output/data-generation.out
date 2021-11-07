@@ -17,3 +17,6 @@ Stacktrace:
    @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:72
  [7] #96
    @ ./task.jl:411
+
+...and 1 more exception.
+
