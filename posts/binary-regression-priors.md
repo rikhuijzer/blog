@@ -4,7 +4,7 @@ published = "2021-06-16"
 tags = ["statistics", "priors"]
 rss = "Using priors for binary logistic regression"
 image = "/assets/self.jpg"
-reeval = false
+reeval = true
 +++
 
-\pluto{binary-regression-priors}
+\readhtml{binary-regression-priors}

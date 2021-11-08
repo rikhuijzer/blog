@@ -10,3 +10,5 @@ package-lock.json
 Manifest.toml
 _assets/og-image/
 **/*.log
+**/*backup*.jl
+posts/notebooks/*.html
