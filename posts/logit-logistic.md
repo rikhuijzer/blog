@@ -7,4 +7,4 @@ image = "/assets/self.jpg"
 reeval = false
 +++
 
-\pluto{logit-logistic}
+\read_pluto_output{logit-logistic}

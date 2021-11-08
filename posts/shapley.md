@@ -7,4 +7,4 @@ image = "/assets/self.jpg"
 reeval = false
 +++
 
-\pluto{shapley}
+\read_pluto_output{shapley}

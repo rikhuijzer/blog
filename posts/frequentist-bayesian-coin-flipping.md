@@ -6,4 +6,4 @@ image = "/assets/self.jpg"
 reeval = false
 +++
 
-\pluto{frequentist-bayesian-coin-flipping}
+\read_pluto_output{frequentist-bayesian-coin-flipping}

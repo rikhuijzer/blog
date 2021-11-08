@@ -7,4 +7,4 @@ image = "/assets/self.jpg"
 reeval = false
 +++
 
-\pluto{binary-regression-priors}
+\read_pluto_output{binary-regression-priors}

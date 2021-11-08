@@ -24,7 +24,7 @@ The random variable $V$ is just noise meant to fool the classifier.
 This data isn't meant to show that random forests are good classifiers.
 One way to do that would be to have more variables than observations \citep{pBiau2016}.
 
-\pluto{random-forest}
+\read_pluto_output{random-forest}
 
 ## References
 

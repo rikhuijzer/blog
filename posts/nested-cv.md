@@ -6,4 +6,4 @@ image = "/assets/self.jpg"
 reeval = false
 +++
 
-\pluto{nested-cv}
+\read_pluto_output{nested-cv}
