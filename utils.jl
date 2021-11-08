@@ -123,3 +123,30 @@ function lx_pluto(com, _)
         \\textoutput{pluto}
         """
 end
+
+"""
+    lx_read_pluto_output(com, _)
+
+Embed a Pluto notebook via:
+https://github.com/rikhuijzer/PlutoStaticHTML.jl
+"""
+function lx_read_pluto_output(com, _)
+    file = string(Franklin.content(com.braces[1]))::String
+    notebook_path = joinpath("posts", "notebooks", "$file.jl")
+    dir = joinpath("posts", "notebooks")
+    filename = "$(file).jl"
+
+    return """
+        ```julia:pluto
+        # hideall
+
+        using PlutoStaticHTML: notebook2html
+
+        filename = "$filename"
+        html = read(filename, String)
+        println("~~~\n\$html\n~~~\n")
+        ```
+        \\textoutput{pluto}
+        """
+end
+
