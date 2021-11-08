@@ -51,7 +51,9 @@ jobs:
     - uses: julia-actions/julia-buildpkg@latest
 
     - name: Build notebooks
-      run: julia --project -e 'using PlutoStaticHTML; parallel_build!(dir)'
+      run: julia --project -e 'using PlutoStaticHTML;
+        dir = joinpath("posts", "notebooks");
+        parallel_build!(dir)'
       env:
         JULIA_NUM_THREADS: '2'
 
