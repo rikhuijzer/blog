@@ -25,7 +25,7 @@ end
 Plug in the list of blog posts contained in the `/posts` folder.
 Souce: <https://github.com/abhishalya/abhishalya.github.io>.
 """
-function hfun_blogposts()
+@delay function hfun_blogposts()
     today = Dates.today()
     curyear = year(today)
     curmonth = month(today)
@@ -91,16 +91,14 @@ function hfun_requiredfill(params::Vector{String})::String
 end
 
 """
-    lx_read_pluto_output(com, _)
+    lx_readhtml(com, _)
 
 Embed a Pluto notebook via:
 https://github.com/rikhuijzer/PlutoStaticHTML.jl
 """
-function lx_read_pluto_output(com, _)
+function lx_readhtml(com, _)
     file = string(Franklin.content(com.braces[1]))::String
-    notebook_path = joinpath("posts", "notebooks", "$file.jl")
-    dir = joinpath("posts", "notebooks")
-    filename = "$(file).jl"
+    path = joinpath("posts", "notebooks", "$file.html")
 
     return """
         ```julia:pluto
@@ -108,8 +106,8 @@ function lx_read_pluto_output(com, _)
 
         using PlutoStaticHTML: notebook2html
 
-        filename = "$filename"
-        html = read(filename, String)
+        path = "$path"
+        html = read(path, String)
         println("~~~\n\$html\n~~~\n")
         ```
         \\textoutput{pluto}
