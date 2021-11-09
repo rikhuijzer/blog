@@ -88,6 +88,12 @@ md"""
 Using the HMC sampler because it should be the best one for colinear data (<https://statmodeling.stat.columbia.edu/2019/07/07/collinearity-in-bayesian-models/>).
 """
 
+# ╔═╡ 03b00ebe-f7b4-46e9-8e6d-f22e5cee0e6f
+n_chains = 3
+
+# ╔═╡ 83ee3199-541f-499e-ad45-8bb9aabc7c4d
+n_samples = 30
+
 # ╔═╡ 55613d64-624f-482d-8991-f58db3ff5834
 chns = let
 	data = select(df, Not([:X, :Y]))
@@ -95,8 +101,7 @@ chns = let
 	y = df.Y
 	model = linear_regression(X, y)
 	sampler = HMC(0.05, 10)
-	n_samples = 30
-	chns = sample(model, sampler, n_samples)
+	chns = sample(model, sampler, MCMCThreads(), n_samples, n_chains)
 	mapping = ["coef[$i]" => "coef[$name]" for (i, name) in enumerate(names(data))]
 	chns = replacenames(chns, Dict(mapping))
 end
@@ -106,8 +111,33 @@ end
 let
 	df = DataFrame(chns)
 	coefs = select(df, :iteration, :chain, r"coef*")
+	cols = filter(startswith("coef"), names(coefs))
+	
+	resolution = (900, 1000)
+	f = Figure(; resolution)
+	gl = f[1:length(cols), 1] = GridLayout()
+	gl.xlabel = "foo"
 
+	values_axs = [Axis(f[i, 1]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	for (ax, col) in zip(values_axs, cols)
+		for i in 1:n_chains
+			values = filter(:chain => ==(i), df)[:, col]
+			lines!(ax, 1:n_samples, values; label=string(i))
+		end
+		# axislegend(ax; position=:lt)
+	end
 	# names(chns)
+
+	density_axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	for (ax, col) in zip(density_axs, cols)
+		for i in 1:n_chains
+			values = filter(:chain => ==(i), df)[:, col]
+			lines!(ax, 1:n_samples, values; label=string(i))
+		end
+	end
+	hideydecorations!.(density_axs)
+	
+	current_figure()
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1560,6 +1590,8 @@ version = "3.5.0+0"
 # ╠═5d71ac72-6700-470c-a8ba-a7836a1b62bd
 # ╠═dd509020-6205-4678-8ef9-59fc9381b590
 # ╠═9e8c3260-1227-4d0f-be4c-d933a4b28a72
+# ╠═03b00ebe-f7b4-46e9-8e6d-f22e5cee0e6f
+# ╠═83ee3199-541f-499e-ad45-8bb9aabc7c4d
 # ╠═55613d64-624f-482d-8991-f58db3ff5834
 # ╠═4306829f-83fe-4c64-a452-d664e891a8c9
 # ╟─00000000-0000-0000-0000-000000000001
