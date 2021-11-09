@@ -1104,7 +1104,7 @@ version = "0.17.1"
 
 [[PlutoStaticHTML]]
 deps = ["Base64", "Pluto"]
-git-tree-sha1 = "0126bd3cfb6d0891b8ba0a7f2a24f6ed7240fee2"
+git-tree-sha1 = "df52ce679fd87880665a53db25bef6030eb45594"
 repo-rev = "main"
 repo-url = "https://github.com/rikhuijzer/PlutoStaticHTML.jl#main"
 uuid = "359b1769-a58e-495b-9770-312e911026ad"
