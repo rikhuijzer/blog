@@ -213,7 +213,7 @@ end;</code></pre>
 
 <div class="markdown"><p>As a simple check, let&#39;s first see what happens if we only pass the dataset with X, T, W and Y. Because T has no relation to the outcome Y and W has a strong relation to the outcome Y, we expect that T gets a low score and W gets a high score.</p>
 <p>In the plot below, I&#39;ve shown all the Shapley values from the Monte Carlo simulation on the left and aggregated them on the right. As expected, the plots on the right clearly show that W has a greater contribution.</p>
-<p>As a side note, usually people only show the plot on the right when talking about Shapley values, but I think it is good to have the one on the left too to give the full picture.</p>
+<p>As a sidenote, usually people only show the plot on the right &#40;mean of absolute values&#41; when talking about Shapley values, but I think it is good to have the one on the left &#40;Shapley values&#41; too to give the full picture.</p>
 </div>
 
 

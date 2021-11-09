@@ -224,7 +224,7 @@ Because T has no relation to the outcome Y and W has a strong relation to the ou
 In the plot below, I've shown all the Shapley values from the Monte Carlo simulation on the left and aggregated them on the right.
 As expected, the plots on the right clearly show that W has a greater contribution.
 
-As a side note, usually people only show the plot on the right when talking about Shapley values, but I think it is good to have the one on the left too to give the full picture.
+As a sidenote, usually people only show the plot on the right (mean of absolute values) when talking about Shapley values, but I think it is good to have the one on the left (Shapley values) too to give the full picture.
 """
 
 # ╔═╡ 8fbc4a4c-bfb1-4362-b504-576ed46d3403
