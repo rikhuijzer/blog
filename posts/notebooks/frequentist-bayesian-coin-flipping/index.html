@@ -1,0 +1,115 @@
+
+<div class="markdown"><p>To me, it is still unclear what exactly is the difference between Frequentist and Bayesian statistics. Most explanations involve terms such as &quot;likelihood&quot;, &quot;uncertainty&quot; and &quot;prior probabilities&quot;. Here, I&#39;m going to show the difference between both statistical paradigms by using a coin flipping example. In the examples, the effect of showing more data to both paradigms will be visualised.</p>
+<h2>Generating data</h2>
+<p>Lets start by generating some data from a fair coin flip, that is, the probability of heads is 0.5.</p>
+</div>
+
+<pre><code class="language-julia">begin
+	import CairoMakie
+	
+	using AlgebraOfGraphics: Lines, Scatter, data, draw, visual, mapping
+	using HypothesisTests: OneSampleTTest, confint
+	using Turing
+	using Random: seed!
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">n = 80;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">seed!(102);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">p_true = 0.5;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">is_heads = rand(Bernoulli(p_true), n);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>To give some intuition about the sample, the first six elements of <code>is_heads</code> are:</p>
+</div>
+
+<pre><code class="language-julia">is_heads[1:6]</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Calculate probability estimates</h2>
+<p>The Frequentist estimate for a one sample t-test after seeing <span class="tex">$n$</span> samples can be calculated with</p>
+</div>
+
+<pre><code class="language-julia">function frequentist_estimate(n)
+  	t_result = OneSampleTTest(is_heads[1:n])
+	middle = t_result.xbar
+  	lower, upper = confint(t_result)
+  	return (; lower, middle, upper)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>For the Bayesian estimate, we can use the closed-form solution &#40;<a href="https://turing.ml/dev/tutorials/00-introduction/">https://turing.ml/dev/tutorials/00-introduction/</a>&#41;. A closed-form solution is not available for many real-world problems, but quite useful for this example.</p>
+</div>
+
+<pre><code class="language-julia">closed_form_prior = Beta(1, 1);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">function update_belief(k)
+  	heads = sum(is_heads[1:k-1])
+  	tails = k - heads
+  	updated_belief = Beta(closed_form_prior.α + heads, closed_form_prior.β + tails)
+	return updated_belief
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">beliefs = [closed_form_prior; update_belief.(1:n)];</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">function bayesian_estimate(n)
+	distribution = beliefs[n]
+	q(x) = quantile(distribution, x)
+	lower = q(0.025)
+	middle = mean(distribution)
+	upper = q(0.975)
+	return (; lower, middle, upper)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Now we can write a function to plot the estimates:</p>
+</div>
+
+<pre><code class="language-julia">function plot_estimates(estimate_function; title="")
+	draws = 2:4:80
+	estimates = estimate_function.(draws)
+	middles = [t.middle for t in estimates]
+	lowers = [t.lower for t in estimates]
+	uppers = [t.upper for t in estimates]
+	df = (; draws, estimates, P=middles)
+	layers = data(df) * visual(Scatter)
+	df_middle = (; P=fill(0.5, length(draws) + 2), draws=[-1; draws; 83])
+	layers += data(df_middle) * visual(Lines) * visual(linestyle=:dash)
+	for (n, lower, upper) in zip(draws, lowers, uppers)
+		df_bounds = (; P=[lower, upper], draws=[n, n])
+		layers += data(df_bounds) * visual(Lines)
+	end
+	
+	axis = (; yticks=0:20:80, limits=((-0.2, 1.2), nothing), title)
+	map = mapping(:P =&gt; "Probability of heads", :draws =&gt; "Observed number of draws")
+	draw(layers * map; axis)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>And plot the Frequentist and Bayesian estimates:</p>
+</div>
+
+<pre><code class="language-julia">plot_estimates(frequentist_estimate; title="Frequentist estimates")</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">plot_estimates(bayesian_estimate; title="Bayesian estimates")</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Conclusion</h2>
+<p>Based on these plots, we can conclude two things. Firstly, the Bayesian approach provides better estimates for small sample sizes. The Bayesian approach successfully uses the fact that a probability should be between 0 and 1, which was given to the model via the <code>Beta&#40;1, 1&#41;</code> prior. For increasingly larger sample sizes, the difference between both statistical paradigms vanish in this situation. Secondly, collecting more and more samples until the result is significant is dangerous. This approach is called <em>optional stopping</em>. Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false. Cumming &#40;<a href="https://www.routledge.com/Understanding-The-New-Statistics-Effect-Sizes-Confidence-Intervals-and/Cumming/p/book/9780415879682">2011</a>&#41; calls this the &quot;dance of the <span class="tex">$p$</span>-values&quot;.</p>
+</div>

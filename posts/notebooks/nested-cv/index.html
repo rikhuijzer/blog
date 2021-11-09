@@ -1,0 +1,166 @@
+
+<div class="markdown"><p>Nested cross-validation is said to be an improvement over cross-validation. Unfortunately, I found most explanations quite confusing, so decided to simulate some data and see what happens.</p>
+<p>In this post, I simulate two models: one linear model which perfectly fits the data and one which overfits the data. Next, cross-validation and nested cross-validation are plotted. To keep the post short, I&#39;ve hidden the code to produce the plots.</p>
+</div>
+
+<pre><code class="language-julia">begin
+	import MLJLinearModels
+	import MLJDecisionTreeInterface
+	
+	using DataFrames: DataFrame, select, Not
+	using Distributions: Normal
+	using CairoMakie: Axis, Figure, lines, lines!, scatter, scatter!, current_figure, axislegend, help, linkxaxes!, linkyaxes!, xlabel!, density, density!, hidedecorations!, violin!, boxplot!, hidexdecorations!, hideydecorations!
+	using MLJ: CV, evaluate, models, matching, @load, machine, fit!, predict, predict_mode, rms
+	using Random: seed!
+	using Statistics: mean, std, var, median
+	using MLJTuning: TunedModel, Explicit
+	using MLJModelInterface: Probabilistic, Deterministic
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">y_true(x) = 2x + 10;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">y_real(x) = y_true(x) + rand(Normal(0, 40));</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">indexes = 1.0:100;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">df = let
+	seed!(0)
+	DataFrame(x = indexes, y = y_real.(indexes))
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">LinearModel = @load LinearRegressor pkg=MLJLinearModels verbosity=0;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">TreeModel = @load DecisionTreeRegressor pkg=DecisionTree verbosity=0;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">X, y = (select(df, Not(:y)), df.y);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">function linear_model()
+	model = LinearModel(fit_intercept=true)
+	mach = machine(model, X, y)
+	fit!(mach)
+	return mach
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">function tree_model()
+	model = TreeModel()
+	mach = machine(model, X, y)
+	fit!(mach)
+	return mach
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Okay, so which model performs better. I would guess the <code>LinearRegressor</code>, but let&#39;s see what the root-mean-square error &#40;RMS&#41; is when we fit the models on the training data:</p>
+</div>
+
+<pre><code class="language-julia">rms(predict(linear_model()), df.y)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">rms(predict(tree_model()), df.y)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Clearly, the tree model is overfitting the data. In other words, the model is not expected to perform well on new data.</p>
+<p>Now the question is whether we can determine that the linear model is the right one via cross-validation. Let&#39;s first plot the error for each of our <span class="tex">$k$</span> folds.</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>So, basically cross-validation isn&#39;t gonna be perfect. If the data or standard deviation would have been different, then another model could have obtained a lower error according to the cross-validation.</p>
+<p>Let&#39;s tryout nested cross-validation.</p>
+<p>According to Zhang &#40;<a href="https://doi.org/10.1016/j.jeconom.2015.02.006">2015</a>&#41;, repeated 50- and 20- fold CV is best for <span class="tex">$n_t$</span> sample points and the best cross-validation parameters for model selection are not necessarily the same the best cross-validation parameters for performance estimation &#40;p. 104 and p. 105&#41;.</p>
+</div>
+
+<pre><code class="language-julia">function evaluate_inner_folds(nfolds::Int, ntrials::Int)
+	inner_resampling = CV(; nfolds=nfolds)
+	multi_model = TunedModel(; models=[LinearModel(), TreeModel()], resampling=inner_resampling);
+	outer_resampling = CV(; nfolds=ntrials)
+	e = evaluate(multi_model, X, y; measure=rms, resampling=outer_resampling)
+	return e
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>The problem of cross-validation is that it is still possible to overfit during model selection. Therefore, the only reliable way to estimate model performance is to use nested cross-validation &#40;Krstajic et al., <a href="https://doi.org/10.1186/1758-2946-6-10">2014</a>&#41;. Also, repeated k-fold nested cross-validation is the most promising for prediction error estimation.</p>
+<p>Let&#39;s see how the plots for nested cross-validation look:</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">e = evaluate_inner_folds(20, 20);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>That looks interesting, but what happens with the median, mean and variance if we change the number of folds and trials?</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>I don&#39;t know what should be the take-away here. What kind of makes sense is that the variance increases for many trails. The reason is most likely that the samples become too small and fitting a model is either a complete hit or miss.</p>
+<p>Why the median and mean go down is unclear to me. Maybe, fitting is more likely to be a hit than a miss. Therefore, if the number of trails is increased, then more fits are a hit which result in a lower error on average.</p>
+</div>

@@ -3,19 +3,9 @@
 
 using PlutoStaticHTML: notebook2html
 
-path = "posts/notebooks/logit-logistic.jl"
-log_path = "posts/notebooks/logit-logistic.log"
-@assert isfile(path)
-@info "→ evaluating Pluto notebook at ($path)"
-html = open(log_path, "w") do io
-    redirect_stdout(io) do
-        html = notebook2html(path)
-        return html
-    end
-end
-println("
-~~~
+path = "posts/notebooks/logit-logistic.html"
+html = read(path, String)
+println("~~~
 $html
 ~~~
 ")
-println("_This blog post was built via a Pluto.jl [notebook](posts/notebooks/logit-logistic.jl)_.")

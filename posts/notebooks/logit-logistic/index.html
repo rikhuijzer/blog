@@ -1,0 +1,81 @@
+
+<div class="markdown"><p>Linear regression works on real numbers <span class="tex">$\mathbb&#123;R&#125;$</span>, that is, the input and output are in <span class="tex">$\mathbb&#123;R&#125;$</span>. For probabilities, this is problematic because the linear regression will happily give a probability of <span class="tex">$-934$</span>, where we know that probabilities should always lie between <span class="tex">$0$</span> and <span class="tex">$1$</span>. This is only by definition, but it is an useful definition in practice. Informally, the <em>logistic</em> function converts values from real numbers to probabilities and the <em>logit</em> function does the reverse.</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Logistic</h2>
+<p>The logistic function converts values from <span class="tex">$&#40;-\infty, \infty&#41;$</span> to <span class="tex">$&#40;0, 1&#41;$</span>:</p>
+<p class="tex">$$\text&#123;logistic&#125;&#40;x&#41; &#61; \frac&#123;1&#125;&#123;1 &#43; e^&#123;-x&#125;&#125;.$$</p>
+<p>We can easily define this function ourselves:</p>
+</div>
+
+<pre><code class="language-julia">mylogistic(x) = 1 / (1 + exp(-x));</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>But, also load it from <code>StatsFuns.jl</code>:</p>
+</div>
+
+<pre><code class="language-julia">using StatsFuns: logistic</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">mylogistic(1) == logistic(1)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Graphically, this looks as follows:</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>If you care enough, you could decide to remember the plot by heart. Some people advise to remember the following numbers by heart.</p>
+<p class="tex">$$\begin&#123;aligned&#125;
+\text&#123;logistic&#125;&#40;-3&#41; &amp;\approx 0.05, \\
+\text&#123;logistic&#125;&#40;-1&#41; &amp;\approx \tfrac&#123;1&#125;&#123;4&#125;, \\
+\text&#123;logistic&#125;&#40;1&#41; &amp;\approx \tfrac&#123;3&#125;&#123;4&#125;, \: \text&#123;and&#125; \\
+\text&#123;logistic&#125;&#40;3&#41; &amp;\approx 0.95.
+\end&#123;aligned&#125;$$</p>
+<p>since</p>
+</div>
+
+<pre><code class="language-julia">r2(x) = round(x; digits=2);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">logistic(-3) |&gt; r2</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">logistic(-1) |&gt; r2</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">logistic(1) |&gt; r2</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">logistic(3) |&gt; r2</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Logit</h2>
+<p>The inverse of the logistic function is the <em>logit</em> function:</p>
+<p class="tex">$$\text&#123;logit&#125;&#40;x&#41; &#61; \log\frac&#123;x&#125;&#123;1 - x&#125;$$</p>
+</div>
+
+<pre><code class="language-julia">mylogit(x) = log(x / (1 - x));</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">using StatsFuns: logit</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">logit(1) == mylogit(1)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>This function goes from <span class="tex">$&#40;0, 1&#41;$</span> to <span class="tex">$&#40;-\infty, \infty&#41;$</span>:</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>

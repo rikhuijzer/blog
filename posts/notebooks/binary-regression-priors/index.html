@@ -1,0 +1,128 @@
+
+<div class="markdown"><p>Typically, when making predictions via a linear model, we fit the model on our data and make predictions from the fitted model. However, this doesn&#39;t take much foreknowledge into account. For example, when predicting a person&#39;s length given only the weight and gender, we already have an intuition about the effect size and direction. Bayesian analysis should be able to incorporate this prior information.</p>
+<p>In this blog post, I aim to figure out whether foreknowledge can, in theory, increase model accuracy. To do this, I generate data and fit a linear model and a Bayesian binary regression. Next, I compare the accuracy of the model parameters from the linear and Bayesian model.</p>
+</div>
+
+<pre><code class="language-julia">begin
+	using AlgebraOfGraphics
+	using CairoMakie
+	using CategoricalArrays
+	using DataFrames
+	using GLM
+	using MLDataUtils: rescale!
+	using Random: seed!
+	using Statistics
+	using StatsFuns
+	using Turing
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>We define the model as <span class="tex">$g_i &#61; a_e * a_i &#43; r_e * r_i &#43; \epsilon_i &#61; 1.1 * a_i &#43; 1.05 * r_i &#43; \epsilon_i$</span> where <span class="tex">$a_e$</span> is the coefficient for the age, <span class="tex">$r_e$</span> is a coefficient for the nationality and <span class="tex">$\epsilon_i$</span> is some random noise for individual <span class="tex">$i$</span>.</p>
+<p>We generate data for <span class="tex">$n$</span> individuals via:</p>
+</div>
+
+<pre><code class="language-julia">function generate_data(i::Int)
+  seed!(i)
+
+  n = 120
+  I = 1:n
+  P = [i % 2 == 0 for i in I]
+  r_2(x) = round(x; digits=2)
+
+  A = r_2.([p ? rand(Normal(aₑ * 18, 1)) : rand(Normal(18, 1)) for p in P])
+  R = r_2.([p ? rand(Normal(rₑ * 6, 3)) : rand(Normal(6, 3)) for p in P])
+  E = r_2.(rand(Normal(0, 1), n))
+  G = aₑ .* A + rₑ .* R .+ E
+  G = r_2.(G)
+
+  df = DataFrame(age=A, recent=R, error=E, grade=G, pass=P)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">df = generate_data(1)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Linear regression</h2>
+<p>First, we fit a linear model and verify that the coefficients are estimated reasonably well. Here, the only prior information that we give the model is the structure of the data, that is, a formula.</p>
+</div>
+
+<pre><code class="language-julia">linear_model = lm(@formula(grade ~ age + recent), df)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">r5(x) = round(x; digits=5)</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">coefa = coef(linear_model)[2] |&gt; r5</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">coefr = coef(linear_model)[3] |&gt; r5</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Bayesian regression</h2>
+<p>For the Bayesian regression we fit a model via Turing.jl. Now, we give the model information about the structure of the data as well as priors for the size of the coefficients. For demonstration purposes, I&#39;ve set the priors to the correct values. This is reasonable because I was wondering whether finding a good prior could have a positive effect on the model accuracy.</p>
+</div>
+
+<pre><code class="language-julia">function rescale_data(df)
+    out = DataFrame(df)
+    rescale!(out, [:age, :recent, :grade])
+    out
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">rescaled = let
+	rescaled = rescale_data(df)
+	rescaled[!, :pass_num] = [p ? 1.0 : 0.0 for p in rescaled.pass]
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">@model function bayesian_model(ages, recents, grades, n)
+    intercept ~ Normal(0, 5)
+    βₐ ~ Normal(aₑ, 1)
+    βᵣ ~ Normal(rₑ, 3)
+    σ ~ truncated(Cauchy(0, 2), 0, Inf)
+
+    μ = intercept .+ βₐ * ages .+ βᵣ * recents
+    grades ~ MvNormal(μ, σ)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">chns = let
+	n = nrow(df)
+	bm = bayesian_model(df.age, df.recent, df.grade, n)
+	chns = Turing.sample(bm, NUTS(), MCMCThreads(), 10_000, 3)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Let&#39;s plot the density for the coefficient estimates <span class="tex">$\beta_a$</span> and <span class="tex">$\beta_r$</span>:</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>and compare the outputs from both models:</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Conclusion</h2>
+<p>After giving the true coefficients to the Bayesian model in the form of priors, it does score better than the linear model. However, the differences aren&#39;t very big. This could be due to the particular random noise in this sample <code>E</code> or due to the relatively big sample size. The more samples, the more likely it is that the data will overrule the prior. In any way, there are real-world situations where gathering extra data is more expensive than gathering priors via reading papers. In those cases, the increased accuracy introduced by using priors could have serious benefits.</p>
+</div>

@@ -1,0 +1,134 @@
+
+<div class="markdown"><p>Linear statistical models are great for many use-cases since they are easy to use and easy to interpret. Specifically, linear models can use <em>features</em> &#40;also known as <em>independent variables</em>, <em>predictors</em> or <em>covariates</em>&#41; to predict an <em>outcome</em> &#40;also known as <em>dependent variables</em>&#41;.</p>
+<p>In a linear model, a higher coefficient for a feature, the more a feature played a role in making a prediction. However, when variables in a regression model are correlated, these conclusions don&#39;t hold anymore.</p>
+<p>One way to solve this is to use clustering techniques such as principal component analysis &#40;PCA&#41; &#40;Dormann et al., <a href="https://doi.org/10.1111/j.1600-0587.2012.07348.x">2012</a>&#41;. With PCA, latent clusters are automatically determined. Unfortunately, these latent clusters now became, what I would like to call, magic blobs. Proponents of these techniques could say: &quot;But we know that there <strong>is</strong> an underlying variable which <strong>causes</strong> our effect, why can&#39;t this variable be the same as the cluster that we found?&quot; Well, because these blobs are found in the data and not in the real-world.</p>
+<p>To link these blobs &#40;officially, clusters&#41; back to the real-world, one can try to find the features closes to the blobs in one way or another, but this will always introduce bias. Another approach is to drop features which are highly correlated and expected to be less important.</p>
+<p>Some say that random forests combined with Shapley values can deal with collinearity reasonably well. This is because the random forest can find complex relations in the data and because Shapley values are based on mathematically proven ideas. Others say that the Shapley values will pick one of the correlated features and ignore the others. In this post, I aim to simulating collinear data and see how good the conclusions of the model are.</p>
+</div>
+
+
+<div class="markdown"><h2>Simulating data</h2>
+</div>
+
+<pre><code class="language-julia">begin
+	using CairoMakie
+	using DataFrames: Not, DataFrame, select
+	using Distributions: Normal
+	using LightGBM.MLJInterface: LGBMRegressor
+	using MLJ: fit!, machine, predict
+	using Random: seed!
+	using Shapley: MonteCarlo, shapley
+	using StableRNGs: StableRNG
+	using Statistics: cor, mean
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">y_true(x) = 2x + 10;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">y_noise(x, coefficient) = coefficient * y_true(x) + rand(Normal(0, 40));</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">indexes = 1.0:150.0;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">r2(x) = round(x; digits=2);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">df = let
+	seed!(0)
+	X = indexes
+	T = y_noise.(indexes, 0)
+	U = y_noise.(indexes, 0.05)
+	V = y_noise.(indexes, 0.7)
+	W = y_noise.(indexes, 1)
+	Y = y_noise.(indexes, 1)
+	
+	DataFrame(; X, T, U, V, W, Y)
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h2>Fitting a model</h2>
+<p>For the LGBM regressor, I&#39;ve set some hyperparameters to lower values because the default parameters are optimized for large datasets.</p>
+</div>
+
+<pre><code class="language-julia">function regressor()
+	kwargs = [
+		:num_leaves =&gt; 9,
+		:max_depth =&gt; 3,
+		:min_data_per_group =&gt; 2,
+		:learning_rate =&gt; 0.5
+	]
+	return LGBMRegressor( ; kwargs...)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">function fit_model(df::DataFrame)
+	X = select(df, Not([:X, :Y]))
+	y = df.Y
+	m = fit!(machine(regressor(), X, y))
+	return X, y, m
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>To get an idea of what the model is doing, we can plot the predictions on top of the data.</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>My main worry after seeing this is how we can avoid overfitting random forests on our data. Intuitively, it makes sense that the model overfits due to it&#39;s high flexibility combined with few samples. Of course, not all real-world phenomenons are linear, but it seems that the model is spending too much effort on fitting noise. Luckily, approaches such as <a href="/posts/nested-cv">&#40;nested&#41; cross-validation</a> can estimate how well a model will generalize.</p>
+<p>Anyway, I&#39;m digressing. Back to the original problem of whether we can infer anything from the non-linear model about feature importance.</p>
+</div>
+
+
+<div class="markdown"><h2>Shapley values</h2>
+<p>Shapley values are based on a theory by Shapley &#40;<a href="https://doi.org/10.1515/9781400881970-018">1953</a>&#41;. The goal of these values is to estimate how much each feature has contributed to the prediction. One way to do this is by changing the input for a feature while keeping all other feature inputs constant and seeing how much the output changes. This repeated sampling is called the Monte Carlo method. We can aggregate the Monte Carlo results to estimate how much a feature contributes to the outcome.</p>
+</div>
+
+<pre><code class="language-julia">function shapley_values(df::DataFrame)
+	X, y, m = fit_model(df)
+	mc = MonteCarlo(1024)
+	return shapley(x -&gt; predict(m, x), mc, X)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>As a simple check, let&#39;s first see what happens if we only pass the dataset with X, T, W and Y. Because T has no relation to the outcome Y and W has a strong relation to the outcome Y, we expect that T gets a low score and W gets a high score.</p>
+<p>In the plot below, I&#39;ve shown all the Shapley values from the Monte Carlo simulation on the left and aggregated them on the right. As expected, the plots on the right clearly show that W has a greater contribution.</p>
+<p>As a side note, usually people only show the plot on the right when talking about Shapley values, but I think it is good to have the one on the left too to give the full picture.</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Now, it&#39;s time for the final test: do Shapley values give appropriate credit to correlated features? We check this by passing all the features instead of only X, T, W and Y.</p>
+</div>
+
+
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>Based on this outcome, I would say that Shapley values do a pretty good job in combination with the LightGBM model. The values T, U, V, W are ordered by their correlation with the outcome &#40;and each other&#41;. As expected, features lower in the plot get a higher mean of absolute values, that is, feature importance. However, basing scientific conclusions on these outcomes may be deceptive because it&#39;s likely that there is a high variance on the reported feature importances. The main risk is here is that the model didn&#39;t properly fit resulting in incorrect outcomes. Another risk is that the overfitted model generalizes poorly. Both risks also hold for linear models, so I guess it&#39;s just the best we have.</p>
+</div>
+
+
+<div class="markdown"><h1>Conclusion</h1>
+<p>Based on this simple example, I would say that LightGBM combined with Shapley values can handle multicollinearity to some extend. Specifically, the outcomes mainly depend on whether the fitted model has used the less correlated features or decided to only use the highly correlated features. In this case, LightGBM has overfitted the data, which is probably why semi correlated features still receive some recognition even though other features are more useful. So, in this multicollinear case, an overfitted model gives better feature importance estimates. Doubts remain about generalizability.</p>
+</div>

@@ -1,0 +1,167 @@
+
+<div class="markdown"><h1>Data generation</h1>
+</div>
+
+<pre><code class="language-julia">begin
+	import MLDataUtils
+	import MLJGLMInterface
+	import MLJDecisionTreeInterface
+
+	using AlgebraOfGraphics
+	using CairoMakie
+	using CategoricalArrays
+	using DataFrames
+	using Distributions
+	using MLJBase
+	using MLJ
+	using StableRNGs: StableRNG
+	using Random
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">df = let
+	n = 80
+	μ1 = 10
+	μ2 = 12
+	σ = 2
+
+	d1 = Normal(μ1, σ)
+	d2 = Normal(μ2, σ)
+
+	Random.seed!(123)
+	classes = categorical(rand(["A", "B"], n))
+
+	df = DataFrame(
+		class = categorical(classes),
+		U = [class == "A" ? rand(d1) : rand(d2) for class in classes],
+		V = rand(Normal(100, 10), n)
+	)
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">let
+	uv = data(df) * mapping(:U, :V, color=:class)
+	draw(uv)
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h1>Train and test split</h1>
+<p>Training and evaluating &#40;testing&#41; on the same data is not particulary useful because we want to know how well our model generalizes. For more information, see topics such as <a href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a>. Instead, we split the data up in a train and test set.</p>
+</div>
+
+<pre><code class="language-julia">train, test = let
+	rng = StableRNG(123)
+	MLJ.partition(eachindex(df.class), 0.7; shuffle=true, rng)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h1>Model fitting</h1>
+</div>
+
+<pre><code class="language-julia">logistic_model = let
+	LinearBinary = @load LinearBinaryClassifier pkg=GLM verbosity=0
+	logistic_model = LinearBinary()
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">begin
+	logistic = machine(logistic_model, (U = df.U, V = df.V), df.class)
+	fit!(logistic; rows=train)
+	fitted_params(logistic).coef
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><p>The second coefficient in the linear model is close to zero. This is exactly what the model should do since <code>V</code> is random noise.</p>
+</div>
+
+<pre><code class="language-julia">forest_model = let
+	DecisionTree = @load DecisionTreeClassifier pkg=DecisionTree verbosity=0
+	tree = DecisionTree()
+	EnsembleModel(atom=tree, n=10)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">forest = let
+	forest = machine(forest_model, (U = df.U, V = df.V), df.class)
+	fit!(forest; rows=train);
+	forest
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h1>Accuracy</h1>
+<p>Now that we have fitted the two models, we can compare the accuracies and plot the <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic</a>.</p>
+</div>
+
+<pre><code class="language-julia">let
+	truths = df.class[test]
+	
+	logistic_predictions = MLJ.predict(logistic, rows=test)
+	logistic_fprs, logistic_tprs, _ = roc_curve(logistic_predictions, truths)
+	
+	forest_predictions = MLJ.predict(forest, rows=test)
+	forest_fprs, forest_tprs, _ = roc_curve(forest_predictions, truths)
+	
+	logistic_df = DataFrame(
+		x = logistic_fprs,
+		y = logistic_tprs,
+		method = "logistic"
+	)
+
+	forest_df = DataFrame(
+		x = forest_fprs,
+		y = forest_tprs,
+		method = "forest"
+	)
+
+	roc_df = vcat(logistic_df, forest_df)
+
+	xy = data(roc_df)
+	xy *= smooth() + visual(Scatter)
+	xy *= mapping(
+		:x =&gt; "False positive rate",
+		:y =&gt; "True positive rate",
+		color=:method)
+
+	draw(xy)
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+
+<div class="markdown"><h1>K-fold cross-validation</h1>
+<p>By doing a train and test split, we basically threw a part of the data away. For small datasets, like the dataset in this example, that is not very efficient.  Therefore, we also do a <a href="https://en.wikipedia.org/wiki/Cross-validation_&#40;statistics&#41;#k-fold_cross-validation">k-fold cross-validation</a>.</p>
+</div>
+
+<pre><code class="language-julia">folds = let
+	Random.seed!(123)
+	rng = MersenneTwister(123)
+	indexes = shuffle(rng, eachindex(df.class))
+	folds = MLDataUtils.kfolds(indexes, k = 8)
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">r3(x) = round(x; digits=3);</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">function fitted_accuracy(model, train, test)
+    forest = machine(model, (U = df.U, V = df.V), df.class)
+    fit!(forest; rows=train)
+    predictions = predict_mode(forest, rows=test)
+    return accuracy(predictions, df.class[test]) |&gt; r3
+end;</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">let 
+	accuracies = [fitted_accuracy(logistic_model, train, test) for (train, test) in folds]
+	accuracies, mean(accuracies) |&gt; r3
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>
+
+<pre><code class="language-julia">let
+	accuracies = [fitted_accuracy(forest_model, train, test) for (train, test) in folds]
+	accuracies, mean(accuracies) |&gt; r3
+end</code></pre>
+<pre><code class="code-output">nothing</code></pre>

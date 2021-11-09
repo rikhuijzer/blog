@@ -63,29 +63,7 @@ C &#61; &#91;5 for x in range&#93;
 D &#61; reverse&#40;A&#41;
 
 df &#61; DataFrame&#40;x &#61; range, A &#61; A, B &#61; B, C &#61; C, D &#61; D&#41;</code></pre>
-<pre><code class="plaintext code-output">On worker 2:
-ArgumentError: Package DataFrames [a93c6f00-e57d-5684-b7b6-d8193f3e46c0] is required but does not seem to be installed:
- - Run `Pkg.instantiate()` to install all recorded dependencies.
 
-Stacktrace:
- [1] _require
-   @ ./loading.jl:1012
- [2] require
-   @ ./loading.jl:936
- [3] #1
-   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/Distributed.jl:79
- [4] #103
-   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:274
- [5] run_work_thunk
-   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:63
- [6] run_work_thunk
-   @ /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process_messages.jl:72
- [7] #96
-   @ ./task.jl:411
-
-...and 1 more exception.
-
-</code></pre>
 <p>We can plot the variables to obtain the following figure. Note that stack is needed to prepare the data for the plot, see Appendix <a href="#appendix_1">1</a> for the effect of the <code>stack</code> function.</p>
 <pre><code class="language-julia">using AlgebraOfGraphics
 using CairoMakie
@@ -94,13 +72,7 @@ sdf &#61; stack&#40;df, &#91;:A, :B, :C, :D&#93;&#41;
 xv &#61; data&#40;sdf&#41; * mapping&#40;:x, :value; color&#61;:variable&#41;
 
 draw&#40;xv&#41;</code></pre>
-On worker 3: ArgumentError: Package AlgebraOfGraphics &#91;cbdf2221-f076-402e-a563-3d30da359d67&#93; is required but does not seem to be installed:</p>
-<ul>
-<li><p>Run <code>Pkg.instantiate&#40;&#41;</code> to install all recorded dependencies.</p>
-</li>
-</ul>
-<p>Stacktrace:  &#91;1&#93; <em>require    @ ./loading.jl:1012  &#91;2&#93; require    @ ./loading.jl:936  &#91;3&#93; #1    @ /buildworker/worker/package</em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/Distributed.jl:79  &#91;4&#93; #103    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:274  &#91;5&#93; run<em>work</em>thunk    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:63  &#91;6&#93; run<em>work</em>thunk    @ /buildworker/worker/package<em>linux64/build/usr/share/julia/stdlib/v1.6/Distributed/src/process</em>messages.jl:72  &#91;7&#93; #96    @ ./task.jl:411</p>
-<p>...and 1 more exception.
+<img src="/assets/posts/correlations/code/output/plot.svg" alt="">
 <p>To get an intuition for the covariance, consider a negative covariance. <span class="bibref"><a href="#rice2006">Rice (2006)</a></span> states that the covariance will be negative if when \(X\) is larger than its mean, \(Y\) tends to be smaller than its mean. To get a example of a perfect negative linear relationship look at \(A\) and \(D\). When \(A\) is larger than its mean, \(D\) is smaller than its mean and vice versa. Therefore \(cov(A, D)\) should be negative. We can manually check this:</p>
 \[ \mu_A = \mu_B = \mu_C = \mu_D = 5, \]
 \[ (A - \mu_A) = [-3, -2, -1, 0, 1, 2, 3], \: \text{and} \]
@@ -156,11 +128,52 @@ cov(X, Y) & = E((X - \mu_X)(Y - \mu_Y)) \\
 <h2 id="appendix_1"><a href="#appendix_1" class="header-anchor">Appendix 1</a></h2>
 <p>Before stacking, the DataFrame looks like</p>
 
-<pre><code class="plaintext code-output">UndefVarError: df not defined
+<pre><code class="plaintext code-output">df = 7×5 DataFrame
+ Row │ x      A      B        C      D
+     │ Int64  Int64  Float64  Int64  Int64
+─────┼─────────────────────────────────────
+   1 │     1      2      3.5      5      8
+   2 │     2      3      4.0      5      7
+   3 │     3      4      4.5      5      6
+   4 │     4      5      5.0      5      5
+   5 │     5      6      5.5      5      4
+   6 │     6      7      6.0      5      3
+   7 │     7      8      6.5      5      2
 </code></pre>
 <p>and after stacking, it has changed to</p>
 
-<pre><code class="plaintext code-output">UndefVarError: sdf not defined
+<pre><code class="plaintext code-output">sdf = 28×3 DataFrame
+ Row │ x      variable  value
+     │ Int64  String    Float64
+─────┼──────────────────────────
+   1 │     1  A             2.0
+   2 │     2  A             3.0
+   3 │     3  A             4.0
+   4 │     4  A             5.0
+   5 │     5  A             6.0
+   6 │     6  A             7.0
+   7 │     7  A             8.0
+   8 │     1  B             3.5
+   9 │     2  B             4.0
+  10 │     3  B             4.5
+  11 │     4  B             5.0
+  12 │     5  B             5.5
+  13 │     6  B             6.0
+  14 │     7  B             6.5
+  15 │     1  C             5.0
+  16 │     2  C             5.0
+  17 │     3  C             5.0
+  18 │     4  C             5.0
+  19 │     5  C             5.0
+  20 │     6  C             5.0
+  21 │     7  C             5.0
+  22 │     1  D             8.0
+  23 │     2  D             7.0
+  24 │     3  D             6.0
+  25 │     4  D             5.0
+  26 │     5  D             4.0
+  27 │     6  D             3.0
+  28 │     7  D             2.0
 </code></pre>
 <h2 id="appendix_2"><a href="#appendix_2" class="header-anchor">Appendix 2</a></h2>
 <pre><code class="language-julia">using Statistics
@@ -177,12 +190,15 @@ end
 @show mycov&#40;A, B&#41;
 @show mycov&#40;A, C&#41;
 @show mycov&#40;A, D&#41;</code></pre>
-<pre><code class="plaintext code-output">UndefVarError: A not defined
+<pre><code class="plaintext code-output">mycov(A, A) = 4.0
+mycov(A, B) = 2.0
+mycov(A, C) = 0.0
+mycov(A, D) = -4.0
 </code></pre>
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-11-07.
+    Last update: 2021-11-09.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
