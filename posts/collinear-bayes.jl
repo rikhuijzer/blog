@@ -9,7 +9,6 @@ begin
 	using CairoMakie
 	using CategoricalArrays: categorical
 	using DataFrames: Not, DataFrame, select, stack, transform
-	using MLDataUtils: rescale!
 	using Pkg: dependencies
 	using Turing
 	using Random: seed!
@@ -45,33 +44,32 @@ indexes = 1.0:150.0;
 # ╔═╡ 842b67f1-9aa9-4409-88ee-c9e58193731a
 y_true(x) = x / last(indexes);
 
-# ╔═╡ ba03b11a-91b4-4cfe-b422-45a424b82a77
-y_true.(indexes)
-
 # ╔═╡ 5bab06f3-995f-445a-b6b3-f63df6b2a3ef
-y_noise(x, coefficient) = (coefficient * y_true(x) - 0.5) + rand(Normal(0, 0.15));
+y_noise(x, corr_coefficient) = (corr_coefficient * y_true(x) - 0.5) + rand(Normal(0, 0.15));
 
 # ╔═╡ 07c00464-44e5-47ca-9106-46ea066b6862
 df = let
     seed!(0)
     X = indexes
-    T = y_noise.(indexes, 0)
-    U = y_noise.(indexes, 0.05)
-    V = y_noise.(indexes, 0.7)
-    W = y_noise.(indexes, 1)
+	A = y_noise.(indexes, 0)
+    B = y_noise.(indexes, 0.05)
+    C = y_noise.(indexes, 0.7)
+    D = y_noise.(indexes, 1)
+    E = y_noise.(indexes, 1)
     Y = y_noise.(indexes, 1)
     
-    DataFrame(; X, T, U, V, W, Y)
+    DataFrame(; X, A, B, C, D, E, Y)
 end
 
 # ╔═╡ 1883a81c-fc31-4a09-b484-cfabfbf1ebe1
+# hideall
 r2(x) = round(x; digits=2);
 
 # ╔═╡ c412d841-e4d2-4b02-b68c-647f9ca59e7f
 # hideall
 # This function is the same as in the Shapley post.
 function plot_data(df::DataFrame, ylabelpos)
-	resolution = (900, 700)
+	resolution = (900, 900)
 	f = Figure(; resolution)
 
 	features = filter(n -> n != "X" && n != "Y", names(df))
@@ -95,67 +93,31 @@ end;
 # hideall
 plot_data(df, 0.5)
 
-# ╔═╡ 8a00889d-cc81-4c82-bf6b-0edcefb446a6
-md"""
-The correlations are as follows:
-"""
-
-# ╔═╡ 72c49b06-eb37-45a9-8dba-13cef99343f4
-# hideall
-let
-	cors = ["cor($col, Y) = $(r2(cor(df[:, col], df.Y)))" for col in [:T, :U, :V, :W]]
-	joined = join(cors, "\n")
-	Base.Text(joined)
-end
-
 # ╔═╡ 5d71ac72-6700-470c-a8ba-a7836a1b62bd
 md"""
 ## Fitting a model
 """
 
-# ╔═╡ 9d3336fa-b23e-4c12-8324-8f5f5c799879
-k = fill(1, 3)
-
 # ╔═╡ dd509020-6205-4678-8ef9-59fc9381b590
-@model function linear_regression(X::Matrix, y, μ)
+@model function linear_regression(X::Matrix, y)
 	σ₂ ~ truncated(Normal(0, 100), 0, Inf)
 	
 	intercept ~ Normal(0, 6)
 
-	# μ = fill(10, size(X, 2))
-    coef ~ MvNormal(μ, sqrt(10))
+	n_features = size(X, 2)
+    coef ~ MvNormal(n_features, sqrt(10))
 
 	mu = intercept .+ X * coef
     y ~ MvNormal(mu, sqrt(σ₂))
 end;
 
 # ╔═╡ 96a0999a-9778-43bb-9d10-9c3084ec00a4
-μ, σ, X = let
-	data = select(df, Not([:X, :Y]));
-	μ, σ = rescale!(data)
-	(μ, σ, data)
-end;
-
-# ╔═╡ b2f80270-b7e8-4ab7-9ac2-ff12e776ebe7
-unrescale(X::AbstractVector, μ::Real, σ::Real) = X .* σ .+ μ
-
-# ╔═╡ bfffa9be-e5a3-42cb-aa19-5b0013f1c46f
-function unrescale(df::DataFrame, cols, μ::AbstractVector, σ::AbstractVector)
-	unrescaler(i, col) = X -> unrescale(X, μ[i], σ[i])
-	transformations = [col => unrescaler(i, col) for (i, col) in enumerate(cols)]
-	return transform(df, transformations...; renamecols=false)
-end
-
-# ╔═╡ 15ad4780-bdbf-4793-9c82-62d1d07267e6
-let
-	tmp = DataFrame(X)
-	unrescale(tmp, names(tmp), μ, σ)
-end
+X = select(df, Not([:X, :Y]));	
 
 # ╔═╡ 56e5371a-83e4-4997-b667-e2bcaec296e8
 model = let
 	y = df.Y
-	model = linear_regression(Matrix(X), y, μ)
+	model = linear_regression(Matrix(X), y)
 end;
 
 # ╔═╡ 5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
@@ -169,8 +131,6 @@ function plot_chain(chns)
 	df[!, :chain] = categorical(df.chain)
 	coefs = select(df, :iteration, :chain, :intercept, r"coef*")
 	cols = filter(n -> startswith(n, "coef") || n == "intercept", names(coefs))
-	
-	cols = filter(startswith("coef"), names(coefs))
 
 	resolution = (900, 1000)
 	f = Figure(; resolution)
@@ -194,7 +154,8 @@ function plot_chain(chns)
 			density!(ax, values; label=string(i))
 		end
 	end
-	# hideydecorations!.(density_axs)
+	hideydecorations!.(density_axs)
+	linkxaxes!(density_axs...)
 
 	current_figure()
 end;
@@ -225,9 +186,6 @@ chns = let
 	fix_names(chns)
 end;
 
-# ╔═╡ 4594bd30-d424-4680-9903-4ef78dcd71dc
-chns.info
-
 # ╔═╡ 9e8c3260-1227-4d0f-be4c-d933a4b28a72
 md"""
 Using the HMC sampler because it should be the best one for colinear data (<https://statmodeling.stat.columbia.edu/2019/07/07/collinearity-in-bayesian-models/>).
@@ -257,7 +215,6 @@ CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-MLDataUtils = "cc2ba9b6-d476-5e6d-8eaf-a92d5412d41d"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
@@ -267,7 +224,6 @@ Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
 CairoMakie = "~0.6.6"
 CategoricalArrays = "~0.10.2"
 DataFrames = "~1.2.2"
-MLDataUtils = "~0.5.4"
 Turing = "~0.19.0"
 """
 
@@ -912,12 +868,6 @@ version = "1.3.0"
 deps = ["Artifacts", "Pkg"]
 uuid = "4af54fe1-eca0-43a8-85a7-787d91b784e3"
 
-[[LearnBase]]
-deps = ["LinearAlgebra", "StatsBase"]
-git-tree-sha1 = "47e6f4623c1db88570c7a7fa66c6528b92ba4725"
-uuid = "7f8f8fb0-2700-5f03-b4bd-41f8cfc144b6"
-version = "0.3.0"
-
 [[LeftChildRightSiblingTrees]]
 deps = ["AbstractTrees"]
 git-tree-sha1 = "71be1eb5ad19cb4f61fa8c73395c0338fd092ae0"
@@ -1028,29 +978,11 @@ git-tree-sha1 = "5455aef09b40e5020e1520f551fa3135040d4ed0"
 uuid = "856f044c-d86e-5d09-b602-aeab76dc8ba7"
 version = "2021.1.1+2"
 
-[[MLDataPattern]]
-deps = ["LearnBase", "MLLabelUtils", "Random", "SparseArrays", "StatsBase"]
-git-tree-sha1 = "e99514e96e8b8129bb333c69e063a56ab6402b5b"
-uuid = "9920b226-0b2a-5f5f-9153-9aa70a013f8b"
-version = "0.5.4"
-
-[[MLDataUtils]]
-deps = ["DataFrames", "DelimitedFiles", "LearnBase", "MLDataPattern", "MLLabelUtils", "Statistics", "StatsBase"]
-git-tree-sha1 = "ee54803aea12b9c8ee972e78ece11ac6023715e6"
-uuid = "cc2ba9b6-d476-5e6d-8eaf-a92d5412d41d"
-version = "0.5.4"
-
 [[MLJModelInterface]]
 deps = ["Random", "ScientificTypesBase", "StatisticalTraits"]
 git-tree-sha1 = "0174e9d180b0cae1f8fe7976350ad52f0e70e0d8"
 uuid = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
 version = "1.3.3"
-
-[[MLLabelUtils]]
-deps = ["LearnBase", "MappedArrays", "StatsBase"]
-git-tree-sha1 = "3211c1fdd1efaefa692c8cf60e021fb007b76a08"
-uuid = "66a33bbf-0c2b-5fc8-a008-9da813334f0a"
-version = "0.5.6"
 
 [[MacroTools]]
 deps = ["Markdown", "Random"]
@@ -1744,24 +1676,16 @@ version = "3.5.0+0"
 # ╠═43ade888-9cee-4453-a1f3-372ebac770f2
 # ╠═b372d2bf-573c-4147-a4aa-8d45f8b82156
 # ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
-# ╠═ba03b11a-91b4-4cfe-b422-45a424b82a77
 # ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
 # ╠═07c00464-44e5-47ca-9106-46ea066b6862
 # ╠═c412d841-e4d2-4b02-b68c-647f9ca59e7f
 # ╠═16215334-055d-4abe-9f23-cd82b3a0bde8
 # ╠═1883a81c-fc31-4a09-b484-cfabfbf1ebe1
-# ╠═8a00889d-cc81-4c82-bf6b-0edcefb446a6
-# ╠═72c49b06-eb37-45a9-8dba-13cef99343f4
 # ╠═5d71ac72-6700-470c-a8ba-a7836a1b62bd
-# ╠═9d3336fa-b23e-4c12-8324-8f5f5c799879
 # ╠═dd509020-6205-4678-8ef9-59fc9381b590
 # ╠═96a0999a-9778-43bb-9d10-9c3084ec00a4
-# ╠═b2f80270-b7e8-4ab7-9ac2-ff12e776ebe7
-# ╠═bfffa9be-e5a3-42cb-aa19-5b0013f1c46f
-# ╠═15ad4780-bdbf-4793-9c82-62d1d07267e6
 # ╠═56e5371a-83e4-4997-b667-e2bcaec296e8
 # ╠═4306829f-83fe-4c64-a452-d664e891a8c9
-# ╠═4594bd30-d424-4680-9903-4ef78dcd71dc
 # ╠═0fae5fdd-3a9f-44d0-9151-4a4380c8e693
 # ╠═5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
 # ╠═b6f9b494-3cab-4303-9f36-7fbcc8f9350c
