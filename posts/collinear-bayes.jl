@@ -139,8 +139,9 @@ function plot_chain(chns)
 	f = Figure(; resolution)
 	
 	sdf = stack(coefs, cols, variable_name=:coef)
+	return sdf
 
-	layer = data(sdf) * mapping(:value; color=:chain, row=:coef)
+	layer = data(sdf) * mapping(:value; row=:coef)
 	scat = layer * visual(Lines)
 
 	facet = (; linkxaxes=:minimal)
@@ -154,11 +155,19 @@ function plot_chain(chns)
 	# draw!(f[1, 2], dens; axis) # facet)
 	
 	current_figure()
-
-	df = (x=rand(100), y=rand(100))
-xy = data(df) * mapping(:x, :y)
-draw(xy)
 end;
+
+# ╔═╡ 425a8018-56c9-49ff-bf0f-ad5855b215ab
+let
+	n = repeat(["a", "b", "c", "d"], 250)
+	y = rand(1000)
+	nt = (; n, y)
+
+	layer = data(nt) * mapping(:y, col=:n)
+	f = Figure()
+	draw!(f[1, 1], layer)
+	current_figure()
+end
 
 # ╔═╡ b6f9b494-3cab-4303-9f36-7fbcc8f9350c
 function fix_names(chns)
@@ -1762,6 +1771,7 @@ version = "3.5.0+0"
 # ╠═15ad4780-bdbf-4793-9c82-62d1d07267e6
 # ╠═56e5371a-83e4-4997-b667-e2bcaec296e8
 # ╠═4306829f-83fe-4c64-a452-d664e891a8c9
+# ╠═425a8018-56c9-49ff-bf0f-ad5855b215ab
 # ╠═0fae5fdd-3a9f-44d0-9151-4a4380c8e693
 # ╠═b6f9b494-3cab-4303-9f36-7fbcc8f9350c
 # ╠═9e8c3260-1227-4d0f-be4c-d933a4b28a72
