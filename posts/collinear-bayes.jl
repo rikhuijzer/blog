@@ -27,7 +27,17 @@ It can be quite tricky to implement though because a good parameterization is ne
 """
 
 # ╔═╡ 43ade888-9cee-4453-a1f3-372ebac770f2
-md"## Simulating data"
+md"""
+## Simulating data
+
+Let's simulate some data with various columns are increasingly correlated with the outcome (and thus each other).
+Here, we assume that the data is centered around zero.
+This is easier for the Bayesian model to work with, but can often also make interpretation of the coefficients easier.
+There are various methods to rescale data, one is using `MLDataUtils: rescale!`.
+Note that `rescale!` bases the rescaling on the sample which is not recommended for small samples (Gelman, [2020](https://doi.org/10.1017/9781139161879)).
+Instead, you can use knowledge that you have about the data such as the range of questionnaire scores or the weight of cars.
+Specifically, for example, it is known that the weight of a car is never below zero and unlikely to be above 3_600 kg (8_000 lbs) which is the weight of a Hummer H1.
+"""
 
 # ╔═╡ 842b67f1-9aa9-4409-88ee-c9e58193731a
 y_true(x) = 2x + 10;
