@@ -12,7 +12,7 @@ begin
 	using Pkg: dependencies
 	using Turing
 	using Random: seed!
-	using Statistics: rand
+	using Statistics: rand, mean, cor
 end
 
 # ╔═╡ 0363b8e3-60fa-4ce9-bcb9-7b76cf16e028
@@ -39,7 +39,7 @@ Specifically, for example, it is known that the weight of a car is never below z
 """
 
 # ╔═╡ b372d2bf-573c-4147-a4aa-8d45f8b82156
-indexes = 1.0:150.0;
+indexes = 1.0:300.0;
 
 # ╔═╡ 842b67f1-9aa9-4409-88ee-c9e58193731a
 y_true(x) = x / last(indexes);
@@ -65,6 +65,14 @@ end
 # hideall
 r2(x) = round(x; digits=2);
 
+# ╔═╡ e376bc32-df11-479c-b33c-c1478fd519c2
+# hideall
+feature_correlations = let
+	features = filter(n -> n != "X" && n != "Y", names(df))
+	correlations = [feat => cor(df[:, feat], df.Y) |> r2 for feat in features]
+	Dict(correlations)
+end;
+
 # ╔═╡ c412d841-e4d2-4b02-b68c-647f9ca59e7f
 # hideall
 # This function is the same as in the Shapley post.
@@ -77,7 +85,7 @@ function plot_data(df::DataFrame, ylabelpos)
 
 	for (ax, feat) in zip(axs, features)
 		scatter!(ax, df.X, df[:, feat])
-		c = cor(df[:, feat], df.Y) |> r2
+		c = feature_correlations[feat]
 		t = "cor($(feat), Y) = $c"
 		text!(ax, t; position=(1, ylabelpos))
 	end
@@ -105,7 +113,7 @@ md"""
 	intercept ~ Normal(0, 6)
 
 	n_features = size(X, 2)
-    coef ~ MvNormal(n_features, sqrt(10))
+    coef ~ MvNormal(n_features, 0.4)
 
 	mu = intercept .+ X * coef
     y ~ MvNormal(mu, sqrt(σ₂))
@@ -139,50 +147,6 @@ end;
 # ╔═╡ 5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
 n_samples = 1_000
 
-# ╔═╡ 4306829f-83fe-4c64-a452-d664e891a8c9
-# hideall
-function plot_chain(chns)
-	df = DataFrame(chns)
-	n_chains = length(unique(df.chain))
-	df[!, :chain] = categorical(df.chain)
-	coefs = select(df, :iteration, :chain, :intercept, r"coef*")
-	cols = filter(n -> startswith(n, "coef") || n == "intercept", names(coefs))
-
-	resolution = (900, 1000)
-	f = Figure(; resolution)
-	# gl = f[1:length(cols), 1] = GridLayout()
-	# gl.xlabel = "foo"
-
-	values_axs = [Axis(f[i, 1]; ylabel=string(c)) for (i, c) in enumerate(cols)]
-	for (ax, col) in zip(values_axs, cols)
-		for i in 1:n_chains
-			values = filter(:chain => ==(i), df)[:, col]
-			lines!(ax, 1:n_samples, values; label=string(i))
-		end
-		# axislegend(ax; position=:lt)
-	end
-	# names(chns)
-
-	density_axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(cols)]
-	for (ax, col) in zip(density_axs, cols)
-		for i in 1:n_chains
-			values = filter(:chain => ==(i), df)[:, col]
-			density!(ax, values; label=string(i))
-		end
-	end
-	hideydecorations!.(density_axs)
-	linkxaxes!(density_axs...)
-
-	current_figure()
-end;
-
-# ╔═╡ 0fae5fdd-3a9f-44d0-9151-4a4380c8e693
-let
-	chns = sample(model, Prior(), n_samples)
-	chns = fix_names(chns)
-	plot_chain(chns)
-end
-
 # ╔═╡ 25b0ef1f-dfbe-4d53-8695-0c3cc1cbe0bf
 md"""
 In this plot, everything looks good.
@@ -206,9 +170,70 @@ function mysample(model, sampler)
 	return fix_names(chns)
 end;
 
+# ╔═╡ 4306829f-83fe-4c64-a452-d664e891a8c9
+# hideall
+function plot_chain(chns)
+	df = DataFrame(chns)
+	n_chains = length(unique(df.chain))
+	df[!, :chain] = categorical(df.chain)
+	coefs = select(df, :iteration, :chain, :intercept, r"coef*")
+	cols = filter(n -> startswith(n, "coef") || n == "intercept", names(coefs))
+
+	resolution = (900, 1200)
+	f = Figure(; resolution)
+	# gl = f[1:length(cols), 1] = GridLayout()
+	# gl.xlabel = "foo"
+
+	values_axs = [Axis(f[i, 1]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	for (ax, col) in zip(values_axs, cols)
+		for i in 1:n_chains
+			values = filter(:chain => ==(i), df)[:, col]
+			lines!(ax, 1:n_samples, values; label=string(i))
+		end
+	end
+	hidexdecorations!.(values_axs[1:end-1]; ticks=false)
+	values_axs[end].xlabel = "Iteration"
+
+	density_axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	for (ax, col) in zip(density_axs, cols)
+		for i in 1:n_chains
+			values = filter(:chain => ==(i), df)[:, col]
+			density!(ax, values; label=string(i))
+			# text!(ax, "text"; position=(-0.9, 0.2))
+			# m = mean(values) |> r2
+		end
+		if col != "intercept"
+			feature = col[6:end-1]
+			c = feature_correlations[feature]
+			t = "cor($(feature), Y) - 0.5"
+			# ax.title = "$t"
+			vlines!(ax, [c]; color=:black, linestyle=:dash, label=t)
+		end
+		# axislegend(ax; position=:lt)
+		xlims!(ax, -1, 1)
+	end
+	hideydecorations!.(density_axs)
+	linkxaxes!(density_axs...)
+	[Legend(f[i, 3], ax; position=:lt) for (i, ax) in 
+		enumerate(density_axs)]
+	
+	
+	hidexdecorations!.(density_axs[1:end-1]; ticks=false)
+	density_axs[end].xlabel = "Sample value"
+
+	current_figure()
+end;
+
+# ╔═╡ 0fae5fdd-3a9f-44d0-9151-4a4380c8e693
+let
+	chns = sample(model, Prior(), n_samples)
+	chns = fix_names(chns)
+	plot_chain(chns)
+end
+
 # ╔═╡ d5053447-e4fc-4f1a-b959-1ebda35df764
 let
-	chns = mysample(model, HMC(0.01, 10))
+	chns = mysample(model, HMC(0.005, 10))
 	plot_chain(chns)
 end
 
@@ -241,6 +266,9 @@ let
 	joined = join(list, '\n')
 	Base.Text(joined)
 end
+
+# ╔═╡ da976a0d-a555-4ac0-984e-a457d8859cc4
+:stuck_out_tongue:
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1711,6 +1739,7 @@ version = "3.5.0+0"
 # ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
 # ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
 # ╠═07c00464-44e5-47ca-9106-46ea066b6862
+# ╠═e376bc32-df11-479c-b33c-c1478fd519c2
 # ╠═c412d841-e4d2-4b02-b68c-647f9ca59e7f
 # ╠═16215334-055d-4abe-9f23-cd82b3a0bde8
 # ╠═1883a81c-fc31-4a09-b484-cfabfbf1ebe1
@@ -1725,11 +1754,12 @@ version = "3.5.0+0"
 # ╠═25b0ef1f-dfbe-4d53-8695-0c3cc1cbe0bf
 # ╠═def53c14-cf6b-4d84-944f-dd7cf98ff4a2
 # ╠═55613d64-624f-482d-8991-f58db3ff5834
-# ╠═d5053447-e4fc-4f1a-b959-1ebda35df764
 # ╠═4306829f-83fe-4c64-a452-d664e891a8c9
+# ╠═d5053447-e4fc-4f1a-b959-1ebda35df764
 # ╠═212f0f60-809f-4d5b-a397-c6247d35178c
 # ╠═71b85c9c-4d95-4f44-b8cb-01440c24a2f0
 # ╠═156655ff-d6b3-4ed9-91c6-c8674faef3c8
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
+# ╠═da976a0d-a555-4ac0-984e-a457d8859cc4
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
