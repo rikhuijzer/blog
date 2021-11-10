@@ -39,7 +39,7 @@ Specifically, for example, it is known that the weight of a car is never below z
 """
 
 # ╔═╡ b372d2bf-573c-4147-a4aa-8d45f8b82156
-indexes = 1.0:300.0;
+indexes = 1.0:150.0;
 
 # ╔═╡ 842b67f1-9aa9-4409-88ee-c9e58193731a
 y_true(x) = x / last(indexes);
@@ -155,14 +155,6 @@ We expect the coefficients for the linear model to be between -0.5 and 0.5.
 Thanks to these priors, the sampler should have useful samples right from the start.
 """
 
-# ╔═╡ def53c14-cf6b-4d84-944f-dd7cf98ff4a2
-md"""
-## Estimating the parameters
-
-When we fit the model, we have to decide on a sampler for this complex collinear case.
-NUTS is normally the best bet in Turing.jl, but let's first try HMC.
-"""
-
 # ╔═╡ 55613d64-624f-482d-8991-f58db3ff5834
 function mysample(model, sampler)
 	n_chains = 3
@@ -199,15 +191,14 @@ function plot_chain(chns)
 		for i in 1:n_chains
 			values = filter(:chain => ==(i), df)[:, col]
 			density!(ax, values; label=string(i))
-			# text!(ax, "text"; position=(-0.9, 0.2))
-			# m = mean(values) |> r2
 		end
 		if col != "intercept"
 			feature = col[6:end-1]
 			c = feature_correlations[feature]
-			t = "cor($(feature), Y) - 0.5"
-			# ax.title = "$t"
-			vlines!(ax, [c]; color=:black, linestyle=:dash, label=t)
+			t = "cor($(feature), Y)"
+			if n_chains != 1 # Avoid vlines in the prior plot.
+				vlines!(ax, [c]; color=:black, linestyle=:dash, label=t)
+			end
 		end
 		# axislegend(ax; position=:lt)
 		xlims!(ax, -1, 1)
@@ -231,6 +222,17 @@ let
 	plot_chain(chns)
 end
 
+# ╔═╡ def53c14-cf6b-4d84-944f-dd7cf98ff4a2
+md"""
+## Estimating the parameters
+
+When we fit the model, we have to decide on a sampler for this complex collinear case.
+NUTS is normally the best bet in Turing.jl, but let's first try HMC.
+
+In the plots below, the different colors indicate different chains.
+All plots show good mixing and stationarity on the leftmost plots; the chains properly converged to the same outcome:
+"""
+
 # ╔═╡ d5053447-e4fc-4f1a-b959-1ebda35df764
 let
 	chns = mysample(model, HMC(0.005, 10))
@@ -242,7 +244,7 @@ md"""
 Obtaining this outcome required setting the leapfrog size to a very low number.
 Normally, it is 0.05 or 0.1 which both **did not work**.
 What I mean by did not work is that the different chains did not converge, that is, gave different outcomes.
-Thanks to the low leapfrog size, it took quite a long time for the chains to converge.
+Note that, thanks to the low leapfrog size, it took quite a few iterations for the chains to converge.
 
 Let's try the NUTS sampler:
 """
@@ -253,10 +255,34 @@ let
 	plot_chain(chns)
 end
 
-# ╔═╡ 156655ff-d6b3-4ed9-91c6-c8674faef3c8
-describe(chns)[1]
+# ╔═╡ 49efd148-5185-4451-8334-e6634f006c1b
+md"""
+Compared to the [Shapley values](/posts/shapley/), this result is very promising.
+Based on the data, both samplers correctly identified the most important coefficient and give reasonable estimates for all the features and not only the most informative feature.
+
+Now that I think about it, random forests with Shapley values and decision trees are similar in the sense that they randomly look around in a certain search space and, in the end, predict by aggregating on many instances (decision tree versus sample). Here, the Bayesian approach has a benefit because it has much less free parameters making the search more effective.
+"""
+
+# ╔═╡ 28a40e1e-eacb-4e63-b1c4-58c965f52ba5
+md"""
+## GLM
+
+Show that GLM really does poorly.
+"""
+
+# ╔═╡ ecd31d7d-2fac-4ae1-828a-1a20a9a34726
+md"""
+## Conclusion
+
+"""
+
+# ╔═╡ 37a9c11f-c055-4db9-bda0-3621e2951b02
+md"""
+## Packages
+"""
 
 # ╔═╡ 23ce22bb-ad58-470a-ba9d-e2d21fef6049
+# hideall
 let
 	deps = [pair.second for pair in dependencies()]
 	deps = filter(p -> p.is_direct_dep, deps)
@@ -266,9 +292,6 @@ let
 	joined = join(list, '\n')
 	Base.Text(joined)
 end
-
-# ╔═╡ da976a0d-a555-4ac0-984e-a457d8859cc4
-:stuck_out_tongue:
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1752,14 +1775,16 @@ version = "3.5.0+0"
 # ╠═5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
 # ╠═0fae5fdd-3a9f-44d0-9151-4a4380c8e693
 # ╠═25b0ef1f-dfbe-4d53-8695-0c3cc1cbe0bf
-# ╠═def53c14-cf6b-4d84-944f-dd7cf98ff4a2
 # ╠═55613d64-624f-482d-8991-f58db3ff5834
 # ╠═4306829f-83fe-4c64-a452-d664e891a8c9
+# ╠═def53c14-cf6b-4d84-944f-dd7cf98ff4a2
 # ╠═d5053447-e4fc-4f1a-b959-1ebda35df764
 # ╠═212f0f60-809f-4d5b-a397-c6247d35178c
 # ╠═71b85c9c-4d95-4f44-b8cb-01440c24a2f0
-# ╠═156655ff-d6b3-4ed9-91c6-c8674faef3c8
+# ╠═49efd148-5185-4451-8334-e6634f006c1b
+# ╠═28a40e1e-eacb-4e63-b1c4-58c965f52ba5
+# ╠═ecd31d7d-2fac-4ae1-828a-1a20a9a34726
+# ╠═37a9c11f-c055-4db9-bda0-3621e2951b02
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
-# ╠═da976a0d-a555-4ac0-984e-a457d8859cc4
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
