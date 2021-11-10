@@ -9,6 +9,7 @@ begin
 	using CairoMakie
 	using CategoricalArrays: categorical
 	using DataFrames: Not, DataFrame, select, stack, transform
+	using GLM
 	using Pkg: dependencies
 	using Turing
 	using Random: seed!
@@ -208,9 +209,8 @@ function plot_chain(chns)
 	[Legend(f[i, 3], ax; position=:lt) for (i, ax) in 
 		enumerate(density_axs)]
 	
-	
 	hidexdecorations!.(density_axs[1:end-1]; ticks=false)
-	density_axs[end].xlabel = "Sample value"
+	density_axs[end].xlabel = "Parameter estimate"
 
 	current_figure()
 end;
@@ -267,8 +267,46 @@ Now that I think about it, random forests with Shapley values and decision trees
 md"""
 ## GLM
 
-Show that GLM really does poorly.
+As a sanity check, let's see what a Frequentists linear model concludes.
+
 """
+
+# ╔═╡ f8bb27e0-cb0d-4434-aa62-bc006bc73be5
+fitted_lm = lm(@formula(Y ~ A + B + C + D + E), df)
+
+# ╔═╡ 0c63b163-8eeb-4ec3-8409-27158e6197bd
+methodswith(fitted_lm |> typeof; supertypes=true)
+
+# ╔═╡ e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
+let
+	resolution = (900, 1200)
+	f = Figure(; resolution)
+
+	C = coef(fitted_lm)
+	CN = coefnames(fitted_lm)
+	axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(CN)]
+	for (ax, col, coefficient) in zip(axs, CN, C)
+		vlines!(ax, [coefficient]; color=:black, linestyle=:solid, label="coefficient")
+
+		@show col
+		if col != "(Intercept)"
+			c = feature_correlations[col]
+			t = "cor($(col), Y)"
+			vlines!(ax, [c]; color=:black, linestyle=:dash, label=t)
+		end
+		xlims!(ax, -1, 1)
+	end
+
+	hideydecorations!.(axs; label=false)
+	linkxaxes!(axs...)
+	[Legend(f[i, 3], ax; position=:lt) for (i, ax) in 
+		enumerate(axs)]
+	
+	hidexdecorations!.(axs[1:end-1]; ticks=false)
+	axs[end].xlabel = "Parameter estimate"
+	
+	current_figure()
+end
 
 # ╔═╡ ecd31d7d-2fac-4ae1-828a-1a20a9a34726
 md"""
@@ -299,6 +337,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+GLM = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
@@ -308,6 +347,7 @@ Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
 CairoMakie = "~0.6.6"
 CategoricalArrays = "~0.10.2"
 DataFrames = "~1.2.2"
+GLM = "~1.5.1"
 Turing = "~0.19.0"
 """
 
@@ -767,6 +807,12 @@ version = "0.2.7"
 [[Future]]
 deps = ["Random"]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
+
+[[GLM]]
+deps = ["Distributions", "LinearAlgebra", "Printf", "Reexport", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns", "StatsModels"]
+git-tree-sha1 = "f564ce4af5e79bb88ff1f4488e64363487674278"
+uuid = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
+version = "1.5.1"
 
 [[GeometryBasics]]
 deps = ["EarCut_jll", "IterTools", "LinearAlgebra", "StaticArrays", "StructArrays", "Tables"]
@@ -1445,6 +1491,11 @@ version = "0.8.0"
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
 uuid = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
 
+[[ShiftedArrays]]
+git-tree-sha1 = "22395afdcf37d6709a5a0766cc4a5ca52cb85ea0"
+uuid = "1277b4bf-5013-50f5-be3d-901d8477a67a"
+version = "1.0.0"
+
 [[Showoff]]
 deps = ["Dates", "Grisu"]
 git-tree-sha1 = "91eddf657aca81df9ae6ceb20b959ae5653ad1de"
@@ -1526,6 +1577,12 @@ deps = ["ChainRulesCore", "IrrationalConstants", "LogExpFunctions", "Reexport", 
 git-tree-sha1 = "95072ef1a22b057b1e80f73c2a89ad238ae4cfff"
 uuid = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
 version = "0.9.12"
+
+[[StatsModels]]
+deps = ["DataAPI", "DataStructures", "LinearAlgebra", "Printf", "REPL", "ShiftedArrays", "SparseArrays", "StatsBase", "StatsFuns", "Tables"]
+git-tree-sha1 = "677488c295051568b0b79a77a8c44aa86e78b359"
+uuid = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
+version = "0.6.28"
 
 [[StructArrays]]
 deps = ["Adapt", "DataAPI", "StaticArrays", "Tables"]
@@ -1783,6 +1840,9 @@ version = "3.5.0+0"
 # ╠═71b85c9c-4d95-4f44-b8cb-01440c24a2f0
 # ╠═49efd148-5185-4451-8334-e6634f006c1b
 # ╠═28a40e1e-eacb-4e63-b1c4-58c965f52ba5
+# ╠═f8bb27e0-cb0d-4434-aa62-bc006bc73be5
+# ╠═0c63b163-8eeb-4ec3-8409-27158e6197bd
+# ╠═e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
 # ╠═ecd31d7d-2fac-4ae1-828a-1a20a9a34726
 # ╠═37a9c11f-c055-4db9-bda0-3621e2951b02
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
