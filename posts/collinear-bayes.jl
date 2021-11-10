@@ -39,14 +39,17 @@ Instead, you can use knowledge that you have about the data such as the range of
 Specifically, for example, it is known that the weight of a car is never below zero and unlikely to be above 3_600 kg (8_000 lbs) which is the weight of a Hummer H1.
 """
 
-# ╔═╡ 842b67f1-9aa9-4409-88ee-c9e58193731a
-y_true(x) = 2x + 10;
-
-# ╔═╡ 5bab06f3-995f-445a-b6b3-f63df6b2a3ef
-y_noise(x, coefficient) = coefficient * y_true(x) + rand(Normal(0, 40));
-
 # ╔═╡ b372d2bf-573c-4147-a4aa-8d45f8b82156
 indexes = 1.0:150.0;
+
+# ╔═╡ 842b67f1-9aa9-4409-88ee-c9e58193731a
+y_true(x) = x / last(indexes);
+
+# ╔═╡ ba03b11a-91b4-4cfe-b422-45a424b82a77
+y_true.(indexes)
+
+# ╔═╡ 5bab06f3-995f-445a-b6b3-f63df6b2a3ef
+y_noise(x, coefficient) = (coefficient * y_true(x) - 0.5) + rand(Normal(0, 0.15));
 
 # ╔═╡ 07c00464-44e5-47ca-9106-46ea066b6862
 df = let
@@ -63,6 +66,34 @@ end
 
 # ╔═╡ 1883a81c-fc31-4a09-b484-cfabfbf1ebe1
 r2(x) = round(x; digits=2);
+
+# ╔═╡ c412d841-e4d2-4b02-b68c-647f9ca59e7f
+# hideall
+# This function is the same as in the Shapley post.
+function plot_data(df::DataFrame, ylabelpos)
+	resolution = (900, 700)
+	f = Figure(; resolution)
+
+	features = filter(n -> n != "X" && n != "Y", names(df))
+	axs = [Axis(f[i, 1]; ylabel=string(feat)) for (i, feat) in enumerate(features)]
+
+	for (ax, feat) in zip(axs, features)
+		scatter!(ax, df.X, df[:, feat])
+		c = cor(df[:, feat], df.Y) |> r2
+		t = "cor($(feat), Y) = $c"
+		text!(ax, t; position=(1, ylabelpos))
+	end
+	
+	linkxaxes!(axs...)
+	linkyaxes!(axs...)
+	hidexdecorations!.(axs[1:end-1]; ticks=false)
+	axs[end].xlabel = "X"
+	f
+end;
+
+# ╔═╡ 16215334-055d-4abe-9f23-cd82b3a0bde8
+# hideall
+plot_data(df, 0.5)
 
 # ╔═╡ 8a00889d-cc81-4c82-bf6b-0edcefb446a6
 md"""
@@ -1711,10 +1742,13 @@ version = "3.5.0+0"
 # ╠═0363b8e3-60fa-4ce9-bcb9-7b76cf16e028
 # ╠═417e9a8a-4149-11ec-36bc-edca996b4da9
 # ╠═43ade888-9cee-4453-a1f3-372ebac770f2
-# ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
-# ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
 # ╠═b372d2bf-573c-4147-a4aa-8d45f8b82156
+# ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
+# ╠═ba03b11a-91b4-4cfe-b422-45a424b82a77
+# ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
 # ╠═07c00464-44e5-47ca-9106-46ea066b6862
+# ╠═c412d841-e4d2-4b02-b68c-647f9ca59e7f
+# ╠═16215334-055d-4abe-9f23-cd82b3a0bde8
 # ╠═1883a81c-fc31-4a09-b484-cfabfbf1ebe1
 # ╠═8a00889d-cc81-4c82-bf6b-0edcefb446a6
 # ╠═72c49b06-eb37-45a9-8dba-13cef99343f4
