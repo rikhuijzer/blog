@@ -246,6 +246,12 @@ version = "0.10.11"
 deps = ["Mmap"]
 uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 
+[[DensityInterface]]
+deps = ["InverseFunctions", "Test"]
+git-tree-sha1 = "794daf62dce7df839b8ed446fc59c68db4b5182f"
+uuid = "b429d917-457f-4dbc-8f4c-0cc954292b1d"
+version = "0.3.3"
+
 [[Distances]]
 deps = ["LinearAlgebra", "Statistics", "StatsAPI"]
 git-tree-sha1 = "837c83e5574582e07662bbbba733964ff7c26b9d"
@@ -257,10 +263,10 @@ deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[Distributions]]
-deps = ["ChainRulesCore", "FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "72dcda9e19f88d09bf21b5f9507a0bb430bce2aa"
+deps = ["ChainRulesCore", "DensityInterface", "FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns"]
+git-tree-sha1 = "b66f784c86bff7754c5678993d7f3b57ea914364"
 uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.25.24"
+version = "0.25.25"
 
 [[DocStringExtensions]]
 deps = ["LibGit2"]
@@ -1104,11 +1110,11 @@ version = "0.17.1"
 
 [[PlutoStaticHTML]]
 deps = ["Base64", "Pluto"]
-git-tree-sha1 = "df52ce679fd87880665a53db25bef6030eb45594"
+git-tree-sha1 = "08451ac52e3063b09066bdff4b687d9623736705"
 repo-rev = "main"
 repo-url = "https://github.com/rikhuijzer/PlutoStaticHTML.jl#main"
 uuid = "359b1769-a58e-495b-9770-312e911026ad"
-version = "1.0.0"
+version = "2.0.0"
 
 [[PolygonOps]]
 git-tree-sha1 = "77b3d3605fc1cd0b42d95eba87dfcd2bf67d5ff6"
