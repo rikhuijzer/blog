@@ -268,31 +268,37 @@ md"""
 ## GLM
 
 As a sanity check, let's see what a Frequentists linear model concludes.
-
 """
 
 # ╔═╡ f8bb27e0-cb0d-4434-aa62-bc006bc73be5
-fitted_lm = lm(@formula(Y ~ A + B + C + D + E), df)
+fitted_lm = lm(@formula(Y ~ A + B + C + D + E), df);
 
 # ╔═╡ 0c63b163-8eeb-4ec3-8409-27158e6197bd
-methodswith(fitted_lm |> typeof; supertypes=true)
+methodswith(fitted_lm |> typeof; supertypes=true);
 
 # ╔═╡ e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
+# hideall
 let
 	resolution = (900, 1200)
 	f = Figure(; resolution)
 
 	C = coef(fitted_lm)
 	CN = coefnames(fitted_lm)
+	color = :black
+	ctable = DataFrame(coeftable(fitted_lm))
+	
 	axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(CN)]
-	for (ax, col, coefficient) in zip(axs, CN, C)
-		vlines!(ax, [coefficient]; color=:black, linestyle=:solid, label="coefficient")
+	for (i, tup) in enumerate(zip(axs, CN, C))
+		ax, col, coefficient = tup
+		vlines!(ax, [coefficient]; color, linestyle=:solid, label="coefficient")
 
-		@show col
+		lower = ctable[i, "Lower 95%"]
+		upper = ctable[i, "Upper 95%"]
+		vlines!(ax, [lower, upper]; color, linestyle=:dot, label="95% CI")
 		if col != "(Intercept)"
 			c = feature_correlations[col]
 			t = "cor($(col), Y)"
-			vlines!(ax, [c]; color=:black, linestyle=:dash, label=t)
+			vlines!(ax, [c]; color, linestyle=:dash, label=t)
 		end
 		xlims!(ax, -1, 1)
 	end
@@ -307,6 +313,13 @@ let
 	
 	current_figure()
 end
+
+# ╔═╡ 139bda39-e0ca-4715-a057-4b8d92c0afa2
+md"""
+Hmm.
+That's not what I expected, the outcomes for both models are nearly identical.
+This is probably because GLM uses QR decomposition under the hood.
+"""
 
 # ╔═╡ ecd31d7d-2fac-4ae1-828a-1a20a9a34726
 md"""
@@ -1843,6 +1856,7 @@ version = "3.5.0+0"
 # ╠═f8bb27e0-cb0d-4434-aa62-bc006bc73be5
 # ╠═0c63b163-8eeb-4ec3-8409-27158e6197bd
 # ╠═e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
+# ╠═139bda39-e0ca-4715-a057-4b8d92c0afa2
 # ╠═ecd31d7d-2fac-4ae1-828a-1a20a9a34726
 # ╠═37a9c11f-c055-4db9-bda0-3621e2951b02
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
