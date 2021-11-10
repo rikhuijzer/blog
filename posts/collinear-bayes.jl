@@ -95,7 +95,7 @@ plot_data(df, 0.5)
 
 # ╔═╡ 5d71ac72-6700-470c-a8ba-a7836a1b62bd
 md"""
-## Fitting a model
+## Defining the model
 """
 
 # ╔═╡ dd509020-6205-4678-8ef9-59fc9381b590
@@ -118,6 +118,22 @@ X = select(df, Not([:X, :Y]));
 model = let
 	y = df.Y
 	model = linear_regression(Matrix(X), y)
+end;
+
+# ╔═╡ e1e446a4-3b18-4174-9435-b2e179539553
+md"""
+# Inspecting the prior
+
+To verify that the priors are correctly set, we can use `sample(model, Prior(), n_samples)` from Turing.jl.
+This is shown below with the raw sample values on the left and the density plot for these values on the right.
+"""
+
+# ╔═╡ b6f9b494-3cab-4303-9f36-7fbcc8f9350c
+# hideall
+function fix_names(chns)
+	mapping = ["coef[$i]" => "coef[$name]" for (i, name) in enumerate(names(X))]
+	chns = replacenames(chns, Dict(mapping))
+	return chns
 end;
 
 # ╔═╡ 5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
@@ -160,13 +176,6 @@ function plot_chain(chns)
 	current_figure()
 end;
 
-# ╔═╡ b6f9b494-3cab-4303-9f36-7fbcc8f9350c
-function fix_names(chns)
-	mapping = ["coef[$i]" => "coef[$name]" for (i, name) in enumerate(names(X))]
-	chns = replacenames(chns, Dict(mapping))
-	return chns
-end;
-
 # ╔═╡ 0fae5fdd-3a9f-44d0-9151-4a4380c8e693
 let
 	chns = sample(model, Prior(), n_samples)
@@ -174,25 +183,50 @@ let
 	plot_chain(chns)
 end
 
+# ╔═╡ 25b0ef1f-dfbe-4d53-8695-0c3cc1cbe0bf
+md"""
+In this plot, everything looks good.
+On average, we expect our data to be zero (centered) and the variance also looks reasonable.
+We expect the coefficients for the linear model to be between -0.5 and 0.5.
+Thanks to these priors, the sampler should have useful samples right from the start.
+"""
+
+# ╔═╡ def53c14-cf6b-4d84-944f-dd7cf98ff4a2
+md"""
+## Estimating the parameters
+
+When we fit the model, we have to decide on a sampler for this complex collinear case.
+NUTS is normally the best bet in Turing.jl, but let's first try HMC.
+"""
+
 # ╔═╡ 55613d64-624f-482d-8991-f58db3ff5834
-chns = let
-	using Dates: now
-	
-	sampler = NUTS() # HMC(0.05, 10)
-	print("\nStarting sampling at $(now())\n\n")
+function mysample(model, sampler)
 	n_chains = 3
 	chns = sample(model, sampler, MCMCThreads(), n_samples, n_chains)
-	print("\nEnded sampling at $(now())\n\n")
-	fix_names(chns)
+	return fix_names(chns)
 end;
 
-# ╔═╡ 9e8c3260-1227-4d0f-be4c-d933a4b28a72
+# ╔═╡ d5053447-e4fc-4f1a-b959-1ebda35df764
+let
+	chns = mysample(model, HMC(0.01, 10))
+	plot_chain(chns)
+end
+
+# ╔═╡ 212f0f60-809f-4d5b-a397-c6247d35178c
 md"""
-Using the HMC sampler because it should be the best one for colinear data (<https://statmodeling.stat.columbia.edu/2019/07/07/collinearity-in-bayesian-models/>).
+Obtaining this outcome required setting the leapfrog size to a very low number.
+Normally, it is 0.05 or 0.1 which both **did not work**.
+What I mean by did not work is that the different chains did not converge, that is, gave different outcomes.
+Thanks to the low leapfrog size, it took quite a long time for the chains to converge.
+
+Let's try the NUTS sampler:
 """
 
 # ╔═╡ 71b85c9c-4d95-4f44-b8cb-01440c24a2f0
-plot_chain(chns)
+let
+	chns = mysample(model, NUTS())
+	plot_chain(chns)
+end
 
 # ╔═╡ 156655ff-d6b3-4ed9-91c6-c8674faef3c8
 describe(chns)[1]
@@ -214,7 +248,6 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
@@ -1685,12 +1718,16 @@ version = "3.5.0+0"
 # ╠═dd509020-6205-4678-8ef9-59fc9381b590
 # ╠═96a0999a-9778-43bb-9d10-9c3084ec00a4
 # ╠═56e5371a-83e4-4997-b667-e2bcaec296e8
-# ╠═4306829f-83fe-4c64-a452-d664e891a8c9
-# ╠═0fae5fdd-3a9f-44d0-9151-4a4380c8e693
-# ╠═5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
+# ╠═e1e446a4-3b18-4174-9435-b2e179539553
 # ╠═b6f9b494-3cab-4303-9f36-7fbcc8f9350c
-# ╠═9e8c3260-1227-4d0f-be4c-d933a4b28a72
+# ╠═5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
+# ╠═0fae5fdd-3a9f-44d0-9151-4a4380c8e693
+# ╠═25b0ef1f-dfbe-4d53-8695-0c3cc1cbe0bf
+# ╠═def53c14-cf6b-4d84-944f-dd7cf98ff4a2
 # ╠═55613d64-624f-482d-8991-f58db3ff5834
+# ╠═d5053447-e4fc-4f1a-b959-1ebda35df764
+# ╠═4306829f-83fe-4c64-a452-d664e891a8c9
+# ╠═212f0f60-809f-4d5b-a397-c6247d35178c
 # ╠═71b85c9c-4d95-4f44-b8cb-01440c24a2f0
 # ╠═156655ff-d6b3-4ed9-91c6-c8674faef3c8
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
