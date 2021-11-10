@@ -6,11 +6,7 @@ using InteractiveUtils
 
 # ╔═╡ 417e9a8a-4149-11ec-36bc-edca996b4da9
 begin
-	using CairoMakie: Figure, current_figure
-
-	using AlgebraOfGraphics
-	using AlgebraOfGraphics: Lines
-	# using Bijectors
+	using CairoMakie
 	using CategoricalArrays: categorical
 	using DataFrames: Not, DataFrame, select, stack, transform
 	using MLDataUtils: rescale!
@@ -71,12 +67,6 @@ let
 	Base.Text(joined)
 end
 
-# ╔═╡ 8aeeac53-a3cf-485c-a095-38bf40804649
-# hideall
-let
-	# plt = data(df) * mapping(:)
-end
-
 # ╔═╡ 5d71ac72-6700-470c-a8ba-a7836a1b62bd
 md"""
 ## Fitting a model
@@ -127,47 +117,46 @@ model = let
 	model = linear_regression(Matrix(X), y, μ)
 end;
 
+# ╔═╡ 5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
+n_samples = 1_000
+
 # ╔═╡ 4306829f-83fe-4c64-a452-d664e891a8c9
 # hideall
 function plot_chain(chns)
 	df = DataFrame(chns)
+	n_chains = length(unique(df.chain))
 	df[!, :chain] = categorical(df.chain)
 	coefs = select(df, :iteration, :chain, :intercept, r"coef*")
 	cols = filter(n -> startswith(n, "coef") || n == "intercept", names(coefs))
 	
+	cols = filter(startswith("coef"), names(coefs))
+
 	resolution = (900, 1000)
 	f = Figure(; resolution)
-	
-	sdf = stack(coefs, cols, variable_name=:coef)
-	return sdf
+	# gl = f[1:length(cols), 1] = GridLayout()
+	# gl.xlabel = "foo"
 
-	layer = data(sdf) * mapping(:value; row=:coef)
-	scat = layer * visual(Lines)
+	values_axs = [Axis(f[i, 1]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	for (ax, col) in zip(values_axs, cols)
+		for i in 1:n_chains
+			values = filter(:chain => ==(i), df)[:, col]
+			lines!(ax, 1:n_samples, values; label=string(i))
+		end
+		# axislegend(ax; position=:lt)
+	end
+	# names(chns)
 
-	facet = (; linkxaxes=:minimal)
-	linkxaxes = :minimal
-	linkyaxes = :minimal
-	axis = (; xlabel="Iteration", ylabel="Sample value")
-	draw!(f[1, 1], scat; axis)
+	density_axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	for (ax, col) in zip(density_axs, cols)
+		for i in 1:n_chains
+			values = filter(:chain => ==(i), df)[:, col]
+			density!(ax, values; label=string(i))
+		end
+	end
+	# hideydecorations!.(density_axs)
 
-	dens = layer * density()
-	axis = (; xlabel="Sample value", ylabel="Density")
-	# draw!(f[1, 2], dens; axis) # facet)
-	
 	current_figure()
 end;
-
-# ╔═╡ 425a8018-56c9-49ff-bf0f-ad5855b215ab
-let
-	n = repeat(["a", "b", "c", "d"], 250)
-	y = rand(1000)
-	nt = (; n, y)
-
-	layer = data(nt) * mapping(:y, col=:n)
-	f = Figure()
-	draw!(f[1, 1], layer)
-	current_figure()
-end
 
 # ╔═╡ b6f9b494-3cab-4303-9f36-7fbcc8f9350c
 function fix_names(chns)
@@ -178,7 +167,6 @@ end;
 
 # ╔═╡ 0fae5fdd-3a9f-44d0-9151-4a4380c8e693
 let
-	n_samples = 1_000
 	chns = sample(model, Prior(), n_samples)
 	chns = fix_names(chns)
 	plot_chain(chns)
@@ -189,13 +177,15 @@ chns = let
 	using Dates: now
 	
 	sampler = NUTS() # HMC(0.05, 10)
-	n_chains = 3
-	n_samples = 1_000
 	print("\nStarting sampling at $(now())\n\n")
+	n_chains = 3
 	chns = sample(model, sampler, MCMCThreads(), n_samples, n_chains)
 	print("\nEnded sampling at $(now())\n\n")
 	fix_names(chns)
 end;
+
+# ╔═╡ 4594bd30-d424-4680-9903-4ef78dcd71dc
+chns.info
 
 # ╔═╡ 9e8c3260-1227-4d0f-be4c-d933a4b28a72
 md"""
@@ -222,7 +212,6 @@ end
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
-AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -234,7 +223,6 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
 
 [compat]
-AlgebraOfGraphics = "~0.6.0"
 CairoMakie = "~0.6.6"
 CategoricalArrays = "~0.10.2"
 DataFrames = "~1.2.2"
@@ -298,12 +286,6 @@ deps = ["Bijectors", "Distributions", "DistributionsAD", "DocStringExtensions", 
 git-tree-sha1 = "130d6b17a3a9d420d9a6b37412cae03ffd6a64ff"
 uuid = "b5ca4192-6429-45e5-a2d9-87aec30a685c"
 version = "0.1.3"
-
-[[AlgebraOfGraphics]]
-deps = ["Colors", "Dates", "FileIO", "GLM", "GeoInterface", "GeometryBasics", "GridLayoutBase", "KernelDensity", "Loess", "Makie", "PlotUtils", "PooledArrays", "RelocatableFolders", "StatsBase", "StructArrays", "Tables"]
-git-tree-sha1 = "a79d1facb9fb0cd858e693088aa366e328109901"
-uuid = "cbdf2221-f076-402e-a563-3d30da359d67"
-version = "0.6.0"
 
 [[Animations]]
 deps = ["Colors"]
@@ -556,12 +538,6 @@ git-tree-sha1 = "3287dacf67c3652d3fed09f4c12c187ae4dbb89a"
 uuid = "b552c78f-8df3-52c6-915a-8e097449b14b"
 version = "1.4.0"
 
-[[Distances]]
-deps = ["LinearAlgebra", "Statistics", "StatsAPI"]
-git-tree-sha1 = "837c83e5574582e07662bbbba733964ff7c26b9d"
-uuid = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
-version = "0.10.6"
-
 [[Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
@@ -710,18 +686,6 @@ version = "0.2.7"
 [[Future]]
 deps = ["Random"]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
-
-[[GLM]]
-deps = ["Distributions", "LinearAlgebra", "Printf", "Reexport", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns", "StatsModels"]
-git-tree-sha1 = "f564ce4af5e79bb88ff1f4488e64363487674278"
-uuid = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
-version = "1.5.1"
-
-[[GeoInterface]]
-deps = ["RecipesBase"]
-git-tree-sha1 = "f63297cb6a2d2c403d18b3a3e0b7fcb01c0a3f40"
-uuid = "cf35fbd7-0cd7-5166-be24-54bfbe79505f"
-version = "0.5.6"
 
 [[GeometryBasics]]
 deps = ["EarCut_jll", "IterTools", "LinearAlgebra", "StaticArrays", "StructArrays", "Tables"]
@@ -989,12 +953,6 @@ version = "2.36.0+0"
 [[LinearAlgebra]]
 deps = ["Libdl"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-
-[[Loess]]
-deps = ["Distances", "LinearAlgebra", "Statistics"]
-git-tree-sha1 = "b5254a86cf65944c68ed938e575f5c81d5dfe4cb"
-uuid = "4345ca2d-374a-55d4-8d30-97f9976e7612"
-version = "0.5.3"
 
 [[LogExpFunctions]]
 deps = ["ChainRulesCore", "ChangesOfVariables", "DocStringExtensions", "InverseFunctions", "IrrationalConstants", "LinearAlgebra"]
@@ -1430,11 +1388,6 @@ version = "0.8.0"
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
 uuid = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
 
-[[ShiftedArrays]]
-git-tree-sha1 = "22395afdcf37d6709a5a0766cc4a5ca52cb85ea0"
-uuid = "1277b4bf-5013-50f5-be3d-901d8477a67a"
-version = "1.0.0"
-
 [[Showoff]]
 deps = ["Dates", "Grisu"]
 git-tree-sha1 = "91eddf657aca81df9ae6ceb20b959ae5653ad1de"
@@ -1516,12 +1469,6 @@ deps = ["ChainRulesCore", "IrrationalConstants", "LogExpFunctions", "Reexport", 
 git-tree-sha1 = "95072ef1a22b057b1e80f73c2a89ad238ae4cfff"
 uuid = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
 version = "0.9.12"
-
-[[StatsModels]]
-deps = ["DataAPI", "DataStructures", "LinearAlgebra", "Printf", "REPL", "ShiftedArrays", "SparseArrays", "StatsBase", "StatsFuns", "Tables"]
-git-tree-sha1 = "677488c295051568b0b79a77a8c44aa86e78b359"
-uuid = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
-version = "0.6.28"
 
 [[StructArrays]]
 deps = ["Adapt", "DataAPI", "StaticArrays", "Tables"]
@@ -1761,7 +1708,6 @@ version = "3.5.0+0"
 # ╠═1883a81c-fc31-4a09-b484-cfabfbf1ebe1
 # ╠═8a00889d-cc81-4c82-bf6b-0edcefb446a6
 # ╠═72c49b06-eb37-45a9-8dba-13cef99343f4
-# ╠═8aeeac53-a3cf-485c-a095-38bf40804649
 # ╠═5d71ac72-6700-470c-a8ba-a7836a1b62bd
 # ╠═9d3336fa-b23e-4c12-8324-8f5f5c799879
 # ╠═dd509020-6205-4678-8ef9-59fc9381b590
@@ -1771,8 +1717,9 @@ version = "3.5.0+0"
 # ╠═15ad4780-bdbf-4793-9c82-62d1d07267e6
 # ╠═56e5371a-83e4-4997-b667-e2bcaec296e8
 # ╠═4306829f-83fe-4c64-a452-d664e891a8c9
-# ╠═425a8018-56c9-49ff-bf0f-ad5855b215ab
+# ╠═4594bd30-d424-4680-9903-4ef78dcd71dc
 # ╠═0fae5fdd-3a9f-44d0-9151-4a4380c8e693
+# ╠═5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
 # ╠═b6f9b494-3cab-4303-9f36-7fbcc8f9350c
 # ╠═9e8c3260-1227-4d0f-be4c-d933a4b28a72
 # ╠═55613d64-624f-482d-8991-f58db3ff5834
