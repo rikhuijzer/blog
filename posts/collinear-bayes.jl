@@ -319,6 +319,11 @@ md"""
 Hmm.
 That's not what I expected, the outcomes for both models are nearly identical.
 This is probably because GLM uses QR decomposition under the hood.
+
+This seems to go back again to my post on [Frequentist and Bayesian coin flipping](/posts/frequentist-bayesian-coin-flipping/), see the last two figures.
+When there is a strong prior or weak data, then the Bayesian outcome will differ from the Frequentist one (also mentioned by Gelman, [2020](https://doi.org/10.1017/9781139161879)).
+So, maybe that is the takeaway of this post:
+when you have weak data or strong priors, a Bayesian model is less susceptible to random noise.
 """
 
 # ╔═╡ ecd31d7d-2fac-4ae1-828a-1a20a9a34726
