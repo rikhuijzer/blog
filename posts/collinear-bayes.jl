@@ -62,6 +62,9 @@ df = let
     DataFrame(; X, A, B, C, D, E, Y)
 end
 
+# ╔═╡ 560ffcbd-50fe-47dc-8b04-1e97dd70b5cb
+cor(df.D, df.E)
+
 # ╔═╡ 1883a81c-fc31-4a09-b484-cfabfbf1ebe1
 # hideall
 r2(x) = round(x; digits=2);
@@ -177,7 +180,7 @@ function plot_chain(chns)
 	# gl = f[1:length(cols), 1] = GridLayout()
 	# gl.xlabel = "foo"
 
-	values_axs = [Axis(f[i, 1]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	values_axs = [Axis(f[i+1, 1]; ylabel=string(c)) for (i, c) in enumerate(cols)]
 	for (ax, col) in zip(values_axs, cols)
 		for i in 1:n_chains
 			values = filter(:chain => ==(i), df)[:, col]
@@ -187,7 +190,7 @@ function plot_chain(chns)
 	hidexdecorations!.(values_axs[1:end-1]; ticks=false)
 	values_axs[end].xlabel = "Iteration"
 
-	density_axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(cols)]
+	density_axs = [Axis(f[i+1, 2]; ylabel=string(c)) for (i, c) in enumerate(cols)]
 	for (ax, col) in zip(density_axs, cols)
 		for i in 1:n_chains
 			values = filter(:chain => ==(i), df)[:, col]
@@ -196,7 +199,7 @@ function plot_chain(chns)
 		if col != "intercept"
 			feature = col[6:end-1]
 			c = feature_correlations[feature]
-			t = "cor($(feature), Y)"
+			t = "cor(<feature>, Y)"
 			if n_chains != 1 # Avoid vlines in the prior plot.
 				vlines!(ax, [c]; color=:black, linestyle=:dash, label=t)
 			end
@@ -206,8 +209,7 @@ function plot_chain(chns)
 	end
 	hideydecorations!.(density_axs)
 	linkxaxes!(density_axs...)
-	[Legend(f[i, 3], ax; position=:lt) for (i, ax) in 
-		enumerate(density_axs)]
+	Legend(f[1, 1:2], last(density_axs))
 	
 	hidexdecorations!.(density_axs[1:end-1]; ticks=false)
 	density_axs[end].xlabel = "Parameter estimate"
@@ -286,8 +288,8 @@ let
 	CN = coefnames(fitted_lm)
 	color = :black
 	ctable = DataFrame(coeftable(fitted_lm))
-	
-	axs = [Axis(f[i, 2]; ylabel=string(c)) for (i, c) in enumerate(CN)]
+
+	axs = [Axis(f[i+1, 2]; ylabel=string(c)) for (i, c) in enumerate(CN)]
 	for (i, tup) in enumerate(zip(axs, CN, C))
 		ax, col, coefficient = tup
 		vlines!(ax, [coefficient]; color, linestyle=:solid, label="coefficient")
@@ -297,7 +299,7 @@ let
 		vlines!(ax, [lower, upper]; color, linestyle=:dot, label="95% CI")
 		if col != "(Intercept)"
 			c = feature_correlations[col]
-			t = "cor($(col), Y)"
+			t = "cor(<feature>, Y)"
 			vlines!(ax, [c]; color, linestyle=:dash, label=t)
 		end
 		xlims!(ax, -1, 1)
@@ -305,8 +307,7 @@ let
 
 	hideydecorations!.(axs; label=false)
 	linkxaxes!(axs...)
-	[Legend(f[i, 3], ax; position=:lt) for (i, ax) in 
-		enumerate(axs)]
+	Legend(f[1, 1:2], last(axs))
 	
 	hidexdecorations!.(axs[1:end-1]; ticks=false)
 	axs[end].xlabel = "Parameter estimate"
@@ -1837,6 +1838,7 @@ version = "3.5.0+0"
 # ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
 # ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
 # ╠═07c00464-44e5-47ca-9106-46ea066b6862
+# ╠═560ffcbd-50fe-47dc-8b04-1e97dd70b5cb
 # ╠═e376bc32-df11-479c-b33c-c1478fd519c2
 # ╠═c412d841-e4d2-4b02-b68c-647f9ca59e7f
 # ╠═16215334-055d-4abe-9f23-cd82b3a0bde8
