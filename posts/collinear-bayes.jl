@@ -114,7 +114,7 @@ md"""
 @model function linear_regression(X::Matrix, y)
 	σ₂ ~ truncated(Normal(0, 100), 0, Inf)
 	
-	intercept ~ Normal(0, 6)
+	intercept ~ Normal(0, 0.4)
 
 	n_features = size(X, 2)
     coef ~ MvNormal(n_features, 0.4)
