@@ -109,6 +109,7 @@ function lx_readhtml(com, _)
         path = "$path"
         html = read(path, String)
         println("~~~\n\$html\n~~~\n")
+        println("_This blog post was built via a Pluto.jl [notebook]($path)_.")
         ```
         \\textoutput{pluto}
         """

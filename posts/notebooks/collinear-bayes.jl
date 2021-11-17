@@ -154,12 +154,12 @@ function fix_names(chns)
 end;
 
 # ╔═╡ 5d942e3e-3bef-4dd0-b2e6-e5efe6cfc6b4
-n_samples = 1_000;
+n_samples = 1_000
 
 # ╔═╡ 25b0ef1f-dfbe-4d53-8695-0c3cc1cbe0bf
 md"""
 In this plot, everything looks good.
-On average, we expect our data to be zero (centered) and the variance looks reasonable.
+On average, we expect our data to be zero (centered) and the variance also looks reasonable.
 We expect the coefficients for the linear model to be between -0.5 and 0.5.
 Thanks to these priors, the sampler should have useful samples right from the start.
 """
@@ -254,7 +254,7 @@ Normally, it is 0.05 or 0.1 which both **did not work**.
 What I mean by did not work is that the different chains did not converge, that is, gave different outcomes.
 Note that, thanks to the low leapfrog size, it took quite a few iterations for the chains to converge.
 
-Let's try a more modern sampler, namely NUTS:
+Let's try a more modern samples, namely NUTS:
 """
 
 # ╔═╡ 71b85c9c-4d95-4f44-b8cb-01440c24a2f0
@@ -267,7 +267,10 @@ end
 md"""
 Compared to the [Shapley values](/posts/shapley/), this result is very promising.
 Both samplers correctly identified the most important coefficient and give reasonable estimates for all the coefficients.
-In the Shapley post, the most informative feature got too much credit compared to a slightly less informative feature.
+In the Shapley post, the most informative feature got too much credit compared to a correlated but slightly less informative feature.
+
+As a side-note, random forests with Shapley values and these Bayesian models both use the Monte Carlo method.
+Here, the Bayesian approach has a benefit because it has fewer free parameters.
 """
 
 # ╔═╡ 28a40e1e-eacb-4e63-b1c4-58c965f52ba5
@@ -317,25 +320,19 @@ let
 	current_figure()
 end
 
-# ╔═╡ 6f3ce3c2-b86d-4b67-af6b-65013192976f
-md"""
-These outcomes are almost the same as the Bayesian output.
-"""
-
 # ╔═╡ 139bda39-e0ca-4715-a057-4b8d92c0afa2
 md"""
 ## Discussion
 
 Hmm.
-That's not what I expected.
-The outcomes for both models are **nearly identical**!
+That's not what I expected, the outcomes for both models are **nearly identical**!
 
-After me retreating to the Julia forum, [Michael Creel](https://discourse.julialang.org/t/multicollinearity-and-glm/71340/5) kindly offered an answer to this.
+After a little retreat on the Julia forum, [Michael Creel](https://discourse.julialang.org/t/multicollinearity-and-glm/71340/5) kindly offered an answer to this.
 It turned out that Bayesian priors can help with things like multicollinearity, but only if the prior provides enough information to counter the imprecision.
 
 This seems to go back again to my post on [Frequentist and Bayesian coin flipping](/posts/frequentist-bayesian-coin-flipping/), see the last two figures.
 When there is a strong prior or weak data, then the Bayesian outcome will differ from the Frequentist one (also mentioned by Gelman, [2020](https://doi.org/10.1017/9781139161879)).
-Apparently, here the data was pretty strong or the priors pretty weak.
+Apparently, in this post, the data was pretty strong or the priors pretty weak.
 
 So, the Frequentist and Bayesian world aren't so different.
 In many cases, they yield the same conclusions.
@@ -1840,8 +1837,8 @@ version = "3.5.0+0"
 
 # ╔═╡ Cell order:
 # ╠═0363b8e3-60fa-4ce9-bcb9-7b76cf16e028
-# ╠═43ade888-9cee-4453-a1f3-372ebac770f2
 # ╠═417e9a8a-4149-11ec-36bc-edca996b4da9
+# ╠═43ade888-9cee-4453-a1f3-372ebac770f2
 # ╠═b372d2bf-573c-4147-a4aa-8d45f8b82156
 # ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
 # ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
@@ -1870,7 +1867,6 @@ version = "3.5.0+0"
 # ╠═28a40e1e-eacb-4e63-b1c4-58c965f52ba5
 # ╠═f8bb27e0-cb0d-4434-aa62-bc006bc73be5
 # ╠═e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
-# ╠═6f3ce3c2-b86d-4b67-af6b-65013192976f
 # ╠═139bda39-e0ca-4715-a057-4b8d92c0afa2
 # ╠═37a9c11f-c055-4db9-bda0-3621e2951b02
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
