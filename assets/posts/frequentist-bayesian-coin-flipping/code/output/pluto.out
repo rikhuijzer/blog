@@ -117,3 +117,4 @@ end;</code></pre>
 
 ~~~
 
+_This blog post was built via a Pluto.jl [notebook](posts/notebooks/frequentist-bayesian-coin-flipping.html)_.

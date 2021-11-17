@@ -163,11 +163,12 @@ end;</code></pre>
 <p>Based on these plots, we can conclude two things. Firstly, the Bayesian approach provides better estimates for small sample sizes. The Bayesian approach successfully uses the fact that a probability should be between 0 and 1, which was given to the model via the <code>Beta&#40;1, 1&#41;</code> prior. For increasingly larger sample sizes, the difference between both statistical paradigms vanish in this situation. Secondly, collecting more and more samples until the result is significant is dangerous. This approach is called <em>optional stopping</em>. Around 25 samples, it would find that the data must come from a distribution with a mean higher than 0.5, whereas we know that this is false. Cumming &#40;<a href="https://www.routledge.com/Understanding-The-New-Statistics-Effect-Sizes-Confidence-Intervals-and/Cumming/p/book/9780415879682">2011</a>&#41; calls this the &quot;dance of the <span class="tex">$p$</span>-values&quot;.</p>
 </div>
 
-
+</p>
+<p><em>This blog post was built via a Pluto.jl <a href="posts/notebooks/frequentist-bayesian-coin-flipping.html">notebook</a></em>.
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-11-10.
+    Last update: 2021-11-17.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->

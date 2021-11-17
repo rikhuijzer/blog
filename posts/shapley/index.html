@@ -283,11 +283,12 @@ end;</code></pre>
 <p>Based on this simple example, I would say that LightGBM combined with Shapley values can handle multicollinearity to some extend. Specifically, the outcomes mainly depend on whether the fitted model has used the less correlated features or decided to only use the highly correlated features. In this case, LightGBM has overfitted the data, which is probably why semi correlated features still receive some recognition even though other features are more useful. So, in this multicollinear case, an overfitted model gives better feature importance estimates. Doubts remain about generalizability.</p>
 </div>
 
-
+</p>
+<p><em>This blog post was built via a Pluto.jl <a href="posts/notebooks/shapley.html">notebook</a></em>.
 <div class="page-foot">
   <div class="copyright">
     <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Rik Huijzer. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
-    Last update: 2021-11-10.
+    Last update: 2021-11-17.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
