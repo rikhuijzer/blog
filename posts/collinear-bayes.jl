@@ -36,7 +36,7 @@ This is easier for the Bayesian model to work with, but can often also make inte
 There are various methods to rescale data, one is using `MLDataUtils: rescale!`.
 Note that `rescale!` bases the rescaling on the sample which is not recommended for small samples (Gelman, [2020](https://doi.org/10.1017/9781139161879)).
 Instead, you can use knowledge that you have about the data such as the range of questionnaire scores or the weight of cars.
-Specifically, for example, it is known that the weight of a car is never below zero and unlikely to be above 3_600 kg (8_000 lbs) which is the weight of a Hummer H1.
+Specifically, for example, it could be known for the data that the weight of a car is never below zero and unlikely to be above 3_600 kg (8_000 lbs); the weight of a Hummer H1.
 """
 
 # ╔═╡ b372d2bf-573c-4147-a4aa-8d45f8b82156
@@ -62,8 +62,10 @@ df = let
     DataFrame(; X, A, B, C, D, E, Y)
 end
 
-# ╔═╡ 560ffcbd-50fe-47dc-8b04-1e97dd70b5cb
-cor(df.D, df.E)
+# ╔═╡ 9b2b1603-256a-45b9-9091-807856069d2f
+md"""
+The data and the correlations look as follows:
+"""
 
 # ╔═╡ 1883a81c-fc31-4a09-b484-cfabfbf1ebe1
 # hideall
@@ -108,6 +110,9 @@ plot_data(df, 0.5)
 # ╔═╡ 5d71ac72-6700-470c-a8ba-a7836a1b62bd
 md"""
 ## Defining the model
+
+This is a basic linear regression model similar to the one mentioned in the tutorials on <https://turing.ml>.
+The priors of this model are visualized below.
 """
 
 # ╔═╡ dd509020-6205-4678-8ef9-59fc9381b590
@@ -218,6 +223,7 @@ function plot_chain(chns)
 end;
 
 # ╔═╡ 0fae5fdd-3a9f-44d0-9151-4a4380c8e693
+# hideall
 let
 	chns = sample(model, Prior(), n_samples)
 	chns = fix_names(chns)
@@ -248,7 +254,7 @@ Normally, it is 0.05 or 0.1 which both **did not work**.
 What I mean by did not work is that the different chains did not converge, that is, gave different outcomes.
 Note that, thanks to the low leapfrog size, it took quite a few iterations for the chains to converge.
 
-Let's try the NUTS sampler:
+Let's try a more modern samples, namely NUTS:
 """
 
 # ╔═╡ 71b85c9c-4d95-4f44-b8cb-01440c24a2f0
@@ -260,9 +266,11 @@ end
 # ╔═╡ 49efd148-5185-4451-8334-e6634f006c1b
 md"""
 Compared to the [Shapley values](/posts/shapley/), this result is very promising.
-Based on the data, both samplers correctly identified the most important coefficient and give reasonable estimates for all the features and not only the most informative feature.
+Both samplers correctly identified the most important coefficient and give reasonable estimates for all the coefficients.
+In the Shapley post, the most informative feature got too much credit compared to a correlated but slightly less informative feature.
 
-Now that I think about it, random forests with Shapley values and decision trees are similar in the sense that they randomly look around in a certain search space and, in the end, predict by aggregating on many instances (decision tree versus sample). Here, the Bayesian approach has a benefit because it has much less free parameters making the search more effective.
+As a side-note, random forests with Shapley values and these Bayesian models both use the Monte Carlo method.
+Here, the Bayesian approach has a benefit because it has fewer free parameters.
 """
 
 # ╔═╡ 28a40e1e-eacb-4e63-b1c4-58c965f52ba5
@@ -274,9 +282,6 @@ As a sanity check, let's see what a Frequentists linear model concludes.
 
 # ╔═╡ f8bb27e0-cb0d-4434-aa62-bc006bc73be5
 fitted_lm = lm(@formula(Y ~ A + B + C + D + E), df);
-
-# ╔═╡ 0c63b163-8eeb-4ec3-8409-27158e6197bd
-methodswith(fitted_lm |> typeof; supertypes=true);
 
 # ╔═╡ e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
 # hideall
@@ -317,20 +322,20 @@ end
 
 # ╔═╡ 139bda39-e0ca-4715-a057-4b8d92c0afa2
 md"""
+## Discussion
+
 Hmm.
-That's not what I expected, the outcomes for both models are nearly identical.
-This is probably because GLM uses QR decomposition under the hood.
+That's not what I expected, the outcomes for both models are **nearly identical**!
+
+After a little retreat on the Julia forum, [Michael Creel](https://discourse.julialang.org/t/multicollinearity-and-glm/71340/5) kindly offered an answer to this.
+It turned out that Bayesian priors can help with things like multicollinearity, but only if the prior provides enough information to counter the imprecision.
 
 This seems to go back again to my post on [Frequentist and Bayesian coin flipping](/posts/frequentist-bayesian-coin-flipping/), see the last two figures.
 When there is a strong prior or weak data, then the Bayesian outcome will differ from the Frequentist one (also mentioned by Gelman, [2020](https://doi.org/10.1017/9781139161879)).
-So, maybe that is the takeaway of this post:
-when you have weak data or strong priors, a Bayesian model is less susceptible to random noise.
-"""
+Apparently, in this post, the data was pretty strong or the priors pretty weak.
 
-# ╔═╡ ecd31d7d-2fac-4ae1-828a-1a20a9a34726
-md"""
-## Conclusion
-
+So, the Frequentist and Bayesian world aren't so different.
+In many cases, they yield the same conclusions.
 """
 
 # ╔═╡ 37a9c11f-c055-4db9-bda0-3621e2951b02
@@ -1838,9 +1843,9 @@ version = "3.5.0+0"
 # ╠═842b67f1-9aa9-4409-88ee-c9e58193731a
 # ╠═5bab06f3-995f-445a-b6b3-f63df6b2a3ef
 # ╠═07c00464-44e5-47ca-9106-46ea066b6862
-# ╠═560ffcbd-50fe-47dc-8b04-1e97dd70b5cb
 # ╠═e376bc32-df11-479c-b33c-c1478fd519c2
 # ╠═c412d841-e4d2-4b02-b68c-647f9ca59e7f
+# ╠═9b2b1603-256a-45b9-9091-807856069d2f
 # ╠═16215334-055d-4abe-9f23-cd82b3a0bde8
 # ╠═1883a81c-fc31-4a09-b484-cfabfbf1ebe1
 # ╠═5d71ac72-6700-470c-a8ba-a7836a1b62bd
@@ -1861,10 +1866,8 @@ version = "3.5.0+0"
 # ╠═49efd148-5185-4451-8334-e6634f006c1b
 # ╠═28a40e1e-eacb-4e63-b1c4-58c965f52ba5
 # ╠═f8bb27e0-cb0d-4434-aa62-bc006bc73be5
-# ╠═0c63b163-8eeb-4ec3-8409-27158e6197bd
 # ╠═e130ce2f-b1f3-4c89-b0e6-5b6ed172a91f
 # ╠═139bda39-e0ca-4715-a057-4b8d92c0afa2
-# ╠═ecd31d7d-2fac-4ae1-828a-1a20a9a34726
 # ╠═37a9c11f-c055-4db9-bda0-3621e2951b02
 # ╠═23ce22bb-ad58-470a-ba9d-e2d21fef6049
 # ╟─00000000-0000-0000-0000-000000000001
