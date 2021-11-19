@@ -1,15 +1,6 @@
+**This repository has moved to <https://gitlab.com/rikh/blog>.**
+
 # huijzer.xyz
-
-[![CI Build](https://github.com/rikhuijzer/huijzer.xyz/workflows/CI/badge.svg)](https://github.com/rikhuijzer/huijzer.xyz/actions?query=workflow%3ACI+branch%3Amain)
-[![Site Analytics](https://img.shields.io/badge/Site-analytics-blueviolet)](https://app.usefathom.com/share/bqrgkknx/huijzer.xyz)
-
-My blog at <https://huijzer.xyz>.
-
-Run locally with
-```
-julia -e 'using Pkg; Pkg.activate("."); using Franklin; Franklin.serve()'
-```
-when located in the root directory of this repository.
 
 ## Licenses
 
